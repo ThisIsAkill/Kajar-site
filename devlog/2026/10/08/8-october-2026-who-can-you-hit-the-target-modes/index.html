@@ -184,21 +184,21 @@
       <div class="wk-party">
         <div class="wk-party-row" title="Bytes matched: the rebuilt ROM is byte-identical here">
           <span class="wk-party-k">HP</span>
-          <span class="wk-party-v">29,032<small>/359,278</small></span>
+          <span class="wk-party-v">38,698<small>/359,278</small></span>
         </div>
-        <div class="wk-stat-track"><div class="wk-stat-fill" style="width:8.08%"></div></div>
-        <p class="wk-party-note">bytes matched · 8.08% of code</p>
+        <div class="wk-stat-track"><div class="wk-stat-fill" style="width:10.77%"></div></div>
+        <p class="wk-party-note">bytes matched · 10.77% of code</p>
 
         <div class="wk-party-row" title="Matched functions that also meet the readability standard">
           <span class="wk-party-k">MP</span>
-          <span class="wk-party-v">244<small>/244</small></span>
+          <span class="wk-party-v">340<small>/340</small></span>
         </div>
         <div class="wk-stat-track"><div class="wk-stat-fill wk-stat-fill-mp" style="width:100.0%"></div></div>
         <p class="wk-party-note">functions readable</p>
 
         <div class="wk-party-row" title="Readable functions that passed an independent review">
           <span class="wk-party-k">TP</span>
-          <span class="wk-party-v">244<small>/244</small></span>
+          <span class="wk-party-v">340<small>/340</small></span>
         </div>
         <div class="wk-stat-track"><div class="wk-stat-fill wk-stat-fill-dim" style="width:100.0%"></div></div>
         <p class="wk-party-note">functions verified</p>
@@ -225,7 +225,7 @@
           <li>
             <a href="#8-october-2026-who-can-you-hit-the-target-modes" class="wk-toc-link">8 October 2026: who can you hit? The target modes</a>
             
-            <ol><li><a href="#joining-the-queue" class="wk-toc-link">Joining the queue</a></li><li><a href="#thirty-three-modes-eighteen-routines" class="wk-toc-link">Thirty-three modes, eighteen routines</a></li><li><a href="#area-attacks" class="wk-toc-link">Area attacks</a></li><li><a href="#a-second-door-into-the-same-room" class="wk-toc-link">A second door into the same room</a></li><li><a href="#little-things" class="wk-toc-link">Little things</a></li><li><a href="#a-better-check" class="wk-toc-link">A better check</a></li><li><a href="#the-day-in-numbers" class="wk-toc-link">The day in numbers</a></li><li><a href="#readable-before-it-counts" class="wk-toc-link">Readable before it counts</a></li><li><a href="#next" class="wk-toc-link">Next</a></li></ol>
+            <ol><li><a href="#joining-the-queue" class="wk-toc-link">Joining the queue</a></li><li><a href="#thirty-three-modes-eighteen-routines" class="wk-toc-link">Thirty-three modes, eighteen routines</a></li><li><a href="#area-attacks" class="wk-toc-link">Area attacks</a></li><li><a href="#a-second-door-into-the-same-room" class="wk-toc-link">A second door into the same room</a></li><li><a href="#little-things" class="wk-toc-link">Little things</a></li><li><a href="#a-better-check" class="wk-toc-link">A better check</a></li><li><a href="#the-day-in-numbers" class="wk-toc-link">The day in numbers</a></li><li><a href="#readable-before-it-counts" class="wk-toc-link">Readable before it counts</a></li><li><a href="#faster-and-in-parallel" class="wk-toc-link">Faster, and in parallel</a></li><li><a href="#next" class="wk-toc-link">Next</a></li></ol>
             
           </li>
           
@@ -350,8 +350,28 @@
 </ul>
 <p>The second round of bank <code>$C1</code> mostly asks for the same thing everywhere: every header must state the direct page, because the code clears A with <code>TDC</code> and that only works because D is 0. 68 routines are verified so far. The rest are going through another round of fixes.</p>
 <p>All the numbers on this wiki now come from one script, <code>tools/progress.py</code>, instead of being kept by hand. The first time it ran, it showed that bank <code>$C0</code> had been over-counted by 169 bytes.</p>
+<h2 id="faster-and-in-parallel">Faster, and in parallel</h2>
+<p>By the afternoon all 244 earlier routines were verified, so the workflow itself got an overhaul. Seven new tools:</p>
+<ul>
+<li><code>tools/xref.py</code> finds every real caller of an address and ignores false hits inside other instructions' operands.</li>
+<li>The lint now insists that every header has Entry and Exit lines and a complete list of callers. Reviews used to send most routines back for exactly those gaps.</li>
+<li><code>REVIEW.md</code> writes down the review standard, so every round applies the same bar.</li>
+<li>A duplicate finder that ignores jump and call addresses.</li>
+<li>A data-table tool.</li>
+<li><code>tools/draft.py</code>, which turns any address into a draft that already assembles byte-for-byte and already uses every name the project knows.</li>
+</ul>
+<p>With those, three matchers ran at once in different banks, each batch reviewed by subsystem before it went in. Most batches passed review on the first try.</p>
+<p>What they found:</p>
+<ul>
+<li><strong>Enemy movement</strong> (<code>$C1:3714–$C1:4057</code>, 2,372 bytes). A routine stubbed as "status effect visuals" turned out to drive how enemies move. Nine movers: approach, charge, keep range on a ring, orbit, loop round an ellipse, line up on a row or column, eight fixed directions, head for the screen centre, and idle.</li>
+<li><strong>Battle position queries and collision boxes</strong>, plus the battler frame decoder and the PC and enemy animation ticks. One routine in there has a real bug in the original game: a check that is supposed to measure the path to another battler compares against a value left over from the sine lookup instead.</li>
+<li><strong>The field main loop's per-frame work</strong> (<code>$C0</code>, 1,882 bytes). It includes the window effects that shrink and grow the screen, the action button, and the <strong>staff credits</strong>: one routine writes the credits text from <code>$FD:A000</code> ("PRODUCER//KAZUHIKO AOKI"...) one line per frame.</li>
+<li><strong>A fatal-error stop.</strong> One routine blanks the screen to a solid colour, disables interrupts and loops forever. Each of its 13 callers passes its own colour. It came from following up a duplicate.</li>
+<li><strong>A small quirk in battle.</strong> Holding L+R counts frames toward a message (<code>$75</code>). Reviews took three rounds to pin down exactly when that counter resets.</li>
+</ul>
+<p><code>main</code> ends the day at 38,698 bytes, 10.77% of the game's code, every byte of it independently verified.</p>
 <h2 id="next">Next</h2>
-<p>The review → fix → review loop until every routine is verified, and, alongside it, new <abbr title="Writing assembly source that assembles byte-for-byte identically to the original ROM via asar.">matching</abbr> again: the gap at <code>$C1:1C4A–$C1:1F78</code>, battle service 3 at <code>$C1:106E</code>, and the byte-identical copies the duplicate finder turned up (<code>Battle_Mul8</code> again at <code>$CC:F365</code>).</p>
+<p>Keep the pipeline full: bank <code>$C1</code> from service 4 at <code>$C1:4058</code>, the <code>$C0</code> main loop's callees (looking for the object in front of the leader, the tile check), and the first routines of bank <code>$C2</code>.</p>
   
   <p class="wk-post-back"><a href="../../../../">← Back to devlog</a></p>
 </article>
