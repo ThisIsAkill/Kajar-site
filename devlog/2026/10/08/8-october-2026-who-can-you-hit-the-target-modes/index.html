@@ -201,9 +201,9 @@
 
         <div class="wk-party-row" title="Readable functions that passed an independent review">
           <span class="wk-party-k">TP</span>
-          <span class="wk-party-v">45<small>/244</small></span>
+          <span class="wk-party-v">244<small>/244</small></span>
         </div>
-        <div class="wk-stat-track"><div class="wk-stat-fill wk-stat-fill-dim" style="width:18.4%"></div></div>
+        <div class="wk-stat-track"><div class="wk-stat-fill wk-stat-fill-dim" style="width:100.0%"></div></div>
         <p class="wk-party-note">functions verified</p>
       </div>
       
@@ -253,13 +253,13 @@
 
 <p>Cyclone hits whoever is near the enemy you picked. Aura heals one ally. Luminaire hits everyone. Every action ends with that question, and this is the code that answers it.</p>
 <h2 id="joining-the-queue">Joining the queue</h2>
-<p><strong><code>BattleMenu_EnqueueReadyBattler</code></strong> (<code>$C1:1B19–$C1:1B54</code>, 60 bytes) is the opposite of <code>DequeueReadyBattler</code> from 19 September. Nothing in this bank calls it directly, which was confusing at first. The answer is the small service table at the top of the bank: other parts of the engine call <code>$C10045</code> with a service number. Service 1 is this routine; service 2 is <code>RemoveBattlerFromReady</code>. So when a character's gauge fills, another bank asks the battle engine to queue them, and this runs.</p>
+<p><strong><code>BattleMenu_EnqueueReadyBattler</code></strong> (<code>$C1:1B19–$C1:1B54</code>, 60 bytes) is the opposite of <code>DequeueReadyBattler</code> from 19 September. Nothing calls it by address, which was confusing at first. The answer is the small service table at the top of the bank: code calls <code>$C10045</code> with a service number, and service 1 is this routine; service 2 is <code>RemoveBattlerFromReady</code>. I first guessed that other banks used the table. A later review searched the whole ROM and found that every call to it is a <code>JSR</code> from inside bank <code>$C1</code> itself. So it is the battle engine's own internal dispatcher, not a door for other banks.</p>
 <p>It does four things:</p>
 <ol>
 <li>skips characters already in the active roster</li>
 <li>sets a "waiting for a command" bit on the character</li>
 <li>appends the character to the queue and resets their menu cursor to its default row</li>
-<li>plays a sound through the same audio command as <code>Battle_StopSfx</code>, with sound id <code>$42</code>, very likely the "turn ready" cue</li>
+<li>plays a sound through the same audio command as <code>Battle_PlaySfx0</code> (then called <code>Battle_StopSfx</code>), with sound id <code>$42</code>, very likely the "turn ready" cue</li>
 </ol>
 <p>That bit fixed an old mistake. <code>ConsumePartnerSlot</code>'s comments called bit 7 of that flag byte the "queued" bit. Now that I can see what sets it, bit 7 means "waiting for a command", and bit 6 (set by <code>CommitAction</code>) means "command queued". The comments are corrected; no bytes changed.</p>
 <h2 id="thirty-three-modes-eighteen-routines">Thirty-three modes, eighteen routines</h2>
@@ -283,7 +283,7 @@
 <p>The radius modes use two size codes, and one mode in each pair swaps in a bigger one (<code>$19</code>): two different techs sharing a handler, told apart by mode number.</p>
 <p>The geometry routines (four of them, roughly 1.1 KB from <code>$C1:2332</code>) aren't <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr> yet. For now they are label stubs, so the handlers can call them by name.</p>
 <h2 id="a-second-door-into-the-same-room">A second door into the same room</h2>
-<p><strong><code>BattleTgt_RunAreaQuery</code></strong> is service 7 in the same service table. It is a 13-byte dispatcher with its own 7-entry table pointing at the same four geometry routines (<code>$C1:1FDD–$C1:1FF7</code> together). So the menu isn't the only thing asking "who is in this area?". Something outside the bank asks too, most likely enemy attacks, which need the same answer.</p>
+<p><strong><code>BattleTgt_RunAreaQuery</code></strong> is service 7 in the same service table. It is a 13-byte dispatcher with its own 7-entry table pointing at the same four geometry routines (<code>$C1:1FDD–$C1:1FF7</code> together). So the menu isn't the only thing asking "who is in this area?". Other code in the battle engine asks too, most likely for enemy attacks, which need the same answer.</p>
 <h2 id="little-things">Little things</h2>
 <ul>
 <li><code>BattleTgt_CycleNext</code>/<code>CyclePrev</code> duplicate the menu's <code>TargetNext</code>/<code>TargetPrev</code> (19 September) instead of sharing them.</li>
@@ -354,7 +354,7 @@
 <p>The second round of bank <code>$C1</code> mostly asks for the same thing everywhere: every header must state the direct page, because the code clears A with <code>TDC</code> and that only works because D is 0. 68 routines are verified so far. The rest are going through another round of fixes.</p>
 <p>All the numbers on this wiki now come from one script, <code>tools/progress.py</code>, instead of being kept by hand. The first time it ran, it showed that bank <code>$C0</code> had been over-counted by 169 bytes.</p>
 <h2 id="next">Next</h2>
-<p>The review → fix → review loop until every routine is verified. After that, the four area-geometry routines between <code>$C1:2332</code> and <code>$C1:27C4</code>; once they are <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr>, the whole targeting system from <code>$C1:1F79</code> through <code>$C1:283C</code> will be continuous <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr> code.</p>
+<p>The review → fix → review loop until every routine is verified, and, alongside it, new <abbr title="Writing assembly source that assembles byte-for-byte identically to the original ROM via asar.">matching</abbr> again: the gap at <code>$C1:1C4A–$C1:1F78</code>, battle service 3 at <code>$C1:106E</code>, and the byte-identical copies the duplicate finder turned up (<code>Battle_Mul8</code> again at <code>$CC:F365</code>).</p>
   
   <p class="wk-post-back"><a href="../../../../">← Back to devlog</a></p>
 </article>

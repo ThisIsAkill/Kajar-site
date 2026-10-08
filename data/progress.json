@@ -12,8 +12,8 @@
       "bytes": 29032
     },
     "verified": {
-      "functions": 45,
-      "bytes": 669
+      "functions": 244,
+      "bytes": 29032
     }
   },
   "banks": [
@@ -30,8 +30,8 @@
         "bytes": 19585
       },
       "verified": {
-        "functions": 27,
-        "bytes": 253
+        "functions": 117,
+        "bytes": 19585
       }
     },
     {
@@ -47,8 +47,8 @@
         "bytes": 9232
       },
       "verified": {
-        "functions": 17,
-        "bytes": 201
+        "functions": 126,
+        "bytes": 9232
       }
     },
     {
@@ -199,15 +199,15 @@
       "functions": [
         "Obj_ResetStates",
         "Oam_BuildShadow",
-        "PV_BucketLoop",
-        "PV_CheckChain",
-        "PV_NextBucket",
-        "PV_FillRange1",
-        "PV_EndRange1",
-        "PV_FillRange2",
-        "PV_EndRange2",
-        "PV_FillRange3",
-        "PV_EndRange3",
+        "Oam_BucketLoop",
+        "Oam_CheckChain",
+        "Oam_NextBucket",
+        "Oam_HideRange1",
+        "Oam_EndRange1",
+        "Oam_HideRange2",
+        "Oam_EndRange2",
+        "Oam_HideRange3",
+        "Oam_EndRange3",
         "Spr_AppendToOam",
         "Spr_PrepareTiles",
         "Spr_Place4",

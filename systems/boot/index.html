@@ -201,9 +201,9 @@
 
         <div class="wk-party-row" title="Readable functions that passed an independent review">
           <span class="wk-party-k">TP</span>
-          <span class="wk-party-v">45<small>/244</small></span>
+          <span class="wk-party-v">244<small>/244</small></span>
         </div>
-        <div class="wk-stat-track"><div class="wk-stat-fill wk-stat-fill-dim" style="width:18.4%"></div></div>
+        <div class="wk-stat-track"><div class="wk-stat-fill wk-stat-fill-dim" style="width:100.0%"></div></div>
         <p class="wk-party-note">functions verified</p>
       </div>
       
@@ -246,9 +246,9 @@ switches to native mode and jumps to <code>MainInit</code> in bank $FD; <code>Ma
 <abbr title="Picture Processing Unit — the SNES graphics chip handling BGs, sprites, palettes, windows, and compositing.">PPU</abbr> and hands over to <code>GameLoop</code>. The <abbr title="Non-Maskable Interrupt — fires at the start of VBlank each frame; the safe window for PPU updates.">NMI</abbr> and IRQ vectors point at small stubs that jump to
 handlers installed in RAM.</p>
 <p>See also: <a href="../../BANK_MAP/">Bank Map</a>, <a href="../../ARCHITECTURE/">Architecture</a>.</p>
-<div class="wk-stat-tiles"><div class="wk-stat-tile"><span class="wk-stat-tile-val">5</span><span class="wk-stat-tile-label">functions matched</span></div><div class="wk-stat-tile"><span class="wk-stat-tile-val">247</span><span class="wk-stat-tile-label">bytes matched</span></div><div class="wk-stat-tile"><span class="wk-stat-tile-val">5</span><span class="wk-stat-tile-label">readable</span></div><div class="wk-stat-tile"><span class="wk-stat-tile-val">4</span><span class="wk-stat-tile-label">verified</span></div></div>
+<div class="wk-stat-tiles"><div class="wk-stat-tile"><span class="wk-stat-tile-val">5</span><span class="wk-stat-tile-label">functions matched</span></div><div class="wk-stat-tile"><span class="wk-stat-tile-val">247</span><span class="wk-stat-tile-label">bytes matched</span></div><div class="wk-stat-tile"><span class="wk-stat-tile-val">5</span><span class="wk-stat-tile-label">readable</span></div><div class="wk-stat-tile"><span class="wk-stat-tile-val">5</span><span class="wk-stat-tile-label">verified</span></div></div>
 <h2 id="functions">Functions</h2>
-<table class="wk-fntable"><thead><tr><th>Address</th><th>Function</th><th>Size</th><th>Status</th><th>Notes</th></tr></thead><tbody><tr><td><code>$C0:FF00</code></td><td><code>Reset</code></td><td>16</td><td><span class="wk-status wk-status-verified">verified</span></td><td>The CPU comes out of reset in emulation mode with I already set.</td></tr><tr><td><code>$C0:FF10</code></td><td><code>NMI_<wbr>Stub</code></td><td>4</td><td><span class="wk-status wk-status-readable">readable</span></td><td>Native-mode interrupt stubs ($FF10–$FF17)</td></tr><tr><td><code>$C0:FF14</code></td><td><code>IRQ_<wbr>Stub</code></td><td>4</td><td><span class="wk-status wk-status-verified">verified</span></td><td></td></tr><tr><td><code>$C0:FF18</code></td><td><code>BRK_<wbr>Handler</code></td><td>8</td><td><span class="wk-status wk-status-verified">verified</span></td><td>A crash trap: it reads a fixed, recognizable address forever and never returns.</td></tr><tr><td><code>$FD:C000</code></td><td><code>MainInit</code></td><td>215</td><td><span class="wk-status wk-status-verified">verified</span></td><td>Called via: JML from Reset ($00:FF03)</td></tr></tbody></table>
+<table class="wk-fntable"><thead><tr><th>Address</th><th>Function</th><th>Size</th><th>Status</th><th>Notes</th></tr></thead><tbody><tr><td><code>$C0:FF00</code></td><td><code>Reset</code></td><td>16</td><td><span class="wk-status wk-status-verified">verified</span></td><td>The CPU comes out of reset in emulation mode with I already set.</td></tr><tr><td><code>$C0:FF10</code></td><td><code>NMI_<wbr>Stub</code></td><td>4</td><td><span class="wk-status wk-status-verified">verified</span></td><td>Native-mode interrupt stubs ($FF10–$FF17)</td></tr><tr><td><code>$C0:FF14</code></td><td><code>IRQ_<wbr>Stub</code></td><td>4</td><td><span class="wk-status wk-status-verified">verified</span></td><td></td></tr><tr><td><code>$C0:FF18</code></td><td><code>BRK_<wbr>Handler</code></td><td>8</td><td><span class="wk-status wk-status-verified">verified</span></td><td>A crash trap: it reads a fixed, recognizable address forever and never returns.</td></tr><tr><td><code>$FD:C000</code></td><td><code>MainInit</code></td><td>215</td><td><span class="wk-status wk-status-verified">verified</span></td><td>Called via: JML from Reset ($00:FF03)</td></tr></tbody></table>
 <p class="wk-page-meta">Generated from <code>functions.csv</code>. Do not edit.</p>
       
       </div>
