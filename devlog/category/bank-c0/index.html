@@ -4,6 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   
+  
   <meta name="description" content="Byte-exact matching decompilation of Chrono Trigger (SNES, US 1.0)">
   <link rel="canonical" href="https://thisisakill.github.io/Kajar-site/devlog/category/bank-c0/">
   
@@ -136,11 +137,7 @@
           
         
           
-          <a class="wk-nav-link" href="../../../ADDRESS_MAP/">Address Map</a>
-          
-        
-          
-          <a class="wk-nav-link" href="../../../BANK_MAP/">Bank Map</a>
+          <a class="wk-nav-link" href="../../../ROM_MAP/">ROM Map</a>
           
         
           
@@ -521,7 +518,7 @@ function closeModal() {
   if (!modal || modal.hidden) return;
   modal.classList.remove('is-open');
   document.documentElement.classList.remove('wk-modal-lock');
-  document.querySelectorAll('.wk-amap-slice.is-selected, .wk-heat-cell.is-selected, .wk-slice-cell.is-selected')
+  document.querySelectorAll('.wk-amap-slice.is-selected, .wk-slice-cell.is-selected')
     .forEach(function (el) { el.classList.remove('is-selected'); });
   closeTimer = setTimeout(function () { modal.hidden = true; }, reduceMotion ? 0 : 200);
   if (lastFocus && lastFocus.focus) lastFocus.focus({ preventScroll: true });
@@ -655,38 +652,25 @@ document.querySelectorAll('.wk-addrmap').forEach(function (map) {
   });
 });
 
-/* Bank heat map (64 banks) */
-document.querySelectorAll('.wk-heat-wrap').forEach(function (wrap) {
-  var meta;
-  try { meta = JSON.parse(wrap.querySelector('.wk-heat-data').textContent); } catch (e) { return; }
-  wrap.addEventListener('click', function (e) {
-    var c = e.target.closest('.wk-heat-cell'); if (!c) return;
-    var bank = c.getAttribute('data-heat'), m = meta[bank]; if (!m) return;
-    wrap.querySelectorAll('.is-selected').forEach(function (el) { el.classList.remove('is-selected'); });
-    c.classList.add('is-selected');
-    current = null;
-    var pct = m.code != null ? (m.code / 65536 * 100) : null;
-    var h = '<p class="wk-modal-eyebrow">Bank $' + bank + ' · file $' +
-            ('0' + (parseInt(bank, 16) - 0xC0).toString(16).toUpperCase()).slice(-2) + '0000</p>';
-    h += '<h3 id="wk-modal-title">Bank $' + bank + '</h3>';
-    h += '<div class="wk-modal-facts">' +
-         (m.matched ? badge('progress') : (m.code ? badge('unmapped') : '<span class="wk-status wk-status-unknown">Data only</span>')) +
-         '<span>' + (m.code != null ? num(m.code) + ' code bytes (' + pct.toFixed(pct < 1 ? 1 : 0) + '%)' : 'not surveyed') + '</span></div>';
-    if (m.note) h += '<p>' + md(m.note) + '</p>';
-    if (m.matched) {
-      var mp = m.code ? Math.min(100, m.matched / m.code * 100) : 0;
-      h += '<div class="wk-modal-gauge" role="img" aria-label="' + mp.toFixed(1) + '% of code matched"><span style="width:' + mp.toFixed(2) + '%"></span></div>';
-      h += '<p><strong>' + num(m.matched) + ' bytes</strong> matched and verified' +
-           (m.code ? ' — ' + mp.toFixed(1) + '% of this bank\'s code. ' + num(Math.max(0, m.code - m.matched)) + ' code bytes to go.' : '.') + '</p>';
-    } else if (m.code) {
-      h += '<p class="wk-modal-todo">Not started: ' + num(m.code) + ' bytes of code waiting to be matched.</p>';
-    } else {
-      h += '<p class="wk-modal-dim">No executable code here: graphics, music or map data (incbin).</p>';
-    }
-    h += '<div class="wk-modal-actions">' +
-         (m.map ? '<button type="button" class="wk-btn" data-jump="wk-amap-' + bank + '">Open the $' + bank + ' address map ▶</button>' : '') +
-         '</div>';
-    openModal(h, c);
+/* ROM map: pointing at a bank shows its figures; selecting jumps to its slice map */
+document.querySelectorAll('.wk-rom').forEach(function (rom) {
+  var out = rom.querySelector('.wk-rom-readout');
+  var idle = out ? out.textContent : '';
+  function show(e) {
+    var t = e.target.closest && e.target.closest('.wk-bank');
+    if (t && out) out.textContent = t.getAttribute('data-tip');
+  }
+  rom.addEventListener('mouseover', show);
+  rom.addEventListener('focusin', show);
+  rom.addEventListener('mouseleave', function () { if (out && !rom.contains(document.activeElement)) out.textContent = idle; });
+  rom.addEventListener('click', function (e) {
+    var t = e.target.closest('.wk-bank'); if (!t) return;
+    var target = document.getElementById(t.getAttribute('href').slice(1));
+    if (!target) return;
+    e.preventDefault();
+    history.pushState(null, '', t.getAttribute('href'));
+    target.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
+    target.classList.remove('wk-flash'); void target.offsetWidth; target.classList.add('wk-flash');
   });
 });
 

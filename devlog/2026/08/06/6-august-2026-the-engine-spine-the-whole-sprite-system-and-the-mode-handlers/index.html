@@ -4,6 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   
+  
   <meta name="description" content="Byte-exact matching decompilation of Chrono Trigger (SNES, US 1.0)">
   <link rel="canonical" href="https://thisisakill.github.io/Kajar-site/devlog/2026/08/06/6-august-2026-the-engine-spine-the-whole-sprite-system-and-the-mode-handlers/">
   
@@ -136,11 +137,7 @@
           
         
           
-          <a class="wk-nav-link" href="../../../../../ADDRESS_MAP/">Address Map</a>
-          
-        
-          
-          <a class="wk-nav-link" href="../../../../../BANK_MAP/">Bank Map</a>
+          <a class="wk-nav-link" href="../../../../../ROM_MAP/">ROM Map</a>
           
         
           
@@ -962,7 +959,7 @@
 <h3 id="the-default-handler-scoped-for-tomorrow">The default handler: scoped for tomorrow</h3>
 <p><code>$C0:16DC</code> is different from the five named handlers. It uses <abbr title="Direct Page mode — 2-byte instruction using an 8-bit offset added to the D register.">dp</abbr> <code>$5D/$5E</code> for layer indexing (not <code>$5B/$5C</code>), stores <abbr title="Video RAM — dedicated PPU memory for tile graphics and tilemaps; written via DMA during VBlank.">VRAM</abbr> results to <code>$09B2–$09B8</code>, sets bit 1 of <abbr title="Direct Page mode — 2-byte instruction using an 8-bit offset added to the D register.">dp</abbr> <code>$5F</code> (not bit 4), never calls <code>Sub_1B90</code>, branches at entry on <abbr title="Direct Page mode — 2-byte instruction using an 8-bit offset added to the D register.">dp</abbr> <code>$17</code> bit 1 (<code>BIT #$02; BNE</code>), calls a new callee at <code>$C0:1BA7</code> (right after <code>Sub_1B90</code>), loops calling <code>$885A</code> and <code>$EC60</code> until <abbr title="Direct Page mode — 2-byte instruction using an 8-bit offset added to the D register.">dp</abbr> <code>$38</code> = <code>$00</code>, and has internal <code>BRL</code>s (<code>$1770</code> secondary entry, <code>$1862</code>, <code>$188C</code>). Scouting first guessed about 432 bytes; the estimate is now <code>$19C6 − $16DC + 1</code> ≈ 747 bytes.</p>
 <h3 id="the-0c76-cluster">The <code>$0C76</code> cluster</h3>
-<p>The region <code>$0C76</code>–<code>$2DF0</code> is too big to treat as single targets: an estimated ~8,600 bytes in 20+ blocks. It is now tracked as the <strong>$0C76 Per-Frame State Machine Cluster</strong> in <a href="../../../../../BANK_MAP/">the bank map</a>, with a per-block status table, the same way the sprite cluster was tracked ("7 of 11 blocks done, 3 remaining"). Unlike the sprite cluster, its blocks can't all be listed yet: the region past <code>$2DF1</code> is uncharted.</p>
+<p>The region <code>$0C76</code>–<code>$2DF0</code> is too big to treat as single targets: an estimated ~8,600 bytes in 20+ blocks. It is now tracked as the <strong>$0C76 Per-Frame State Machine Cluster</strong> in <a href="../../../../../ROM_MAP/#slice-bank-c0">the bank map</a>, with a per-block status table, the same way the sprite cluster was tracked ("7 of 11 blocks done, 3 remaining"). Unlike the sprite cluster, its blocks can't all be listed yet: the region past <code>$2DF1</code> is uncharted.</p>
 <h3 id="881e-and-18d9-at-a-glance"><code>$881E</code> and <code>$18D9</code> at a glance</h3>
 <ul>
 <li><strong><code>$881E</code></strong> (called from the frame loop, <code>Sub_00EB</code> and <code>Sub_0C76</code>): body 60 bytes (<code>$881E–$8859</code>). Callees: <code>$88E5</code> (6 bytes, a trivial copy), <code>$88EE</code> (~20 bytes plus an indirect <code>JSR</code>), and <code>$8A6D</code>, which <code>BRL</code>s to eight sub-blocks (<code>$8AB5</code>, <code>$8BC4</code>, <code>$8BF9</code>, <code>$8D11</code>, <code>$8E21</code>, <code>$8EF1</code>, <code>$8FC1</code>, <code>$909C</code>). 4,161 instructions in all. An earlier look had it at about 59 bytes calling seven unmatched routines (<code>$88E5</code>, <code>$88EE</code>, <code>$8A6D</code>, <code>$9175</code>, <code>$99DE</code>, <code>$91AC</code>, <code>$93E1</code>), probably <abbr title="Direct Memory Access — hardware block copy bypassing the CPU; used for VRAM uploads, WRAM clears, OAM.">DMA</abbr>/<abbr title="Picture Processing Unit — the SNES graphics chip handling BGs, sprites, palettes, windows, and compositing.">PPU</abbr> prep. Its head (<code>$881E</code> + <code>$88E5</code> + <code>$88EE</code>, ~86 bytes) is a realistic partial match.</li>
@@ -1449,7 +1446,7 @@ function closeModal() {
   if (!modal || modal.hidden) return;
   modal.classList.remove('is-open');
   document.documentElement.classList.remove('wk-modal-lock');
-  document.querySelectorAll('.wk-amap-slice.is-selected, .wk-heat-cell.is-selected, .wk-slice-cell.is-selected')
+  document.querySelectorAll('.wk-amap-slice.is-selected, .wk-slice-cell.is-selected')
     .forEach(function (el) { el.classList.remove('is-selected'); });
   closeTimer = setTimeout(function () { modal.hidden = true; }, reduceMotion ? 0 : 200);
   if (lastFocus && lastFocus.focus) lastFocus.focus({ preventScroll: true });
@@ -1583,38 +1580,25 @@ document.querySelectorAll('.wk-addrmap').forEach(function (map) {
   });
 });
 
-/* Bank heat map (64 banks) */
-document.querySelectorAll('.wk-heat-wrap').forEach(function (wrap) {
-  var meta;
-  try { meta = JSON.parse(wrap.querySelector('.wk-heat-data').textContent); } catch (e) { return; }
-  wrap.addEventListener('click', function (e) {
-    var c = e.target.closest('.wk-heat-cell'); if (!c) return;
-    var bank = c.getAttribute('data-heat'), m = meta[bank]; if (!m) return;
-    wrap.querySelectorAll('.is-selected').forEach(function (el) { el.classList.remove('is-selected'); });
-    c.classList.add('is-selected');
-    current = null;
-    var pct = m.code != null ? (m.code / 65536 * 100) : null;
-    var h = '<p class="wk-modal-eyebrow">Bank $' + bank + ' · file $' +
-            ('0' + (parseInt(bank, 16) - 0xC0).toString(16).toUpperCase()).slice(-2) + '0000</p>';
-    h += '<h3 id="wk-modal-title">Bank $' + bank + '</h3>';
-    h += '<div class="wk-modal-facts">' +
-         (m.matched ? badge('progress') : (m.code ? badge('unmapped') : '<span class="wk-status wk-status-unknown">Data only</span>')) +
-         '<span>' + (m.code != null ? num(m.code) + ' code bytes (' + pct.toFixed(pct < 1 ? 1 : 0) + '%)' : 'not surveyed') + '</span></div>';
-    if (m.note) h += '<p>' + md(m.note) + '</p>';
-    if (m.matched) {
-      var mp = m.code ? Math.min(100, m.matched / m.code * 100) : 0;
-      h += '<div class="wk-modal-gauge" role="img" aria-label="' + mp.toFixed(1) + '% of code matched"><span style="width:' + mp.toFixed(2) + '%"></span></div>';
-      h += '<p><strong>' + num(m.matched) + ' bytes</strong> matched and verified' +
-           (m.code ? ' — ' + mp.toFixed(1) + '% of this bank\'s code. ' + num(Math.max(0, m.code - m.matched)) + ' code bytes to go.' : '.') + '</p>';
-    } else if (m.code) {
-      h += '<p class="wk-modal-todo">Not started: ' + num(m.code) + ' bytes of code waiting to be matched.</p>';
-    } else {
-      h += '<p class="wk-modal-dim">No executable code here: graphics, music or map data (incbin).</p>';
-    }
-    h += '<div class="wk-modal-actions">' +
-         (m.map ? '<button type="button" class="wk-btn" data-jump="wk-amap-' + bank + '">Open the $' + bank + ' address map ▶</button>' : '') +
-         '</div>';
-    openModal(h, c);
+/* ROM map: pointing at a bank shows its figures; selecting jumps to its slice map */
+document.querySelectorAll('.wk-rom').forEach(function (rom) {
+  var out = rom.querySelector('.wk-rom-readout');
+  var idle = out ? out.textContent : '';
+  function show(e) {
+    var t = e.target.closest && e.target.closest('.wk-bank');
+    if (t && out) out.textContent = t.getAttribute('data-tip');
+  }
+  rom.addEventListener('mouseover', show);
+  rom.addEventListener('focusin', show);
+  rom.addEventListener('mouseleave', function () { if (out && !rom.contains(document.activeElement)) out.textContent = idle; });
+  rom.addEventListener('click', function (e) {
+    var t = e.target.closest('.wk-bank'); if (!t) return;
+    var target = document.getElementById(t.getAttribute('href').slice(1));
+    if (!target) return;
+    e.preventDefault();
+    history.pushState(null, '', t.getAttribute('href'));
+    target.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
+    target.classList.remove('wk-flash'); void target.offsetWidth; target.classList.add('wk-flash');
   });
 });
 

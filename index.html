@@ -4,6 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   
+  
   <meta name="description" content="Byte-exact matching decompilation of Chrono Trigger (SNES, US 1.0)">
   <link rel="canonical" href="https://thisisakill.github.io/Kajar-site/">
   
@@ -136,11 +137,7 @@
           
         
           
-          <a class="wk-nav-link" href="ADDRESS_MAP/">Address Map</a>
-          
-        
-          
-          <a class="wk-nav-link" href="BANK_MAP/">Bank Map</a>
+          <a class="wk-nav-link" href="ROM_MAP/">ROM Map</a>
           
         
           
@@ -240,7 +237,7 @@
       <div class="wk-article-body">
       
       
-      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="October 8, 2026 05:23:14 UTC">October 8, 2026</span></p>
+      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="October 8, 2026 06:56:37 UTC">October 8, 2026</span></p>
       
       <h1 id="kajar">Kajar</h1>
 <div class="wk-hero"><div class="wk-hero-art" aria-hidden="true"></div><div class="wk-hero-text"><p class="wk-hero-title">Chrono Trigger</p><p class="wk-hero-sub">A byte-exact decompilation of the 1995 classic, one matched routine at a time</p><blockquote class="wk-epigraph"><p>But… the future refused to change.</p><cite>Game Over screen</cite></blockquote></div></div>
@@ -328,40 +325,9 @@
 <hr />
 <h2 id="reference">Reference</h2>
 <h3 id="matched-regions">Matched regions</h3>
-<table>
-<thead>
-<tr>
-<th>Bank</th>
-<th>Region</th>
-<th>Bytes <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>$00</code></td>
-<td>Boot vectors, wave tables, ROM header</td>
-<td>256</td>
-</tr>
-<tr>
-<td><code>$C0</code></td>
-<td>Engine core — GameLoop, <abbr title="Vertical blank — the ~1.2ms gap each frame when the PPU isn't drawing, safe for register writes.">VBlank</abbr>, <abbr title="Object Attribute Memory — the PPU's 512+32-byte sprite table (up to 128 sprites: X/Y, tile, palette, size).">OAM</abbr>, sprite render, Sub_E12A cluster, slot allocators, sprite-slot init system ($CB0A–$E129), animation tick/queue ($C98A–$CB09)</td>
-<td>19,498</td>
-</tr>
-<tr>
-<td><code>$C1</code></td>
-<td>Battle engine — math utilities, number-display cluster, trig/geometry, status-bar UI (BuildStatusBarFrame cluster, UpdateNextPcPanel) + item/tech list rendering (RenderItemListRows, RenderItemRow, RenderTechListRows, BuildTechAvailFlags, RenderTechRow, BlankMpCostDigits) + window upkeep (UpdateWindows, UpdateMainWindow, UpdateTechWindow, DrawTechCursorRow, UpdateTechMpAvail, LoadCommandWindowMap) + menu dirty-flag gate (RefreshIfDirtyL, RefreshIfDirtyAndTick, DrawCursorSprites) + command-window input handling (ProcessInput, CycleActivePcPrev/Next, CursorUp/Down, ZeroResultEE, StopSfx) + confirm dispatch (ConfirmCommand, ChooseAttack, OpenTechList, OpenItemList) + target-list initializer (BuildTargetList) + ready-battler dequeue/remove pair (DequeueReadyBattler, RemoveBattlerFromReady) + target-select input (TargetSelectInput) + command-commit cluster (CommitAction, ConsumePartnerSlot, TargetNext/Prev) + tech-list input cluster (TechListInput, TechConfirm, TechListCancel, TechListPrev/Next) + item-list input cluster (ItemListInput, ItemConfirm, ItemListCancel, ItemCursorUp/Down, ItemListPageUp/Down, ItemListRefresh, ItemListScrollUp/Down) + cursor overlay (UpdateCursorOverlay) — the full command-menu subsystem, dirty-flag gate through commit, is now closed + ready-queue enqueue + target-mode layer (BattleTgt mode table, 18 handlers, area-query service, list helpers)</td>
-<td>8,061</td>
-</tr>
-<tr>
-<td><code>$FD</code></td>
-<td>MainInit (CPU/<abbr title="Picture Processing Unit — the SNES graphics chip handling BGs, sprites, palettes, windows, and compositing.">PPU</abbr> init sequence)</td>
-<td>215</td>
-</tr>
-</tbody>
-</table>
-<p><strong>Overall: 28,030 bytes <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr> — ~7.8% of all game code (359,278 bytes), ~31.56% of Bank $C0 (61,779 bytes), ~12.61% of Bank $C1 (63,904 bytes).</strong>
-The 4 MB ROM is mostly graphics and music data; only ~359 KB is executable <abbr title="The 16-bit CPU inside the SNES, an extended 6502 capable of 8-bit emulation and full 16-bit native mode.">65816</abbr> code.</p>
-<p>See the full <a href="BANK_MAP/">Bank Map</a> for a region-by-region breakdown, and <a href="PROGRESS/">Progress</a> for the per-function table.</p>
+<p>What is <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr>, bank by bank, is on the <a href="ROM_MAP/">ROM Map</a>, generated from the code repository on every update, so it is never out of date. The per-routine list is on <a href="PROGRESS/">Progress</a>.</p>
+<p>The 4 MB ROM is mostly graphics and music data; only ~359 KB is executable <abbr title="The 16-bit CPU inside the SNES, an extended 6502 capable of 8-bit emulation and full 16-bit native mode.">65816</abbr> code.</p>
+<p>See the full <a href="ROM_MAP/">ROM Map</a> for a region-by-region breakdown, and <a href="PROGRESS/">Progress</a> for the per-function table.</p>
 <h3 id="key-documents">Key documents</h3>
 <table>
 <thead>
@@ -667,7 +633,7 @@ function closeModal() {
   if (!modal || modal.hidden) return;
   modal.classList.remove('is-open');
   document.documentElement.classList.remove('wk-modal-lock');
-  document.querySelectorAll('.wk-amap-slice.is-selected, .wk-heat-cell.is-selected, .wk-slice-cell.is-selected')
+  document.querySelectorAll('.wk-amap-slice.is-selected, .wk-slice-cell.is-selected')
     .forEach(function (el) { el.classList.remove('is-selected'); });
   closeTimer = setTimeout(function () { modal.hidden = true; }, reduceMotion ? 0 : 200);
   if (lastFocus && lastFocus.focus) lastFocus.focus({ preventScroll: true });
@@ -801,38 +767,25 @@ document.querySelectorAll('.wk-addrmap').forEach(function (map) {
   });
 });
 
-/* Bank heat map (64 banks) */
-document.querySelectorAll('.wk-heat-wrap').forEach(function (wrap) {
-  var meta;
-  try { meta = JSON.parse(wrap.querySelector('.wk-heat-data').textContent); } catch (e) { return; }
-  wrap.addEventListener('click', function (e) {
-    var c = e.target.closest('.wk-heat-cell'); if (!c) return;
-    var bank = c.getAttribute('data-heat'), m = meta[bank]; if (!m) return;
-    wrap.querySelectorAll('.is-selected').forEach(function (el) { el.classList.remove('is-selected'); });
-    c.classList.add('is-selected');
-    current = null;
-    var pct = m.code != null ? (m.code / 65536 * 100) : null;
-    var h = '<p class="wk-modal-eyebrow">Bank $' + bank + ' · file $' +
-            ('0' + (parseInt(bank, 16) - 0xC0).toString(16).toUpperCase()).slice(-2) + '0000</p>';
-    h += '<h3 id="wk-modal-title">Bank $' + bank + '</h3>';
-    h += '<div class="wk-modal-facts">' +
-         (m.matched ? badge('progress') : (m.code ? badge('unmapped') : '<span class="wk-status wk-status-unknown">Data only</span>')) +
-         '<span>' + (m.code != null ? num(m.code) + ' code bytes (' + pct.toFixed(pct < 1 ? 1 : 0) + '%)' : 'not surveyed') + '</span></div>';
-    if (m.note) h += '<p>' + md(m.note) + '</p>';
-    if (m.matched) {
-      var mp = m.code ? Math.min(100, m.matched / m.code * 100) : 0;
-      h += '<div class="wk-modal-gauge" role="img" aria-label="' + mp.toFixed(1) + '% of code matched"><span style="width:' + mp.toFixed(2) + '%"></span></div>';
-      h += '<p><strong>' + num(m.matched) + ' bytes</strong> matched and verified' +
-           (m.code ? ' — ' + mp.toFixed(1) + '% of this bank\'s code. ' + num(Math.max(0, m.code - m.matched)) + ' code bytes to go.' : '.') + '</p>';
-    } else if (m.code) {
-      h += '<p class="wk-modal-todo">Not started: ' + num(m.code) + ' bytes of code waiting to be matched.</p>';
-    } else {
-      h += '<p class="wk-modal-dim">No executable code here: graphics, music or map data (incbin).</p>';
-    }
-    h += '<div class="wk-modal-actions">' +
-         (m.map ? '<button type="button" class="wk-btn" data-jump="wk-amap-' + bank + '">Open the $' + bank + ' address map ▶</button>' : '') +
-         '</div>';
-    openModal(h, c);
+/* ROM map: pointing at a bank shows its figures; selecting jumps to its slice map */
+document.querySelectorAll('.wk-rom').forEach(function (rom) {
+  var out = rom.querySelector('.wk-rom-readout');
+  var idle = out ? out.textContent : '';
+  function show(e) {
+    var t = e.target.closest && e.target.closest('.wk-bank');
+    if (t && out) out.textContent = t.getAttribute('data-tip');
+  }
+  rom.addEventListener('mouseover', show);
+  rom.addEventListener('focusin', show);
+  rom.addEventListener('mouseleave', function () { if (out && !rom.contains(document.activeElement)) out.textContent = idle; });
+  rom.addEventListener('click', function (e) {
+    var t = e.target.closest('.wk-bank'); if (!t) return;
+    var target = document.getElementById(t.getAttribute('href').slice(1));
+    if (!target) return;
+    e.preventDefault();
+    history.pushState(null, '', t.getAttribute('href'));
+    target.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
+    target.classList.remove('wk-flash'); void target.offsetWidth; target.classList.add('wk-flash');
   });
 });
 

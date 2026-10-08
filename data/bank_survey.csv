@@ -1,0 +1,65 @@
+bank,code_bytes,data_bytes,contents
+$C0,61779,3757,"Boot and core engine: game loop, VBlank, scene loading, sprites"
+$C1,63904,1632,"Battle engine: battle menus, targeting, status bar, maths helpers"
+$C2,55037,10499,Entered from the game loop for game modes $01F0 and up
+$C3,4037,61499,
+$C4,0,65536,
+$C5,0,65536,
+$C6,924,64612,
+$C7,2501,63035,Sound driver interface (the engine calls $C7:0004 for audio commands)
+$C8,0,65536,
+$C9,0,65536,
+$CA,30004,35532,
+$CB,61797,3739,
+$CC,27226,38310,"Item and tech name tables read by the battle menu, plus code"
+$CD,10188,55348,Called every battle frame through $CD:0009
+$CE,1977,63559,
+$CF,7013,58523,Battle bootstrap at $CF:FB65
+$D0,0,65536,
+$D1,4299,61237,Battle window maps (the command window is copied from $D1:5800)
+$D2,0,65536,Tile data read by the sprite tile copy in $C0
+$D3,0,65536,Tile data read by the sprite tile copy in $C0
+$D4,0,65536,Tile data read by the sprite tile copy in $C0
+$D5,0,65536,Tile data read by the sprite tile copy in $C0
+$D6,0,65536,
+$D7,0,65536,
+$D8,0,65536,
+$D9,0,65536,
+$DA,0,65536,
+$DB,0,65536,
+$DC,0,65536,
+$DD,0,65536,
+$DE,290,65246,
+$DF,0,65536,
+$E0,0,65536,
+$E1,0,65536,
+$E2,0,65536,
+$E3,0,65536,
+$E4,1810,63726,Animation frame steps and random seeds read by $C0
+$E5,1026,64510,
+$E6,0,65536,
+$E7,0,65536,
+$E8,0,65536,
+$E9,0,65536,
+$EA,0,65536,
+$EB,0,65536,
+$EC,0,65536,
+$ED,0,65536,
+$EE,0,65536,
+$EF,0,65536,
+$F0,0,65536,
+$F1,0,65536,
+$F2,0,65536,
+$F3,0,65536,
+$F4,0,65536,
+$F5,2022,63514,
+$F6,1728,63808,
+$F7,2016,63520,
+$F8,512,65024,
+$F9,394,65142,
+$FA,0,65536,
+$FB,0,65536,
+$FC,406,65130,
+$FD,16590,48946,"Main init, reached from the reset vector"
+$FE,218,65318,
+$FF,1580,63956,

@@ -4,6 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   
+  
   <meta name="description" content="Byte-exact matching decompilation of Chrono Trigger (SNES, US 1.0)">
   <link rel="canonical" href="https://thisisakill.github.io/Kajar-site/devlog/2026/08/07/7-august-2026-the-last-mode-handler-screen-transitions-and-the-sprite-init-pass/">
   
@@ -136,11 +137,7 @@
           
         
           
-          <a class="wk-nav-link" href="../../../../../ADDRESS_MAP/">Address Map</a>
-          
-        
-          
-          <a class="wk-nav-link" href="../../../../../BANK_MAP/">Bank Map</a>
+          <a class="wk-nav-link" href="../../../../../ROM_MAP/">ROM Map</a>
           
         
           
@@ -264,7 +261,7 @@
 <a id="__codelineno-0-2" name="__codelineno-0-2"></a><a href="#__codelineno-0-2"><span class="linenos" data-linenos="2 "></span></a><span class="nf">BRA</span><span class="w"> </span><span class="no">Sub_1B90_body</span><span class="w">  </span><span class="c1">; join Sub_1B90 at STA $1E01</span>
 </code></pre></div>
 <p><code>Sub_1B90</code> uses <abbr title="Direct Page mode — 2-byte instruction using an 8-bit offset added to the D register.">dp</abbr> <code>$FC</code> for the same argument. <code>Sub_1BA7</code> loads <code>$FB</code> instead and jumps into <code>Sub_1B90</code> at its second instruction, skipping only <code>LDA $FC</code>. A new <code>Sub_1B90_body</code> label marks that spot; labels emit no bytes, so <code>Sub_1B90</code> is unchanged. <code>$FB</code> versus <code>$FC</code> presumably picks a different command from the SPC tables, which fits a different kind of layer transition.</p>
-<p><strong><code>$885A</code>, deferred.</strong> The bit-5 loop calls it every frame until <abbr title="Direct Page mode — 2-byte instruction using an 8-bit offset added to the D register.">dp</abbr> <code>$38</code> clears. The disassembler traced over 2,700 unique instructions from it before hitting the sweep limit, into a large tree across bank <code>$C0</code> (<code>$7612</code>, <code>$77E4</code>, <code>$79CF</code>, <code>$7BA9</code> and many more). It is a major frame-work routine and is in the <a href="../../../../../BANK_MAP/">bank map</a> as Identified/deferred. <code>Sub_EC60</code> stays the always-deferred post-<abbr title="Vertical blank — the ~1.2ms gap each frame when the PPU isn't drawing, safe for register writes.">VBlank</abbr> worker. DefaultHandler tail-calls it for sub-modes 1, 2 and 3 (raw <code>BRL</code> offsets <code>$D49B</code>, <code>$D472</code> and <code>$D3FE</code>), and mode 4 reaches it with two <code>JSR</code>s.</p>
+<p><strong><code>$885A</code>, deferred.</strong> The bit-5 loop calls it every frame until <abbr title="Direct Page mode — 2-byte instruction using an 8-bit offset added to the D register.">dp</abbr> <code>$38</code> clears. The disassembler traced over 2,700 unique instructions from it before hitting the sweep limit, into a large tree across bank <code>$C0</code> (<code>$7612</code>, <code>$77E4</code>, <code>$79CF</code>, <code>$7BA9</code> and many more). It is a major frame-work routine and is in the <a href="../../../../../ROM_MAP/#slice-bank-c0">bank map</a> as Identified/deferred. <code>Sub_EC60</code> stays the always-deferred post-<abbr title="Vertical blank — the ~1.2ms gap each frame when the PPU isn't drawing, safe for register writes.">VBlank</abbr> worker. DefaultHandler tail-calls it for sub-modes 1, 2 and 3 (raw <code>BRL</code> offsets <code>$D49B</code>, <code>$D472</code> and <code>$D3FE</code>), and mode 4 reaches it with two <code>JSR</code>s.</p>
 <table>
 <thead>
 <tr>
@@ -392,7 +389,7 @@
 <li><code>$E687</code> ends at <code>$E738</code> (178 bytes) and dispatches through internal jump targets.</li>
 </ul>
 <p>In all, about 2,370 bytes in seven routines from <code>$E12A</code> to <code>$E934</code> (1,034 own body + ~1,336 callee cluster). I deferred it, <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr> the entity dispatchers, and then came back to it the same evening as the head of its own arc.</p>
-<p>It runs once per sprite slot during scene load, called from <a href="../../../../../BANK_MAP/">Sub_01A5</a> when <abbr title="Direct Page mode — 2-byte instruction using an 8-bit offset added to the D register.">dp</abbr> <code>$AE</code> holds a valid slot. Four phases:</p>
+<p>It runs once per sprite slot during scene load, called from <a href="../../../../../ROM_MAP/#slice-bank-c0">Sub_01A5</a> when <abbr title="Direct Page mode — 2-byte instruction using an 8-bit offset added to the D register.">dp</abbr> <code>$AE</code> holds a valid slot. Four phases:</p>
 <ol>
 <li><strong>Pointers.</strong> Builds two indirect-long pointers from four descriptor arrays (<code>$1200</code>, <code>$1280</code>, <code>$1300</code>, <code>$1380</code>, indexed by slot): <code>[$CD]</code> into <code>$7F:XXXX</code>, the sprite-data table (palette source), and <code>[$D3]</code> into <code>bank($D5):XXXX</code>, the scene-data table (tile layout source). <code>$0D80+slot</code> gets <code>$3800</code> (the <abbr title="Work RAM — 128KB of SNES main RAM at $7E:0000–$7F:FFFF, holds all runtime game state.">WRAM</abbr> staging base), <abbr title="Direct Page mode — 2-byte instruction using an 8-bit offset added to the D register.">dp</abbr> <code>$D0</code> tracks the running <abbr title="Work RAM — 128KB of SNES main RAM at $7E:0000–$7F:FFFF, holds all runtime game state.">WRAM</abbr> write address, and <code>$0F01+slot</code> is cleared (a sprite-state flag). Early instructions set <code>$D2=$7F</code> and write <code>$2181</code> (<abbr title="PPU register $2181 — low byte of the WRAM write address for the WMDATA port (pair: WMADDL/WMADDH at $2181–$2182).">WMADDL</abbr>).</li>
 <li><strong>The 96-entry <abbr title="Work RAM — 128KB of SNES main RAM at $7E:0000–$7F:FFFF, holds all runtime game state.">WRAM</abbr> fill.</strong> After setting <code>$2183</code>=<code>$01</code> and <code>$2181</code>=<code>$3800</code>, it reads 96 16-bit words from <code>[$D3]+Y</code> (Y from 0, two bytes per pass). Bit 14 picks the path: clear → <code>JSR Sub_E687</code> (one <abbr title="PPU register $2180 — write a byte to the WRAM address set by WMADDL/H; auto-increments the address.">WMDATA</abbr> write), set → <code>JSR Sub_E534</code> (multi-tile fill). The inner loop at <code>$E173</code> does this test against <code>$4000</code>. The callee writes what it needs at the current address, and <code>$D0</code> advances by <code>$0020</code> on every pass except the first.</li>
@@ -849,7 +846,7 @@ function closeModal() {
   if (!modal || modal.hidden) return;
   modal.classList.remove('is-open');
   document.documentElement.classList.remove('wk-modal-lock');
-  document.querySelectorAll('.wk-amap-slice.is-selected, .wk-heat-cell.is-selected, .wk-slice-cell.is-selected')
+  document.querySelectorAll('.wk-amap-slice.is-selected, .wk-slice-cell.is-selected')
     .forEach(function (el) { el.classList.remove('is-selected'); });
   closeTimer = setTimeout(function () { modal.hidden = true; }, reduceMotion ? 0 : 200);
   if (lastFocus && lastFocus.focus) lastFocus.focus({ preventScroll: true });
@@ -983,38 +980,25 @@ document.querySelectorAll('.wk-addrmap').forEach(function (map) {
   });
 });
 
-/* Bank heat map (64 banks) */
-document.querySelectorAll('.wk-heat-wrap').forEach(function (wrap) {
-  var meta;
-  try { meta = JSON.parse(wrap.querySelector('.wk-heat-data').textContent); } catch (e) { return; }
-  wrap.addEventListener('click', function (e) {
-    var c = e.target.closest('.wk-heat-cell'); if (!c) return;
-    var bank = c.getAttribute('data-heat'), m = meta[bank]; if (!m) return;
-    wrap.querySelectorAll('.is-selected').forEach(function (el) { el.classList.remove('is-selected'); });
-    c.classList.add('is-selected');
-    current = null;
-    var pct = m.code != null ? (m.code / 65536 * 100) : null;
-    var h = '<p class="wk-modal-eyebrow">Bank $' + bank + ' · file $' +
-            ('0' + (parseInt(bank, 16) - 0xC0).toString(16).toUpperCase()).slice(-2) + '0000</p>';
-    h += '<h3 id="wk-modal-title">Bank $' + bank + '</h3>';
-    h += '<div class="wk-modal-facts">' +
-         (m.matched ? badge('progress') : (m.code ? badge('unmapped') : '<span class="wk-status wk-status-unknown">Data only</span>')) +
-         '<span>' + (m.code != null ? num(m.code) + ' code bytes (' + pct.toFixed(pct < 1 ? 1 : 0) + '%)' : 'not surveyed') + '</span></div>';
-    if (m.note) h += '<p>' + md(m.note) + '</p>';
-    if (m.matched) {
-      var mp = m.code ? Math.min(100, m.matched / m.code * 100) : 0;
-      h += '<div class="wk-modal-gauge" role="img" aria-label="' + mp.toFixed(1) + '% of code matched"><span style="width:' + mp.toFixed(2) + '%"></span></div>';
-      h += '<p><strong>' + num(m.matched) + ' bytes</strong> matched and verified' +
-           (m.code ? ' — ' + mp.toFixed(1) + '% of this bank\'s code. ' + num(Math.max(0, m.code - m.matched)) + ' code bytes to go.' : '.') + '</p>';
-    } else if (m.code) {
-      h += '<p class="wk-modal-todo">Not started: ' + num(m.code) + ' bytes of code waiting to be matched.</p>';
-    } else {
-      h += '<p class="wk-modal-dim">No executable code here: graphics, music or map data (incbin).</p>';
-    }
-    h += '<div class="wk-modal-actions">' +
-         (m.map ? '<button type="button" class="wk-btn" data-jump="wk-amap-' + bank + '">Open the $' + bank + ' address map ▶</button>' : '') +
-         '</div>';
-    openModal(h, c);
+/* ROM map: pointing at a bank shows its figures; selecting jumps to its slice map */
+document.querySelectorAll('.wk-rom').forEach(function (rom) {
+  var out = rom.querySelector('.wk-rom-readout');
+  var idle = out ? out.textContent : '';
+  function show(e) {
+    var t = e.target.closest && e.target.closest('.wk-bank');
+    if (t && out) out.textContent = t.getAttribute('data-tip');
+  }
+  rom.addEventListener('mouseover', show);
+  rom.addEventListener('focusin', show);
+  rom.addEventListener('mouseleave', function () { if (out && !rom.contains(document.activeElement)) out.textContent = idle; });
+  rom.addEventListener('click', function (e) {
+    var t = e.target.closest('.wk-bank'); if (!t) return;
+    var target = document.getElementById(t.getAttribute('href').slice(1));
+    if (!target) return;
+    e.preventDefault();
+    history.pushState(null, '', t.getAttribute('href'));
+    target.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
+    target.classList.remove('wk-flash'); void target.offsetWidth; target.classList.add('wk-flash');
   });
 });
 
