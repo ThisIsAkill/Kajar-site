@@ -192,21 +192,21 @@
       <div class="wk-party">
         <div class="wk-party-row" title="Bytes matched: the rebuilt ROM is byte-identical here">
           <span class="wk-party-k">HP</span>
-          <span class="wk-party-v">89,729<small>/359,278</small></span>
+          <span class="wk-party-v">92,057<small>/359,278</small></span>
         </div>
-        <div class="wk-stat-track"><div class="wk-stat-fill" style="width:24.97%"></div></div>
-        <p class="wk-party-note">bytes matched · 24.97% of code</p>
+        <div class="wk-stat-track"><div class="wk-stat-fill" style="width:25.62%"></div></div>
+        <p class="wk-party-note">bytes matched · 25.62% of code</p>
 
         <div class="wk-party-row" title="Matched functions that also meet the readability standard">
           <span class="wk-party-k">MP</span>
-          <span class="wk-party-v">1026<small>/1026</small></span>
+          <span class="wk-party-v">1113<small>/1113</small></span>
         </div>
         <div class="wk-stat-track"><div class="wk-stat-fill wk-stat-fill-mp" style="width:100.0%"></div></div>
         <p class="wk-party-note">functions readable</p>
 
         <div class="wk-party-row" title="Readable functions that passed an independent review">
           <span class="wk-party-k">TP</span>
-          <span class="wk-party-v">1026<small>/1026</small></span>
+          <span class="wk-party-v">1113<small>/1113</small></span>
         </div>
         <div class="wk-stat-track"><div class="wk-stat-fill wk-stat-fill-dim" style="width:100.0%"></div></div>
         <p class="wk-party-note">functions verified</p>
@@ -429,6 +429,12 @@
 <li><strong>Battle turn lists</strong> (<code>$C1</code>, 2,065 bytes). The battle keeps 13 per-slot countdown lists. List 12 is the battlers' turns: ready characters get a menu, ready enemies act, queued commands run, and then each enemy's script gets a chance to react. The other lists are status timers: a poison-like hit for a share of max HP, timers that halve or double (probably haste and slow), and plain countdowns that clear a status bit. The 988-byte turn routine needed four review rounds before every claim about its reaction scripts held up against the ROM.</li>
 </ul>
 <p><code>main</code> now stands at 89,729 bytes, 24.97% of the game's code, all 1,026 <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr> routines independently verified.</p>
+<p>Then the workflow got its overhaul. Generated files no longer travel in pull requests, so parallel branches stop conflicting. Callers lines are now written by a tool and left out of the review hash, so <abbr title="Writing assembly source that assembles byte-for-byte identically to the original ROM via asar.">matching</abbr> new code no longer voids older reviews. Three new lint checks catch the header mistakes reviewers kept finding: wrong byte ranges, stale "unmatched" mentions, and Entry lines that leave out <abbr title="Direct Page — the 65816's relocatable 256-byte zero-page window; address = D register + 8-bit offset.">DP</abbr> or DB. The caller-finding tool also learned to follow code through routines that change register widths, which found 39 more real calls in a held-out test.</p>
+<p>The first batch through the new pipeline:</p>
+<ul>
+<li><strong>Scene triggers and the text decoder</strong> (<code>$C2</code>, 2,328 bytes). Two watcher state machines for scene objects and tile triggers, and the whole text decoder: its four states and every control code from $00 to $20, covering numbers, character and party-member names, wide glyphs, and tech, enemy and item names. An empty party slot prints the first character's name, because an 8-bit shift drops the "empty" bit. Of 87 routines, 84 passed review the first time, and the lint had already caught four header mistakes before any reviewer saw them.</li>
+</ul>
+<p><code>main</code> now stands at 92,057 bytes, 25.62% of the game's code, all 1,113 <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr> routines independently verified.</p>
 <h2 id="next">Next</h2>
 <p>Next, the workflow gets faster: generated files leave the pull requests, Callers lines are written by a tool, and new lint checks catch the mistakes reviewers keep finding. Matching continues with the enemy turn in bank <code>$C1</code>, object motion in <code>$C0</code>, and the <code>$C2</code> scene triggers and text decoder.</p>
   

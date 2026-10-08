@@ -1,19 +1,19 @@
 {
   "schema": 2,
-  "emitted_bytes": 89729,
+  "emitted_bytes": 92057,
   "code_bytes": 359278,
   "totals": {
     "matched": {
-      "functions": 1026,
-      "bytes": 89729
+      "functions": 1113,
+      "bytes": 92057
     },
     "readable": {
-      "functions": 1026,
-      "bytes": 89729
+      "functions": 1113,
+      "bytes": 92057
     },
     "verified": {
-      "functions": 1026,
-      "bytes": 89729
+      "functions": 1113,
+      "bytes": 92057
     }
   },
   "banks": [
@@ -54,18 +54,18 @@
     {
       "bank": "$C2",
       "code_bytes": null,
-      "emitted_bytes": 13297,
+      "emitted_bytes": 15625,
       "matched": {
-        "functions": 282,
-        "bytes": 13297
+        "functions": 369,
+        "bytes": 15625
       },
       "readable": {
-        "functions": 282,
-        "bytes": 13297
+        "functions": 369,
+        "bytes": 15625
       },
       "verified": {
-        "functions": 282,
-        "bytes": 13297
+        "functions": 369,
+        "bytes": 15625
       }
     },
     {
@@ -1317,7 +1317,7 @@
       "bank": "$C2",
       "start": "$C2:2000",
       "end": "$C2:2FFF",
-      "emitted_bytes": 3796,
+      "emitted_bytes": 3910,
       "functions": [
         "C2Scene_PalFadeStepTable",
         "C2Scene_TaskUnk20A2",
@@ -1341,6 +1341,8 @@
         "Trig_Cos1024",
         "Trig_Sin1024",
         "C2Scene_ClearUnk1B30",
+        "C2Scene_Random",
+        "C2Scene_BoxesOverlap",
         "C2Scene_Main",
         "C2Scene_MainLoop",
         "C2Scene_ModeTable",
@@ -1402,11 +1404,43 @@
       "bank": "$C2",
       "start": "$C2:3000",
       "end": "$C2:3FFF",
-      "emitted_bytes": 158,
+      "emitted_bytes": 1028,
       "functions": [
         "C2Scene_ZoneSoundWait",
         "C2Scene_ZoneSoundResume",
-        "C2Scene_ZoneSoundQueue"
+        "C2Scene_ZoneSoundQueue",
+        "C2Scene_ObjWatch",
+        "C2Scene_ObjWatchStates",
+        "C2Scene_ObjWatchIdle",
+        "C2Scene_ScrGoToLoc1D8",
+        "C2Scene_ObjWatchNone",
+        "C2Scene_ObjWatchBusyA",
+        "C2Scene_ObjWatchBusyB",
+        "C2Scene_ObjWatchFull",
+        "C2Scene_ObjFullTable",
+        "C2Scene_ObjFullNone",
+        "C2Scene_ObjFullA",
+        "C2Scene_ObjFullB",
+        "C2Scene_ObjWatchEmpty",
+        "C2Scene_ObjEmptyTable",
+        "C2Scene_ObjEmptyNone",
+        "C2Scene_ObjEmptyA",
+        "C2Scene_ObjEmptyB",
+        "C2Scene_PartyBox",
+        "C2Scene_ObjABox",
+        "C2Scene_ObjBBox",
+        "C2Scene_TrigWatch",
+        "C2Scene_TrigWatchStates",
+        "C2Scene_TrigWatchCheck",
+        "C2Scene_TrigWatchWait",
+        "C2Scene_FindTrigEntries",
+        "C2Scene_TrigDispatch",
+        "C2Scene_TrigActions",
+        "C2Scene_TrigNone",
+        "C2Scene_TrigListA",
+        "C2Scene_TrigListC",
+        "C2Scene_TrigListB",
+        "C2Scene_TrigListAB"
       ]
     },
     {
@@ -1420,7 +1454,7 @@
       "bank": "$C2",
       "start": "$C2:5000",
       "end": "$C2:5FFF",
-      "emitted_bytes": 211,
+      "emitted_bytes": 1509,
       "functions": [
         "TextWin_Init",
         "TextWin_Step",
@@ -1430,15 +1464,68 @@
         "TextWin_StatusIdle",
         "TextWin_StatusRun",
         "TextWin_StatusPenLeft",
-        "TextWin_StatusPenIndent"
+        "TextWin_StatusPenIndent",
+        "TextWin_State0",
+        "TextWin_State0_Draw",
+        "TextWin_CodeTable",
+        "TextWin_CodeStatusArg",
+        "TextWin_CodeSetStatus",
+        "TextWin_CodeNum8",
+        "TextWin_CodeNum16",
+        "TextWin_CodeNum24",
+        "TextWin_StartDec",
+        "TextWin_StartHex",
+        "TextWin_CodeArgName",
+        "TextWin_CodeExt",
+        "TextWin_ExtTable",
+        "TextWin_ExtTechName",
+        "TextWin_ExtEnemyName",
+        "TextWin_StartSubName",
+        "TextWin_CodeWide",
+        "TextWin_CodeNop",
+        "TextWin_CodeCharName",
+        "TextWin_CodeName0",
+        "TextWin_CodeNadia",
+        "TextWin_CodeMemberName",
+        "TextWin_CodeItemName",
+        "TextWin_CodeName7",
+        "TextWin_State1",
+        "TextWin_State1Next",
+        "TextWin_State1End",
+        "TextWin_State1Pause",
+        "TextWin_State1Resume",
+        "TextWin_State1Loop",
+        "TextWin_State2",
+        "TextWin_State2Next",
+        "TextWin_State2End",
+        "TextWin_State2Pause",
+        "TextWin_State2Resume",
+        "TextWin_State2Loop",
+        "TextWin_State3",
+        "TextWin_State3Next",
+        "TextWin_State3End",
+        "TextWin_State3Pause",
+        "TextWin_State3Resume",
+        "TextWin_State3Loop",
+        "TextWin_HexByte",
+        "TextWin_HexGlyphs",
+        "TextWin_NameLen10",
+        "TextWin_NameLen11",
+        "TextWin_CharNameLen",
+        "TextWin_TrimZeros8",
+        "TextWin_TrimZeros5",
+        "TextWin_TrimZeros3"
       ]
     },
     {
       "bank": "$C2",
       "start": "$C2:6000",
       "end": "$C2:6FFF",
-      "emitted_bytes": 50,
+      "emitted_bytes": 96,
       "functions": [
+        "C2Scene_GetListAUnk02",
+        "C2Scene_GetListBScript",
+        "C2Scene_GetListCUnk03",
         "C2Scene_GetSoundZone"
       ]
     },
