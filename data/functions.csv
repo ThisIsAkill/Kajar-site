@@ -14,6 +14,7 @@ $C0:01A5,$C0:024B,167,Field_RestoreState,$C0,Engine,verified,d05450e0d6c3,(was S
 $C0:024C,$C0:0282,55,Scene_Unk024C,$C0,Engine,verified,7921bd1ffd3f,"The check DefaultHandler makes before starting a battle (its SceneFlag_Battle path): C=1 means no battle after all, and DefaultHandler then clears the flag; C=0 goes on to the battle."
 $C0:0905,$C0:0917,19,Field_RestoreSaveBlock,$C0,Engine,verified,26317c37e94f,"(was Sub_0905.) Copies SceneSave_Buffer ($7F:2000) back over Field_SaveBlock ($7E:0920, $14E0 bytes)."
 $C0:0918,$C0:092A,19,Field_StashSaveBlock,$C0,Engine,verified,854a2d54b96a,"(was Sub_0918.) Copies Field_SaveBlock ($7E:0920, $14E0 bytes) to SceneSave_Buffer ($7F:2000)."
+$C0:0A50,$C0:0AFE,175,LocLoad_DrawMap,$C0,Engine,verified,7acf9aff45ed,"Draws the freshly loaded map: - Map_LoadTreasureTiles (DP=$1D00), Ppu_SetBgLayout and Ppu_ApplyMapScreens; - with DP=$1D00: Map_InitOrigin, LocLoad_EmptyStep, the tilemap VRAM bases Map_TilemapVram = "
 $C0:0B4E,$C0:0B63,22,InitHW,$C0,Engine,verified,76b6af143b0d,"Disables interrupts, enables forced blank, clears NMI/DMA/HDMA, and sets DB=$00 (PHA/PLB), which GameLoop_Main and other callers rely on."
 $C0:0B64,$C0:0B74,17,InstallNMI,$C0,Engine,verified,71930af9051c,Writes JML NmiHandler ($C0:EA63) into the RAM trampoline at $7E:0500.
 $C0:0B75,$C0:0B85,17,InstallIRQ,$C0,Engine,verified,be2aa5769805,Writes JML IrqHandler ($C0:ECCC) into the RAM trampoline at $7E:0504.
@@ -81,6 +82,14 @@ $C0:5B63,$C0:5B70,14,Map_LeaderPastRowMax,$C0,Engine,verified,288873407184,Map_U
 $C0:5B71,$C0:5B78,8,Map_LeaderPastRowMin,$C0,Engine,verified,59e99458658a,Map_Unk9175's test for an upward step: C=1 when the leader's Obj_TileY <= Map_Unk1D1C + 1.
 $C0:5B79,$C0:5B85,13,Map_LeaderPastColMax,$C0,Engine,verified,cf5293197ab6,Map_Unk9175's test for a rightward step: C=1 when the leader's Obj_TileX >= Map_Unk1D1B.
 $C0:5B86,$C0:5B8C,7,Map_LeaderPastColMin,$C0,Engine,verified,6425a3892d59,Map_Unk9175's test for a leftward step: C=1 when the leader's Obj_TileX <= Map_Unk1D1A.
+$C0:7399,$C0:74A5,269,Map_InitMasksAndLimits,$C0,Engine,verified,cac7f638d2f7,"Turns the six layer sizes LocLoad_UnkA33B just set into the wrap masks the row / column writers use: Map_ColMask1 from Map_Unk0BCB, Map_RowMask1 from Map_Unk0BCD, Map_ColMask2 / RowMask2 from Map_Unk0"
+$C0:74A6,$C0:74D3,46,Map_InitOrigin,$C0,Engine,verified,6dbd9fd3c9ce,"Sets the scroll origin for the leader's entry point: Map_InitOriginX and Map_InitOriginY, then, when Map_Unk0BC9 has bit 7 set (layer 2 at half rate), layer 2's half-rate origin and bounds: Map_Unk1D1"
+$C0:74D4,$C0:74E0,13,Field_Unk74D4,$C0,Engine,verified,d5df26f8f840,"Resets layer 1's scroll: zeroes Map_BgColBias / Map_BgRowBias and the scroll words Map_Unk1D87 / Map_Unk1D89, then runs Sub_C07F9A for the new edge addresses."
+$C0:74E1,$C0:74E7,7,Field_Unk74D4_Tail,$C0,Engine,verified,4b23796967ca,
+$C0:74E8,$C0:74F6,15,Field_Unk74E8,$C0,Engine,verified,b1046e6867df,"As Field_Unk74D4 for layer 2: zeroes Map_BgColBias2 / Map_BgRowBias2, Map_Unk1D8B and Map_Unk1D8D, then Field_Unk74D4_Tail."
+$C0:74F7,$C0:7505,15,Field_Unk74F7,$C0,Engine,verified,c31298a91275,"As Field_Unk74D4 for layer 3: zeroes Map_BgColBias3 / Map_BgRowBias3, Map_Unk1D8F and Map_Unk1D91, then Field_Unk74D4_Tail."
+$C0:7506,$C0:7552,77,Map_InitOriginX,$C0,Engine,verified,2f616007bb56,"Puts layer 1's left origin (Map_TileOriginX, in 8x8 tiles: metatile column x 2) so that the entry column Loc_EntryX is Map_OriginLeadX metatiles from the screen's left edge, kept inside the limits Map"
+$C0:7553,$C0:759F,77,Map_InitOriginY,$C0,Engine,verified,dceb66b2d573,"As Map_InitOriginX for rows: Map_TileOriginY from Loc_EntryY and the limits Map_Unk1D1C-1D1D, the leader Map_OriginLeadY metatiles below the top edge; the bottom bound Map_Unk1D10 = origin + Map_Scree"
 $C0:75A0,$C0:75E8,73,Map_ClearBufC800,$C0,Engine,verified,2728cb0be397,"(was Map_Unk75A0.) Zeroes the 2 KB WRAM buffer Map_BufC800 ($7E:C800–$7E:CFFF) that Field_BuildC800Mode1/2/4 fill: the first MVN copies the 32 zero bytes at GfxRom_D2 to its start, and each later MVN "
 $C0:75E9,$C0:7611,41,Field_BuildC800Mode1,$C0,Engine,verified,c7ebcbbda807,"Map layer redraws, row / column writers and edge VRAM addresses ($C0:75E9–$C0:8242) The map sits in WRAM as metatile numbers."
 $C0:7612,$C0:77E3,466,Map_WriteRow1,$C0,Engine,verified,a189f7820a44,Writes one row of layer-1 tilemap words to WMDATA (WRAM at WMADD).
@@ -119,6 +128,7 @@ $C0:83C5,$C0:83E4,32,Map_BuildColXDec1,$C0,Engine,verified,1db8ddfbfb3b,"Layer-1
 $C0:83E5,$C0:8404,32,Map_BuildColXDec2,$C0,Engine,verified,e09b996b35ec,"Layer-2 column for a falling X scroll: WMADD = Map_BufD000 + Map_BufColOfs, Map_BuildCol = Map_TileOriginX, Map_BuildLen = Map_EdgeColLen, Map_BuildRow = Map_TileOriginY - 1; runs Map_WriteCol2 and se"
 $C0:8405,$C0:8424,32,Map_BuildColXDec2Half,$C0,Engine,verified,86f6f2620399,"Layer-2 column for a falling X scroll: WMADD = Map_BufD000 + Map_BufColOfs, Map_BuildCol = Map_Unk1D12, Map_BuildLen = Map_EdgeColLen, Map_BuildRow = Map_Unk1D16 - 1; runs Map_WriteCol2 and sets bit 1"
 $C0:8425,$C0:8444,32,Map_BuildColXDec3,$C0,Engine,verified,95b91c3f2717,"Layer-3 column for a falling X scroll: WMADD = Map_BufD800 + Map_BufColOfs, Map_BuildCol = Map_TileOriginX, Map_BuildLen = Map_EdgeColLen, Map_BuildRow = Map_TileOriginY - 1; runs Map_WriteCol3 and se"
+$C0:87F1,$C0:881D,45,Field_Unk87F1,$C0,Engine,verified,229014ffa6a6,"Builds the right-hand edge column of each layer after a full redraw and recomputes the edge addresses: Map_BuildColXInc1; for layer 2, unless Map_LayerEdgeOff has Map_Layer2 set, Map_BuildColXInc2Half"
 $C0:881E,$C0:8859,60,Field_FrameUpdate,$C0,Engine,verified,b4d6301c56c9,"Field work done every frame, before input-driven checks such as Field_ActionButton: resets Field_UnkEB (the action-button target) to none, then with DP=$1D00 runs Map_ResetUnk1D2E, clears Map_Unk1D2C/"
 $C0:885A,$C0:88E4,139,Field_Unk885A,$C0,Engine,verified,e57d3e91ea71,"A two-step job driven by Field_Unk38, run frame after frame by DefaultHandler's map-redraw path until it clears Field_Unk38: - Field_Unk38 = 1: zero Map_Unk1D2E/1D30/1D32/1D33."
 $C0:88E5,$C0:88ED,9,Map_ResetUnk1D2E,$C0,Engine,verified,8480009531b9,Copies Map_Unk1D2A to Map_Unk1D2E and Map_Unk1D2B to Map_Unk1D30 at the start of every Field_FrameUpdate (so those two hold per-frame values derived from a standing pair; meaning unknown).
@@ -176,6 +186,15 @@ $C0:9C0B,$C0:9C20,22,Map_SlopeBase,$C0,Engine,verified,a6081482c92c,
 $C0:9C21,$C0:9C36,22,Map_SlopeSide,$C0,Engine,verified,b3ade57d14fa,
 $C0:9C37,$C0:9C5B,37,Map_ProbeLevelBlocked,$C0,Engine,verified,2019741a42f8,"Whether the half tile Map_ProbeTileLevel picked blocks the leader, against Field_Unk55 (looks like the level the leader stands on): - Map_ProbeNoLevel set: blocks only when Field_Unk55 is Map_LevelAny"
 $C0:9C5C,$C0:9DC2,359,Map_StepTileEffects,$C0,Engine,verified,933c1e51514b,Map_Unk8A6D's commit of a step it has kept.
+$C0:9DC3,$C0:9E28,102,Map_InitEntryTile,$C0,Engine,verified,de48bc8eb990,The sibling of Map_StepTileEffects for a location load: it reads the entry tile (Loc_EntryX/Y) with Map_ProbeTileAttrsAny and Map_ProbeTileLevel at the bottom middle of the tile (Map_ProbeX low byte M
+$C0:A33B,$C0:A507,461,LocLoad_UnkA33B,$C0,Engine,verified,8c636cf62e88,The map-properties step of a location load (name kept: LoadLocation and Field_RestoreState call it by it).
+$C0:A508,$C0:A508,1,LocLoad_EmptyStep,$C0,Engine,verified,272402e780a0,A lone RTS: does nothing.
+$C0:A509,$C0:A520,24,Ppu_ApplyMapScreens,$C0,Engine,verified,2ea0beed177d,"Writes the screen settings LocLoad_UnkA33B took from MapProps to the PPU: Ppu_Unk0BD7 to TM, Ppu_Unk0BD8 to TS, Ppu_Unk0BDF to CGADSUB, and 0 to MOSAIC (mosaic off)."
+$C0:A521,$C0:A66A,330,Map_UnpackTilePlanes,$C0,Engine,verified,40efe3dcfe22,"Reads the rest of the unpacked MapProps (from MapProps.Planes, through the WRAM data port) into the map's per-tile planes."
+$C0:A66B,$C0:A711,167,Map_LoadExitTiles,$C0,Engine,verified,f47de01c2873,"Builds Map_TileExitIdx for the location: first every tile of all 64 rows gets Map_ExitNone (row 0 filled, then copied to rows 63 down to 1 with MVN, one Map_PlaneBytes row at a time), then Map_ExitRec"
+$C0:A712,$C0:A7BB,170,Map_LoadTreasureTiles,$C0,Engine,verified,e18f926109ed,"As Map_LoadExitTiles for treasure: Map_TreasureIdx gets Map_TreasureNone on every tile (row 0, then MVN copies), then Map_TreasureRec0 = the first word of TreasureRom_LocOfs and the location's records"
+$C0:A7BC,$C0:A7E8,45,Map_TreasureTaken,$C0,Engine,verified,73f669bfb031,"Tests the Treasure_Flags bit of the record at Map_RecOfs: its number is (Map_RecOfs - Map_TreasureRec0) / 4, as in Field_CheckTileInFront."
+$C0:A7E9,$C0:A80F,39,Obj_ResetFrameState,$C0,Sprites & objects,verified,69e3d2bbbeac,"For each location object (Evt_ObjCount of them) writes 0 to its Obj_Unk0F00 (no frame to build) and Obj_LastFrameNone to its Obj_LastFrame (so the next frame is always rebuilt), through the WRAM data "
 $C0:B192,$C0:B1B1,32,Obj_ResetStates,$C0,Sprites & objects,verified,fcb380055d6f,"(was Sub_B192.) Clears Obj_State for every object the location defines (count in Evt_ObjCount), pointing DP at the Obj_State table so each clear is a 2-byte dp store, then tail-jumps to SprBuf_FreeAll"
 $C0:B1B2,$C0:B203,82,VramQ_Flush,$C0,Engine,verified,c55fc68b8365,"Uploads every pending entry of the VRAM upload queue (VramQ_*, filled by Obj_BuildFrame4, Obj_BuildFrame8, Obj_BuildFrame8Pass1, Obj_BuildFrame12Pass2 and Obj_BuildFrame12Pass2Alt) with DMA channel 7,"
 $C0:B271,$C0:B2A7,55,Oam_BuildShadow,$C0,Engine,verified,a00b0a1208df,"(was PostVBlank.) Rebuilds the OAM shadow ($0700 low table, $0900 high table) for the next frame; it runs before Sub_EC60's wait for the NMI, not after a VBlank."
@@ -571,8 +590,24 @@ $C1:61FD,$C1:621A,30,BattleAct_PlayPcAttackSfx,$C1,Battle engine,verified,61b7d3
 $C1:621B,$C1:623B,33,BattleAct_OpRunVecCD001B,$C1,Battle engine,verified,c4f4fe12777a,
 $C1:623C,$C1:6257,28,BattleAct_OpSetCalcSel,$C1,Battle engine,verified,5257776eeb40,"Opcodes $81-$84 (entries 0-3) and $47/$48 (entries 4 and 5) <n>: !Battle_ActCalcSel[entry] = n + 1, so BattleAct_TickCalcs runs BattleAct_RunCalc handler n for that entry every frame; advances 2."
 $C1:6258,$C1:6298,65,BattleAct_OpSetHeading,$C1,Battle engine,verified,2b24e5de760f,"Opcode $85 <h>: sets the heading (see the heading opcodes above) of the thread's battler (threads 0-3 and 5-7), of every slot of the target set (thread 4; the target set here, unlike opcodes $75-$77) "
+$C1:6299,$C1:629A,2,BattleAct_OpArcToCalc,$C1,Battle engine,verified,e4c8df08cefb,
+$C1:629B,$C1:62A9,15,BattleAct_ArcToCalcDir,$C1,Battle engine,verified,055f4511068b,
+$C1:62AA,$C1:6548,671,BattleAct_ArcToPoint,$C1,Battle engine,verified,d9a2071a1610,
+$C1:6549,$C1:65B9,113,BattleAct_ArcQuarterPoint,$C1,Battle engine,verified,fffa0c23444a,"Opcodes $9C/$9D: moves !Battle_GeoPointX/Y to a quarter of the way from !Battle_GeoOriginX/Y: Origin + (|Point - Origin| / 4, rounded down) with the delta's sign, per axis (8-bit, no carry out)."
 $C1:65BA,$C1:6670,183,BattleAct_CalcMoveStep,$C1,Battle engine,verified,e905d1e222ad,"Unit step of a straight move from !Battle_GeoOriginX/Y to !Battle_GeoPointX/Y, as signed 8.8 pixels: the axis with the larger distance (x on a tie) moves 1.0 ($0100) per step, the other (smaller * 256"
+$C1:6671,$C1:672D,189,BattleAct_CalcMidpointSteps,$C1,Battle engine,verified,d002d574356e,
+$C1:672E,$C1:672F,2,BattleAct_OpArcToUnkPoint,$C1,Battle engine,verified,be5eac668c03,BattleAct_ArcToUnkPointDir)
+$C1:6730,$C1:6742,19,BattleAct_ArcToUnkPointDir,$C1,Battle engine,verified,b0918fd3a41a,
+$C1:6743,$C1:6749,7,BattleAct_OpArcDownToCalc,$C1,Battle engine,verified,f0fbcb0d768a,Opcode $9A <mode> <n>: opcode $98 (BattleAct_OpArcToCalc) with the height added instead of subtracted (DP $8F = 1).
+$C1:674A,$C1:6750,7,BattleAct_OpArcDownToUnkPoint,$C1,Battle engine,verified,1406449c0d9c,Opcode $9B <m>: opcode $99 (BattleAct_OpArcToUnkPoint) with the height added instead of subtracted (DP $8F = 1).
+$C1:6751,$C1:691A,458,BattleAct_OpMoveAlongHeading,$C1,Battle engine,verified,bfa694c47b22,
+$C1:691B,$C1:692A,16,BattleAct_OpStartPosHistory,$C1,Battle engine,verified,7b080281361b,
+$C1:692B,$C1:69B9,143,BattleAct_SetPosHistory,$C1,Battle engine,verified,0b5f50d5eab0,
+$C1:69BA,$C1:69C2,9,BattleAct_OpStopPosHistory,$C1,Battle engine,verified,62bfb4138f22,Opcode $A5: !Battler_PosHistOn = 0 for the same battlers as opcode $A4 (BattleAct_OpStartPosHistory); advances 1.
+$C1:69C3,$C1:6AEF,301,BattleAct_OpMoveHeadingSteps,$C1,Battle engine,verified,768fe4773763,
+$C1:6AF0,$C1:6CF2,515,BattleAct_OpMoveHeadingChecked,$C1,Battle engine,verified,73c4ada71ec6,
 $C1:75BB,$C1:75CB,17,BattleAct_AdvanceScript,$C1,Battle engine,verified,ed3894dbf886,"Moves the thread's script pointer !Battle_ActScriptPtr on by A bytes: a 16-bit add to the offset, with the carry going into the bank byte (added 16-bit, so DP $E9 takes part too)."
+$C1:7C2B,$C1:7C3C,18,BattleAct_ProbeBoxOverlap,$C1,Battle engine,verified,fc44558e5d3f,"Puts battler X's probe (!Battler_ProbeX/Y) at its screen position, builds its box (Battle_CalcBattlerBox) and tests it against the other battlers' boxes (Battle_BoxOverlapsOthers, tail JMP)."
 $C2:0000,$C2:0002,3,BankC2_Entry0000,$C2,Engine,verified,8f79873f075c,"vectors, five JMPs reached from other banks by JML/JSL: $0000 BankC2_Entry0000 → BankC2_SceneBoot (JML from GameLoop_Main for Loc_Id $01F0-$81EF; it never returns) $0003 BankC2_Entry0003 and $0006 Ban"
 $C2:0003,$C2:0005,3,BankC2_Entry0003,$C2,Engine,verified,3820532e261c,
 $C2:0006,$C2:0008,3,BankC2_Entry0006,$C2,Engine,verified,5c579e7a1967,
@@ -611,6 +646,80 @@ $C2:0C4D,$C2:0CE9,157,C2Scene_SprResetLists,$C2,Engine,verified,d3fd77aa427c,
 $C2:0CEA,$C2:0D07,30,C2Scene_SprDrawList,$C2,Engine,verified,87499f6a8a78,
 $C2:0D08,$C2:0E0C,261,C2Scene_SprDrawNode,$C2,Engine,verified,bfda25262cf6,
 $C2:0E0D,$C2:0E1C,16,C2Scene_OamHiBitsTable,$C2,Engine,verified,1741301fa17f,"The OAM high-table bits of one sprite, indexed by (slot AND 3) * 4 + size * 2 + X bit 8: the 2-bit value size:Xbit8 shifted to the slot's place in its byte (C2Scene_SprDrawNode)."
+$C2:0E1D,$C2:0E49,45,C2Anim_Run,$C2,Engine,verified,2fbcba399642,"Runs the running task's animation script (.AnimPtr, .AnimBank) from where it stopped: calls the handler of each op from C2Anim_OpTable with C2Anim_Ptr on the opcode."
+$C2:0E4A,$C2:0E59,16,C2Anim_OpTable,$C2,Engine,verified,fc417cbc31ab,"The handler of each animation opcode 0-7 (C2Anim_Run: JSR (T,X) with X = the opcode * 2)."
+$C2:0E5A,$C2:0E6A,17,C2Anim_OpClearByte,$C2,Engine,verified,5ae6e6484643,"Animation op 0, 2 bytes: zeroes the task's byte at offset arg 1 (any of the 64 record bytes, through C2Scene_TaskCur)."
+$C2:0E6B,$C2:0E7D,19,C2Anim_OpIncByte,$C2,Engine,verified,0a223ea7600f,"Animation op 1, 2 bytes: adds 1 to the task's byte at offset arg 1."
+$C2:0E7E,$C2:0E90,19,C2Anim_OpDecByte,$C2,Engine,verified,426de4d72990,"Animation op 2, 2 bytes: subtracts 1 from the task's byte at offset arg 1."
+$C2:0E91,$C2:0EA2,18,C2Anim_OpJumpBack,$C2,Engine,verified,1270b0cd73fe,"Animation op 3, 2 bytes: moves the script by the signed byte arg 1, counted from the opcode: A = the offset sign-extended."
+$C2:0EA3,$C2:0EDB,57,C2Anim_OpShowFrame,$C2,Engine,verified,5adcbda650b3,"Animation op 4, 4 bytes: shows the sprite frame at arg 1-2 (an address in the script's bank) for arg 3 frames."
+$C2:0EDC,$C2:0EFF,36,C2Anim_OpWait,$C2,Engine,verified,dc59b20159b0,"Animation op 5, 2 bytes: waits arg 1 calls without drawing, counting in .AnimTimer as C2Anim_OpShowFrame does (0 loads it, then -1 per call; at 0 it advances 2 at once)."
+$C2:0F00,$C2:0F34,53,C2Anim_OpQueueVram,$C2,Engine,verified,e60cebd25b6e,"Animation op 6, 8 bytes: adds a VRAM DMA to the queue the NMI flushes (C2Scene_VramQ at C2Scene_VramQEnd): .Bank = arg 1, .Src = arg 2-3, .Dest = arg 4-5, .Size = arg 6-7, .Vmain = VMAIN_IncAfterHigh;"
+$C2:0F35,$C2:0F37,3,C2Anim_OpEnd,$C2,Engine,verified,253c8aad810c,"Animation op 7: stops (A = 0, Z=1) with C=1 and does not advance, so every later call stops here again."
+$C2:0F38,$C2:0F62,43,C2Scene_TaskMove,$C2,Engine,verified,76ee1be2e170,"Moves the running task by its velocity, in 16.16 fixed point: .XFrac/.SprX += .XVelFrac/.XVel and .YFrac/.SprY += .YVelFrac/.YVel (inferred from the carry chain: the fraction words are added first and"
+$C2:0F63,$C2:0F90,46,C2Scene_TaskRunScript,$C2,Engine,verified,acce82284790,Task handler of the script tasks (C2Scene_TaskSpawnScript and C2Scene_TaskSpawnScriptLow install it); also called by other handlers.
+$C2:0F91,$C2:1036,166,C2Script_OpTable,$C2,Engine,verified,35b79d825366,"The handler of each script opcode $00-$52 (C2Scene_TaskRunScript: JSR (T,X) with X = the opcode * 2); a larger opcode is not checked for and would jump through the code after the table."
+$C2:1037,$C2:1090,90,C2Script_ResetTask,$C2,Engine,verified,c12b6f709f10,"Op $00, 1 byte: zeroes the task's record from +$05 on, except the script fields +$07-$0A: .ScriptReturn, the animation, the sprite fields, position and velocity and all words up to +$3F (16-bit STZs a"
+$C2:1091,$C2:10A7,23,C2Script_SetSprPalette,$C2,Engine,verified,ea6fc580085c,"Op $01, 2 bytes: .SprAttr = .SprAttr AND $F1 OR arg 1: replaces bits 1-3, which C2Scene_SprDrawNode puts in the OAM palette bits."
+$C2:10A8,$C2:10BE,23,C2Script_SetSprPriority,$C2,Engine,verified,18fe8775b2da,"Op $02, 2 bytes: .SprAttr = .SprAttr AND $4F OR arg 1: replaces bits 4 and 5 (the OAM priority bits) and bit 7 (C2Scene_SprAttrScroll)."
+$C2:10BF,$C2:10CC,14,C2Script_SpawnUnk1CF5,$C2,Engine,verified,b0a5e2cd9e6d,"Op $03, 10 bytes: starts a C2Scene_TaskUnk1CF5 task (C2Scene_TaskSpawn, records 4-63), which copies this task's record, and advances 10."
+$C2:10CD,$C2:10FF,51,C2Script_SpawnUnk1DD4,$C2,Engine,verified,83598a5b914b,"Op $04, 6 bytes: puts its arguments in this task's record, .Unk35 = arg 1-2, .Unk37 = arg 3, .OpState = arg 4 (high byte 0), .OpTarget = arg 5, and starts a C2Scene_TaskUnk1DD4 task, which copies them"
+$C2:1100,$C2:1168,105,C2Script_GoToLocation,$C2,Engine,verified,cbd650a9c1b3,"Op $05, 5 bytes: sets up a location change in the field's location block (DP_Field) and selects scene mode C2Scene_ModeUnk2: - Loc_ReturnId = the current Loc_Id; Loc_ReturnX = BG2's tile X (C2Scene_Bg"
+$C2:1169,$C2:116A,2,C2Script_Halt,$C2,Engine,verified,074ac1269a06,"Op $06: stops (A = 0, Z=1) without advancing, every frame: the script ends there but its task stays (C as C2Scene_TaskRunScript left it, 0 from its ASL)."
+$C2:116B,$C2:11B1,71,C2Script_SetMapCell,$C2,Engine,verified,39d394642977,
+$C2:11B2,$C2:11F5,68,C2Script_SetMemberWord,$C2,Engine,verified,ee279a5e7985,
+$C2:11F6,$C2:120B,22,C2Script_SpawnScript,$C2,Engine,verified,6cf1c8158959,"Op $09, 4 bytes: starts another script task (C2Scene_TaskSpawnScript, records 4-63) on the script at arg 1-2 in bank arg 3."
+$C2:120C,$C2:121C,17,C2Script_ClearTaskByte,$C2,Engine,verified,a9119da02adf,"Op $0A, 2 bytes: task byte arg 1 = 0."
+$C2:121D,$C2:122F,19,C2Script_IncTaskByte,$C2,Engine,verified,8bb19c46f952,"Op $0B, 2 bytes: task byte arg 1 + 1."
+$C2:1230,$C2:1242,19,C2Script_DecTaskByte,$C2,Engine,verified,45bcb1321d31,"Op $0C, 2 bytes: task byte arg 1 - 1."
+$C2:1243,$C2:1256,20,C2Script_SetTaskByte,$C2,Engine,verified,4ba3b0d4fdb2,"Op $0D, 3 bytes: task byte arg 1 = arg 2."
+$C2:1257,$C2:126C,22,C2Script_OrTaskByte,$C2,Engine,verified,ead5a6aa2623,"Op $0E, 3 bytes: task byte arg 1 OR= arg 2 (sets those bits)."
+$C2:126D,$C2:1284,24,C2Script_ClearTaskBits,$C2,Engine,verified,dc184e75110f,"Op $0F, 3 bytes: task byte arg 1 AND= NOT arg 2 (clears those bits)."
+$C2:1285,$C2:1295,17,C2Script_ClearRamByte,$C2,Engine,verified,bf75bdb2c71e,"Op $10, 3 bytes: RAM byte at arg 1-2 = 0."
+$C2:1296,$C2:12A6,17,C2Script_IncRamByte,$C2,Engine,verified,f9507cbc0eb4,"Op $11, 3 bytes: RAM byte at arg 1-2 + 1."
+$C2:12A7,$C2:12B7,17,C2Script_DecRamByte,$C2,Engine,verified,941acaf8b9c9,"Op $12, 3 bytes: RAM byte at arg 1-2 - 1."
+$C2:12B8,$C2:12CD,22,C2Script_SetRamByte,$C2,Engine,verified,108da3a5f935,"Op $13, 4 bytes: RAM byte at arg 1-2 = arg 3."
+$C2:12CE,$C2:12E6,25,C2Script_OrRamByte,$C2,Engine,verified,dbe053ec6f83,"Op $14, 4 bytes: RAM byte at arg 1-2 OR= arg 3."
+$C2:12E7,$C2:1301,27,C2Script_ClearRamBits,$C2,Engine,verified,dc12880bac82,"Op $15, 4 bytes: RAM byte at arg 1-2 AND= NOT arg 3."
+$C2:1302,$C2:131B,26,C2Script_TaskByteToRam,$C2,Engine,verified,6e30252762e6,"Op $16, 4 bytes: RAM byte at arg 2-3 = task byte arg 1."
+$C2:131C,$C2:1335,26,C2Script_RamByteToTask,$C2,Engine,verified,241f1a54e091,"Op $17, 4 bytes: task byte arg 1 = RAM byte at arg 2-3."
+$C2:1336,$C2:134F,26,C2Script_CopyTaskByte,$C2,Engine,verified,2b44c1eb73b9,"Op $18, 3 bytes: task byte arg 1 = task byte arg 2."
+$C2:1350,$C2:1369,26,C2Script_CopyRamByte,$C2,Engine,verified,3035d5e0da9e,"Op $19, 5 bytes: RAM byte at arg 1-2 = RAM byte at arg 3-4."
+$C2:136A,$C2:1374,11,C2Script_Jump,$C2,Engine,verified,8aa5322cc92b,"Op $1A, 3 bytes: C2Script_Ptr = arg 1-2 (an address in the script's bank), then advance 1, so the script goes on at arg 1-2 + 1."
+$C2:1375,$C2:1397,35,C2Script_LoopTaskByte,$C2,Engine,verified,8f5587d4c6f4,"Op $1B, 3 bytes: task byte arg 1 - 1; while it is not 0, branch by arg 2; at 0, advance 3 (a counted loop)."
+$C2:1398,$C2:13B7,32,C2Script_IfTaskByteZero,$C2,Engine,verified,40390beb34fc,"Op $1C, 3 bytes: if task byte arg 1 is 0, branch by arg 2; else advance 3."
+$C2:13B8,$C2:13D7,32,C2Script_IfTaskByteNonZero,$C2,Engine,verified,45b6341cf634,"Op $1D, 3 bytes: if task byte arg 1 is not 0, branch by arg 2; else advance 3."
+$C2:13D8,$C2:13FB,36,C2Script_IfTaskByteNe,$C2,Engine,verified,12468047a88c,"Op $1E, 4 bytes: if task byte arg 1 is not arg 2, branch by arg 3; else advance 4."
+$C2:13FC,$C2:141F,36,C2Script_IfTaskByteEq,$C2,Engine,verified,4039a395918f,"Op $1F, 4 bytes: if task byte arg 1 is arg 2, branch by arg 3; else advance 4."
+$C2:1420,$C2:1443,36,C2Script_IfTaskBitsSet,$C2,Engine,verified,8c24a644ed46,"Op $20, 4 bytes: if task byte arg 1 AND arg 2 is not 0, branch by arg 3; else advance 4."
+$C2:1444,$C2:1468,37,C2Script_IfTaskBitsClear,$C2,Engine,verified,82e21f93ba75,"Op $21, 4 bytes: if task byte arg 1 AND arg 2 is 0, branch by arg 3; else advance 4."
+$C2:1469,$C2:148A,34,C2Script_IfRamByteZero,$C2,Engine,verified,0074f22b90ae,"Op $22, 4 bytes: if the RAM byte at arg 1-2 is 0, branch by arg 3; else advance 4."
+$C2:148B,$C2:14AC,34,C2Script_IfRamByteNonZero,$C2,Engine,verified,44721702eb85,"Op $23, 4 bytes: if the RAM byte at arg 1-2 is not 0, branch by arg 3; else advance 4."
+$C2:14AD,$C2:14D1,37,C2Script_IfRamByteNe,$C2,Engine,verified,c95200669d84,"Op $24, 5 bytes: if the RAM byte at arg 1-2 is not arg 3, branch by arg 4; else advance 5."
+$C2:14D2,$C2:14F6,37,C2Script_IfRamByteEq,$C2,Engine,verified,78a4121c3158,"Op $25, 5 bytes: if the RAM byte at arg 1-2 is arg 3, branch by arg 4; else advance 5."
+$C2:14F7,$C2:151B,37,C2Script_IfRamBitsSet,$C2,Engine,verified,b6cc8b8cc23d,"Op $26, 5 bytes: if the RAM byte at arg 1-2 AND arg 3 is not 0, branch by arg 4; else advance 5."
+$C2:151C,$C2:1540,37,C2Script_IfRamBitsClear,$C2,Engine,verified,ec180f4a68a5,"Op $27, 5 bytes: if the RAM byte at arg 1-2 AND arg 3 is 0, branch by arg 4; else advance 5."
+$C2:1541,$C2:1565,37,C2Script_IfRamByteLess,$C2,Engine,verified,af77d46c1724,"Op $4C, 5 bytes: if the RAM byte at arg 1-2 is below arg 3 (unsigned), branch by arg 4; else advance 5."
+$C2:1566,$C2:158A,37,C2Script_IfRamByteGe,$C2,Engine,verified,d94b276c2a48,"Op $4D, 5 bytes: if the RAM byte at arg 1-2 is arg 3 or more (unsigned), branch by arg 4; else advance 5."
+$C2:158B,$C2:1598,14,C2Script_SpawnUnk20A2,$C2,Engine,verified,ea7896e46b1f,"Op $28, 2 bytes: starts a C2Scene_TaskUnk20A2 task (C2Scene_TaskSpawn), which copies this record (and so this op's .ScriptPtr: probably it reads arg 1 from there; not traced)."
+$C2:1599,$C2:15A6,14,C2Script_SpawnUnk2105,$C2,Engine,verified,da2928b17bab,"Op $29, 2 bytes: as C2Script_SpawnUnk20A2 with C2Scene_TaskUnk2105."
+$C2:15A7,$C2:15B4,14,C2Script_SpawnUnk21F8,$C2,Engine,verified,662d67e23592,"Op $2A, 3 bytes: as C2Script_SpawnUnk20A2 with C2Scene_TaskUnk21F8."
+$C2:15B5,$C2:15C2,14,C2Script_SpawnUnk2194,$C2,Engine,verified,d81ee3cc7dc7,"Op $2B, 3 bytes: as C2Script_SpawnUnk20A2 with C2Scene_TaskUnk2194."
+$C2:15C3,$C2:15DE,28,C2Script_SetPosition,$C2,Engine,verified,cc04c3fdfbe3,"Op $2C, 5 bytes: .SprX = arg 1-2 and .SprY = arg 3-4, both fractions 0."
+$C2:15DF,$C2:15E2,4,C2Script_Skip1,$C2,Engine,verified,36372e861ae6,"Op $2D, 2 bytes: does nothing and advances 2 (the byte after the opcode is skipped)."
+$C2:15E3,$C2:15F8,22,C2Script_SetXVelocity,$C2,Engine,verified,8e3a0a713c9d,"Op $2E, 5 bytes: .XVelFrac = arg 1-2, .XVel = arg 3-4."
+$C2:15F9,$C2:160E,22,C2Script_SetYVelocity,$C2,Engine,verified,10c4528af209,"Op $2F, 5 bytes: .YVelFrac = arg 1-2, .YVel = arg 3-4."
+$C2:160F,$C2:161C,14,C2Script_SetAnim,$C2,Engine,verified,8809c550d58b,"Op $30, 2 bytes: starts animation script arg 1 (C2Scene_SetAnim)."
+$C2:161D,$C2:164A,46,C2Script_MoveFrames,$C2,Engine,verified,6fdeaa60ba96,"Op $31, 2 bytes: for arg 1 frames, each frame moves the task by its velocity (C2Scene_TaskMove), wraps the position into the map (C2Scene_WrapTaskPos), runs its animation (C2Anim_Run) and stops for th"
+$C2:164B,$C2:16F9,175,C2Script_ScrollFrames,$C2,Engine,verified,833768a4b2d7,
+$C2:16FA,$C2:1758,95,C2Script_ScrollLayerFrames,$C2,Engine,verified,59139ff75793,"Op $51, 3 bytes: C2Script_ScrollFrames for one layer, arg 1 (passed to C2Scene_Unk0568/066C as is), for arg 2 frames, and without BG3."
+$C2:1759,$C2:1783,43,C2Script_PanKeepFraction,$C2,Engine,verified,61f61f5aa505,"Drops the whole pixels from the task's position, keeping the fraction as a value in -1..+1: .SprX = -1 if it was negative with a non-zero .XFrac, else 0; the same for .SprY with .YFrac."
+$C2:1784,$C2:17AA,39,C2Script_PanTakeX,$C2,Engine,verified,ed55856380cb,"Tells whether the X accumulator (.XFrac/.SprX) holds at least one whole pixel either way: C=1 with C2Tmp_01 = the low byte of .SprX (signed pixels), else C=0."
+$C2:17AB,$C2:17D1,39,C2Script_PanTakeY,$C2,Engine,verified,3535c05c27b9,C2Script_PanTakeX for .YFrac/.SprY.
+$C2:1C84,$C2:1C9D,26,C2Scene_NegateXVel,$C2,Engine,verified,8a85814d03a3,"Negates the task's X velocity as one 32-bit value (.XVelFrac/.XVel: invert both words and add 1 with the carry), turning it around."
+$C2:1C9E,$C2:1CB7,26,C2Scene_NegateYVel,$C2,Engine,verified,7e8dda41e8ca,C2Scene_NegateXVel for .YVelFrac/.YVel.
+$C2:1CB8,$C2:1CD9,34,C2Scene_WrapTaskPos,$C2,Engine,verified,39f4c27d3f4f,"Wraps the task's position into the scene map: .SprX gets C2Scene_MapWidthPx (1536, the 96 metatile columns) added when it is negative or taken off when it is that or more (once, so it assumes the posi"
+$C2:1CDA,$C2:1CF4,27,C2Scene_SetAnim,$C2,Engine,verified,3aabe7fd337a,"Starts animation script A (low byte) on the running task: .AnimPtr = entry A of C2SceneRom_AnimTable, .AnimBank = C2SceneRom_AnimBank (the table's own bank), .AnimTimer = 0."
 $C2:1DB5,$C2:1DD3,31,C2Scene_ClearPalette,$C2,Engine,verified,e600d79a86ed,"Zeroes C2Scene_PaletteBuf (512 B, $0920-$0B1F: every color black) and the 16 bytes after it, C2Scene_Unk0B20 ($0B20-$0B2F), a word at a time."
 $C2:225A,$C2:225D,4,Trig_Cos1024,$C2,Engine,verified,7080f9fc7e20,"Signed sine or cosine of a 16-bit angle with 1024 steps per turn, read from !Rom_SineTable: A = sin(angle) × 255 (−255..+255; the table holds |sin| as one byte per step, negated for the second half tu"
 $C2:225E,$C2:2272,21,Trig_Sin1024,$C2,Engine,verified,f2df418408aa,
