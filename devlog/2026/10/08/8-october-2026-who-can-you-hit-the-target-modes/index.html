@@ -184,21 +184,21 @@
       <div class="wk-party">
         <div class="wk-party-row" title="Bytes matched: the rebuilt ROM is byte-identical here">
           <span class="wk-party-k">HP</span>
-          <span class="wk-party-v">51,397<small>/359,278</small></span>
+          <span class="wk-party-v">64,045<small>/359,278</small></span>
         </div>
-        <div class="wk-stat-track"><div class="wk-stat-fill" style="width:14.31%"></div></div>
-        <p class="wk-party-note">bytes matched · 14.31% of code</p>
+        <div class="wk-stat-track"><div class="wk-stat-fill" style="width:17.83%"></div></div>
+        <p class="wk-party-note">bytes matched · 17.83% of code</p>
 
         <div class="wk-party-row" title="Matched functions that also meet the readability standard">
           <span class="wk-party-k">MP</span>
-          <span class="wk-party-v">530<small>/530</small></span>
+          <span class="wk-party-v">690<small>/690</small></span>
         </div>
         <div class="wk-stat-track"><div class="wk-stat-fill wk-stat-fill-mp" style="width:100.0%"></div></div>
         <p class="wk-party-note">functions readable</p>
 
         <div class="wk-party-row" title="Readable functions that passed an independent review">
           <span class="wk-party-k">TP</span>
-          <span class="wk-party-v">530<small>/530</small></span>
+          <span class="wk-party-v">690<small>/690</small></span>
         </div>
         <div class="wk-stat-track"><div class="wk-stat-fill wk-stat-fill-dim" style="width:100.0%"></div></div>
         <p class="wk-party-note">functions verified</p>
@@ -382,9 +382,15 @@
 <li><strong>Battle action scripts</strong> (<code>$C1</code>, 2,231 bytes). Each action runs up to 13 script threads, one <abbr title="The first byte of a CPU instruction, identifying the operation (e.g. $60 = RTS, $78 = SEI).">opcode</abbr> at a time. A breadth-first path search finds the way to the target across a grid of occupied cells, giving up after 30 steps.</li>
 <li><strong>The <code>$C2</code> scene engine</strong> (1,936 bytes). A task system of 64 slots run every frame, a linked list of 64 sprites, the text window, the joypad reader with its soft reset on L+R+Select+Start, and the play-time clock.</li>
 </ul>
-<p><code>main</code> now stands at 51,397 bytes, 14.31% of the game's code, every byte of it independently verified.</p>
+<p>And the evening's batches:</p>
+<ul>
+<li><strong>Map redraws and collision</strong> (<code>$C0</code>, 5,951 bytes). The full redraw of each background layer, the row and column writers, and the leader's collision check: each frame's step is tested against walls and other objects, slid around corners, and a blocked diagonal is retried as a straight step. Reviews found five places where the original code adds without clearing the carry first, so a probe lands 1/256 of a tile off; all are documented, none "fixed".</li>
+<li><strong>Battle action script, <abbr title="First bytes of CPU instructions, identifying operations (e.g. $60 = RTS, $78 = SEI).">opcodes</abbr> $13-$85</strong> (<code>$C1</code>, 4,267 bytes). Curving moves, path walks, waits and subscripts, script variables, the damage numbers that bounce over battlers, palette flashes and cycles, and sound effects.</li>
+<li><strong>The <code>$C2</code> scene loader</strong> (2,430 bytes). Each location has a header in bank <code>$C6</code> naming the packed graphics, palettes, maps and script it needs; the loader unpacks them all and redraws the background from 16x16 metatiles.</li>
+</ul>
+<p><code>main</code> now stands at 64,045 bytes, 17.83% of the game's code, every byte of it independently verified.</p>
 <h2 id="next">Next</h2>
-<p>Keep the pipeline full: bank <code>$C1</code> from <code>$C1:49FF</code>, the remaining map steps of the <code>$C0</code> main loop, and the per-frame steps of the <code>$C2</code> scene.</p>
+<p>Keep the pipeline full: bank <code>$C1</code> from <abbr title="The first byte of a CPU instruction, identifying the operation (e.g. $60 = RTS, $78 = SEI).">opcode</abbr> handler <code>$C1:6299</code>, the <code>$C0</code> treasure and scroll-limit setters, and the <code>$C2</code> scene script interpreter.</p>
   
   <p class="wk-post-back"><a href="../../../../">← Back to devlog</a></p>
 </article>

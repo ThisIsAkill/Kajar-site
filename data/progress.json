@@ -1,71 +1,71 @@
 {
   "schema": 2,
-  "emitted_bytes": 51397,
+  "emitted_bytes": 64045,
   "code_bytes": 359278,
   "totals": {
     "matched": {
-      "functions": 530,
-      "bytes": 51397
+      "functions": 690,
+      "bytes": 64045
     },
     "readable": {
-      "functions": 530,
-      "bytes": 51397
+      "functions": 690,
+      "bytes": 64045
     },
     "verified": {
-      "functions": 530,
-      "bytes": 51397
+      "functions": 690,
+      "bytes": 64045
     }
   },
   "banks": [
     {
       "bank": "$C0",
       "code_bytes": 61779,
-      "emitted_bytes": 26061,
+      "emitted_bytes": 32012,
       "matched": {
-        "functions": 225,
-        "bytes": 26061
+        "functions": 257,
+        "bytes": 32012
       },
       "readable": {
-        "functions": 225,
-        "bytes": 26061
+        "functions": 257,
+        "bytes": 32012
       },
       "verified": {
-        "functions": 225,
-        "bytes": 26061
+        "functions": 257,
+        "bytes": 32012
       }
     },
     {
       "bank": "$C1",
       "code_bytes": 63904,
-      "emitted_bytes": 21048,
+      "emitted_bytes": 25315,
       "matched": {
-        "functions": 226,
-        "bytes": 21048
+        "functions": 317,
+        "bytes": 25315
       },
       "readable": {
-        "functions": 226,
-        "bytes": 21048
+        "functions": 317,
+        "bytes": 25315
       },
       "verified": {
-        "functions": 226,
-        "bytes": 21048
+        "functions": 317,
+        "bytes": 25315
       }
     },
     {
       "bank": "$C2",
       "code_bytes": null,
-      "emitted_bytes": 3395,
+      "emitted_bytes": 5825,
       "matched": {
-        "functions": 71,
-        "bytes": 3395
+        "functions": 108,
+        "bytes": 5825
       },
       "readable": {
-        "functions": 71,
-        "bytes": 3395
+        "functions": 108,
+        "bytes": 5825
       },
       "verified": {
-        "functions": 71,
-        "bytes": 3395
+        "functions": 108,
+        "bytes": 5825
       }
     },
     {
@@ -277,17 +277,38 @@
       "bank": "$C0",
       "start": "$C0:7000",
       "end": "$C0:7FFF",
-      "emitted_bytes": 73,
+      "emitted_bytes": 2656,
       "functions": [
-        "Map_ClearBufC800"
+        "Map_ClearBufC800",
+        "Field_BuildC800Mode1",
+        "Map_WriteRow1",
+        "Map_WriteCol1",
+        "Field_BuildC800Mode2",
+        "Map_WriteRow2",
+        "Map_WriteCol2",
+        "Field_BuildC800Mode4",
+        "Map_WriteRow3",
+        "Map_WriteCol3",
+        "Map_UploadBufTo7400",
+        "Map_UploadBufTo7000",
+        "Map_UploadBufToX",
+        "Map_UploadBuf2K",
+        "Map_UploadBuf_Tail",
+        "Map_UploadBuf4K",
+        "LocLoad_ClearPage1D00",
+        "Sub_C07F9A"
       ]
     },
     {
       "bank": "$C0",
       "start": "$C0:8000",
       "end": "$C0:8FFF",
-      "emitted_bytes": 1105,
+      "emitted_bytes": 3111,
       "functions": [
+        "Bg_RowSpan64x32",
+        "Bg_RowSpan64x32Addr",
+        "Bg_ColSpan64x32",
+        "Bg_ColSpan64x32Addr",
         "Map_BuildRowYInc1",
         "Map_BuildRowYInc2",
         "Map_BuildRowYInc2Half",
@@ -317,14 +338,15 @@
         "Field_DpadDownRight",
         "Field_DpadDownLeft",
         "Field_DpadUpRight",
-        "Field_DpadUpLeft"
+        "Field_DpadUpLeft",
+        "Map_Unk8A6D"
       ]
     },
     {
       "bank": "$C0",
       "start": "$C0:9000",
       "end": "$C0:9FFF",
-      "emitted_bytes": 2161,
+      "emitted_bytes": 3523,
       "functions": [
         "Map_Unk9175",
         "Map_Unk91AC",
@@ -353,11 +375,21 @@
         "Map_EdgeRowsYIncHalf",
         "Map_EdgeRowsYDec",
         "Map_EdgeRowsYDecHalf",
+        "Map_ProbeHitsObj",
         "Map_Unk99DE",
         "Map_StepStopDown",
         "Map_StepStopUp",
         "Map_StepStopRight",
-        "Map_StepStopLeft"
+        "Map_StepStopLeft",
+        "Map_ProbeTileAttrs",
+        "Map_ProbeTileAttrs_Load",
+        "Map_ProbeTileAttrsAny",
+        "Map_ProbeTileLevel",
+        "Map_SlopeShift",
+        "Map_SlopeBase",
+        "Map_SlopeSide",
+        "Map_ProbeLevelBlocked",
+        "Map_StepTileEffects"
       ]
     },
     {
@@ -754,17 +786,108 @@
       "bank": "$C1",
       "start": "$C1:5000",
       "end": "$C1:5FFF",
-      "emitted_bytes": 494,
+      "emitted_bytes": 4096,
       "functions": [
-        "BattleAct_StartBattlerMove"
+        "BattleAct_StartBattlerMove",
+        "BattleAct_OpCurveTo",
+        "BattleAct_OpCurveToUnkPoint",
+        "BattleAct_OpCurveToCalc",
+        "BattleAct_CurveToPoint",
+        "BattleAct_CurveTurnDir",
+        "BattleAct_OpPathTo",
+        "BattleAct_OpPathToUnkPoint",
+        "BattleAct_OpPathToCalc",
+        "BattleAct_PathToPoint",
+        "BattleAct_OpSetPos",
+        "BattleAct_SetPosToPoint",
+        "BattleAct_OpSetPosUnkPoint",
+        "BattleAct_OpSetPosCalc",
+        "BattleAct_OpFollow",
+        "BattleAct_OpUnfollow",
+        "BattleAct_OpCall",
+        "BattleAct_OpReturn",
+        "BattleAct_OpPause",
+        "BattleAct_OpReturnIfVar1F0",
+        "BattleAct_OpWaitVar",
+        "BattleAct_OpWaitVar1C",
+        "BattleAct_OpWaitVar1D",
+        "BattleAct_OpEndIfNoTarget",
+        "BattleAct_OpShowAnimEntry",
+        "BattleAct_OpSetUnkA5CD",
+        "BattleAct_StoreUnkA5CD",
+        "BattleAct_OpClearUnkA5CD",
+        "BattleAct_OpSetUnk9FF7",
+        "BattleAct_StoreUnk9FF7",
+        "BattleAct_OpClearUnk9FF7",
+        "BattleAct_OpClearUnkA4A4",
+        "BattleAct_OpUnkRevive",
+        "BattleAct_OpSetUnkCFFF",
+        "BattleAct_OpClearUnkCFFF",
+        "BattleAct_OpSetVar",
+        "BattleAct_OpSetVar1C",
+        "BattleAct_OpSetVar1D",
+        "BattleAct_OpCalcToUnkPoint",
+        "BattleAct_OpIncVar",
+        "BattleAct_OpIncVar1C",
+        "BattleAct_OpIncVar1D",
+        "BattleAct_OpDecVar",
+        "BattleAct_OpDecVar1C",
+        "BattleAct_OpDecVar1D",
+        "BattleAct_OpAddVar",
+        "BattleAct_OpAddVar1C",
+        "BattleAct_OpAddVarTo1C",
+        "BattleAct_OpCalcToResult",
+        "BattleAct_OpCopyVar",
+        "BattleAct_OpCopyVar1C",
+        "BattleAct_OpOffsetToUnkPoint",
+        "BattleAct_OpActorPosToUnkPoint",
+        "BattleAct_OpAddVarClamped",
+        "BattleAct_OpSwapVar1C1D",
+        "BattleAct_OpSwapVar1C1E",
+        "BattleAct_OpSwapVar1C1F",
+        "BattleAct_OpShowHitNumbers",
+        "BattleAct_OpClearUnk9FF7Bit7",
+        "BattleAct_StoreUnk9FF7Bit7",
+        "BattleAct_OpSetUnk9FF7Bit7",
+        "BattleAct_OpNop2",
+        "BattleAct_OpLoadPalEntry",
+        "BattleAct_OpStartPalSeq",
+        "BattleAct_OpStopPalSeq",
+        "BattleAct_OpSetSpecialPalette",
+        "BattleAct_SpecialPaletteBody",
+        "BattleAct_OpRestorePalette",
+        "BattleAct_RestorePaletteBody",
+        "BattleAct_OpStartPalCycle",
+        "BattleAct_OpBlinkPalette",
+        "BattleAct_OpStopPalCycle",
+        "BattleAct_OpIncAllObjUnkA1D8",
+        "BattleAct_OpClearAllObjUnkA1D8",
+        "BattleAct_OpIncObjUnkA1D8",
+        "BattleAct_Op70Body",
+        "BattleAct_OpClearObjUnkA1D8",
+        "BattleAct_OpSetFacing"
       ]
     },
     {
       "bank": "$C1",
       "start": "$C1:6000",
       "end": "$C1:6FFF",
-      "emitted_bytes": 183,
+      "emitted_bytes": 848,
       "functions": [
+        "BattleAct_OpLinkObjBit7",
+        "BattleAct_OpLinkObjBit6",
+        "BattleAct_LinkObjBody",
+        "BattleAct_OpCopyHeading",
+        "BattleAct_OpHeadingFromCalc",
+        "BattleAct_OpAddHeading",
+        "BattleAct_OpSound",
+        "BattleAct_OpSoundCalc",
+        "BattleAct_OpPcAttackSfxA",
+        "BattleAct_OpPcAttackSfxB",
+        "BattleAct_PlayPcAttackSfx",
+        "BattleAct_OpRunVecCD001B",
+        "BattleAct_OpSetCalcSel",
+        "BattleAct_OpSetHeading",
         "BattleAct_CalcMoveStep"
       ]
     },
@@ -837,7 +960,7 @@
       "bank": "$C2",
       "start": "$C2:0000",
       "end": "$C2:0FFF",
-      "emitted_bytes": 2080,
+      "emitted_bytes": 2496,
       "functions": [
         "BankC2_Entry0000",
         "BankC2_Entry0003",
@@ -864,6 +987,13 @@
         "C2Scene_TaskSpawnScriptLow",
         "C2Scene_TaskRunAll",
         "C2Scene_TaskCallHandler",
+        "C2Scene_LayerMetatiles",
+        "C2Scene_LayerMaps",
+        "C2Scene_LayerVramMaps",
+        "C2Scene_DrawBgLayer",
+        "C2Scene_BuildBgColumn",
+        "C2Scene_DrawMetatile",
+        "C2Scene_UploadBgColumn",
         "C2Scene_SprAdd",
         "C2Scene_SprInitLinks",
         "C2Scene_SprResetLists",
@@ -885,7 +1015,7 @@
       "bank": "$C2",
       "start": "$C2:2000",
       "end": "$C2:2FFF",
-      "emitted_bytes": 289,
+      "emitted_bytes": 2197,
       "functions": [
         "Trig_Cos1024",
         "Trig_Sin1024",
@@ -899,7 +1029,34 @@
         "C2Scene_SaveFlagTail",
         "C2Scene_RestoreFlagTail",
         "C2Scene_SetStartPos",
-        "C2Scene_SetStartScroll"
+        "C2Scene_SetStartScroll",
+        "C2Scene_GetHeaderPtr",
+        "C2Scene_LoadObjGfx",
+        "C2Scene_LoadUnkC800",
+        "C2Scene_LoadBgGfx",
+        "C2Scene_LoadBg3Gfx",
+        "C2Scene_LoadBg3Map",
+        "C2Scene_LoadPalettes",
+        "C2Scene_CopyPartyPalette",
+        "C2Scene_LoadUnkB800",
+        "C2Scene_LoadUnkC000",
+        "C2Scene_LoadMetatiles",
+        "C2Scene_LoadBgMaps",
+        "C2Scene_LoadUnk7000",
+        "C2Scene_LoadUnk7200",
+        "C2Scene_LoadScript",
+        "C2Scene_LoadLists",
+        "C2Scene_LoadPartyGfx",
+        "C2Scene_CopyPartyGfx",
+        "C2Scene_CopyPartyGfxB",
+        "C2Scene_ClearHdmaArea",
+        "C2Scene_LoadScene",
+        "C2Scene_ReloadScene",
+        "C2Scene_LoadVram",
+        "C2Scene_DmaToVram",
+        "C2Scene_LoadLocExtraGfx",
+        "C2Scene_SaveState",
+        "C2Scene_RestoreState"
       ]
     },
     {
@@ -944,8 +1101,12 @@
       "bank": "$C2",
       "start": "$C2:7000",
       "end": "$C2:7FFF",
-      "emitted_bytes": 0,
-      "functions": []
+      "emitted_bytes": 106,
+      "functions": [
+        "C2Scene_LoadExtraObjPack",
+        "C2Scene_LoadExtraPalette",
+        "C2Scene_LoadUnkC600"
+      ]
     },
     {
       "bank": "$C2",
