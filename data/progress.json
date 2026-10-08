@@ -1,71 +1,71 @@
 {
   "schema": 2,
-  "emitted_bytes": 94399,
+  "emitted_bytes": 107392,
   "code_bytes": 359278,
   "totals": {
     "matched": {
-      "functions": 1130,
-      "bytes": 94399
+      "functions": 1373,
+      "bytes": 107392
     },
     "readable": {
-      "functions": 1130,
-      "bytes": 94399
+      "functions": 1373,
+      "bytes": 107392
     },
     "verified": {
-      "functions": 1130,
-      "bytes": 94399
+      "functions": 1373,
+      "bytes": 107392
     }
   },
   "banks": [
     {
       "bank": "$C0",
       "code_bytes": 61779,
-      "emitted_bytes": 41065,
+      "emitted_bytes": 46461,
       "matched": {
-        "functions": 343,
-        "bytes": 41065
+        "functions": 425,
+        "bytes": 46461
       },
       "readable": {
-        "functions": 343,
-        "bytes": 41065
+        "functions": 425,
+        "bytes": 46461
       },
       "verified": {
-        "functions": 343,
-        "bytes": 41065
+        "functions": 425,
+        "bytes": 46461
       }
     },
     {
       "bank": "$C1",
       "code_bytes": 63904,
-      "emitted_bytes": 36816,
+      "emitted_bytes": 39231,
       "matched": {
-        "functions": 410,
-        "bytes": 36816
+        "functions": 442,
+        "bytes": 39231
       },
       "readable": {
-        "functions": 410,
-        "bytes": 36816
+        "functions": 442,
+        "bytes": 39231
       },
       "verified": {
-        "functions": 410,
-        "bytes": 36816
+        "functions": 442,
+        "bytes": 39231
       }
     },
     {
       "bank": "$C2",
       "code_bytes": null,
-      "emitted_bytes": 15625,
+      "emitted_bytes": 20807,
       "matched": {
-        "functions": 369,
-        "bytes": 15625
+        "functions": 498,
+        "bytes": 20807
       },
       "readable": {
-        "functions": 369,
-        "bytes": 15625
+        "functions": 498,
+        "bytes": 20807
       },
       "verified": {
-        "functions": 369,
-        "bytes": 15625
+        "functions": 498,
+        "bytes": 20807
       }
     },
     {
@@ -272,27 +272,77 @@
       "bank": "$C0",
       "start": "$C0:4000",
       "end": "$C0:4FFF",
-      "emitted_bytes": 0,
-      "functions": []
+      "emitted_bytes": 762,
+      "functions": [
+        "Evt_Op7A_ArcToTile",
+        "Evt_Op7B_ArcSteps",
+        "Evt_Op92_WalkDir",
+        "Evt_Op9C_MoveDir",
+        "Evt_Op9D_MoveDirVar",
+        "Evt_Op96_WalkToTile",
+        "Evt_Op9A_WalkTowardTile"
+      ]
     },
     {
       "bank": "$C0",
       "start": "$C0:5000",
       "end": "$C0:5FFF",
-      "emitted_bytes": 1186,
+      "emitted_bytes": 3438,
       "functions": [
+        "Evt_Op97_WalkToTileVar",
+        "Evt_OpA0_MoveToTile",
+        "Evt_OpA1_MoveToTileVar",
+        "Evt_Op94_WalkToObj",
+        "Evt_Op94_Body",
+        "Evt_Op9E_MoveToObj",
+        "Evt_Op9E_Body",
+        "Evt_Op98_WalkTowardObj",
+        "Evt_Op98_Body",
+        "Evt_Op95_WalkToPc",
+        "Evt_Op8F_FollowPc",
+        "Evt_Op9F_MoveToPc",
+        "Evt_Op99_WalkTowardPc",
+        "Evt_Op0F_FaceUp",
+        "Evt_Op17_FaceDown",
+        "Evt_Op1B_FaceLeft",
+        "Evt_Op1D_FaceRight",
+        "Evt_OpA6_Face",
+        "Evt_SetFacing",
+        "Evt_SetFacingOfX",
+        "Evt_OpA7_FaceVar",
+        "Evt_Op1E_ObjFaceUp",
+        "Evt_Op1F_ObjFaceDown",
+        "Evt_Op25_ObjFaceLeft",
+        "Evt_Op26_ObjFaceRight",
+        "Evt_OpA8_FaceObj",
+        "Evt_OpA8_Body",
+        "Evt_OpA9_FacePc",
+        "Obj_SetMoveAnim",
+        "Obj_SetStandAnim",
         "Scene_PostLoadInit",
         "LocLoad_Unk56D4",
         "Evt_InitObjects",
         "Evt_ClearUnk0920",
         "Evt_RunObj0Func1",
         "Evt_RunObjInit",
+        "Vblank_Unk59D9",
+        "Vblank_ReadScanlineCounters",
+        "Evt_RunObjScriptSteps",
         "Evt_StartTargetFunc1",
         "Evt_RedirectObjScript",
         "Map_LeaderPastRowMax",
         "Map_LeaderPastRowMin",
         "Map_LeaderPastColMax",
         "Map_LeaderPastColMin",
+        "Evt_HasActionTarget",
+        "Evt_FindSolidObjInFront",
+        "Evt_InFrontTests",
+        "Evt_InFrontUp",
+        "Evt_InFrontDown",
+        "Evt_InFrontNo",
+        "Evt_InFrontLeft",
+        "Evt_InFrontRight",
+        "Evt_FindOrAddUnk0920",
         "LocLoad_CheckEvtData",
         "LocLoad_InitUnk7F3700",
         "LocLoad_Unk7F3700Init"
@@ -302,7 +352,7 @@
       "bank": "$C0",
       "start": "$C0:6000",
       "end": "$C0:6FFF",
-      "emitted_bytes": 528,
+      "emitted_bytes": 668,
       "functions": [
         "LocLoad_UploadPack",
         "LocLoad_UnpackPacks67",
@@ -310,23 +360,38 @@
         "Field_UploadUnk1F00",
         "Field_UploadUnk1F00Srcs",
         "Field_UploadUnk1D00",
+        "Field_UploadUnk5800",
         "Field_UploadUnk1C00",
         "Field_UploadUnk0000",
         "Field_UploadUnk57E0",
-        "Field_ResetUnk0B88"
+        "Field_ResetUnk0B88",
+        "Obj_Unk6F9A",
+        "Obj_TileSlotHandlers",
+        "Obj_TileSlotNone",
+        "Obj_TileSlotAllocKind"
       ]
     },
     {
       "bank": "$C0",
       "start": "$C0:7000",
       "end": "$C0:7FFF",
-      "emitted_bytes": 3411,
+      "emitted_bytes": 4096,
       "functions": [
+        "Obj_Unk7056",
         "LocLoad_Unk7084",
         "Pal_LoadUnkRow0",
         "Pal_UploadCgram",
         "Pal_UploadCgram_Rts",
         "Field_ResetUnk0B80",
+        "Obj_Unk7170",
+        "Obj_PalSlotHandlers",
+        "Obj_PalSlotKind0",
+        "Obj_PalSlotFixed",
+        "Obj_PalSlotKind1",
+        "Obj_PalSlotKind2",
+        "Obj_PalSlotAny",
+        "Obj_Unk72B4",
+        "Obj_Unk734C",
         "Map_InitMasksAndLimits",
         "Map_InitOrigin",
         "Field_Unk74D4",
@@ -359,7 +424,7 @@
       "bank": "$C0",
       "start": "$C0:8000",
       "end": "$C0:8FFF",
-      "emitted_bytes": 3156,
+      "emitted_bytes": 4096,
       "functions": [
         "Bg_RowSpan64x32",
         "Bg_RowSpan64x32Addr",
@@ -381,6 +446,20 @@
         "Map_BuildColXDec2",
         "Map_BuildColXDec2Half",
         "Map_BuildColXDec3",
+        "Map_UploadRowYInc1",
+        "Map_EdgeDmaRow",
+        "Map_UploadRowYInc2",
+        "Map_UploadRowYInc3",
+        "Map_UploadRowYDec1",
+        "Map_UploadRowYDec2",
+        "Map_UploadRowYDec3",
+        "Map_UploadColXInc1",
+        "Map_EdgeDmaCol",
+        "Map_UploadColXInc2",
+        "Map_UploadColXInc3",
+        "Map_UploadColXDec1",
+        "Map_UploadColXDec2",
+        "Map_UploadColXDec3",
         "Field_Unk87F1",
         "Field_FrameUpdate",
         "Field_Unk885A",
@@ -555,7 +634,7 @@
       "bank": "$C0",
       "start": "$C0:E000",
       "end": "$C0:EFFF",
-      "emitted_bytes": 2659,
+      "emitted_bytes": 3276,
       "functions": [
         "Spr_LoadLargeObj",
         "Spr_CopyTileFlipped",
@@ -571,7 +650,11 @@
         "SprBuf_Free1",
         "SprBuf_Free2",
         "SprBuf_Free3",
-        "SprBuf_FreeObj"
+        "SprBuf_FreeObj",
+        "NmiHandler",
+        "Field_WaitFrame",
+        "Credits_UploadLine",
+        "Oam_UploadShadow"
       ]
     },
     {
@@ -1058,7 +1141,7 @@
       "bank": "$C1",
       "start": "$C1:8000",
       "end": "$C1:8FFF",
-      "emitted_bytes": 3134,
+      "emitted_bytes": 3755,
       "functions": [
         "BankC1_BattleStartVec",
         "BankC1_Entry8003",
@@ -1079,7 +1162,10 @@
         "BattleSys_ListHandler9",
         "BattleSys_ListHandler10",
         "BattleSys_ListHandler11",
-        "BattleSys_Unk8C09"
+        "BattleSys_Unk8C09",
+        "BattleAi_TestPassed",
+        "BattleAi_EnemyTurn",
+        "BattleAi_Test00"
       ]
     },
     {
@@ -1093,17 +1179,42 @@
       "bank": "$C1",
       "start": "$C1:A000",
       "end": "$C1:AFFF",
-      "emitted_bytes": 87,
+      "emitted_bytes": 915,
       "functions": [
-        "Battle_RandRange"
+        "BattleAi_ReadTargets",
+        "BattleAi_ReadTargets_Code",
+        "BattleAi_ReadTargets_Done",
+        "BattleAi_ClearTargets",
+        "BattleSys_UnkAC57",
+        "BattleSys_UnkAC5E",
+        "BattleSys_UnkAC85",
+        "BattleAi_SetCmdBits",
+        "BattleAi_ArgToDp0E",
+        "BattleAi_FillActBlock",
+        "BattleAi_SetMainMask",
+        "BattleAi_SetTargetMask",
+        "BattleAi_TargetsByPcByte",
+        "BattleAi_PickPcTarget",
+        "BattleAi_PickMarkedTarget",
+        "BattleAi_AddPcByByte",
+        "BattleAi_UnkAED3",
+        "BattleAi_NoteFirstTest",
+        "Battle_RandRange",
+        "BattleAi_RunMainPart"
       ]
     },
     {
       "bank": "$C1",
       "start": "$C1:B000",
       "end": "$C1:BFFF",
-      "emitted_bytes": 52,
+      "emitted_bytes": 584,
       "functions": [
+        "BattleAi_FindReactPart",
+        "BattleAi_PickScript",
+        "BattleAi_TestTable",
+        "BattleAi_ChooseTable",
+        "BattleAi_RunTable",
+        "BattleAi_TargetTable",
         "BattleSys_ListHandlerTable",
         "BattleSys_ListOffsetTable"
       ]
@@ -1129,8 +1240,13 @@
       "bank": "$C1",
       "start": "$C1:E000",
       "end": "$C1:EFFF",
-      "emitted_bytes": 0,
-      "functions": []
+      "emitted_bytes": 434,
+      "functions": [
+        "Battle_HitEntryOffset",
+        "Battle_RecordHit",
+        "Battle_ClearCancelledHits",
+        "Battle_ApplyHits"
+      ]
     },
     {
       "bank": "$C1",
@@ -1421,7 +1537,7 @@
       "bank": "$C2",
       "start": "$C2:3000",
       "end": "$C2:3FFF",
-      "emitted_bytes": 1028,
+      "emitted_bytes": 4096,
       "functions": [
         "C2Scene_ZoneSoundWait",
         "C2Scene_ZoneSoundResume",
@@ -1457,22 +1573,117 @@
         "C2Scene_TrigListA",
         "C2Scene_TrigListC",
         "C2Scene_TrigListB",
-        "C2Scene_TrigListAB"
+        "C2Scene_TrigListAB",
+        "C2Scene_LeaderTask",
+        "C2Scene_LeaderStates",
+        "C2Scene_LeaderWalk",
+        "C2Scene_LeaderWalkSteps",
+        "C2Scene_LeaderOnObjA",
+        "C2Scene_LeaderNone",
+        "C2Scene_LeaderOnObjB",
+        "C2Scene_LeaderBoard",
+        "C2Scene_LeaderBoardSteps",
+        "C2Scene_LeaderLeave",
+        "C2Scene_LeaderLeaveTable",
+        "C2Scene_LeaderLeaveNone",
+        "C2Scene_LeaderLeaveA",
+        "C2Scene_LeaderLeaveB",
+        "C2Scene_LeaderInit",
+        "C2Scene_LeaderInput",
+        "C2Scene_LeaderStep",
+        "C2Scene_LeaderScriptStart",
+        "C2Scene_LeaderScriptRun",
+        "C2Scene_LeaderScriptDone",
+        "C2Scene_LeaderBoardStart",
+        "C2Scene_LeaderBoardTargets",
+        "C2Scene_LeaderBoardSel0",
+        "C2Scene_LeaderBoardSel1",
+        "C2Scene_LeaderBoardObjA",
+        "C2Scene_LeaderBoardObjB",
+        "C2Scene_LeaderBoardY",
+        "C2Scene_LeaderBoardX",
+        "C2Scene_LeaderBoardDone",
+        "C2Scene_TrailFill",
+        "C2Scene_TrailPush",
+        "C2Scene_SetWalkAnim",
+        "C2Scene_WalkAnims",
+        "C2Scene_SetStandAnim",
+        "C2Scene_StandAnims",
+        "C2Scene_OnTrigTiles",
+        "C2Scene_TileBlocked",
+        "C2Scene_GetTileProps",
+        "C2Scene_SetStepTarget",
+        "C2Scene_WrapStepTarget",
+        "C2Scene_ObjCountUp",
+        "C2Scene_ObjCountUpTable",
+        "C2Scene_ObjCountUpNone",
+        "C2Scene_ObjCountUpA",
+        "C2Scene_ObjCountUpB",
+        "C2Scene_SetEntryTile",
+        "C2Scene_MemberTask",
+        "C2Scene_MemberStates",
+        "C2Scene_MemberWalk",
+        "C2Scene_MemberWalkSteps",
+        "C2Scene_MemberNone",
+        "C2Scene_MemberBoard",
+        "C2Scene_MemberBoardSteps",
+        "C2Scene_MemberLeave",
+        "C2Scene_MemberLeaveTable",
+        "C2Scene_MemberLeaveNone",
+        "C2Scene_MemberLeaveA",
+        "C2Scene_MemberLeaveB",
+        "C2Scene_MemberInit",
+        "C2Scene_MemberFollow",
+        "C2Scene_MemberMoveX",
+        "C2Scene_MemberMoveY",
+        "C2Scene_MemberScriptStart",
+        "C2Scene_MemberScriptRun",
+        "C2Scene_MemberScriptDone",
+        "C2Scene_MemberBoardStart",
+        "C2Scene_MemberBoardX",
+        "C2Scene_MemberBoardY",
+        "C2Scene_MemberBoardDone",
+        "C2Scene_LeaderNear16",
+        "C2Scene_LeaderNear32",
+        "C2Scene_MemberTrailTarget",
+        "C2Scene_MemberLeaderTarget",
+        "C2Scene_MemberDelta",
+        "C2Scene_MemberRoute",
+        "C2Scene_MemberRouteTable",
+        "C2Scene_MemberRouteOpen"
       ]
     },
     {
       "bank": "$C2",
       "start": "$C2:4000",
       "end": "$C2:4FFF",
-      "emitted_bytes": 0,
-      "functions": []
+      "emitted_bytes": 733,
+      "functions": [
+        "C2Scene_MemberRouteYFirst",
+        "C2Scene_MemberRouteXFirst",
+        "C2Scene_MemberRouteTrail",
+        "C2Scene_FaceVelocity",
+        "C2Scene_MemberFirstLeg",
+        "C2Scene_MemberXLeg",
+        "C2Scene_MemberYLeg",
+        "C2Scene_MemberStand",
+        "C2Scene_MemberWalkAnim",
+        "C2Scene_PathBlocked",
+        "C2Scene_ScanRow",
+        "C2Scene_ScanCol"
+      ]
     },
     {
       "bank": "$C2",
       "start": "$C2:5000",
       "end": "$C2:5FFF",
-      "emitted_bytes": 1509,
+      "emitted_bytes": 2187,
       "functions": [
+        "C2Scene_Unk5775",
+        "C2Scene_ClearUnk8621",
+        "C2Scene_Unk57B0",
+        "C2Scene_Unk8600Init",
+        "C2Scene_Unk8604Init",
         "TextWin_Init",
         "TextWin_Step",
         "TextWin_StateTable",
@@ -1531,18 +1742,53 @@
         "TextWin_CharNameLen",
         "TextWin_TrimZeros8",
         "TextWin_TrimZeros5",
-        "TextWin_TrimZeros3"
+        "TextWin_TrimZeros3",
+        "TextWin_DrawGlyph",
+        "TextWin_Blit2bpp",
+        "TextWin_Blit2bppRow",
+        "TextWin_Blit2bppShifts",
+        "TextWin_Blit2bppShr0",
+        "TextWin_Blit2bppShr4",
+        "TextWin_Blit2bppShr3",
+        "TextWin_Blit2bppShr2",
+        "TextWin_Blit2bppShr1",
+        "TextWin_Blit2bppShl3",
+        "TextWin_Blit2bppShl2",
+        "TextWin_Blit2bppShl1",
+        "TextWin_Blit4bpp",
+        "TextWin_Blit4bppRow",
+        "TextWin_Blit4bppShifts",
+        "TextWin_Blit4bppShr0",
+        "TextWin_Blit4bppShr4",
+        "TextWin_Blit4bppShr3",
+        "TextWin_Blit4bppShr2",
+        "TextWin_Blit4bppShr1",
+        "TextWin_Blit4bppShl3",
+        "TextWin_Blit4bppShl2",
+        "TextWin_Blit4bppShl1",
+        "TextWin_CharNamePtrs",
+        "TextWin_TileOfs2bpp"
       ]
     },
     {
       "bank": "$C2",
       "start": "$C2:6000",
       "end": "$C2:6FFF",
-      "emitted_bytes": 96,
+      "emitted_bytes": 799,
       "functions": [
+        "TextWin_TileOfs4bpp",
+        "TextWin_GlyphWidths",
+        "TextWin_StrNadia",
+        "TextWin_DivBits",
+        "TextWin_Dec8",
+        "TextWin_Dec16",
+        "TextWin_Dec24",
+        "TextWin_Div24Bits",
         "C2Scene_GetListAUnk02",
         "C2Scene_GetListBScript",
         "C2Scene_GetListCUnk03",
+        "C2Scene_GetMapCell",
+        "C2Scene_GetTileProp",
         "C2Scene_GetSoundZone"
       ]
     },

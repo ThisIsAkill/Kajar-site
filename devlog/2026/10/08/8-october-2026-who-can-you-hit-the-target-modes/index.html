@@ -192,21 +192,21 @@
       <div class="wk-party">
         <div class="wk-party-row" title="Bytes matched: the rebuilt ROM is byte-identical here">
           <span class="wk-party-k">HP</span>
-          <span class="wk-party-v">94,399<small>/359,278</small></span>
+          <span class="wk-party-v">107,392<small>/359,278</small></span>
         </div>
-        <div class="wk-stat-track"><div class="wk-stat-fill" style="width:26.27%"></div></div>
-        <p class="wk-party-note">bytes matched · 26.27% of code</p>
+        <div class="wk-stat-track"><div class="wk-stat-fill" style="width:29.89%"></div></div>
+        <p class="wk-party-note">bytes matched · 29.89% of code</p>
 
         <div class="wk-party-row" title="Matched functions that also meet the readability standard">
           <span class="wk-party-k">MP</span>
-          <span class="wk-party-v">1130<small>/1130</small></span>
+          <span class="wk-party-v">1373<small>/1373</small></span>
         </div>
         <div class="wk-stat-track"><div class="wk-stat-fill wk-stat-fill-mp" style="width:100.0%"></div></div>
         <p class="wk-party-note">functions readable</p>
 
         <div class="wk-party-row" title="Readable functions that passed an independent review">
           <span class="wk-party-k">TP</span>
-          <span class="wk-party-v">1130<small>/1130</small></span>
+          <span class="wk-party-v">1373<small>/1373</small></span>
         </div>
         <div class="wk-stat-track"><div class="wk-stat-fill wk-stat-fill-dim" style="width:100.0%"></div></div>
         <p class="wk-party-note">functions verified</p>
@@ -440,8 +440,15 @@
 </li>
 </ul>
 <p><code>main</code> now stands at 94,399 bytes, 26.27% of the game's code, all 1,130 <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr> routines independently verified.</p>
+<p>Late in the evening, three more batches went through review and merged:</p>
+<ul>
+<li><strong>The <abbr title="Non-Maskable Interrupt — fires at the start of VBlank each frame; the safe window for PPU updates.">NMI</abbr> handler and frame wait</strong> (<code>$C0</code>, 5,396 bytes). Everything the game does once per frame during vertical blank: palette and sprite uploads, the queued <abbr title="Video RAM — dedicated PPU memory for tile graphics and tilemaps; written via DMA during VBlank.">VRAM</abbr> writes, map redraw steps and the staff-credits line, plus the tiny loop the field spins in until the <abbr title="Non-Maskable Interrupt — fires at the start of VBlank each frame; the safe window for PPU updates.">NMI</abbr> has done its work. That loop used to be called <code>Sub_EC60</code>. A reviewer pointed out that its header already said exactly what it does, so it is now <code>Field_WaitFrame</code>, and the 15 routines that mention it went back through review. The batch also covers the event commands that walk an object to a tile (they aim for X $80 / Y $F0 inside it: centred, near the bottom), and the sprite tile slots that objects borrow as they come into view. One quirk: an upload address is computed with an <code>ADC</code> that has no <code>CLC</code> before it, so a stray carry adds 1.</li>
+<li><strong>The party leader and followers</strong> (<code>$C2</code>, 5,182 bytes). In the <code>$C2</code> scenes, the leader walks in 8-pixel steps and scrolls the background as it goes. Its buttons switch scene modes, and it idles, animates, and walks onto objects. The other members follow it with their own small route planner, which scans rows and columns of the scene map for a way round obstacles. The batch also covers the glyph drawing behind the text decoder: 2bpp and 4bpp blitters, the width tables and the number formatting.</li>
+<li><strong>Enemy behaviour scripts</strong> (<code>$C1</code>, 2,415 bytes). The core that reads each enemy's script: a list of blocks, each one or two tests followed by actions, plus a separate reaction part. A block whose tests hold chooses its next action, and later turns step through the block's actions in order. Two finds: one action code jumps back into the middle of the test-passed routine after picking a random action (25/50/75% thresholds for one, two or three steps further along), and one target picker loops forever if an enemy's target marks disagree. The routine that turns a hit into a record offset also wraps for the last two slots of the sixth hit set. Thirty of its 39 routines passed review the first time; the other nine needed a second round, and one a third.</li>
+</ul>
+<p><code>main</code> now stands at 107,392 bytes, 29.89% of the game's code, all 1,373 <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr> routines independently verified.</p>
 <h2 id="next">Next</h2>
-<p>Next, the workflow gets faster: generated files leave the pull requests, Callers lines are written by a tool, and new lint checks catch the mistakes reviewers keep finding. Matching continues with the enemy turn in bank <code>$C1</code>, object motion in <code>$C0</code>, and the <code>$C2</code> scene triggers and text decoder.</p>
+<p>Matching continues on four fronts: the battle-engine helpers in bank <code>$FD</code>, the <code>$C2</code> scene objects after the party, the rest of the <code>$C0</code> event command handlers, and the <code>$C1</code> player-command batch being ported onto the new workflow.</p>
   
   <p class="wk-post-back"><a href="../../../../">← Back to devlog</a></p>
 </article>
