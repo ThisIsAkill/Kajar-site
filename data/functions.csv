@@ -35,6 +35,21 @@ $C0:1B36,$C0:1B52,29,Bg_TilemapIndex64x32,$C0,Engine,verified,e94e5beac473,(was 
 $C0:1B90,$C0:1B91,2,Audio_PlayTileSfxA,$C0,Engine,verified,dd25ac14dfe8,"(was Sub_1B90.) Plays sound effect Audio_SfxTileAnimA through the sound driver: Audio_CmdId = $19 (play effect), Arg0 = effect id, Arg1 = the low byte of the party leader's Obj_ScreenX (presumably for"
 $C0:1B92,$C0:1BA6,21,Audio_PlaySfxAtLeader,$C0,Engine,verified,8af6b4d0cdff,Audio_PlaySfxAtLeader: shared tail; Audio_PlayTileSfxA falls in here and Audio_PlayTileSfxB branches here (BRA at $C0:1BA9).
 $C0:1BA7,$C0:1BAA,4,Audio_PlayTileSfxB,$C0,Engine,verified,8e1af34745a1,"(was Sub_1BA7.) Plays sound effect Audio_SfxTileAnimB: same as Audio_PlayTileSfxA with the other effect id, sharing its tail Audio_PlaySfxAtLeader."
+$C0:1CFC,$C0:1D55,90,Field_FindObjInFront,$C0,Engine,verified,797b8ab27e9f,Looks for an object the leader can act on in the facing direction.
+$C0:1D56,$C0:1D5D,8,Field_ObjInReachTable,$C0,Engine,verified,cf783b50a37b,"Field_ObjInReachTable: Field_FindObjInFront's reach test for each facing, indexed by Obj_Facing x 2."
+$C0:1D5E,$C0:1D83,38,Field_ObjInReachUp,$C0,Engine,verified,7f13956e9044,Facing 0: the object in Field_UnkEB is in reach when it is above the leader (Obj_PosY - Field_FindLeaderY negative) by less than Field_ReachAhead and off the leader's column by less than Field_ReachSi
+$C0:1D84,$C0:1DA6,35,Field_ObjInReachDown,$C0,Engine,verified,faa8a98caf66,Facing 1: as Field_ObjInReachUp for an object below the leader (Obj_PosY - Field_FindLeaderY not negative).
+$C0:1DA7,$C0:1DAA,4,Field_ObjInReach_No,$C0,Engine,verified,9bdc4b60000c,
+$C0:1DAB,$C0:1DD0,38,Field_ObjInReachLeft,$C0,Engine,verified,0035106e8fb5,Facing 2: as Field_ObjInReachUp with X and Y swapped: in reach when the object is left of the leader (Obj_PosX - Field_FindLeaderX negative) by less than Field_ReachAhead and off its row by less than 
+$C0:1DD1,$C0:1DF3,35,Field_ObjInReachRight,$C0,Engine,verified,785f9372c5f6,Facing 3: as Field_ObjInReachLeft for an object right of the leader (Obj_PosX - Field_FindLeaderX not negative).
+$C0:1DF4,$C0:1E91,158,Field_CheckTileInFront,$C0,Engine,verified,7747239b1f6b,Field_CheckTileInFront_Start $1F0E–$1F23) The action button's map check: treasure on the tile in front of the leader.
+$C0:1E92,$C0:1E99,8,Field_TileInFrontTable,$C0,Engine,verified,cab0c62f494b,"Field_TileInFrontTable: Field_CheckTileInFront's tile pick for each facing, indexed by Obj_Facing x 2."
+$C0:1E9A,$C0:1EC6,45,Field_TileInFrontUp,$C0,Engine,verified,8153411a843e,Facing 0: the tile one row above the leader (Obj_TileY - 1).
+$C0:1EC7,$C0:1EDD,23,Field_TileInFrontDown,$C0,Engine,verified,f1915b8c2ffa,Facing 1: the tile one row below the leader.
+$C0:1EDE,$C0:1EDF,2,Field_TileInFront_No,$C0,Engine,verified,f5b791f7c2b4,
+$C0:1EE0,$C0:1EF6,23,Field_TileInFrontLeft,$C0,Engine,verified,ef195b126c34,Facing 2: the tile one column left of the leader.
+$C0:1EF7,$C0:1F0D,23,Field_TileInFrontRight,$C0,Engine,verified,5550544d0a0f,Facing 3: the tile one column right of the leader.
+$C0:1F0E,$C0:1F23,22,Field_CheckTileInFront_Start,$C0,Engine,verified,d55eae2247ad,Field_CheckTileInFront's tail: A = the TreasureKind_* value.
 $C0:1F24,$C0:1F59,54,Fade_StepBrightness,$C0,Engine,verified,29587b9b9aa5,(was Sub_1F24.) Brightness fade: steps Fade_Brightness one unit toward Fade_BrightnessTarget every Fade_BrightnessDelay+1 frames and clears FadeFlag_Brightness when it gets there (or reaches 0 going d
 $C0:1F5A,$C0:1F86,45,Fade_StepFixedColor,$C0,Engine,verified,48f2c50391f1,(was Sub_1F5A.) Fixed-colour fade: steps Fade_FixedColor one unit toward Fade_FixedColorTarget every Fade_FixedColorDelay+1 frames and clears FadeFlag_FixedColor when it gets there.
 $C0:21E1,$C0:21ED,13,Field_EventHookDispatch,$C0,Engine,verified,26e74b170878,Runs the Field_EventHook handler for this frame: entry Field_EventHook - 1 of Field_EventHookTable; nothing when it is 0.
@@ -52,7 +67,7 @@ $C0:2589,$C0:260D,133,Field_HookWinFixedB,$C0,Engine,verified,e9cde0dfee9c,"Hook
 $C0:260E,$C0:264E,65,Field_HookLeaveToBankC3,$C0,Engine,verified,82095f7a0899,Hook 11: leaves the field for good.
 $C0:264F,$C0:2724,214,Field_HookWinPulse,$C0,Engine,verified,81d97b79ffd4,"Hook 12, a blocking sequence that runs its own frames (each one Field_EndOfFrameShort + Sub_EC60, with no Field_FrameUpdate): redraws the map (Field_BuildC800Mode1, Field_Unk74E8/74F7, redraw step 2),"
 $C0:2725,$C0:274C,40,Field_WinPulseDraw,$C0,Engine,verified,85a973a8ac2d,"One frame of Field_HookWinPulse's shape: WinFx_Size to WinFx_ArgSize, table WinFx_TableA or WinFx_TableB by Field_Unk53, then BankC3_Entry0008 in mode $80 (WinFx_ArgX/Y were set by the caller)."
-$C0:274D,$C0:27EA,158,Field_ServiceUnk54,$C0,Engine,verified,76d008ae5c84,"(was Field_Unk274D.) Per-frame service of the Field_Unk54 requests, first match wins: - bit 4 (Field54_Credits): build the next line of the staff credits."
+$C0:274D,$C0:27EA,158,Field_ServiceUnk54,$C0,Engine,verified,585f5b285456,"(was Field_Unk274D.) Per-frame service of the Field_Unk54 requests, first match wins: - bit 4 (Field54_Credits): build the next line of the staff credits."
 $C0:27EB,$C0:2823,57,Field_ServiceUnk54_SendLine,$C0,Engine,verified,26eb4f2d665f,
 $C0:2824,$C0:2847,36,Field_FadeInAfterReload,$C0,Engine,verified,8a44e97cd7a2,"(was Sub_2824.) Fade-in after a reload: unless Scene_ReloadStep returns nonzero, raises Fade_Brightness one step per frame (input disabled around Field_FrameUpdate) until it reaches full brightness."
 $C0:2848,$C0:286B,36,Scene_SettleFrames,$C0,Engine,verified,c192c9e5b4cd,"The field-load fade-in: a copy of Field_FadeInAfterReload just before it, differing in one call."
@@ -61,10 +76,32 @@ $C0:2DF1,$C0:2E1D,45,ClearRAMDMA,$C0,Engine,verified,2a8062ed2e09,"Zeros a WRAM 
 $C0:2E1E,$C0:2E66,73,Sys_HaltWithColor,$C0,Engine,verified,4eb93cfb459e,"(was the stub LoadSavePath.) Stops the game on a single colour: the first 21 bytes are InitHW's body written inline (interrupts off, forced blank, NMI/DMA/HDMA off, DB=$00), then it also clears Field_"
 $C0:595C,$C0:597C,33,Evt_RunObj0Func1,$C0,Engine,verified,698bb554b9b5,"(was Sub_595C.) Runs one event-script function of object 0: the offset stored at Evt_Data+2 (object 0's second function pointer), executing opcodes through Evt_OpcodeTable until opcode $00."
 $C0:597D,$C0:59D8,92,Evt_RunObjInit,$C0,Engine,verified,84c4d964684c,"(was Sub_597D.) Runs object Obj_Cur's init function: the first of its 16 function offsets (Evt_Data + Obj_Cur*16, i.e."
-$C0:881E,$C0:8859,60,Field_FrameUpdate,$C0,Engine,verified,0d1a5763990c,"Field work done every frame, before input-driven checks such as Field_ActionButton: resets Field_UnkEB (the action-button target) to none, then with DP=$1D00 runs Map_ResetUnk1D2E, clears Map_Unk1D2C/"
+$C0:5AC5,$C0:5B1E,90,Evt_StartTargetFunc1,$C0,Engine,verified,8abc1e4c34dc,Starts function 1 of the object in Field_UnkEB (the one the action button found).
+$C0:5B63,$C0:5B70,14,Map_LeaderPastRowMax,$C0,Engine,verified,288873407184,Map_Unk9175's test for a downward step: C=1 when the leader's Obj_TileY is past Map_Unk1D1D (TileY >= Map_Unk1D1D + 1).
+$C0:5B71,$C0:5B78,8,Map_LeaderPastRowMin,$C0,Engine,verified,59e99458658a,Map_Unk9175's test for an upward step: C=1 when the leader's Obj_TileY <= Map_Unk1D1C + 1.
+$C0:5B79,$C0:5B85,13,Map_LeaderPastColMax,$C0,Engine,verified,cf5293197ab6,Map_Unk9175's test for a rightward step: C=1 when the leader's Obj_TileX >= Map_Unk1D1B.
+$C0:5B86,$C0:5B8C,7,Map_LeaderPastColMin,$C0,Engine,verified,6425a3892d59,Map_Unk9175's test for a leftward step: C=1 when the leader's Obj_TileX <= Map_Unk1D1A.
+$C0:75A0,$C0:75E8,73,Map_ClearBufC800,$C0,Engine,verified,2728cb0be397,"(was Map_Unk75A0.) Zeroes the 2 KB WRAM buffer Map_BufC800 ($7E:C800–$7E:CFFF) that Field_BuildC800Mode1/2/4 fill: the first MVN copies the 32 zero bytes at GfxRom_D2 to its start, and each later MVN "
+$C0:881E,$C0:8859,60,Field_FrameUpdate,$C0,Engine,verified,41629553031e,"Field work done every frame, before input-driven checks such as Field_ActionButton: resets Field_UnkEB (the action-button target) to none, then with DP=$1D00 runs Map_ResetUnk1D2E, clears Map_Unk1D2C/"
 $C0:885A,$C0:88E4,139,Field_Unk885A,$C0,Engine,verified,e57d3e91ea71,"A two-step job driven by Field_Unk38, run frame after frame by DefaultHandler's map-redraw path until it clears Field_Unk38: - Field_Unk38 = 1: zero Map_Unk1D2E/1D30/1D32/1D33."
 $C0:88E5,$C0:88ED,9,Map_ResetUnk1D2E,$C0,Engine,verified,8480009531b9,Copies Map_Unk1D2A to Map_Unk1D2E and Map_Unk1D2B to Map_Unk1D30 at the start of every Field_FrameUpdate (so those two hold per-frame values derived from a standing pair; meaning unknown).
-$C0:88EE,$C0:8901,20,Field_DpadDispatch,$C0,Engine,verified,e2d7dae72c17,"Unless Field_Unk38 is busy, runs the Field_DpadHandlerTable entry picked by Pad_Unk00F9 bits 0-3 (16 entries; the D-pad bits, if Pad_Unk00F9 is laid out like Pad_Pressed's high byte), with 8-bit X/Y."
+$C0:88EE,$C0:8901,20,Field_DpadDispatch,$C0,Engine,verified,24e4fd8879de,"Unless Field_Unk38 is busy, runs the Field_DpadHandlerTable entry picked by Pad_Unk00F9 bits 0-3 (16 entries; the D-pad bits, if Pad_Unk00F9 is laid out like Pad_Pressed's high byte), with 8-bit X/Y."
+$C0:8902,$C0:8923,34,Field_DpadHandlerTable,$C0,Engine,verified,3bc96656c170,"Field_DpadHandlerTable: Field_DpadDispatch's handler for each value of Pad_Unk00F9 bits 0-3, read as Right (bit 0), Left (1), Down (2) and Up (3) from what the handlers do; impossible pairs (Left+Righ"
+$C0:8924,$C0:8924,1,Field_DpadNone,$C0,Engine,verified,a03aa1906915,No direction (or an impossible combination): leaves Map_Unk1D2C/1D2D at the 0 Field_FrameUpdate set and Map_Unk1D2E/1D30 as they are.
+$C0:8925,$C0:8943,31,Field_DpadRight,$C0,Engine,verified,88adfbee80c6,Right: Map_Unk1D2C = +$10 and Map_Unk1D2E += $10; $20 each instead while Pad_Unk00F8 bit 1 (Pad_Unk00F8Bit1) is set.
+$C0:8944,$C0:8962,31,Field_DpadLeft,$C0,Engine,verified,eb87176fd86a,Left: Map_Unk1D2C = -$10 and Map_Unk1D2E -= $10; $20 each instead while Pad_Unk00F8 bit 1 (Pad_Unk00F8Bit1) is set.
+$C0:8963,$C0:8981,31,Field_DpadUp,$C0,Engine,verified,2ae07f8efc91,Up: Map_Unk1D2D = -$10 and Map_Unk1D30 -= $10; $20 each instead while Pad_Unk00F8 bit 1 (Pad_Unk00F8Bit1) is set.
+$C0:8982,$C0:89A0,31,Field_DpadDown,$C0,Engine,verified,e620a071ebde,Down: Map_Unk1D2D = +$10 and Map_Unk1D30 += $10; $20 each instead while Pad_Unk00F8 bit 1 (Pad_Unk00F8Bit1) is set.
+$C0:89A1,$C0:89D1,49,Field_DpadDownRight,$C0,Engine,verified,66903c81d03d,"Down+Right: both steps +$10, both sums up by $10; $20 each instead while Pad_Unk00F8 bit 1 (Pad_Unk00F8Bit1) is set."
+$C0:89D2,$C0:8A06,53,Field_DpadDownLeft,$C0,Engine,verified,026d25177df3,"Down+Left: X step -$10 (sum down), Y step +$10 (sum up); $20 each instead while Pad_Unk00F8 bit 1 (Pad_Unk00F8Bit1) is set."
+$C0:8A07,$C0:8A3B,53,Field_DpadUpRight,$C0,Engine,verified,60f41876ecc0,"Up+Right: X step +$10 (sum up), Y step -$10 (sum down); $20 each instead while Pad_Unk00F8 bit 1 (Pad_Unk00F8Bit1) is set."
+$C0:8A3C,$C0:8A6C,49,Field_DpadUpLeft,$C0,Engine,verified,8a718bf06a16,"Up+Left: both steps -$10, both sums down by $10; $20 each instead while Pad_Unk00F8 bit 1 (Pad_Unk00F8Bit1) is set."
+$C0:9175,$C0:91AB,55,Map_Unk9175,$C0,Engine,verified,f5a5f8cfebf5,"Field_FrameUpdate's step after the D-pad: zeroes Map_Unk1D32/1D33, then copies Map_Unk1D2E (signed X step) into Map_Unk1D32 unless the leader is already at the limit in that direction (Map_LeaderPastC"
+$C0:99DE,$C0:9A1E,65,Map_Unk99DE,$C0,Engine,verified,d998510b2f98,Field_FrameUpdate's step after Map_Unk9175: may drop the frame's steps in Map_Unk1D2E (X) and Map_Unk1D30 (Y).
+$C0:9A1F,$C0:9A3C,30,Map_StepStopDown,$C0,Engine,verified,9cb56fccdfe5,"Map_Unk99DE's test for a downward step, A = n (step / 16)."
+$C0:9A3D,$C0:9A5F,35,Map_StepStopUp,$C0,Engine,verified,f80d17f05281,"Map_Unk99DE's test for an upward step, A = n."
+$C0:9A60,$C0:9A7D,30,Map_StepStopRight,$C0,Engine,verified,76055abce24e,"As Map_StepStopDown for a rightward step: L = Map_Unk1D0C / 2 against Map_Unk1D1B, the leader's Obj_ScreenX against Screen_HalfX (C=1 when it is in the left half or at $80), Map_Unk1D93 + n against Ma"
+$C0:9A7E,$C0:9AA0,35,Map_StepStopLeft,$C0,Engine,verified,d178ed3f8dc5,"As Map_StepStopUp for a leftward step: Map_Unk1D1A against T = Map_TileOriginX / 2, the leader's Obj_ScreenX against Screen_HalfX (C=1 when it is in the right half), Map_Unk1D93 - n."
 $C0:B192,$C0:B1B1,32,Obj_ResetStates,$C0,Sprites & objects,verified,fcb380055d6f,"(was Sub_B192.) Clears Obj_State for every object the location defines (count in Evt_ObjCount), pointing DP at the Obj_State table so each clear is a 2-byte dp store, then tail-jumps to SprBuf_FreeAll"
 $C0:B1B2,$C0:B203,82,VramQ_Flush,$C0,Engine,verified,c55fc68b8365,"Uploads every pending entry of the VRAM upload queue (VramQ_*, filled by Obj_BuildFrame4, Obj_BuildFrame8, Obj_BuildFrame8Pass1, Obj_BuildFrame12Pass2 and Obj_BuildFrame12Pass2Alt) with DMA channel 7,"
 $C0:B271,$C0:B2A7,55,Oam_BuildShadow,$C0,Engine,verified,a00b0a1208df,"(was PostVBlank.) Rebuilds the OAM shadow ($0700 low table, $0900 high table) for the next frame; it runs before Sub_EC60's wait for the NMI, not after a VBlank."
@@ -145,11 +182,11 @@ $C0:FFDB,$C0:FFDB,1,RomVersion,$C0,ROM header,verified,310a0a5fa6af,
 $C0:FFDC,$C0:FFDD,2,RomChecksumComplement,$C0,ROM header,verified,422bc75831ed,
 $C0:FFDE,$C0:FFDF,2,RomChecksum,$C0,ROM header,verified,b0c39e035e55,
 $C0:FFE0,$C0:FFFF,32,RomVectors,$C0,ROM header,verified,cfa3102ede0e,Interrupt vector table ($FFE0–$FFFF) Native mode: $FFE4–$FFEF.
-$C1:007E,$C1:0088,11,BattleSys_PumpFrames,$C1,Battle system,verified,c9c6ff22755b,"Waits for the next frame: sets !Battle_FramePending, then calls BattleSys_IdleVecCD0036 again and again until something else clears the flag."
+$C1:007E,$C1:0088,11,BattleSys_PumpFrames,$C1,Battle system,verified,735e37e66c90,"Waits for the next frame: sets !Battle_FramePending, then calls BattleSys_IdleVecCD0036 again and again until something else clears the flag."
 $C1:0089,$C1:00A6,30,Battle_Mul8,$C1,Battle engine,verified,b3076b22c6da,8×8→16 HW multiply via WRMPYA/WRMPYB/RDMPYL.
 $C1:00A7,$C1:00D6,48,Battle_Mul8x16,$C1,Battle engine,verified,1ea2f124f667,"8×16→24 multiply in two hardware passes (the top byte of the product is zeroed first, so nothing from the caller is accumulated): pass 1: Factor8 × low byte of Factor16  -> Product+0/+1 pass 2: Factor"
 $C1:00D7,$C1:010C,54,Battle_Divide,$C1,Battle engine,verified,b3f458646506,"16÷8 HW divide via WRDIVL/WRDIVH/WRDIVB, quotient from RDDIVL and remainder from RDMPYL."
-$C1:010D,$C1:0110,4,Battle_ShiftLeft8,$C1,Battle engine,verified,37bf1bdd7a04,"$C1:010D–$C1:011E — Shift helpers (18 bytes, $010D–$011E) Overlapping fall-through stubs for power-of-2 left/right shifts on A."
+$C1:010D,$C1:0110,4,Battle_ShiftLeft8,$C1,Battle engine,verified,b45234853564,"$C1:010D–$C1:011E — Shift helpers (18 bytes, $010D–$011E) Overlapping fall-through stubs for power-of-2 left/right shifts on A."
 $C1:0111,$C1:0111,1,Battle_ShiftLeft4,$C1,Battle engine,verified,b4fcb5476caf,
 $C1:0112,$C1:0115,4,Battle_ShiftLeft3,$C1,Battle engine,verified,c2643f949d52,
 $C1:0116,$C1:0117,2,Battle_ShiftRight8,$C1,Battle engine,verified,b28bf7e8cb4c,
@@ -195,7 +232,7 @@ $C1:103E,$C1:104D,16,BattleSys_SlotMenuReadyPredicate,$C1,Battle system,verified
 $C1:104E,$C1:106D,32,BattleMsg_BlankLeadingZeros,$C1,Battle text & numbers,verified,d52acb37a2c3,Leading-zero suppression for the number formatter's digits.
 $C1:106E,$C1:10E2,117,BattleSys_UpkeepTwoFrames,$C1,Battle system,verified,e2b9ad105ea5,"Service 3 of the same-bank $C10045 service dispatcher (reached only by JSR $0003/$0045 inside bank $C1; returns RTS; dispatch table at $C10051, entry 3 = $106E; searched: no JSR, JMP or JSL reaches $1"
 $C1:10E3,$C1:10F9,23,BattleMenu_RefreshIfDirtyL,$C1,Battle menu,verified,7b1e36fb6214,"JSL-entry twin of BattleMenu_RefreshIfDirtyAndTick, reached via the bank's cross-bank entry-vector table: JSL $C10012 -> JMP $C110E3."
-$C1:10FA,$C1:1114,27,BattleMenu_RefreshIfDirtyAndTick,$C1,Battle menu,verified,a8d65967b090,"Same-bank JSR twin of BattleMenu_RefreshIfDirtyL — identical dirty- flag gate and menu rebuild chain, but always follows up with a cross-bank per-frame service tick (BattleSys_FrameTickVec) before ret"
+$C1:10FA,$C1:1114,27,BattleMenu_RefreshIfDirtyAndTick,$C1,Battle menu,verified,a5b4548b1d96,"Same-bank JSR twin of BattleMenu_RefreshIfDirtyL — identical dirty- flag gate and menu rebuild chain, but always follows up with a cross-bank per-frame service tick (BattleSys_FrameTickVec) before ret"
 $C1:1115,$C1:1152,62,BattleMenu_DrawCursorSprites,$C1,Battle menu,verified,24e55a80fe50,"Builds OAM sprites 0-3 (BattleOam) for the command cursor over the shown PC: each of the 4 template sprites in BattleRom_CursorSprite is offset by the PC's !Battler_ScreenX/Y, and its palette bits are"
 $C1:1153,$C1:11E0,142,BattleMenu_ProcessInput,$C1,Battle menu,verified,56eb95b7535f,Battle command-window input handler.
 $C1:11E1,$C1:1217,55,BattleMenu_CycleActivePcPrev,$C1,Battle menu,verified,cd65b158dfaa,"Left D-pad: step !BattleMenu_RosterIdx back (wrap 0..2), skipping roster entries that are negative."
@@ -308,7 +345,7 @@ $C1:2D9F,$C1:2F1E,384,Battle_TickPcSlots,$C1,Battle engine,verified,4d0f152d462e
 $C1:2F1F,$C1:2F21,3,Battle_UnkThunk2F1F,$C1,Battle engine,verified,30f8da6da52f,that ends Battle_TickEnemyGroup ($C1:34A6).
 $C1:2F22,$C1:2F96,117,Battle_UpdatePcFacing,$C1,Battle engine,verified,c0c04dbde691,
 $C1:2F97,$C1:305B,197,Battle_PickStatusAnim,$C1,Battle engine,verified,f2816325d71f,
-$C1:305C,$C1:308B,48,Battle_PickNextStatusAnim,$C1,Battle engine,verified,22b6fd672ec6,"Runs Battle_PickStatusAnim for one battler per call, the slot in !Battle_StatusAnimNext (if present), and moves it on; past slot 10 it counts a wrap in !Battle_StatusAnimWraps and goes back to slot 3,"
+$C1:305C,$C1:308B,48,Battle_PickNextStatusAnim,$C1,Battle engine,verified,963a6e1fd4cd,"Runs Battle_PickStatusAnim for one battler per call, the slot in !Battle_StatusAnimNext (if present), and moves it on; past slot 10 it counts a wrap in !Battle_StatusAnimWraps and goes back to slot 3,"
 $C1:308C,$C1:30B5,42,Battle_ApplyPendingEffect,$C1,Battle engine,verified,aa1f51070c40,"For battler !Battle_TickSlot, if present: when the effect picked (!Battler_FxWanted) differs from the one running (!Battler_FxApplied), records it, stops the overlay and the colour cycle, clears !Batt"
 $C1:30B6,$C1:30E0,43,Battle_FxReset,$C1,Battle engine,verified,9940ba3342cc,"Effect 0 (none): clears the battler's effect flags; for a PC also copies the saved palette (!Battle_PaletteSaved, 26 bytes from !Battler_Palette * 16) back over the live one, undoing a tint or colour "
 $C1:30E1,$C1:3140,96,Battle_FxOverlay2Tint,$C1,Battle engine,verified,0ef0383723f8,
@@ -340,9 +377,39 @@ $C1:3BC2,$C1:3E32,625,Battle_MoverOrbit,$C1,Battle engine,verified,3ce6a676b774,
 $C1:3E33,$C1:3F59,295,Battle_MoverLoop,$C1,Battle engine,verified,d333f2f75483,
 $C1:3F5A,$C1:4020,199,Battle_MoverFixedDir,$C1,Battle engine,verified,451b0d5729c0,
 $C1:4021,$C1:4057,55,Battle_MoverToCentre,$C1,Battle engine,verified,2810c3762c30,"Mover 8 (move $19): heads from the enemy's position for the middle of the screen (!Battle_ScreenCentreX/Y), faces that way and starts the step, with no probe and no collision test."
-$C2:0043,$C2:010F,205,BankC2_InitHwRegs,$C2,Engine,verified,2da8e81a840c,"Writes the PPU registers from OBSEL to SETINI (all but INIDISP and the data ports OAMDATA, VMDATAL/H and CGDATA) and the CPU registers WRIO-VTIMEH with fixed values, through DP=$2100 and then DP=$4200"
+$C1:4058,$C1:41BD,358,BattleSys_RunAction,$C1,Battle system,verified,cb5987ae9bbe,"Service 4 of the cross-bank $C10045 service API (dispatch table at $C10051, entry 4 = $4058; no JSR, JMP or JSL reaches $4058 directly; the one request found is LDA #4 / JSR $C1:0003 at $C1:BFA4, call"
+$C1:41BE,$C1:4211,84,BattleAct_FlagLethalPcHits,$C1,Battle engine,verified,3bfda2fbc889,
+$C1:4212,$C1:4239,40,BattleAct_TickCalcs,$C1,Battle engine,verified,b0f507359309,
+$C1:423A,$C1:430F,214,BattleAct_StepBattlerAnims,$C1,Battle engine,verified,cd0f2c1e17ee,
+$C1:4310,$C1:432B,28,BattleAct_LoadScript,$C1,Battle engine,verified,50cffec05f73,Clears the 16-byte action parameter block (!Battle_ActScriptId ..
+$C1:432C,$C1:459F,628,BattleAct_LoadAttack,$C1,Battle engine,verified,f8f7edfa2965,
+$C1:45A0,$C1:4759,442,BattleAct_LoadTech,$C1,Battle engine,verified,e576da99aef5,"Kind 2: reads the 7-byte record !Battle_ActId of BattleRom_PcTechAct (PC caster) or BattleRom_EnemyTechAct (enemy caster), including !Battle_ActUnkArg987C, then: frames !BattleRom_ActFrames for both; "
+$C1:475A,$C1:475A,1,BattleAct_LoadNone,$C1,Battle engine,verified,99399c4d5461,"Kind 0 (and any kind of 4 and up): loads nothing, so no thread starts."
+$C1:475B,$C1:4832,216,BattleAct_LoadKind3,$C1,Battle engine,verified,624c1ab12625,"Kind 3: like the PC branch of BattleAct_LoadTech, for any caster, with record !Battle_ActId - $BC of BattleRom_Kind3Act; frames !BattleRom_ActFrames, palettes !BattleRom_Kind3Pals, objects !BattleRom_"
+$C1:4833,$C1:48EB,185,BattleAct_LoadCommon,$C1,Battle engine,verified,6d88546ce9da,
+$C1:48EC,$C1:4942,87,BattleAct_IndexObjLists,$C1,Battle engine,verified,0f4f6c8e8d21,
+$C1:4943,$C1:49FE,188,BattleAct_UnpackFrames,$C1,Battle engine,verified,aa85f71dd6b9,
+$C2:0000,$C2:0002,3,BankC2_Entry0000,$C2,Engine,verified,8f79873f075c,"vectors, five JMPs reached from other banks by JML/JSL: $0000 BankC2_Entry0000 → BankC2_SceneBoot (JML from GameLoop_Main for Loc_Id $01F0-$81EF; it never returns) $0003 BankC2_Entry0003 and $0006 Ban"
+$C2:0003,$C2:0005,3,BankC2_Entry0003,$C2,Engine,verified,3820532e261c,
+$C2:0006,$C2:0008,3,BankC2_Entry0006,$C2,Engine,verified,5c579e7a1967,
+$C2:0009,$C2:000B,3,BankC2_Entry0009,$C2,Engine,verified,63f34dceaf41,
+$C2:000C,$C2:000E,3,BankC2_Entry000C,$C2,Engine,verified,3cd62bfe166d,
+$C2:000F,$C2:0042,52,BankC2_SceneBoot,$C2,Engine,verified,682c28b9d14c,Starts the bank's scene mode (inferred name: GameLoop_Main sends Loc_Id $01F0-$81EF here; what those locations show is not traced).
+$C2:0043,$C2:010F,205,BankC2_InitHwRegs,$C2,Engine,verified,d96e085a8e79,"Writes the PPU registers from OBSEL to SETINI (all but INIDISP and the data ports OAMDATA, VMDATAL/H and CGDATA) and the CPU registers WRIO-VTIMEH with fixed values, through DP=$2100 and then DP=$4200"
+$C2:0110,$C2:012E,31,C2Scene_InstallInterrupts,$C2,Engine,verified,f13b4cbdf31e,"Writes JML C2Scene_NmiHandler and JML C2Scene_IrqHandler into the WRAM trampolines that the native NMI and IRQ stubs in bank $00 jump through, as InstallNMI/InstallIRQ ($C0:0B64/$0B75) do for the fiel"
+$C2:012F,$C2:015D,47,C2Scene_ClearDp,$C2,Engine,verified,0d6b367fd6c2,"Zeroes the direct page $00-$EF (an STZ of the first word, then an overlapping MVN), then sets the PPU shadows that C2Scene_NmiHandler copies out to their starting values: forced blank, mode 1 with BG3"
+$C2:015E,$C2:0344,487,C2Scene_NmiHandler,$C2,Engine,verified,e5ca264eebdd,"The scene mode's NMI (reached through !NmiTrampoline, installed by C2Scene_InstallInterrupts)."
+$C2:0345,$C2:0345,1,C2Scene_IrqHandler,$C2,Engine,verified,83e137cdf0d9,(installed by C2Scene_InstallInterrupts; nothing here enables IRQs).
+$C2:0346,$C2:034C,7,C2Scene_WaitFrame,$C2,Engine,verified,3a0410c96062,Waits until the next NMI: spins until C2Scene_FrameCounter changes.
+$C2:0405,$C2:0453,79,C2Scene_VramQFlush,$C2,Engine,verified,c82ffcb74e7f,"Runs the queued VRAM uploads: for each 8-byte C2Scene_VramQ entry up to C2Scene_VramQEnd, one DMA on channel 0 (word writes to VMDATAL/H) from .Bank:.Src, .Size bytes, to VRAM word .Dest with VMAIN = "
 $C2:225A,$C2:225D,4,Trig_Cos1024,$C2,Engine,verified,7080f9fc7e20,"Signed sine or cosine of a 16-bit angle with 1024 steps per turn, read from !Rom_SineTable: A = sin(angle) × 255 (−255..+255; the table holds |sin| as one byte per step, negated for the second half tu"
 $C2:225E,$C2:2272,21,Trig_Sin1024,$C2,Engine,verified,f2df418408aa,
+$C2:940D,$C2:950F,259,Menu_InitPpuAndRam,$C2,Engine,verified,78d1a70fa43b,"Puts the PPU and CPU registers into the menu's starting state, then clears all of VRAM and most of bank $7E with DMA."
+$C2:9510,$C2:9511,2,Menu_DmaZeroWord,$C2,Engine,verified,0b8bae3fc865,Menu_InitPpuAndRam's VRAM clear and of Menu_DmaClearWram.
+$C2:9512,$C2:9541,48,Menu_DmaClearWram,$C2,Engine,verified,060735f6467b,"Zeroes Y bytes of bank $7E from address X with DMA channel 0 (fixed source Menu_DmaZeroWord, one register: WMDATA)."
+$C2:9542,$C2:956D,44,Menu_DmaCopyFFToWram,$C2,Engine,verified,103e4d2d74ad,"Copies Y bytes from bank $FF (MenuRom_DmaCopyBank), address A, to bank $7E at address X with DMA channel 0 (stepping source, one register: WMDATA)."
+$C2:956E,$C2:95BA,77,Menu_InitNewGameData,$C2,Engine,verified,31545d7027df,Sets up the data of a new game (inferred from what it fills).
+$C2:95BB,$C2:960A,80,Menu_ClearConfigAndFlags,$C2,Engine,verified,cc7ac2655a45,"Zeroes Menu_FlagBlock7F ($7F:0000-$01FF), the page $7E:0400-$04FF (Menu_PlayTime and what follows) and Menu_Config ($2990-$29AF), then copies MenuRom_DefaultConfig (12 B) to Menu_Config and the 9 B fr"
 $CC:F365,$CC:F382,30,Battle_Mul8CC,$CC,Battle engine,verified,0de954b5aa42,A byte-identical copy of Battle_Mul8 ($C1:0089): 8×8→16 hardware multiply through WRMPYA/WRMPYB/RDMPYL.
 $CF:F9FB,$CF:FA42,72,Battle_SinLookupCF,$CF,Battle engine,verified,754e4d354d3e,Bank $CF's own scaled sine: returns (sin(A) × !BattleCF_SinScale) >> 8 in A.
 $CF:FDAD,$CF:FE1F,115,BattleMsg_FormatNumber4Digits,$CF,Battle text & numbers,verified,8661fa9c82a1,"A four-digit, long-call version of BattleMsg_FormatNumberDigits ($C1:011F): the same subtract-and-count loops with one more for the thousands, and the digits looked up in !BattleRom_DigitTilesB (tiles"

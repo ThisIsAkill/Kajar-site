@@ -184,21 +184,21 @@
       <div class="wk-party">
         <div class="wk-party-row" title="Bytes matched: the rebuilt ROM is byte-identical here">
           <span class="wk-party-k">HP</span>
-          <span class="wk-party-v">39,735<small>/359,278</small></span>
+          <span class="wk-party-v">44,805<small>/359,278</small></span>
         </div>
-        <div class="wk-stat-track"><div class="wk-stat-fill" style="width:11.06%"></div></div>
-        <p class="wk-party-note">bytes matched · 11.06% of code</p>
+        <div class="wk-stat-track"><div class="wk-stat-fill" style="width:12.47%"></div></div>
+        <p class="wk-party-note">bytes matched · 12.47% of code</p>
 
         <div class="wk-party-row" title="Matched functions that also meet the readability standard">
           <span class="wk-party-k">MP</span>
-          <span class="wk-party-v">352<small>/352</small></span>
+          <span class="wk-party-v">419<small>/419</small></span>
         </div>
         <div class="wk-stat-track"><div class="wk-stat-fill wk-stat-fill-mp" style="width:100.0%"></div></div>
         <p class="wk-party-note">functions readable</p>
 
         <div class="wk-party-row" title="Readable functions that passed an independent review">
           <span class="wk-party-k">TP</span>
-          <span class="wk-party-v">352<small>/352</small></span>
+          <span class="wk-party-v">419<small>/419</small></span>
         </div>
         <div class="wk-stat-track"><div class="wk-stat-fill wk-stat-fill-dim" style="width:100.0%"></div></div>
         <p class="wk-party-note">functions verified</p>
@@ -370,9 +370,15 @@
 <li><strong>A small quirk in battle.</strong> Holding L+R counts frames toward a message (<code>$75</code>). Reviews took three rounds to pin down exactly when that counter resets.</li>
 </ul>
 <p>A last batch came from following the duplicate finder's leads into banks <code>$C0</code>, <code>$C2</code>, <code>$CF</code> and <code>$FD</code>: another 1,037 bytes, all reviewed.</p>
-<p><code>main</code> now stands at 39,735 bytes, 11.06% of the game's code, every byte of it independently verified.</p>
+<p>Three more batches went in during the afternoon:</p>
+<ul>
+<li><strong>Battle actions</strong> (<code>$C1:4058–$C1:49FE</code>, 2,471 bytes). Service 4 plays one action's script frame by frame, then loads what the action needs: its script, the attack or tech record, graphics sets and the sprite frames. Three bytes at <code>$CF:FFFD-FFFF</code>, all 0 in the shipped game, can force the action flags.</li>
+<li><strong>What's in front of the leader</strong> (<code>$C0</code>, 1,370 bytes). The checks for the object and the tile in front of the party leader, the eight D-pad handlers, and the limits that stop the leader at the edge of a map. The reach test is off by at most one unit, because a missing <code>SEC</code> and a missing <code>INC</code> partly cancel out.</li>
+<li><strong>Bank <code>$C2</code> boot</strong> (1,229 bytes). The bank's entry points, its interrupt handlers, and the new-game setup that fills in each character's starting record.</li>
+</ul>
+<p><code>main</code> now stands at 44,805 bytes, 12.47% of the game's code, every byte of it independently verified.</p>
 <h2 id="next">Next</h2>
-<p>Keep the pipeline full: bank <code>$C1</code> from service 4 at <code>$C1:4058</code>, the <code>$C0</code> main loop's callees (looking for the object in front of the leader, the tile check), and the first routines of bank <code>$C2</code>.</p>
+<p>Keep the pipeline full: bank <code>$C1</code> from <code>$C1:49FF</code>, the remaining map steps of the <code>$C0</code> main loop, and the per-frame steps of the <code>$C2</code> scene.</p>
   
   <p class="wk-post-back"><a href="../../../../">← Back to devlog</a></p>
 </article>
