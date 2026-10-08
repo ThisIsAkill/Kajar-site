@@ -6,13 +6,13 @@
   
   
   <meta name="description" content="Byte-exact matching decompilation of Chrono Trigger (SNES, US 1.0)">
-  <link rel="canonical" href="https://thisisakill.github.io/Kajar-site/devlog/2026/07/20/20-july-2026-setting-up-and-the-last-page-of-bank-00/">
+  <link rel="canonical" href="https://thisisakill.github.io/Kajar-site/includes/abbreviations/">
   
   
-  <title>20 July 2026: setting up, and the last page of bank $00 — Kajar</title>
+  <title>Abbreviations — Kajar</title>
   
   
-  <link rel="stylesheet" href="../../../../../stylesheets/wiki.css">
+  <link rel="stylesheet" href="../../stylesheets/wiki.css">
   
   
   
@@ -26,7 +26,7 @@
 <!-- ── Header ──────────────────────────────────────────────── -->
 <header class="wk-header">
   <button class="wk-nav-toggle" id="wk-nav-toggle" aria-label="Toggle navigation" aria-expanded="false" aria-controls="wk-nav">☰</button>
-  <a class="wk-wordmark" href="../../../../.." aria-label="Kajar home">
+  <a class="wk-wordmark" href="../.." aria-label="Kajar home">
     <svg class="wk-wordmark-clock" viewBox="0 0 32 32" aria-hidden="true">
       <circle cx="16" cy="16" r="13.5" fill="#0f1438" stroke="#ffd76e" stroke-width="2.5"/>
       <g stroke="#cdd5ff" stroke-width="1.6" stroke-linecap="round">
@@ -61,10 +61,10 @@
 
   <!-- Left sidebar -->
   <nav class="wk-nav" id="wk-nav" aria-label="Site navigation">
-    <a href="../../../../.." class="wk-portal-icon" aria-label="Home">
+    <a href="../.." class="wk-portal-icon" aria-label="Home">
       <span class="wk-emblem">
         <span class="wk-emblem-art">
-          <img src="../../../../../assets/ct-icon.png" alt="Crono" width="220" height="220">
+          <img src="../../assets/ct-icon.png" alt="Crono" width="220" height="220">
         </span>
         <span class="wk-emblem-caption">Crono · 1000 AD</span>
       </span>
@@ -72,22 +72,22 @@
 
     
       
-      <a class="wk-nav-link" href="../../../../..">Home</a>
+      <a class="wk-nav-link" href="../..">Home</a>
       
     
       
         <p class="wk-nav-heading">The Journey</p>
         
           
-          <a class="wk-nav-link is-active" href="../../../../">Devlog</a>
+          <a class="wk-nav-link" href="../../devlog/">Devlog</a>
           
         
           
-          <a class="wk-nav-link" href="../../../../../gallery/">Gallery</a>
+          <a class="wk-nav-link" href="../../gallery/">Gallery</a>
           
         
           
-          <a class="wk-nav-link" href="../../../../../PROGRESS/">Progress</a>
+          <a class="wk-nav-link" href="../../PROGRESS/">Progress</a>
           
         
       
@@ -96,35 +96,35 @@
         <p class="wk-nav-heading">Systems</p>
         
           
-          <a class="wk-nav-link" href="../../../../../systems/">Overview</a>
+          <a class="wk-nav-link" href="../../systems/">Overview</a>
           
         
           
-          <a class="wk-nav-link" href="../../../../../systems/boot/">Boot</a>
+          <a class="wk-nav-link" href="../../systems/boot/">Boot</a>
           
         
           
-          <a class="wk-nav-link" href="../../../../../systems/engine/">Engine core</a>
+          <a class="wk-nav-link" href="../../systems/engine/">Engine core</a>
           
         
           
-          <a class="wk-nav-link" href="../../../../../systems/sprites/">Sprites & objects</a>
+          <a class="wk-nav-link" href="../../systems/sprites/">Sprites & objects</a>
           
         
           
-          <a class="wk-nav-link" href="../../../../../systems/battle-engine/">Battle engine</a>
+          <a class="wk-nav-link" href="../../systems/battle-engine/">Battle engine</a>
           
         
           
-          <a class="wk-nav-link" href="../../../../../systems/battle-menu/">Battle menu</a>
+          <a class="wk-nav-link" href="../../systems/battle-menu/">Battle menu</a>
           
         
           
-          <a class="wk-nav-link" href="../../../../../systems/battle-targeting/">Battle targeting</a>
+          <a class="wk-nav-link" href="../../systems/battle-targeting/">Battle targeting</a>
           
         
           
-          <a class="wk-nav-link" href="../../../../../systems/battle-status/">Status bar & text</a>
+          <a class="wk-nav-link" href="../../systems/battle-status/">Status bar & text</a>
           
         
       
@@ -133,19 +133,19 @@
         <p class="wk-nav-heading">How It Works</p>
         
           
-          <a class="wk-nav-link" href="../../../../../ARCHITECTURE/">Architecture</a>
+          <a class="wk-nav-link" href="../../ARCHITECTURE/">Architecture</a>
           
         
           
-          <a class="wk-nav-link" href="../../../../../ROM_MAP/">ROM Map</a>
+          <a class="wk-nav-link" href="../../ROM_MAP/">ROM Map</a>
           
         
           
-          <a class="wk-nav-link" href="../../../../../how-sprite-init-works/">Sprite Init Explainer</a>
+          <a class="wk-nav-link" href="../../how-sprite-init-works/">Sprite Init Explainer</a>
           
         
           
-          <a class="wk-nav-link" href="../../../../../ROM_HASH/">Target ROM</a>
+          <a class="wk-nav-link" href="../../ROM_HASH/">Target ROM</a>
           
         
       
@@ -154,25 +154,25 @@
         <p class="wk-nav-heading">For Time Travelers</p>
         
           
-          <a class="wk-nav-link" href="../../../../../CONTRIBUTING/">Contributing</a>
+          <a class="wk-nav-link" href="../../CONTRIBUTING/">Contributing</a>
           
         
           
-          <a class="wk-nav-link" href="../../../../../ASAR_QUIRKS/">asar Quirks</a>
+          <a class="wk-nav-link" href="../../ASAR_QUIRKS/">asar Quirks</a>
           
         
           
-          <a class="wk-nav-link" href="../../../../../glossary/">Glossary</a>
+          <a class="wk-nav-link" href="../../glossary/">Glossary</a>
           
         
           
-          <a class="wk-nav-link" href="../../../../../CI_SETUP/">CI Setup</a>
+          <a class="wk-nav-link" href="../../CI_SETUP/">CI Setup</a>
           
         
       
     
       
-      <a class="wk-nav-link" href="../../../../../credits/">Credits</a>
+      <a class="wk-nav-link" href="../../credits/">Credits</a>
       
     
 
@@ -204,7 +204,7 @@
         <p class="wk-party-note">functions verified</p>
       </div>
       
-      <p class="wk-stat-link"><a href="../../../../../PROGRESS/">View full progress →</a></p>
+      <p class="wk-stat-link"><a href="../../PROGRESS/">View full progress →</a></p>
     </div>
   </nav>
 
@@ -214,80 +214,15 @@
 
       
       
-      <div class="wk-toc" id="wk-toc">
-        <div class="wk-toc-header">
-          <b>Contents</b>
-          <button class="wk-toc-toggle"
-            onclick="var l=document.getElementById('wk-toc-list');l.hidden=!l.hidden;this.textContent=l.hidden?'[show]':'[hide]'">[hide]</button>
-        </div>
-        <ol class="wk-toc-list" id="wk-toc-list">
-          
-          <li>
-            <a href="#20-july-2026-setting-up-and-the-last-page-of-bank-00" class="wk-toc-link">20 July 2026: setting up, and the last page of bank $00</a>
-            
-            <ol><li><a href="#the-reset-vector" class="wk-toc-link">The reset vector</a></li><li><a href="#the-toolchain" class="wk-toc-link">The toolchain</a></li><li><a href="#what-i-learned" class="wk-toc-link">What I learned</a></li><li><a href="#next" class="wk-toc-link">Next</a></li></ol>
-            
-          </li>
-          
-        </ol>
-      </div>
-      
       
 
       <div class="wk-article-body">
       
-<article>
-  
-  <p class="wk-post-meta">
-    <time datetime="2026-07-20 00:00:00+00:00">2026-07-20</time>
-    
-  </p>
-  
-  
-  <h1 id="20-july-2026-setting-up-and-the-last-page-of-bank-00">20 July 2026: setting up, and the last page of bank $00</h1>
-<p>The project starts. I set up the build, found the reset vector, and <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr> the whole last page of bank <code>$00</code>: 256 bytes of boot stubs, tables, ROM header and vectors.</p>
-<!-- more -->
-
-<p>I have wanted to do a proper SNES decompilation for years. Chrono Trigger is the obvious choice: well documented, much loved, and an engine worth understanding. If you don't read <abbr title="The 16-bit CPU inside the SNES, an extended 6502 capable of 8-bit emulation and full 16-bit native mode.">65816</abbr> assembly, the <a href="../../../../../glossary/">Glossary</a> explains the terms used here.</p>
-<h2 id="the-reset-vector">The reset vector</h2>
-<p>Every decomp starts with the question "what am I looking at?". I have a legally dumped ROM of the US 1.0 release, and the obvious entry point is the <strong>reset vector</strong>.</p>
-<p>At power-on the SNES CPU starts in 6502-emulation mode and jumps to the address stored at <code>$FFFC</code>–<code>$FFFD</code>. Chrono Trigger is <a href="../../../../../glossary/#hirom"><abbr title="SNES ROM mapping where each bank is a full 64KB of ROM — bank $C0 = first 64KB of the ROM file.">HiROM</abbr></a>, so that is file offset <code>$FFFC</code>. The bytes there are <code>$FF00</code>, so the first instruction runs at <code>$FF00</code>.</p>
-<p>That is the <strong>reset stub</strong>, and it is 7 bytes:</p>
-<div class="language-asm highlight"><span class="filename">65C816 Assembly</span><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1"></a><a href="#__codelineno-0-1"><span class="linenos" data-linenos="1 "></span></a><span class="nf">SEI</span><span class="w">          </span><span class="c1">; disable interrupts while we set up</span>
-<a id="__codelineno-0-2" name="__codelineno-0-2"></a><a href="#__codelineno-0-2"><span class="linenos" data-linenos="2 "></span></a><span class="nf">CLC</span>
-<a id="__codelineno-0-3" name="__codelineno-0-3"></a><a href="#__codelineno-0-3"><span class="linenos" data-linenos="3 "></span></a><span class="nf">XCE</span><span class="w">          </span><span class="c1">; switch from 6502-emulation mode to native 65816 mode</span>
-<a id="__codelineno-0-4" name="__codelineno-0-4"></a><a href="#__codelineno-0-4"><span class="linenos" data-linenos="4 "></span></a><span class="nf">JML</span><span class="w"> </span><span class="no">$FDC000</span><span class="w">  </span><span class="c1">; jump to MainInit in bank $FD</span>
-</code></pre></div>
-<p>The rest of the page <code>$FF00</code>–<code>$FFFF</code> (the last page of bank <code>$00</code>) holds:</p>
-<ul>
-<li>the reset stub</li>
-<li><abbr title="Non-Maskable Interrupt — fires at the start of VBlank each frame; the safe window for PPU updates.">NMI</abbr> and IRQ stubs, which jump to RAM-resident handlers (not installed yet at boot)</li>
-<li>a BRK handler, an infinite loop that acts as a crash handler</li>
-<li>two 64-byte lookup tables, <code>BitSet</code> and <code>BitClear</code>: precomputed (1&lt;&lt;N) and ~(1&lt;&lt;N) for N=0..7</li>
-<li>two 64-byte sine-wave tables, <code>ScrollWaveA</code> and <code>ScrollWaveB</code></li>
-<li>the 80-byte SNES ROM header (title, memory map type, checksum and so on)</li>
-<li>the native-mode interrupt vectors</li>
-</ul>
-<p>All 256 bytes fit in one page, and all of them match.</p>
-<h2 id="the-toolchain">The toolchain</h2>
-<p>The build uses:</p>
-<ul>
-<li><strong><abbr title="The 65816 assembler used for this project — patches matched .asm source into a ROM copy for byte-exact verification.">asar</abbr> 1.91</strong>, the standard SNES assembler used by nearly every SNES decomp</li>
-<li><strong>Python 3</strong> for tooling (diff scripts, progress tracking)</li>
-<li><strong>make</strong> to tie it together</li>
-</ul>
-<p>The build copies the original ROM, runs <abbr title="The 65816 assembler used for this project — patches matched .asm source into a ROM copy for byte-exact verification.">asar</abbr> to patch in the <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr> assembly, and compares the result with the original byte for byte. "0 bytes differ" means a good match.</p>
-<p>One flag matters: <code>--fix-checksum=off</code>. Without it <abbr title="The 65816 assembler used for this project — patches matched .asm source into a ROM copy for byte-exact verification.">asar</abbr> recalculates the ROM checksum, and the output differs from the original by 4 bytes. Always pass it.</p>
-<h2 id="what-i-learned">What I learned</h2>
-<p><strong><abbr title="SNES ROM mapping where each bank is a full 64KB of ROM — bank $C0 = first 64KB of the ROM file.">HiROM</abbr> addressing.</strong> Bank <code>$C0</code> maps directly to the first 64 KB of the ROM file. Bank <code>$FD</code> is at file offset <code>($FD - $C0) × $10000 = $3D0000</code>. The reset vector at <code>$FFFC</code> is in bank <code>$00</code>, which mirrors bank <code>$C0</code> for addresses <code>$8000</code>–<code>$FFFF</code> in <abbr title="SNES ROM mapping where each bank is a full 64KB of ROM — bank $C0 = first 64KB of the ROM file.">HiROM</abbr>. Since <code>$FF00</code> is in the upper half, bank <code>$00</code> works as expected here.</p>
-<p><strong>The ROM header.</strong> The 80-byte header at <code>$00:FFB0</code> holds the title ("CHRONO TRIGGER"), the memory map type (<code>$31</code> = <abbr title="SNES ROM mapping where each bank is a full 64KB of ROM — bank $C0 = first 64KB of the ROM file.">HiROM</abbr> FastROM), ROM size, SRAM size and the checksum that <abbr title="The 65816 assembler used for this project — patches matched .asm source into a ROM copy for byte-exact verification.">asar</abbr> would otherwise overwrite.</p>
-<p><strong>Wave tables.</strong> The two 64-byte sine-wave tables at <code>$FF30</code> and <code>$FF70</code> are not audio. They are scroll-effect tables that make backgrounds wobble. Each is a 32-entry signed 16-bit table with values in the range ±6.</p>
-<h2 id="next">Next</h2>
-<p>The reset stub jumps straight to <code>$FD:C000</code>, which is <code>MainInit</code>. Matching it is the way into the engine's startup sequence.</p>
-  
-  <p class="wk-post-back"><a href="../../../../">← Back to devlog</a></p>
-</article>
-
+      
+      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="August 7, 2026 13:25:42 UTC">August 7, 2026</span></p>
+      
+      
+      
       </div>
 
     </div>
@@ -376,7 +311,7 @@ var input   = document.getElementById('wk-q');
 var results = document.getElementById('wk-results');
 var docs    = null;
 if (input) {
-  fetch("../../../../../search/search_index.json")
+  fetch("../../search/search_index.json")
     .then(function (r) { return r.json(); })
     .then(function (d) { docs = d.docs; });
 
@@ -411,7 +346,7 @@ function onSearch() {
     return (d.title + ' ' + d.text).toLowerCase().indexOf(q) !== -1;
   }).slice(0, 8);
   if (!hits.length) { results.hidden = true; return; }
-  var base = "../../../../..";
+  var base = "../..";
   results.innerHTML = hits.map(function (d) {
     var text  = d.text || '';
     var i     = text.toLowerCase().indexOf(q);

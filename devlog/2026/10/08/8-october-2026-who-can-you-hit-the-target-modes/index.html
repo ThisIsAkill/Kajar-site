@@ -184,21 +184,21 @@
       <div class="wk-party">
         <div class="wk-party-row" title="Bytes matched: the rebuilt ROM is byte-identical here">
           <span class="wk-party-k">HP</span>
-          <span class="wk-party-v">38,698<small>/359,278</small></span>
+          <span class="wk-party-v">39,735<small>/359,278</small></span>
         </div>
-        <div class="wk-stat-track"><div class="wk-stat-fill" style="width:10.77%"></div></div>
-        <p class="wk-party-note">bytes matched · 10.77% of code</p>
+        <div class="wk-stat-track"><div class="wk-stat-fill" style="width:11.06%"></div></div>
+        <p class="wk-party-note">bytes matched · 11.06% of code</p>
 
         <div class="wk-party-row" title="Matched functions that also meet the readability standard">
           <span class="wk-party-k">MP</span>
-          <span class="wk-party-v">340<small>/340</small></span>
+          <span class="wk-party-v">352<small>/352</small></span>
         </div>
         <div class="wk-stat-track"><div class="wk-stat-fill wk-stat-fill-mp" style="width:100.0%"></div></div>
         <p class="wk-party-note">functions readable</p>
 
         <div class="wk-party-row" title="Readable functions that passed an independent review">
           <span class="wk-party-k">TP</span>
-          <span class="wk-party-v">340<small>/340</small></span>
+          <span class="wk-party-v">352<small>/352</small></span>
         </div>
         <div class="wk-stat-track"><div class="wk-stat-fill wk-stat-fill-dim" style="width:100.0%"></div></div>
         <p class="wk-party-note">functions verified</p>
@@ -369,7 +369,8 @@
 <li><strong>A fatal-error stop.</strong> One routine blanks the screen to a solid colour, disables interrupts and loops forever. Each of its 13 callers passes its own colour. It came from following up a duplicate.</li>
 <li><strong>A small quirk in battle.</strong> Holding L+R counts frames toward a message (<code>$75</code>). Reviews took three rounds to pin down exactly when that counter resets.</li>
 </ul>
-<p><code>main</code> ends the day at 38,698 bytes, 10.77% of the game's code, every byte of it independently verified.</p>
+<p>A last batch came from following the duplicate finder's leads into banks <code>$C0</code>, <code>$C2</code>, <code>$CF</code> and <code>$FD</code>: another 1,037 bytes, all reviewed.</p>
+<p><code>main</code> now stands at 39,735 bytes, 11.06% of the game's code, every byte of it independently verified.</p>
 <h2 id="next">Next</h2>
 <p>Keep the pipeline full: bank <code>$C1</code> from service 4 at <code>$C1:4058</code>, the <code>$C0</code> main loop's callees (looking for the object in front of the leader, the tile check), and the first routines of bank <code>$C2</code>.</p>
   

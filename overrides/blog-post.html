@@ -1,0 +1,17 @@
+{% extends "main.html" %}
+{% block container %}
+<article>
+  {% if page.config.date.created %}
+  <p class="wk-post-meta">
+    <time datetime="{{ page.config.date.created }}">{{ page.config.date.created | date }}</time>
+    {% if page.categories %}
+    · {% for cat in page.categories %}<a href="{{ cat.url | url }}">{{ cat.title }}</a>{% if not loop.last %}, {% endif %}{% endfor %}
+    {% endif %}
+  </p>
+  {% endif %}
+  {% block content %}
+  {{ page.content }}
+  {% endblock %}
+  <p class="wk-post-back"><a href="{{ page.parent.url | url }}">← Back to devlog</a></p>
+</article>
+{% endblock %}

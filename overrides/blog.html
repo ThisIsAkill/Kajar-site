@@ -1,0 +1,59 @@
+{% extends "main.html" %}
+
+{% block toc %}
+{% if page.posts %}
+<div class="wk-toc wk-blog-toc" id="wk-toc">
+  <div class="wk-toc-header">
+    <b>Sessions</b>
+    <button class="wk-toc-toggle"
+      onclick="var l=document.getElementById('wk-toc-list');l.hidden=!l.hidden;this.textContent=l.hidden?'[show]':'[hide]'">[hide]</button>
+  </div>
+  <ol class="wk-toc-list" id="wk-toc-list">
+    {% for post in page.posts | selectattr('meta.session') | sort(attribute='meta.session') %}
+    <li><a href="{{ post.url | url }}" class="wk-toc-link">{{ post.title }}</a></li>
+    {% endfor %}
+    {% for post in page.posts | rejectattr('meta.session') %}
+    <li><a href="{{ post.url | url }}" class="wk-toc-link">{{ post.title }}</a></li>
+    {% endfor %}
+  </ol>
+</div>
+{% endif %}
+{% endblock %}
+
+{% block container %}
+<div>
+  {{ page.content }}
+  {% for post in posts | selectattr('meta.session') | sort(attribute='meta.session') %}
+  <div class="wk-blog-entry">
+    {% if post.config.date.created %}
+    <p class="wk-post-meta"><time datetime="{{ post.config.date.created }}">{{ post.config.date.created | date }}</time></p>
+    {% endif %}
+    <div class="wk-blog-excerpt">{{ post.content }}</div>
+    {% if post.more %}
+    <p class="wk-read-more"><a href="{{ post.url | url }}">Continue reading →</a></p>
+    {% endif %}
+  </div>
+  {% endfor %}
+  {% for post in posts | rejectattr('meta.session') %}
+  <div class="wk-blog-entry">
+    {% if post.config.date.created %}
+    <p class="wk-post-meta"><time datetime="{{ post.config.date.created }}">{{ post.config.date.created | date }}</time></p>
+    {% endif %}
+    <div class="wk-blog-excerpt">{{ post.content }}</div>
+    {% if post.more %}
+    <p class="wk-read-more"><a href="{{ post.url | url }}">Continue reading →</a></p>
+    {% endif %}
+  </div>
+  {% endfor %}
+  {% if pagination %}
+  <nav class="wk-pagination">
+    {% if pagination.previous_page %}
+    <a class="wk-page-btn" href="{{ pagination.previous_page.url | url }}">← Newer</a>
+    {% endif %}
+    {% if pagination.next_page %}
+    <a class="wk-page-btn" href="{{ pagination.next_page.url | url }}">Older →</a>
+    {% endif %}
+  </nav>
+  {% endif %}
+</div>
+{% endblock %}
