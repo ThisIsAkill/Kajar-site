@@ -192,21 +192,21 @@
       <div class="wk-party">
         <div class="wk-party-row" title="Bytes matched: the rebuilt ROM is byte-identical here">
           <span class="wk-party-k">HP</span>
-          <span class="wk-party-v">87,664<small>/359,278</small></span>
+          <span class="wk-party-v">89,729<small>/359,278</small></span>
         </div>
-        <div class="wk-stat-track"><div class="wk-stat-fill" style="width:24.4%"></div></div>
-        <p class="wk-party-note">bytes matched · 24.4% of code</p>
+        <div class="wk-stat-track"><div class="wk-stat-fill" style="width:24.97%"></div></div>
+        <p class="wk-party-note">bytes matched · 24.97% of code</p>
 
         <div class="wk-party-row" title="Matched functions that also meet the readability standard">
           <span class="wk-party-k">MP</span>
-          <span class="wk-party-v">1007<small>/1007</small></span>
+          <span class="wk-party-v">1026<small>/1026</small></span>
         </div>
         <div class="wk-stat-track"><div class="wk-stat-fill wk-stat-fill-mp" style="width:100.0%"></div></div>
         <p class="wk-party-note">functions readable</p>
 
         <div class="wk-party-row" title="Readable functions that passed an independent review">
           <span class="wk-party-k">TP</span>
-          <span class="wk-party-v">1007<small>/1007</small></span>
+          <span class="wk-party-v">1026<small>/1026</small></span>
         </div>
         <div class="wk-stat-track"><div class="wk-stat-fill wk-stat-fill-dim" style="width:100.0%"></div></div>
         <p class="wk-party-note">functions verified</p>
@@ -425,9 +425,12 @@
 </li>
 </ul>
 <p>The same batches also tidied 66 older headers that still called now-<abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr> code "unmatched". Each of them went back through review. One turned out to be not just stale but wrong: a hook banner credited code with setting the event hook, when its stores actually land on the map's step counters.</p>
-<p><code>main</code> now stands at 87,664 bytes, 24.40% of the game's code, all 1,007 <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr> routines independently verified.</p>
+<ul>
+<li><strong>Battle turn lists</strong> (<code>$C1</code>, 2,065 bytes). The battle keeps 13 per-slot countdown lists. List 12 is the battlers' turns: ready characters get a menu, ready enemies act, queued commands run, and then each enemy's script gets a chance to react. The other lists are status timers: a poison-like hit for a share of max HP, timers that halve or double (probably haste and slow), and plain countdowns that clear a status bit. The 988-byte turn routine needed four review rounds before every claim about its reaction scripts held up against the ROM.</li>
+</ul>
+<p><code>main</code> now stands at 89,729 bytes, 24.97% of the game's code, all 1,026 <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr> routines independently verified.</p>
 <h2 id="next">Next</h2>
-<p>Keep the pipeline full: bank <code>$C1</code> from its second half at <code>$C1:8000</code>, the <code>$C0</code> scene reload callees and audio setup, and the <code>$C2</code> scene modes and text decoder.</p>
+<p>Next, the workflow gets faster: generated files leave the pull requests, Callers lines are written by a tool, and new lint checks catch the mistakes reviewers keep finding. Matching continues with the enemy turn in bank <code>$C1</code>, object motion in <code>$C0</code>, and the <code>$C2</code> scene triggers and text decoder.</p>
   
   <p class="wk-post-back"><a href="../../../../">← Back to devlog</a></p>
 </article>
