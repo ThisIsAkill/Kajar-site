@@ -1939,3 +1939,13 @@ summary::marker { color: var(--gold); }
   .wk-article-body table.wk-fntable { display: block; width: auto; }
   .wk-spark-label { font-size: 22px; }
 }
+
+/* verified-count badge on a matched slice */
+.wk-slice-ver, .wk-key-ver {
+  font-family: var(--font-ui); font-size: 9px; font-weight: 700; line-height: 1;
+  color: #2a1d00; background: linear-gradient(180deg, #ffe9a6, #e2a92c);
+  border-radius: 6px; padding: 1px 3px;
+}
+.wk-slice-ver { position: absolute; top: 2px; right: 2px; }
+.wk-key-ver { display: inline-block; margin-right: 6px; }
+.wk-slice-cell.lvl-matched .wk-slice-bar { background: linear-gradient(180deg, #d9ffc9, #8fe07a); }

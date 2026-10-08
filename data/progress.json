@@ -4,16 +4,16 @@
   "code_bytes": 359278,
   "totals": {
     "matched": {
-      "functions": 256,
+      "functions": 244,
       "bytes": 29032
     },
     "readable": {
-      "functions": 256,
+      "functions": 244,
       "bytes": 29032
     },
     "verified": {
-      "functions": 23,
-      "bytes": 256
+      "functions": 45,
+      "bytes": 669
     }
   },
   "banks": [
@@ -30,8 +30,8 @@
         "bytes": 19585
       },
       "verified": {
-        "functions": 23,
-        "bytes": 256
+        "functions": 27,
+        "bytes": 253
       }
     },
     {
@@ -39,16 +39,16 @@
       "code_bytes": 63904,
       "emitted_bytes": 9232,
       "matched": {
-        "functions": 138,
+        "functions": 126,
         "bytes": 9232
       },
       "readable": {
-        "functions": 138,
+        "functions": 126,
         "bytes": 9232
       },
       "verified": {
-        "functions": 0,
-        "bytes": 0
+        "functions": 17,
+        "bytes": 201
       }
     },
     {
@@ -64,8 +64,8 @@
         "bytes": 215
       },
       "verified": {
-        "functions": 0,
-        "bytes": 0
+        "functions": 1,
+        "bytes": 215
       }
     }
   ],
@@ -79,11 +79,11 @@
         "ReentryVectors",
         "GameLoop",
         "GameLoop_Main",
-        "GL_ModeOk1",
-        "GL_ModeOk2",
+        "GameLoop_NotBankC2",
+        "GameLoop_LoadField",
         "GameLoop_FrameBody",
-        "VBlankHandler",
-        "VBlankHandlerShort",
+        "Field_EndOfFrame",
+        "Field_EndOfFrameShort",
         "Field_IdleFrame",
         "LoadLocation",
         "Field_SaveState",
@@ -93,7 +93,7 @@
         "InitHW",
         "InstallNMI",
         "InstallIRQ",
-        "FrameStateInit",
+        "Field_InitLoadState",
         "Field_SceneChangeTick",
         "ModeE6_Handler",
         "ModeEC_Handler"
@@ -198,10 +198,10 @@
       "emitted_bytes": 3503,
       "functions": [
         "Obj_ResetStates",
-        "PostVBlank",
-        "PV_SpriteLoop",
+        "Oam_BuildShadow",
+        "PV_BucketLoop",
         "PV_CheckChain",
-        "PV_NextSprite",
+        "PV_NextBucket",
         "PV_FillRange1",
         "PV_EndRange1",
         "PV_FillRange2",
@@ -315,59 +315,49 @@
       "emitted_bytes": 3959,
       "functions": [
         "Battle_Mul8",
-        "Battle_MulAccum",
+        "Battle_Mul8x16",
         "Battle_Divide",
-        "Battle_ShiftLeft7",
+        "Battle_ShiftLeft8",
         "Battle_ShiftLeft4",
         "Battle_ShiftLeft3",
-        "Loc_C10116",
+        "Battle_ShiftRight8",
         "Battle_ShiftRight6",
         "Battle_ShiftRight5",
         "Battle_ShiftRight4",
         "Battle_ShiftRight3",
         "BattleMsg_FormatNumberDigits",
-        "Battle_DivTen9499",
+        "BattleMsg_FormatTwoDigits",
         "BattleMsg_ReencodeTextBuffer",
         "Battle_SinLookup",
-        "Calc_Delta16",
+        "Battle_CalcAngle",
         "BattleUI_BuildStatusBarFrame",
         "BattleUI_DrawPcNamePanel",
         "BattleUI_NextNamePanel",
         "BattleUI_UpdateNextPcPanel",
-        "Battle_DrawHpBars",
-        "UpdateNpc_exit",
+        "BattleUI_DrawAtbGauges",
+        "BattleUI_UpdateNextPcPanel_Exit",
         "BattleUI_DrawSlotGaugeBar",
-        "BattleSys_SlotPanelRefresh",
-        "BattleMenu_DrawReadyWindowEdges",
+        "BattleMenu_DrawCommandList",
+        "BattleMenu_DrawCommandWindowFrames",
         "BattleUI_ClearActivePanelColumn",
-        "BattleUI_SetPanelAttrColumn",
-        "BattleMenu_DrawWindowEdgeStrip",
+        "BattleUI_HighlightPcName",
+        "BattleMenu_DrawCommandWindowFrame",
         "BattleMenu_RenderItemListRows",
         "BattleMenu_RenderItemRow",
-        "CODE_JP_C10A87",
+        "BattleMenu_RenderItemRow_Exit",
         "BattleMenu_RenderTechListRows",
         "BattleMenu_BuildTechAvailFlags",
         "BattleMenu_RenderTechRow",
-        "CODE_JP_C10BB6",
-        "BattleMenu_BlankMpCostDigits",
-        "CODE_JP_C10C00",
+        "BattleMenu_DrawTechLowerRow",
+        "BattleMenu_BlankNameLeadCells",
+        "BattleMenu_BlankNameTailCells",
         "BattleMenu_UpdateWindows",
-        "CODE_C10C46",
+        "BattleMenu_UpdateWindows_Exit",
         "BattleMenu_UpdateMainWindow",
         "BattleMenu_UpdateTechWindow",
         "BattleMenu_DrawTechCursorRow",
         "BattleMenu_ClearTechCursorTiles",
-        "BattleMenu_UpdateTechMpAvail",
-        "CODE_JP_C10F28",
-        "_ump_check_fd",
-        "_ump_set_bright",
-        "CODE_C10F66_JMP",
-        "_ump_check_battler",
-        "_ump_pc1_ok",
-        "_ump_pc2_ok",
-        "_ump_pc3_ok",
-        "_ump_slot_ready",
-        "_ump_write_bright"
+        "BattleMenu_UpdateTechMpAvail"
       ]
     },
     {
@@ -376,9 +366,7 @@
       "end": "$C1:1FFF",
       "emitted_bytes": 3164,
       "functions": [
-        "_L1001",
-        "CODE_JP_C1100F",
-        "CODE_JP_C1103D",
+        "BattleMenu_Return",
         "BattleSys_SlotMenuReadyPredicate",
         "BattleMsg_BlankLeadingZeros",
         "BattleMenu_RefreshIfDirtyL",
@@ -411,7 +399,7 @@
         "BattleMenu_ConsumePartnerSlot",
         "BattleMenu_TargetNext",
         "BattleMenu_TargetPrev",
-        "Battle_ZeroResultEE",
+        "Battle_ClearPadEdges",
         "BattleMenu_ItemListScrollUp",
         "BattleMenu_ItemListScrollUp_SetScroll",
         "BattleMenu_ItemListScrollUp_RenderTail",
@@ -421,7 +409,7 @@
         "BattleMenu_ItemListScrollDown_SkipRender",
         "BattleMenu_UpdateCursorOverlay",
         "BattleMenu_EnqueueReadyBattler",
-        "Battle_StopSfx",
+        "Battle_PlaySfx0",
         "BattleMenu_DequeueReadyBattler",
         "BattleMenu_RemoveBattlerFromReady",
         "BattleMenu_LoadCommandWindowMap",

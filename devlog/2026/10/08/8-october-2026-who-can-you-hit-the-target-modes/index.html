@@ -194,16 +194,16 @@
 
         <div class="wk-party-row" title="Matched functions that also meet the readability standard">
           <span class="wk-party-k">MP</span>
-          <span class="wk-party-v">256<small>/256</small></span>
+          <span class="wk-party-v">244<small>/244</small></span>
         </div>
         <div class="wk-stat-track"><div class="wk-stat-fill wk-stat-fill-mp" style="width:100.0%"></div></div>
         <p class="wk-party-note">functions readable</p>
 
         <div class="wk-party-row" title="Readable functions that passed an independent review">
           <span class="wk-party-k">TP</span>
-          <span class="wk-party-v">23<small>/256</small></span>
+          <span class="wk-party-v">45<small>/244</small></span>
         </div>
-        <div class="wk-stat-track"><div class="wk-stat-fill wk-stat-fill-dim" style="width:9.0%"></div></div>
+        <div class="wk-stat-track"><div class="wk-stat-fill wk-stat-fill-dim" style="width:18.4%"></div></div>
         <p class="wk-party-note">functions verified</p>
       </div>
       
@@ -228,7 +228,7 @@
           <li>
             <a href="#8-october-2026-who-can-you-hit-the-target-modes" class="wk-toc-link">8 October 2026: who can you hit? The target modes</a>
             
-            <ol><li><a href="#joining-the-queue" class="wk-toc-link">Joining the queue</a></li><li><a href="#thirty-three-modes-eighteen-routines" class="wk-toc-link">Thirty-three modes, eighteen routines</a></li><li><a href="#area-attacks" class="wk-toc-link">Area attacks</a></li><li><a href="#a-second-door-into-the-same-room" class="wk-toc-link">A second door into the same room</a></li><li><a href="#little-things" class="wk-toc-link">Little things</a></li><li><a href="#a-better-check" class="wk-toc-link">A better check</a></li><li><a href="#the-day-in-numbers" class="wk-toc-link">The day in numbers</a></li><li><a href="#next" class="wk-toc-link">Next</a></li></ol>
+            <ol><li><a href="#joining-the-queue" class="wk-toc-link">Joining the queue</a></li><li><a href="#thirty-three-modes-eighteen-routines" class="wk-toc-link">Thirty-three modes, eighteen routines</a></li><li><a href="#area-attacks" class="wk-toc-link">Area attacks</a></li><li><a href="#a-second-door-into-the-same-room" class="wk-toc-link">A second door into the same room</a></li><li><a href="#little-things" class="wk-toc-link">Little things</a></li><li><a href="#a-better-check" class="wk-toc-link">A better check</a></li><li><a href="#the-day-in-numbers" class="wk-toc-link">The day in numbers</a></li><li><a href="#readable-before-it-counts" class="wk-toc-link">Readable before it counts</a></li><li><a href="#next" class="wk-toc-link">Next</a></li></ol>
             
           </li>
           
@@ -335,8 +335,26 @@
 </tbody>
 </table>
 <p>Bank <code>$C1</code>: 8,061 of 63,904 bytes (12.61%). Project-wide: 28,030 bytes (7.80% of all game code). <code>make diff</code> confirms 4,194,304 bytes identical.</p>
+<h2 id="readable-before-it-counts">Readable before it counts</h2>
+<p>The rest of the day changed what "done" means. Until now a routine was finished once its bytes <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr>. From today, there are three levels, and only the last one counts as done:</p>
+<ol>
+<li><strong>Matched</strong>: the source assembles to the exact bytes of the ROM.</li>
+<li><strong>Readable</strong>: the source passes <code>tools/lint_readability.py</code>. Named structures instead of raw offsets (<code>SprTile[3].OfsY</code> or <code>!Pc_MenuRow,X</code>, not a bare address), named calls instead of addresses, named constants for anything that isn't obviously a count, an explicit <code>.b</code>/<code>.w</code>/<code>.l</code> width wherever <abbr title="The 65816 assembler used for this project — patches matched .asm source into a ROM copy for byte-exact verification.">asar</abbr> can't know it, and no test plumbing inside the game's code.</li>
+<li><strong>Verified</strong>: someone other than the author read the routine against the ROM and approved it. The approval is tied to a hash of the routine's source, header comments included, so editing a single comment sends the routine back for review.</li>
+</ol>
+<p>The gate went into the pre-commit hook the same evening. Then every routine written so far was brought up to it: bank <code>$C0</code>, bank <code>$C1</code>, the boot code in <code>$FD</code> and the vectors in <code>$00</code>. All 256 routines (29,032 bytes) are now readable, and the readability baseline file, which listed the routines still waiting, is empty.</p>
+<p>Review is the slow part, and that's how it should be. Each reviewer gets only the source, the ROM and the style guide, and checks every comment against the bytes. The first two rounds turned up real mistakes:</p>
+<ul>
+<li>The OBSEL decode was wrong.</li>
+<li>The "TP gauge" is the ATB gauge.</li>
+<li>The sine table holds 1,024 one-byte entries, not 512 words.</li>
+<li>The tech header text in the ROM reads "Double Technique" and "Triple Technique".</li>
+<li>Three target-mode headers claimed bytes that belong to the routine after them.</li>
+</ul>
+<p>The second round of bank <code>$C1</code> mostly asks for the same thing everywhere: every header must state the direct page, because the code clears A with <code>TDC</code> and that only works because D is 0. 68 routines are verified so far. The rest are going through another round of fixes.</p>
+<p>All the numbers on this wiki now come from one script, <code>tools/progress.py</code>, instead of being kept by hand. The first time it ran, it showed that bank <code>$C0</code> had been over-counted by 169 bytes.</p>
 <h2 id="next">Next</h2>
-<p>The four area-geometry routines between <code>$C1:2332</code> and <code>$C1:27C4</code>. Once they are <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr>, the whole targeting system from <code>$C1:1F79</code> through <code>$C1:283C</code> will be continuous <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr> code.</p>
+<p>The review → fix → review loop until every routine is verified. After that, the four area-geometry routines between <code>$C1:2332</code> and <code>$C1:27C4</code>; once they are <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr>, the whole targeting system from <code>$C1:1F79</code> through <code>$C1:283C</code> will be continuous <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr> code.</p>
   
   <p class="wk-post-back"><a href="../../../../">← Back to devlog</a></p>
 </article>
