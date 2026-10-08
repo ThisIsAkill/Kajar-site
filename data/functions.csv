@@ -97,7 +97,40 @@ $C0:29F7,$C0:2B77,385,Field_Unk29F7,$C0,Engine,verified,cc5c7bf08754,"Writes a 3
 $C0:2B78,$C0:2C40,201,Field_Unk2B78,$C0,Engine,verified,2c8df21444c6,"Writes a 32 x 8 tilemap (Field_UploadUnk1C00Bytes, $200 bytes) to Field_Unk7EF000 through the WRAM data port, DP = DP_PPU, over what Field_Unk29F7 left there; Field_UploadUnk1C00 then sends it to VRAM"
 $C0:2DC8,$C0:2DF0,41,VramDma_Upload,$C0,Engine,verified,1edd879d6d9a,"Copies a block to VRAM with DMA channel 7: VMADDL = VramDma_Addr, VMAIN = increment after the high byte, DMAP7 = VramDma_Mode, B-bus target VMDATAL, source VramDma_Src/SrcBank, VramDma_Size bytes."
 $C0:2DF1,$C0:2E1D,45,ClearRAMDMA,$C0,Engine,verified,fcf8677010ca,"Zeros a WRAM region via DMA channel 7, sourcing from MPYL (always 0 since M7A=M7B=0)."
-$C0:2E1E,$C0:2E66,73,Sys_HaltWithColor,$C0,Engine,verified,6036e851f915,"(was the stub LoadSavePath.) Stops the game on a single colour: the first 21 bytes are InitHW's body written inline (interrupts off, forced blank, NMI/DMA/HDMA off, DB=$00), then it also clears Field_"
+$C0:2E1E,$C0:2E66,73,Sys_HaltWithColor,$C0,Engine,verified,4e74f75bddb1,"(was the stub LoadSavePath.) Stops the game on a single colour: the first 21 bytes are InitHW's body written inline (interrupts off, forced blank, NMI/DMA/HDMA off, DB=$00), then it also clears Field_"
+$C0:2E67,$C0:2E6C,6,Evt_OpAA_SetAnimRow,$C0,Engine,verified,cfa498f3ea63,"sub-entries Evt_SetAnimRow at $2E6D and Evt_SetAnimMode at $2E74) Event opcode $AA (2 bytes: $AA, row): Obj_Cur's Obj_AnimRow = row, Obj_AnimMode = Obj_AnimModeNormal (1), and Obj_AnimTimer, ObjX_Anim"
+$C0:2E6D,$C0:2E73,7,Evt_SetAnimRow,$C0,Engine,verified,d05dd2864058,
+$C0:2E74,$C0:2E86,19,Evt_SetAnimMode,$C0,Engine,verified,b016be76b135,
+$C0:2E87,$C0:2E8A,4,Evt_OpB3_AnimRow0,$C0,Engine,verified,844107544c17,"Event opcode $B3 (1 byte): Evt_SetAnimRow with row 0 (ObjAnim_RowStand, the row Obj_SetStandAnim uses); X = Y + 1, C=1."
+$C0:2E8B,$C0:2E8E,4,Evt_OpB4_AnimRow1,$C0,Engine,verified,c3f3d2eb1e9b,"Event opcode $B4 (1 byte): Evt_SetAnimRow with row 1 (ObjAnim_RowWalk, the row Obj_SetMoveAnim walks with); X = Y + 1, C=1."
+$C0:2E8F,$C0:2E99,11,Evt_OpAE_AnimReset,$C0,Engine,verified,2f3c29b66244,"Event opcode $AE (1 byte): Obj_Cur's Obj_AnimRow = 0 (ObjAnim_RowStand) and Obj_AnimMode = 0, then as Evt_SetAnimMode (timer, loops and column 0); X = Y + 1, C=1."
+$C0:2E9A,$C0:2F00,103,Evt_OpAB_PlayAnimOnce,$C0,Engine,verified,6f14e2d5cd81,"Event opcode $AB (2 bytes: $AB, row): plays animation row once in mode 2 and waits for it."
+$C0:2F01,$C0:2F70,112,Evt_OpB7_PlayAnimLoops,$C0,Engine,verified,0907ca61f05a,"Event opcode $B7 (3 bytes: $B7, row, count): as Evt_OpAB_PlayAnimOnce with ObjX_AnimLoops = count + 1 at the start (Obj_AnimTickAndQueue takes 2 off per pass of the row and stops at 1); done: X = Y + "
+$C0:2F71,$C0:2F95,37,Evt_OpAC_ShowFrame,$C0,Engine,verified,db0794819e47,"Event opcode $AC (2 bytes: $AC, frame): Obj_Cur shows a fixed frame: Obj_FixedFrame = frame, column and timer 0, Obj_AnimRow = $FF when Obj_AnimMode was 0 (as in Evt_OpAB_PlayAnimOnce), Obj_AnimMode ="
+$C0:2F96,$C0:2FC5,48,Evt_OpAD_WaitRuns,$C0,Engine,verified,9dd5fec700ca,"Event opcode $AD (2 bytes: $AD, n): waits n of the object's script runs."
+$C0:2FC6,$C0:2FC9,4,Evt_OpB9_Wait4,$C0,Engine,verified,bdb2d0093fc9,Event opcode $B9 (1 byte): Evt_WaitRuns with n = 4; X = Y + 1 when done.
+$C0:2FCA,$C0:2FCD,4,Evt_OpBA_Wait8,$C0,Engine,verified,ff4ccdd1e60d,Event opcode $BA (1 byte): Evt_WaitRuns with n = 8; X = Y + 1 when done.
+$C0:2FCE,$C0:2FD1,4,Evt_OpBD_Wait32,$C0,Engine,verified,462d06d8dd08,Event opcode $BD (1 byte): Evt_WaitRuns with n = $20; X = Y + 1 when done.
+$C0:2FD2,$C0:2FD3,2,Evt_OpBC_Wait16,$C0,Engine,verified,b67a2af49c67,"Evt_WaitRuns, 41 bytes, $2FD4–$2FFC) Event opcode $BC (1 byte): Evt_WaitRuns with n = $10."
+$C0:2FD4,$C0:2FFC,41,Evt_WaitRuns,$C0,Engine,verified,bcdcf6a873bc,
+$C0:2FFD,$C0:3001,5,Evt_OpAF_PartyControlOnce,$C0,Engine,verified,e0df62138f2a,"Event opcode $AF (1 byte): one run of Evt_OpB0_PartyControl, then the script goes on: X = Y + 1 (the next opcode, for the next run), C=0."
+$C0:3002,$C0:305C,91,Evt_OpB0_PartyControl,$C0,Engine,verified,3777c39e9ab2,"Event opcode $B0 (1 byte): the script of a party member's object stays here (X = Y, C=0 on every path) and moves it each run."
+$C0:305D,$C0:30B2,86,Obj_Unk305D,$C0,Sprites & objects,verified,58dc25570855,"Steps Obj_Cur toward the point $80 / $F0 within its tile (Obj_TileCentreX, Obj_TileFootY: the middle column, the bottom row of the tile), one frame at a time."
+$C0:30B3,$C0:3153,161,Obj_Unk30B3,$C0,Sprites & objects,verified,19fb709880ec,"Steps Obj_Cur onto the position of the object in ObjFront_Other, one frame at a time: compares Obj_PosX and then Obj_PosY of the two with the low four bits masked (Obj_PosCoarseMask)."
+$C0:3154,$C0:31B0,93,Evt_StartTargetFunc2,$C0,Engine,verified,f88dc4f010ea,The touch counterpart of Evt_StartTargetFunc1: starts function 2 of the object in Field_UnkEB.
+$C0:31B1,$C0:326B,187,Evt_PushTarget,$C0,Engine,verified,14c34cf506a4,"Moves the object in Field_UnkEB one tile on in the leader's facing, probably a push."
+$C0:353F,$C0:3542,4,Evt_OpB1_Yield,$C0,Engine,verified,06ea74569b64,"Event opcode $B1 (1 byte): ends the object's run here: X = Y + 1 (the next opcode, for the next run), C=0."
+$C0:3543,$C0:3545,3,Evt_OpB2_Halt,$C0,Engine,verified,620f02ad9463,"Event opcode $B2 (1 byte): stops the object on this opcode for good: X = Y (the opcode again), C=0."
+$C0:3546,$C0:354E,9,Evt_OpB5_FollowObj,$C0,Engine,verified,873a33872948,"Event opcode $B5 (2 bytes: $B5, slot): runs Evt_Op94_WalkToObj (a step toward the object in slot) and stays on this opcode for good: X = Y, C=0 whatever the walk returned."
+$C0:354F,$C0:3556,8,Evt_OpB6_FollowPc,$C0,Engine,verified,cb5aa721f210,"Event opcode $B6 (2 bytes: $B6, p): runs Evt_Op95_WalkToPc (a step toward party member p) with X = Y returned: the opcode stays."
+$C0:3557,$C0:356F,25,Evt_OpB8_SetMsgPtr,$C0,Engine,verified,3143bd8f09b5,"Event opcode $B8 (4 bytes: $B8, ptr (3 bytes)): Field_Unk2B (word) and Field_Unk2D (bank) = ptr, the pointer the message opcodes need (probably to the location's message table); X = Y + 4, C=1."
+$C0:3570,$C0:35B4,69,Evt_OpBB_Msg,$C0,Engine,verified,5adc237c0b96,"Event opcode $BB (2 bytes: $BB, msg): shows message msg (probably; see the banner) with Field_Unk30 = 0."
+$C0:35B5,$C0:35FB,71,Evt_OpC1_MsgUnk30_1,$C0,Engine,verified,cc80b4711ac1,"Event opcode $C1 (2 bytes: $C1, msg): as Evt_OpBB_Msg with Field_Unk30 = 1."
+$C0:35FC,$C0:3642,71,Evt_OpC2_MsgUnk30_2,$C0,Engine,verified,8ee1b8c89b74,"Event opcode $C2 (2 bytes: $C2, msg): as Evt_OpBB_Msg with Field_Unk30 = 2."
+$C0:3643,$C0:3673,49,Evt_OpC0_MsgChoice,$C0,Engine,verified,795473eec01f,"start Evt_MsgChoiceStart, 54 bytes, $3674–$36A9) Event opcode $C0 (3 bytes: $C0, msg, choices): as Evt_OpBB_Msg (Field_Unk30 = 0), with a choice: on starting, Field_Unk65 = choices bits 0-1 and Field_"
+$C0:3674,$C0:36A9,54,Evt_MsgChoiceStart,$C0,Engine,verified,d45ced23542e,
+$C0:36AA,$C0:36DC,51,Evt_OpC3_MsgChoiceUnk30_1,$C0,Engine,verified,c8fbed8378b4,"Event opcode $C3 (3 bytes: $C3, msg, choices): as Evt_OpC0_MsgChoice with Field_Unk30 = 1."
+$C0:36DD,$C0:3710,52,Evt_OpC4_MsgChoiceUnk30_2,$C0,Engine,verified,dea09d5b258a,"Event opcode $C4 (3 bytes: $C4, msg, choices): as Evt_OpC0_MsgChoice with Field_Unk30 = 2 (it reaches Evt_MsgChoiceStart with a BRL)."
 $C0:4D06,$C0:4E24,287,Evt_Op7A_ArcToTile,$C0,Engine,verified,1a98344039ec,"Event opcode $7A (4 bytes: $7A, column, row, g): moves Obj_Cur along an arc (Obj_ArcMode, probably a jump) to map tile (column, row)."
 $C0:4E25,$C0:4E72,78,Evt_Op7B_ArcSteps,$C0,Engine,verified,c8b4a7a70205,"Event opcode $7B (5 bytes: $7B, vx, vy, g, frames): as Evt_Op7A_ArcToTile with the arc given directly: first run Obj_VelX = vx, Obj_VelY = vy, Obj_ArcGravity = g, Obj_MoveFrames = frames, Obj_Unk1A80 "
 $C0:4E73,$C0:4EC6,84,Evt_Op92_WalkDir,$C0,Engine,verified,1f89b1a0bf20,"Event opcode $92 (3 bytes: $92, direction, frames): walks Obj_Cur in a direction for a number of frames."
@@ -108,13 +141,13 @@ $C0:4FEA,$C0:5083,154,Evt_Op9A_WalkTowardTile,$C0,Engine,verified,a31afeac9654,"
 $C0:5084,$C0:5128,165,Evt_Op97_WalkToTileVar,$C0,Engine,verified,aae40cb470fd,"Event opcode $97 (3 bytes: $97, a, b): as Evt_Op96_WalkToTile with the column and row from the low bytes of the event words Evt_Unk7F0200 + a x 2 and + b x 2."
 $C0:5129,$C0:5190,104,Evt_OpA0_MoveToTile,$C0,Engine,verified,7138e9dc9c33,"Event opcode $A0 (3 bytes: $A0, column, row): as Evt_Op96_WalkToTile without the facing and the animations (no Obj_Facing write, no Obj_SetMoveAnim / Obj_SetStandAnim): arrived (after any Obj_Unk305D "
 $C0:5191,$C0:5214,132,Evt_OpA1_MoveToTileVar,$C0,Engine,verified,4b7db9dbd4ef,"Event opcode $A1 (3 bytes: $A1, a, b): as Evt_OpA0_MoveToTile with the column and row from the low bytes of the event words Evt_Unk7F0200 + a x 2 and + b x 2."
-$C0:5215,$C0:5227,19,Evt_Op94_WalkToObj,$C0,Engine,verified,b55e778b22e1,"Evt_Op94_Body follows, 152 bytes, $5228–$52BF) Event opcode $94 (2 bytes: $94, slot): walks Obj_Cur next to the object in slot (object x 2), one step per script run."
+$C0:5215,$C0:5227,19,Evt_Op94_WalkToObj,$C0,Engine,verified,39955ae362c3,"Evt_Op94_Body follows, 152 bytes, $5228–$52BF) Event opcode $94 (2 bytes: $94, slot): walks Obj_Cur next to the object in slot (object x 2), one step per script run."
 $C0:5228,$C0:52BF,152,Evt_Op94_Body,$C0,Engine,verified,1a1dfc7b0fd8,
 $C0:52C0,$C0:52D2,19,Evt_Op9E_MoveToObj,$C0,Engine,verified,824d230c7a64,"Evt_Op9E_Body follows, 119 bytes, $52D3–$5349) Event opcode $9E (2 bytes: $9E, slot): as Evt_Op94_WalkToObj without the facing and the animations; Evt_Op9E_Body (X = the target's slot) is also entered"
 $C0:52D3,$C0:5349,119,Evt_Op9E_Body,$C0,Engine,verified,034c4f0f423a,
 $C0:534A,$C0:536A,33,Evt_Op98_WalkTowardObj,$C0,Engine,verified,37f7b5288067,"Evt_Op98_Body follows, 165 bytes, $536B–$540F) Event opcode $98 (3 bytes: $98, slot, frames): as Evt_Op94_WalkToObj but a single step of the given frames (Obj_MoveFrames = ObjX_Unk7F0B00 = frames, Obj"
 $C0:536B,$C0:540F,165,Evt_Op98_Body,$C0,Engine,verified,9f7c0911bbb3,
-$C0:5410,$C0:5428,25,Evt_Op95_WalkToPc,$C0,Engine,verified,a39a128f5a0b,"Event opcode $95 (2 bytes: $95, p): Evt_Op94_WalkToObj toward a party member's object (X = Party_ObjSlot + p; p = 0, 2 or 4, the party position x 2) through Evt_Op94_Body; X = the opcode, C=0 while Ob"
+$C0:5410,$C0:5428,25,Evt_Op95_WalkToPc,$C0,Engine,verified,40f11aa8cf2e,"Event opcode $95 (2 bytes: $95, p): Evt_Op94_WalkToObj toward a party member's object (X = Party_ObjSlot + p; p = 0, 2 or 4, the party position x 2) through Evt_Op94_Body; X = the opcode, C=0 while Ob"
 $C0:5429,$C0:54F4,204,Evt_Op8F_FollowPc,$C0,Engine,verified,5fb4f2b50039,"Event opcode $8F (2 bytes: $8F, p): walks Obj_Cur toward a party member's object (X = Party_ObjSlot + p; p = 0, 2 or 4, the party position x 2), one step per script run, as Evt_Op94_WalkToObj without "
 $C0:54F5,$C0:550D,25,Evt_Op9F_MoveToPc,$C0,Engine,verified,07bea427eda2,"Event opcode $9F (2 bytes: $9F, p): Evt_Op9E_MoveToObj toward a party member's object (X = Party_ObjSlot + p; p = 0, 2 or 4, the party position x 2) through Evt_Op9E_Body; X = the opcode, C=0 while Ob"
 $C0:550E,$C0:5534,39,Evt_Op99_WalkTowardPc,$C0,Engine,verified,3434b855aff0,"Event opcode $99 (3 bytes: $99, p, frames): Evt_Op98_WalkTowardObj toward a party member's object (X = Party_ObjSlot + p) through Evt_Op98_Body; with Obj_Unk1A80 set it waits for Obj_MoveFrames = 0 an"
@@ -150,7 +183,7 @@ $C0:5B63,$C0:5B70,14,Map_LeaderPastRowMax,$C0,Engine,verified,3ace138ab761,Map_U
 $C0:5B71,$C0:5B78,8,Map_LeaderPastRowMin,$C0,Engine,verified,fc35303382eb,Map_Unk9175's test for an upward step: C=1 when the leader's Obj_TileY <= Map_Unk1D1C + 1.
 $C0:5B79,$C0:5B85,13,Map_LeaderPastColMax,$C0,Engine,verified,fb2f841847af,Map_Unk9175's test for a rightward step: C=1 when the leader's Obj_TileX >= Map_Unk1D1B.
 $C0:5B86,$C0:5B8C,7,Map_LeaderPastColMin,$C0,Engine,verified,771dd2a0eabc,Map_Unk9175's test for a leftward step: C=1 when the leader's Obj_TileX <= Map_Unk1D1A.
-$C0:5B8D,$C0:5B94,8,Evt_HasActionTarget,$C0,Engine,verified,3c582b67a20f,"C=1 when Field_UnkEB holds an object (bit 7 clear), C=0 when it is $80 (none)."
+$C0:5B8D,$C0:5B94,8,Evt_HasActionTarget,$C0,Engine,verified,c2042534816b,"C=1 when Field_UnkEB holds an object (bit 7 clear), C=0 when it is $80 (none)."
 $C0:5B95,$C0:5BF1,93,Evt_FindSolidObjInFront,$C0,Engine,verified,e258e4ebce91,Looks for a solid object within a tile in front of Obj_Cur.
 $C0:5BF2,$C0:5BF9,8,Evt_InFrontTests,$C0,Engine,verified,335d36a0b0fe,Evt_FindSolidObjInFront's tests by Obj_Facing x 2 (facings 0-3).
 $C0:5BFA,$C0:5C1F,38,Evt_InFrontUp,$C0,Engine,verified,c77b011394e8,"Facing 0: C=1 when ObjFront_Other is above Obj_Cur and within a tile: its Obj_PosY - ObjFront_Y is negative with magnitude under ObjFront_Reach, and its |Obj_PosX - ObjFront_X| is under it too."
@@ -162,6 +195,130 @@ $C0:5C90,$C0:5CC6,55,Evt_FindOrAddUnk0920,$C0,Engine,verified,206fb696082b,"Look
 $C0:5CC7,$C0:5CEB,37,LocLoad_CheckEvtData,$C0,Engine,verified,2ff718859c40,Two checks LocLoad_Unk56D4 makes on the event data it has just unpacked; each failure ends in Sys_HaltWithColor: - Evt_ObjCount = Evt_BadObjCount ($0D) with first Evt_Data byte Evt_BadFirstByte ($0A):
 $C0:5CEC,$C0:5D36,75,LocLoad_InitUnk7F3700,$C0,Engine,verified,1210afee2526,"Seeds the 134 bytes at Map_Unk7F3700 from LocLoad_Unk7F3700Init with five MVNs: 32 bytes from the table's start to $7F:3700, then three times 32 bytes from LocLoad_Unk7F3700Init_Rec1 to $7F:3720, $7F:"
 $C0:5D37,$C0:5D6D,55,LocLoad_Unk7F3700Init,$C0,Engine,verified,6d2bf4d6cd1c,"LocLoad_InitUnk7F3700's source: 25 bytes for $7F:3700, 24 for the three blocks at $7F:3720-$7F:3760 (Rec1; the copies take 32 and so also read Rec4 and the first two bytes of Evt_OpcodeTable) and 6 fo"
+$C0:5F6E,$C0:5F73,6,Evt_UnusedOpcode,$C0,Engine,verified,aeb4668b2606,"The handler Evt_OpcodeTable gives every unused event opcode ($01, $3A, $3D, $3E, $45, $46, $6E, $70, $74, $78, $79, $85, $86, $93, $9B, $A2-$A5, $BE, $BF, $C5, $C6, $DB, $E9, $EF, $F5-$F7, $FB-$FD): s"
+$C0:5F74,$C0:5FB5,66,Evt_Op00_Return,$C0,Engine,verified,9cccbaacaa47,Event opcode $00 (1 byte): ends the function Obj_Cur is running.
+$C0:5FB6,$C0:5FBD,8,Evt_Op02_CallObjFunc,$C0,Engine,verified,5784a36c0655,"Evt_Op02_Body, 192 bytes, $5FBE–$607D) Event opcode $02 (3 bytes: $02, slot, level/function): makes the object in slot run one of its functions, without waiting."
+$C0:5FBE,$C0:607D,192,Evt_Op02_Body,$C0,Engine,verified,76e54e235134,
+$C0:607E,$C0:6085,8,Evt_Op03_CallObjFuncRetry,$C0,Engine,verified,7f1d4b55d8ba,"body Evt_Op03_Body, 131 bytes, $6086–$6108) Event opcode $03 (3 bytes: $03, slot, level/function): as Evt_Op02_CallObjFunc, but it starts the call or waits: while the target's Obj_Unk1C01 is nonzero o"
+$C0:6086,$C0:6108,131,Evt_Op03_Body,$C0,Engine,verified,1c31b390e80a,
+$C0:6109,$C0:6121,25,Evt_Op04_CallObjFuncWait,$C0,Engine,verified,7487d34c9c52,"Evt_Op04_Start, 141 bytes, $6122–$61AE, and Evt_Op04_WaitSlot, 58 bytes, $61AF–$61E8) Event opcode $04 (3 bytes: $04, slot, level/function): as Evt_Op03_CallObjFuncRetry, and then waits for the functi"
+$C0:6122,$C0:61AE,141,Evt_Op04_Start,$C0,Engine,verified,1c1d9249bf5e,
+$C0:61AF,$C0:61E8,58,Evt_Op04_WaitSlot,$C0,Engine,verified,58b42d360560,
+$C0:61E9,$C0:61FD,21,Evt_Op05_CallPcFunc,$C0,Engine,verified,4e3b882e3896,"Event opcode $05 (3 bytes: $05, p, level/function): Evt_Op02_CallObjFunc on party member p's object (Party_ObjSlot + p)."
+$C0:61FE,$C0:6213,22,Evt_Op06_CallPcFuncRetry,$C0,Engine,verified,efd26d72722b,"Event opcode $06 (3 bytes: $06, p, level/function): Evt_Op03_CallObjFuncRetry on party member p's object."
+$C0:6214,$C0:623F,44,Evt_Op07_CallPcFuncWait,$C0,Engine,verified,f953aaa3717a,"Event opcode $07 (3 bytes: $07, p, level/function): Evt_Op04_CallObjFuncWait on party member p's object: with ObjX_CallWait 0 through Evt_Op04_Start (no member, bit 7 set: X = Y + 3, C=1), else throug"
+$C0:6240,$C0:6246,7,Evt_Op08_BlockCalls,$C0,Engine,verified,60907eea8f3c,"tail Evt_Op08_Next, 4 bytes, $6247–$624A) Event opcode $08 (1 byte): Obj_Cur's Obj_Unk1C01 = 1."
+$C0:6247,$C0:624A,4,Evt_Op08_Next,$C0,Engine,verified,a27b22951e5d,
+$C0:624B,$C0:6253,9,Evt_Op09_AllowCalls,$C0,Engine,verified,a76803cbcf3a,"Event opcode $09 (1 byte): Obj_Cur's Obj_Unk1C01 = 0 (undoes Evt_Op08_BlockCalls); X = Y + 1, C=1 through Evt_Op08_Next."
+$C0:6254,$C0:6268,21,Evt_Op0A_RemoveObj,$C0,Engine,verified,83187627429f,"Event opcode $0A (2 bytes: $0A, slot): the object in slot gets Obj_Unk1100 = $80 (bit 7: Vblank_Unk59D9 never queues its script and the call opcodes skip it) and Obj_Unk1A81 = 0 (no frame build), so i"
+$C0:6269,$C0:6281,25,Evt_Op0B_StopObjScript,$C0,Engine,verified,c022abf6530a,"Event opcode $0B (2 bytes: $0B, slot): sets bit 7 of the object's Obj_Unk1000 (Obj_Unk1000Bit7): Vblank_Unk59D9 stops counting its script timer, so its script no longer runs, and the call opcodes skip"
+$C0:6282,$C0:6294,19,Evt_Op0C_StartObjScript,$C0,Engine,verified,c708eab15892,"Event opcode $0C (2 bytes: $0C, slot): clears bit 7 of the object's Obj_Unk1000 (undoes Evt_Op0B_StopObjScript); X = Y + 2, C=1 through Evt_Op0E_Next."
+$C0:6295,$C0:62A3,15,Evt_Op0D_SetUnk1C80,$C0,Engine,verified,7ef8c4eb4301,"Event opcode $0D (2 bytes: $0D, value): Obj_Cur's Obj_Unk1C80 = value (bit 0 Obj_Unk1C80Block: tile blocking in Obj_SetVelocityChecked; bit 1 Obj_Unk1C80Front: Evt_FindSolidObjInFront looks for object"
+$C0:62A4,$C0:62B0,13,Evt_Op0E_SetUnk1C81,$C0,Engine,verified,57d24a8aa4d4,"tail Evt_Op0E_Next, 4 bytes, $62B1–$62B4) Event opcode $0E (2 bytes: $0E, value): Obj_Cur's Obj_Unk1C81 = value (bit 0 Obj1C81_CentreOnTile, bit 1 Obj1C81_OntoObj: what the walk opcodes do on arriving"
+$C0:62B1,$C0:62B4,4,Evt_Op0E_Next,$C0,Engine,verified,89d656af0809,
+$C0:62B5,$C0:62CA,22,Evt_Op10_JumpFwd,$C0,Engine,verified,e50885796667,"Event opcode $10 (2 bytes: $10, n): the script goes on n bytes after the operand byte: X = Y + 1 + n, C=1."
+$C0:62CB,$C0:62DD,19,Evt_Op11_JumpBack,$C0,Engine,verified,a68359027b66,"Event opcode $11 (2 bytes: $11, n): the script goes back n bytes from the operand byte: X = Y + 1 - n, C=1 (through Evt_Op10_JumpFwd's .store)."
+$C0:62DE,$C0:6312,53,Evt_Op12_IfVarByte,$C0,Engine,verified,23a368a38b5f,"Event opcode $12 (5 bytes: $12, a, value, cmp, n): EvtIf_Left = the low byte of event word a, EvtIf_Right = value; comparison cmp of Evt_CmpTable8 (0 =, 1 !=, 2 >, 3 <, 4 >=, 5 <=, 6 AND nonzero, 7 OR"
+$C0:6313,$C0:6348,54,Evt_Op13_IfVarWord,$C0,Engine,verified,2658e962d31c,"tail Evt_JumpFromOfsPos, 24 bytes, $6349–$6360) Event opcode $13 (6 bytes: $13, a, value (word), cmp, n): as Evt_Op12_IfVarByte with the whole event word a and a 16-bit value, through Evt_CmpTable16."
+$C0:6349,$C0:6360,24,Evt_JumpFromOfsPos,$C0,Engine,verified,fe1813f668bd,
+$C0:6361,$C0:63A3,67,Evt_Op14_IfVarVarByte,$C0,Engine,verified,ac12b9345eb0,"Event opcode $14 (5 bytes: $14, a, b, cmp, n): as Evt_Op12_IfVarByte with EvtIf_Right = the low byte of event word b."
+$C0:63A4,$C0:63E5,66,Evt_Op15_IfVarVarWord,$C0,Engine,verified,18251caedcc1,"Event opcode $15 (5 bytes: $15, a, b, cmp, n): as Evt_Op14_IfVarVarByte with the whole event words, through Evt_CmpTable16."
+$C0:63E6,$C0:6441,92,Evt_Op16_IfMemByte,$C0,Engine,verified,e1780f31a409,"Event opcode $16 (5 bytes: $16, m, value, cmp, n): EvtIf_Left = the byte at Evt_Mem7F + m, or at Evt_Mem7F + $100 + m when bit 7 (EvtIf_Page1Flag) of cmp is set; EvtIf_Right = value; comparison cmp & "
+$C0:6442,$C0:6466,37,Evt_Op18_IfUnk7F0000Below,$C0,Engine,verified,1e6279d26ea9,"Event opcode $18 (3 bytes: $18, value, n): goes on (X = Y + 3) while Eng_Unk7F0000 < value; from value up it jumps n bytes on from the n byte."
+$C0:6467,$C0:6476,16,Evt_CmpTable8,$C0,Engine,verified,5a2ac39fbe02,"The byte comparisons of the condition opcodes $12, $14 and $16, indexed by cmp x 2 (JSR (Evt_CmpTable8,X) with 8-bit X)."
+$C0:6477,$C0:6486,16,Evt_CmpTable16,$C0,Engine,verified,10f4717a196f,"The word comparisons of opcodes $13 and $15, in the order of Evt_CmpTable8."
+$C0:6487,$C0:648E,8,Evt_Cmp8Eq,$C0,Engine,verified,cc6451b5a5b6,"Evt_Cmp8Ne, Evt_Cmp8Gt, Evt_Cmp8Lt, Evt_Cmp8Ge, the shared tail Evt_Cmp8Holds, Evt_Cmp8Le, Evt_Cmp8And and Evt_Cmp8Or, 180 bytes, $6487–$653A with the 16-bit set) The byte comparisons of Evt_CmpTable8"
+$C0:648F,$C0:6496,8,Evt_Cmp8Ne,$C0,Engine,verified,1614528e5933,
+$C0:6497,$C0:64A0,10,Evt_Cmp8Gt,$C0,Engine,verified,468ba01c1a77,
+$C0:64A1,$C0:64A8,8,Evt_Cmp8Lt,$C0,Engine,verified,8a4376b02c1a,
+$C0:64A9,$C0:64B2,10,Evt_Cmp8Ge,$C0,Engine,verified,29076477f3ef,
+$C0:64B3,$C0:64B4,2,Evt_Cmp8Holds,$C0,Engine,verified,223bd97288cf,
+$C0:64B5,$C0:64BE,10,Evt_Cmp8Le,$C0,Engine,verified,f7f34e30d7cc,
+$C0:64BF,$C0:64C6,8,Evt_Cmp8And,$C0,Engine,verified,98896453e050,
+$C0:64C7,$C0:64CE,8,Evt_Cmp8Or,$C0,Engine,verified,e6952821c911,
+$C0:64CF,$C0:64DA,12,Evt_Cmp16Eq,$C0,Engine,verified,3b012896e9b2,
+$C0:64DB,$C0:64E6,12,Evt_Cmp16Ne,$C0,Engine,verified,00bf7adbb9c6,
+$C0:64E7,$C0:64F4,14,Evt_Cmp16Gt,$C0,Engine,verified,1fd25976f1d7,
+$C0:64F5,$C0:6502,14,Evt_Cmp16Lt,$C0,Engine,verified,527892b7f6b6,
+$C0:6503,$C0:6510,14,Evt_Cmp16Ge,$C0,Engine,verified,c45357076c68,
+$C0:6511,$C0:651E,14,Evt_Cmp16Le,$C0,Engine,verified,a7b76efc30ef,
+$C0:651F,$C0:6522,4,Evt_Cmp16Holds,$C0,Engine,verified,13b2a1ccb3e4,
+$C0:6523,$C0:652E,12,Evt_Cmp16And,$C0,Engine,verified,7dce3eb34fd6,
+$C0:652F,$C0:653A,12,Evt_Cmp16Or,$C0,Engine,verified,0a0a89f0b499,
+$C0:653B,$C0:654D,19,Evt_Op19_SetUnk7F0A80Var,$C0,Engine,verified,089cfa987f7c,"Event opcode $19 (2 bytes: $19, a): Obj_Cur's ObjX_Unk7F0A80 = event word a; X = Y + 2, C=1, through the store at the end of Evt_Op1C_SetUnk7F0A80Mem (BRA Evt_Op1C_SetUnk7F0A80Mem_store)."
+$C0:654E,$C0:6567,26,Evt_Op1C_SetUnk7F0A80Mem,$C0,Engine,verified,a7a8d66825d7,"Event opcode $1C (3 bytes: $1C, m (word)): Obj_Cur's ObjX_Unk7F0A80 = the word at Evt_Mem7F + m; X = Y + 3, C=1."
+$C0:6568,$C0:658E,39,Evt_Op1A_IfUnk7F0A80,$C0,Engine,verified,1d949b4dba86,"Event opcode $1A (3 bytes: $1A, value, n): goes on (X = Y + 3) when the low byte of Obj_Cur's ObjX_Unk7F0A80 equals value, else jumps n bytes on from the n byte."
+$C0:658F,$C0:65A9,27,Evt_Op20_GetPartyMember0,$C0,Engine,verified,8b8bfdec8740,"Event opcode $20 (2 bytes: $20, a): event word a's low byte = the first byte of Party_Members (the character id of party member 1, probably the leader); X = Y + 2, C=1."
+$C0:65AA,$C0:65B1,8,Evt_Op21_GetObjTile,$C0,Engine,verified,5d737ab4deb4,"Evt_Op21_Body, 57 bytes, $65B2–$65EA) Event opcode $21 (4 bytes: $21, slot, a, b): event word a's low byte = the object's Obj_TileX, event word b's = its Obj_TileY; X = Y + 4, C=1."
+$C0:65B2,$C0:65EA,57,Evt_Op21_Body,$C0,Engine,verified,cbc6d9204b86,
+$C0:65EB,$C0:65F7,13,Evt_Op22_GetPcTile,$C0,Engine,verified,d1eaf478a684,"Event opcode $22 (4 bytes: $22, p, a, b): Evt_Op21_GetObjTile for party member p's object (Party_ObjSlot + p); X = Y + 4, C=1."
+$C0:65F8,$C0:65FF,8,Evt_Op23_GetObjFacing,$C0,Engine,verified,5dd0f6f73872,"Evt_Op23_Body, 31 bytes, $6600–$661E) Event opcode $23 (3 bytes: $23, slot, a): event word a's low byte = the object's Obj_Facing; X = Y + 3, C=1."
+$C0:6600,$C0:661E,31,Evt_Op23_Body,$C0,Engine,verified,bf1d98f2263e,
+$C0:661F,$C0:662B,13,Evt_Op24_GetPcFacing,$C0,Engine,verified,672a554c732b,"Event opcode $24 (3 bytes: $24, p, a): Evt_Op23_GetObjFacing for party member p's object; X = Y + 3, C=1."
+$C0:662C,$C0:6654,41,Evt_Op27_IfObjUnk0F00,$C0,Engine,verified,56de674eda6b,"Event opcode $27 (3 bytes: $27, slot, n): goes on (X = Y + 3) when the object's Obj_Unk0F00 is nonzero (it has a frame to build), else jumps n bytes on from the n byte."
+$C0:6655,$C0:66A4,80,Evt_Op28_IfObjInsideScreen,$C0,Engine,verified,5cc00c751396,"Event opcode $28 (3 bytes: $28, slot, n): goes on (X = Y + 3) when the object is well inside the screen, by Evt_Op8F_FollowPc's test: its Obj_TileX minus EvtFollow_ScrCol (Map_TileOriginX / 2) is 2 to"
+$C0:66A5,$C0:66B1,13,Evt_Op2D_IfAnyHeld,$C0,Engine,verified,375cfa31b109,"Event opcode $2D (2 bytes: $2D, n): goes on when Pad_Unk00F8 or Pad_Unk00F9 is nonzero (any button or D-pad direction held, through the button map), else jumps."
+$C0:66B2,$C0:66BB,10,Evt_Op30_IfMapHeldBit1,$C0,Engine,verified,59e991670330,"Event opcode $30 (2 bytes: $30, n): goes on when Pad_Unk00F8 bit 1 (Pad_Unk00F8Bit1, the button the D-pad handlers run with) is held, else jumps."
+$C0:66BC,$C0:66C5,10,Evt_Op31_IfMapHeldBit7,$C0,Engine,verified,4aa8afb2386d,"Event opcode $31 (2 bytes: $31, n): goes on when Pad_Unk00F8 bit 7 (Pad_Unk00F8Bit7) is held, else jumps."
+$C0:66C6,$C0:66CF,10,Evt_Op34_IfHeldA,$C0,Engine,verified,b9152b81e5b2,"then the shared tail Evt_PadJump, 21 bytes, $66D0–$66E4) Event opcode $34 (2 bytes: $34, n): goes on when A (Pad_A) is held in Menu_PadHeld, else jumps."
+$C0:66D0,$C0:66E4,21,Evt_PadJump,$C0,Engine,verified,1af1e3528016,
+$C0:66E5,$C0:66EE,10,Evt_Op35_IfHeldB,$C0,Engine,verified,7245713ea355,"Event opcode $35 (2 bytes: $35, n): goes on when B (Pad_B) is held in Menu_PadHeld, else jumps."
+$C0:66EF,$C0:66F8,10,Evt_Op36_IfHeldX,$C0,Engine,verified,8fe717dc5067,"Event opcode $36 (2 bytes: $36, n): goes on when X (Pad_X) is held in Menu_PadHeld, else jumps."
+$C0:66F9,$C0:6700,8,Evt_Op37_IfHeldY,$C0,Engine,verified,74ed41db5891,"then the shared tail Evt_PadGoOn, 4 bytes, $6701–$6704) Event opcode $37 (2 bytes: $37, n): goes on when Y (Pad_Y) is held in Menu_PadHeld, else jumps."
+$C0:6701,$C0:6704,4,Evt_PadGoOn,$C0,Engine,verified,fb1b43ff3fde,
+$C0:6705,$C0:670E,10,Evt_Op38_IfHeldL,$C0,Engine,verified,fd61a86612d5,"Event opcode $38 (2 bytes: $38, n): goes on when L (Pad_L) is held in Menu_PadHeld, else jumps."
+$C0:670F,$C0:6718,10,Evt_Op39_IfHeldR,$C0,Engine,verified,fb917ce2f046,"Event opcode $39 (2 bytes: $39, n): goes on when R (Pad_R) is held in Menu_PadHeld, else jumps."
+$C0:6719,$C0:6723,11,Evt_Op3B_IfMapPressedBit1,$C0,Engine,verified,2bf374bcc376,"Event opcode $3B (2 bytes: $3B, n): when Pad_Unk00F6Latch bit 1 (Pad_Unk00F6Bit1) is set it is cleared and the script goes on, else it jumps."
+$C0:6724,$C0:6731,14,Evt_Op3C_IfMapPressedBit7,$C0,Engine,verified,d0a9e074de76,"Event opcode $3C (2 bytes: $3C, n): as Evt_Op3B_IfMapPressedBit1 with bit 7 (Pad_Unk00F6Bit7, the button Field_ActionButton acts on)."
+$C0:6732,$C0:673F,14,Evt_Op3F_IfPressedA,$C0,Engine,verified,5639d9dad293,"Event opcode $3F (2 bytes: $3F, n): when A (Pad_A) is set in Pad_PressedLatch it is cleared and the script goes on, else it jumps."
+$C0:6740,$C0:674D,14,Evt_Op40_IfPressedB,$C0,Engine,verified,80064abba9a5,"Event opcode $40 (2 bytes: $40, n): as Evt_Op3F_IfPressedA with B (Pad_B); goes on through Evt_PadGoOn2."
+$C0:674E,$C0:675B,14,Evt_Op41_IfPressedX,$C0,Engine,verified,6adefb269e4d,"Event opcode $41 (2 bytes: $41, n): as Evt_Op3F_IfPressedA with X (Pad_X); goes on through Evt_PadGoOn2."
+$C0:675C,$C0:6769,14,Evt_Op42_IfPressedY,$C0,Engine,verified,cabe270b2c41,"Event opcode $42 (2 bytes: $42, n): as Evt_Op3F_IfPressedA with Y (Pad_Y); goes on through Evt_PadGoOn2."
+$C0:676A,$C0:6777,14,Evt_Op43_IfPressedL,$C0,Engine,verified,e50f22a8b89b,"Event opcode $43 (2 bytes: $43, n): as Evt_Op3F_IfPressedA with L (Pad_L); goes on through Evt_PadGoOn2."
+$C0:6778,$C0:6783,12,Evt_Op44_IfPressedR,$C0,Engine,verified,d5e28a17e3f7,"then the shared tail Evt_PadGoOn2, 4 bytes, $6784–$6787) Event opcode $44 (2 bytes: $44, n): as Evt_Op3F_IfPressedA with R (Pad_R)."
+$C0:6784,$C0:6787,4,Evt_PadGoOn2,$C0,Engine,verified,7b4b87214af4,
+$C0:6788,$C0:6791,10,Evt_Op47_SetScanlineLimit,$C0,Engine,verified,5616bb835d4b,"Event opcode $47 (2 bytes: $47, v): the low byte of ObjQ_ScanlineLimit = v (Field_ProcessAnimQueue stops building frames once the V counter reaches it); X = Y + 2, C=1 through Evt_PadGoOn2."
+$C0:6792,$C0:67A1,16,Evt_Op48_GetLongByte,$C0,Engine,verified,aee30f915bd9,"Event opcode $48 (5 bytes: $48, ptr, a): event word a's low byte = the byte at ptr; X = Y + 5, C=1."
+$C0:67A2,$C0:67C6,37,Evt_ReadSrcPtrAndVar,$C0,Engine,verified,250b4b2b9bdd,"Reads the operands of opcodes $48 / $49: EvtMem_Src = the 3 bytes at Y + 1 (ptr), then X = the event word index (the byte at Y + 4) x 2, with EvtMem_Pos = Y + 4."
+$C0:67C7,$C0:67D6,16,Evt_Op49_GetLongWord,$C0,Engine,verified,ca9696a85c79,"Event opcode $49 (5 bytes: $49, ptr, a): event word a = the word at ptr; X = Y + 5, C=1."
+$C0:67D7,$C0:67E2,12,Evt_Op4A_SetLongByte,$C0,Engine,verified,3531c274c3e9,"Event opcode $4A (5 bytes: $4A, ptr, value): the byte at ptr = value; X = Y + 5, C=1."
+$C0:67E3,$C0:67FA,24,Evt_ReadDstPtr,$C0,Engine,verified,41b59bd23d33,Reads the pointer operand of opcodes $4A-$4D: EvtMem_Dst = the 3 bytes at Y + 1; X = Y + 4 (the next operand).
+$C0:67FB,$C0:680B,17,Evt_Op4B_SetLongWord,$C0,Engine,verified,926f8448d762,"Event opcode $4B (6 bytes: $4B, ptr, value (word)): the word at ptr = value; X = Y + 6, C=1."
+$C0:680C,$C0:6828,29,Evt_Op4C_SetLongVarByte,$C0,Engine,verified,7454484f8ad8,"Event opcode $4C (5 bytes: $4C, ptr, a): the byte at ptr = event word a's low byte; X = Y + 5, C=1."
+$C0:6829,$C0:6845,29,Evt_Op4D_SetLongVarWord,$C0,Engine,verified,250156b308c5,"Event opcode $4D (5 bytes: $4D, ptr, a): the word at ptr = event word a; X = Y + 5, C=1."
+$C0:6846,$C0:68A4,95,Evt_Op4E_CopyData,$C0,Engine,verified,07156bec6ee6,"Event opcode $4E (variable: $4E, dst (word), bank, len (word), then len - 2 data bytes): copies the data bytes with MVN to dst in bank $7E when bank is $7E, else in bank $7F (any other bank byte); len"
+$C0:68A5,$C0:68C5,33,Evt_Op4F_SetVarByte,$C0,Engine,verified,c2c6b9dee353,"Event opcode $4F (3 bytes: $4F, value, a): event word a's low byte = value; X = Y + 3, C=1."
+$C0:68C6,$C0:68E8,35,Evt_Op50_SetVarWord,$C0,Engine,verified,f95a35110377,"Event opcode $50 (4 bytes: $50, value (word), a): event word a = value; X = Y + 4, C=1."
+$C0:68E9,$C0:6912,42,Evt_Op51_CopyVarByte,$C0,Engine,verified,7cdfcd2811d0,"Event opcode $51 (3 bytes: $51, a, b): event word b's low byte = event word a's low byte (a is read as a word, only its low byte stored); X = Y + 3, C=1."
+$C0:6913,$C0:693C,42,Evt_Op52_CopyVarWord,$C0,Engine,verified,74d5a9f81500,"Event opcode $52 (3 bytes: $52, a, b): event word b = event word a; X = Y + 3, C=1."
+$C0:693D,$C0:6963,39,Evt_Op53_GetMemByte,$C0,Engine,verified,70f530ba3ff7,"Event opcode $53 (4 bytes: $53, m (word), a): event word a's low byte = the byte at Evt_Mem7F + m (read as a word, its low byte stored); X = Y + 4, C=1."
+$C0:6964,$C0:698A,39,Evt_Op54_GetMemWord,$C0,Engine,verified,65c45ddfd4ab,"Event opcode $54 (4 bytes: $54, m (word), a): event word a = the word at Evt_Mem7F + m; X = Y + 4, C=1."
+$C0:698B,$C0:69A5,27,Evt_Op55_GetUnk7F0000,$C0,Engine,verified,605322eb725b,"Event opcode $55 (2 bytes: $55, a): event word a's low byte = Eng_Unk7F0000; X = Y + 2, C=1."
+$C0:69A6,$C0:69C3,30,Evt_Op56_SetMemByte,$C0,Engine,verified,09272aa336a8,"Event opcode $56 (4 bytes: $56, value, m (word)): the byte at Evt_Mem7F + m = value; X = Y + 4, C=1."
+$C0:69C4,$C0:69EA,39,Evt_Op58_SetMemVarByte,$C0,Engine,verified,4e8cefbb6876,"Event opcode $58 (4 bytes: $58, a, m (word)): the byte at Evt_Mem7F + m = event word a's low byte; X = Y + 4, C=1."
+$C0:69EB,$C0:6A11,39,Evt_Op59_SetMemVarWord,$C0,Engine,verified,dd2904c2212f,"Event opcode $59 (4 bytes: $59, a, m (word)): the word at Evt_Mem7F + m = event word a; X = Y + 4, C=1."
+$C0:6A12,$C0:6A1E,13,Evt_Op5A_SetUnk7F0000,$C0,Engine,verified,a8345558f8de,"Event opcode $5A (2 bytes: $5A, value): Eng_Unk7F0000 = value; X = Y + 2, C=1."
+$C0:6A1F,$C0:6A44,38,Evt_Op5B_AddVarByte,$C0,Engine,verified,ade079dcc312,"Event opcode $5B (3 bytes: $5B, value, a): event word a's low byte += value; X = Y + 3, C=1."
+$C0:6A45,$C0:6A73,47,Evt_Op5D_AddVarVarByte,$C0,Engine,verified,08b2a837bba3,"Event opcode $5D (3 bytes: $5D, a, b): event word b's low byte += event word a's low byte; X = Y + 3, C=1."
+$C0:6A74,$C0:6AA2,47,Evt_Op5E_AddVarVarWord,$C0,Engine,verified,479549328181,"Event opcode $5E (3 bytes: $5E, a, b): event word b += event word a; X = Y + 3, C=1."
+$C0:6AA3,$C0:6AC8,38,Evt_Op5F_SubVarByte,$C0,Engine,verified,51a7e26a32aa,"Event opcode $5F (3 bytes: $5F, value, a): event word a's low byte -= value; X = Y + 3, C=1."
+$C0:6AC9,$C0:6AF0,40,Evt_Op60_SubVarWord,$C0,Engine,verified,be215ebbf3cc,"Event opcode $60 (4 bytes: $60, value (word), a): event word a -= value; X = Y + 4, C=1."
+$C0:6AF1,$C0:6B1F,47,Evt_Op61_SubVarVarByte,$C0,Engine,verified,574929ad3d22,"Event opcode $61 (3 bytes: $61, a, b): event word b's low byte -= event word a's low byte; X = Y + 3, C=1."
+$C0:6B20,$C0:6B4A,43,Evt_Op63_SetVarBit,$C0,Engine,verified,da82a0d79018,"Event opcode $63 (3 bytes: $63, bit, a): sets bit number bit (0-7, through BitSet) in event word a's low byte; X = Y + 3, C=1."
+$C0:6B4B,$C0:6B75,43,Evt_Op64_ClearVarBit,$C0,Engine,verified,aa104cd8fdab,"Event opcode $64 (3 bytes: $64, bit, a): clears bit number bit (0-7, through BitClear) in event word a's low byte; X = Y + 3, C=1."
+$C0:6B76,$C0:6BA3,46,Evt_Op65_SetMemBit,$C0,Engine,verified,7e7f3d94b701,"Event opcode $65 (3 bytes: $65, bit, m): sets a bit of the byte at Evt_Mem7F + m, or at Evt_Mem7F + $100 + m when bit 7 of the bit operand is set; the bit number is the operand's bits 0-3 (EvtBit_NumM"
+$C0:6BA4,$C0:6BD1,46,Evt_Op66_ClearMemBit,$C0,Engine,verified,2b0a1ae3a230,"Event opcode $66 (3 bytes: $66, bit, m): clears a bit of the byte at Evt_Mem7F + m, or at Evt_Mem7F + $100 + m when bit 7 of the bit operand is set; the bit number is the operand's bits 0-3 (EvtBit_Nu"
+$C0:6BD2,$C0:6BF6,37,Evt_Op67_AndVarByte,$C0,Engine,verified,3ad943473a70,"Event opcode $67 (3 bytes: $67, mask, a): ANDs event word a's low byte with mask; X = Y + 3, C=1."
+$C0:6BF7,$C0:6C1B,37,Evt_Op69_OrVarByte,$C0,Engine,verified,b7ed7ed1a561,"Event opcode $69 (3 bytes: $69, mask, a): ORs event word a's low byte with mask; X = Y + 3, C=1."
+$C0:6C1C,$C0:6C40,37,Evt_Op6B_EorVarByte,$C0,Engine,verified,e3c3d2001928,"Event opcode $6B (3 bytes: $6B, mask, a): EORs event word a's low byte with mask; X = Y + 3, C=1."
+$C0:6C41,$C0:6C68,40,Evt_Op6F_ShrVarByte,$C0,Engine,verified,1dd1971a069a,"Event opcode $6F (3 bytes: $6F, count, a): shifts event word a's low byte right count times; X = Y + 3, C=1."
+$C0:6C69,$C0:6C84,28,Evt_Op71_IncVarByte,$C0,Engine,verified,33be74de3ffe,"Event opcode $71 (2 bytes: $71, a): adds 1 to event word a's low byte (wrapping in the byte); X = Y + 2, C=1."
+$C0:6C85,$C0:6CA0,28,Evt_Op72_IncVarWord,$C0,Engine,verified,cfd1a027383d,"Event opcode $72 (2 bytes: $72, a): adds 1 to event word a; X = Y + 2, C=1."
+$C0:6CA1,$C0:6CBC,28,Evt_Op73_DecVarByte,$C0,Engine,verified,763805efc64e,"Event opcode $73 (2 bytes: $73, a): subtracts 1 from event word a's low byte (wrapping in the byte); X = Y + 2, C=1."
+$C0:6CBD,$C0:6CD5,25,Evt_Op75_SetVarByte1,$C0,Engine,verified,420735d646dd,"Event opcode $75 (2 bytes: $75, a): event word a's low byte = 1; X = Y + 2, C=1."
+$C0:6CD6,$C0:6CEF,26,Evt_Op76_SetVarWord1,$C0,Engine,verified,b8646bc8702d,"Event opcode $76 (2 bytes: $76, a): event word a = 1; X = Y + 2, C=1."
+$C0:6CF0,$C0:6D08,25,Evt_Op77_ClearVarByte,$C0,Engine,verified,7c2f46d0c6da,"Event opcode $77 (2 bytes: $77, a): event word a's low byte = 0; X = Y + 2, C=1."
+$C0:6D09,$C0:6D2E,38,Evt_Op7F_RandomVarByte,$C0,Engine,verified,a3fa5aa071f9,"Event opcode $7F (2 bytes: $7F, a): event word a's low byte = the next RandomTable byte: Field_Unk0400Copy is incremented and indexes it (as Obj_SetVelocityChecked does); X = Y + 2, C=1."
 $C0:6D2F,$C0:6D64,54,LocLoad_UploadPack,$C0,Engine,verified,f2d3923ce620,"One graphics pack of LocLoad_Unk0960: reads the pack number at [LocGfx_PackListPtr]; unless it is LocRom_SetNone, unpacks its LocGfx_PackPtrs entry with Decomp_ToWramVec to LocGfx_Stage and uploads it"
 $C0:6D65,$C0:6DCE,106,LocLoad_UnpackPacks67,$C0,Engine,verified,c3a567a07aaa,"The end of LocLoad_Unk0960: with LocGfx_PackListPtr on entry byte 6 of the LocGfx_Lists entry, unpacks pack 6 to LocGfx_Unk7F6000, steps the pointer (16-bit INX this time), and unpacks pack 7 to LocGf"
 $C0:6DCF,$C0:6E26,88,LocLoad_Unk6DCF,$C0,Engine,verified,a2d007d5aa70,Loads the layer-3 graphics: if LocRom.Tileset3 is LocRom_SetNone it only sets Field_UnkBB = 1 (no layer 3; LocLoad_Unk0A14 and LocLoad_UnkA33B test it).
@@ -810,8 +967,8 @@ $C1:7C3D,$C1:7FFF,963,BankC1_OldBuildLeftovers,$C1,Engine,verified,0722ab1ca1e5,
 $C1:8000,$C1:8002,3,BankC1_BattleStartVec,$C1,Engine,verified,3f1edb0c9d88,Vector into BattleSys_Main.
 $C1:8003,$C1:8005,3,BankC1_Entry8003,$C1,Engine,verified,64c7709797ef,"Long vector into BankC1_RunService (unmatched, $C1:CFC2), which pushes P, X, DP and DB itself (PHP, REP #$30, PHX, PHD, PHB), sets DB=$7E and DP=0, runs entry A (low byte) of its service table at $C1:"
 $C1:8006,$C1:8460,1115,BattleSys_Main,$C1,Battle system,verified,f0b352d126de,
-$C1:8461,$C1:883C,988,BattleSys_Unk8461,$C1,Battle system,verified,c1ee07fa9a2e,
-$C1:883D,$C1:8861,37,BattleSys_Unk883D,$C1,Battle system,verified,60fc982a3e5c,"For each PC slot 0-2 whose !Battler_UnkAF0A entry is not $FF: DP $14 (16-bit) = the slot, BattleSys_UnkB575, then BattleSys_UnkB3F9 with X = the slot."
+$C1:8461,$C1:883C,988,BattleSys_Unk8461,$C1,Battle system,verified,f28fa5a7c93b,
+$C1:883D,$C1:8861,37,BattleSys_Unk883D,$C1,Battle system,verified,807805d01bc0,"For each PC slot 0-2 whose !Battler_UnkAF0A entry is not $FF: DP $14 (16-bit) = the slot, BattleSys_UnkB575, then BattleSys_UnkB3F9 with X = the slot."
 $C1:8862,$C1:8875,20,BattleSys_ClearUnkB192,$C1,Battle system,verified,a6caee590b0e,Zeroes the 4-byte !Battle_UnkB192 record of battler slot !Battle_UnkB18B.
 $C1:8876,$C1:88C4,79,BattleSys_ListHandler0,$C1,Battle system,verified,9b8f209a75ef,Turn list 0 (BattleSys_ListHandlerTable entry 0): the usual handler (see the banner); at the end of its runs it clears BattlerStats.Status2 bit 7 of the slot.
 $C1:88C5,$C1:895A,150,BattleSys_ListHandler1,$C1,Battle system,verified,e2b60b803e88,"Turn list 1: a repeating hit on the slot (inferred from the amount going to !Battle_ActPcHitAmount with kind 3, which BattleAct_FlagLethalPcHits checks as damage; probably poison)."
@@ -834,14 +991,14 @@ $C1:AC14,$C1:AC2B,24,BattleAi_ReadTargets,$C1,Battle engine,verified,4788ca14d0d
 $C1:AC2C,$C1:AC3E,19,BattleAi_ReadTargets_Code,$C1,Battle engine,verified,f95c35c70915,
 $C1:AC3F,$C1:AC45,7,BattleAi_ReadTargets_Done,$C1,Battle engine,verified,fbfd12c67155,
 $C1:AC46,$C1:AC56,17,BattleAi_ClearTargets,$C1,Battle engine,verified,78b4afbbd24e,Sets the 11 bytes of !BattleAi_Targets and of !Battle_UnkAD8E to $FF (empty).
-$C1:AC57,$C1:AC5D,7,BattleSys_UnkAC57,$C1,Battle system,verified,ca7d09a40543,"$C1:BFA4 (not analysed; it requests service 4, BattleSys_RunAction, which plays the action block), then BattleSys_UnkAC85."
+$C1:AC57,$C1:AC5D,7,BattleSys_UnkAC57,$C1,Battle system,verified,631b2bfb3424,"BattleSys_UnkBFA4 (it requests service 4, BattleSys_RunAction, which plays the action block), then BattleSys_UnkAC85."
 $C1:AC5E,$C1:AC84,39,BattleSys_UnkAC5E,$C1,Battle system,verified,6f764f63ce2c,"If !Battle_UnkAEB2 is set: !Battle_UnkAE85[n] = 1 for each enemy n (0-7) whose !Battle_UnkAEB3 entry is non-zero, then, unless !Battle_Unk2989 has bit 5, service !BattleSys_ServiceUnk6 ($C1:006D, not "
 $C1:AC85,$C1:AC88,4,BattleSys_UnkAC85,$C1,Battle system,verified,8b6ec032b455,Calls Battle_ApplyHits.
 $C1:AC89,$C1:ACCD,69,BattleAi_SetCmdBits,$C1,Battle engine,verified,a4532106d91d,"ORs the slot A + 3 (an enemy entry + 3) into !Battle_UnkB18E and zeroes !Battle_UnkB191, then by !BattleAi_ActCode: 0: !Battle_UnkB18F = 0; 1: !Battle_UnkB18E |= $80, !Battle_UnkB18F = 0, !Battle_UnkA"
 $C1:ACCE,$C1:ACF1,36,BattleAi_ArgToDp0E,$C1,Battle engine,verified,8a461e026b21,"DP $0E = !BattleAi_ActArg mapped: 1 and 2 give 4, 3 and 4 give $0D, any other value stays as it is."
 $C1:ACF2,$C1:AD08,23,BattleAi_FillActBlock,$C1,Battle engine,verified,1ca776e06307,"Starts the action block for the acting battler: !Battle_UnkAE90 = 0, !Battle_ActCaster = !Battle_UnkB18B, !Battle_ActKind = !BattleAi_ActCode, !Battle_ActId = !BattleAi_ActId."
-$C1:AD09,$C1:AD34,44,BattleAi_SetMainMask,$C1,Battle engine,verified,24a94d10e46e,
-$C1:AD35,$C1:AD67,51,BattleAi_SetTargetMask,$C1,Battle engine,verified,f2963cab6b3f,
+$C1:AD09,$C1:AD34,44,BattleAi_SetMainMask,$C1,Battle engine,verified,e124f065ce8e,
+$C1:AD35,$C1:AD67,51,BattleAi_SetTargetMask,$C1,Battle engine,verified,4baa3034c8c7,
 $C1:AD68,$C1:ADA0,57,BattleAi_TargetsByPcByte,$C1,Battle engine,verified,35bd7937e73e,"Lists each present, not KO'd PC whose stat-block byte at offset DP $0A (from !BattleRom_PcStatBlock) is non-zero, through BattleAi_AddPcByByte for PCs 0, 1, 2 with !BattleAi_PcByteMask = $FF, then cut"
 $C1:ADA1,$C1:AE20,128,BattleAi_PickPcTarget,$C1,Battle engine,verified,51b1dff7bf99,Cuts a list built by BattleAi_AddPcByByte down to one target: - !BattleAi_TargetCount 0: nothing.
 $C1:AE21,$C1:AE6F,79,BattleAi_PickMarkedTarget,$C1,Battle engine,verified,2f0b0984535d,"After a test has marked the entries of !BattleAi_Targets it accepts (!BattleAi_TargetMarked), cuts the list down to one target: - !BattleAi_TargetCount 0: the test fails (!Battle_UnkAF24 + 1)."
@@ -850,22 +1007,73 @@ $C1:AED3,$C1:AEFC,42,BattleAi_UnkAED3,$C1,Battle engine,verified,29c8c7ad3ba4,"N
 $C1:AEFD,$C1:AF21,37,BattleAi_NoteFirstTest,$C1,Battle engine,verified,17bc870f7d61,"Run by a test handler that holds, just before BattleAi_TestPassed: - !Battle_UnkB1CF has !BattleAi_SecondTest (this is the first of a block's two tests): !BattleAi_FirstTarget = the slot (low nibble) "
 $C1:AF22,$C1:AF78,87,Battle_RandRange,$C1,Battle engine,verified,37c85e394932,"A random number from the low bound X (low byte) up to, but not including, the high bound A: low + (RandomTableFD[!Battle_RandIdx] mod (high - low)), then !Battle_RandIdx + 1."
 $C1:AFD2,$C1:B092,193,BattleAi_RunMainPart,$C1,Battle engine,verified,a8859f556f11,Runs the main part of an enemy's script: block after block until one holds or the part ends.
-$C1:B488,$C1:B4A9,34,BattleAi_FindReactPart,$C1,Battle engine,verified,360ded8469f1,"Finds the reaction part of an enemy's script: the script is !BattleRom_AiScriptPtrs[id], BattleAi_PickScript may swap in a fixed one, and from there it skips to the byte after the first $FF (the end o"
+$C1:B093,$C1:B0B5,35,BattleSys_UnkB093,$C1,Battle system,verified,26296870597a,"BattlerStats.Unk2F bit 0 = (.CurHp <= .MaxHp / 8): set when the HP is down to an eighth or less, cleared otherwise (the bit Battle_PickStatusAnim tests, so probably the low-HP pose)."
+$C1:B0B6,$C1:B222,365,BattleSys_UnkB0B6,$C1,Battle system,verified,badafea211bc,"Sets which turn lists battler Y takes part in from its status bits: bit 0 (!Battle_ListPartBit) of its !Battle_ListFlags byte in list n = Status2 bit 7 (list 0), bit 6 (1), bit 5 (2), bit 4 (8); Unk4C"
+$C1:B223,$C1:B278,86,BattleSys_UnkB223,$C1,Battle system,verified,5dbad8e7e193,"BattleSys_UpdateKo for each slot 0-10 (counter !Battle_UnkB2D3); after it, an enemy slot whose entry is empty ($FF) and whose !Enemy_TargetWanted slot is empty too gets !Battle_UnkB242 = $FF and !Batt"
+$C1:B279,$C1:B3BA,322,BattleSys_UpdateKo,$C1,Battle system,verified,b62f1f41170b,
+$C1:B3BB,$C1:B3D1,23,BattleSys_UnkB3BB,$C1,Battle system,verified,d155538cfd07,"Keeps only bit 6 (!FieldBtl_ObjKind6Flag) of the 8 FieldBtlObj.Flags bytes, so after the battle FieldBtl_RestoreObj removes every saved field object (Flags 0) except those with that bit."
+$C1:B3D2,$C1:B3F8,39,BattleSys_UnkB3D2,$C1,Battle system,verified,e7a2014a51af,"For each enemy entry n (0-7) still present (!Battler_UnkAF0A not $FF) without !Battle_UnkAF15 bit 7: FieldBtlObj[n].Flags = $40 (only !FieldBtl_ObjKind6Flag), so FieldBtl_RestoreObj puts that field ob"
+$C1:B3F9,$C1:B441,73,BattleSys_UnkB3F9,$C1,Battle system,verified,f6ef54d9a43b,
+$C1:B442,$C1:B487,70,BattleSys_UnkB442,$C1,Battle system,verified,78eeb6adc436,
+$C1:B488,$C1:B4A9,34,BattleAi_FindReactPart,$C1,Battle engine,verified,ea6319d1912c,"Finds the reaction part of an enemy's script: the script is !BattleRom_AiScriptPtrs[id], BattleAi_PickScript may swap in a fixed one, and from there it skips to the byte after the first $FF (the end o"
 $C1:B4AA,$C1:B4E8,63,BattleAi_PickScript,$C1,Battle engine,verified,276d22e4bff5,"!Battle_UnkB1D2 = X, the enemy's own script address, unless the BattlerStats record of the enemy (slot !Battle_UnkB252 + 3) says otherwise: - .Unk4C+2 or .Unk4C+7 has bit 7 (!BattleAi_Unk4CBit7): !Bat"
+$C1:B4E9,$C1:B574,140,BattleSys_UnkB4E9,$C1,Battle system,verified,a182133cbb5e,
+$C1:B575,$C1:B6D0,348,BattleSys_UnkB575,$C1,Battle system,verified,cd92519e7434,"Builds !Battle_CmdGroups from the three BattleCmd.Partners bytes (row p holds p and each other PC named in p's nibbles, $FF elsewhere; a nibble naming p itself, $F or any other value adds nothing), se"
+$C1:B6D1,$C1:B70D,61,BattleSys_RefundItem,$C1,Battle system,verified,9e4b498bf631,
+$C1:B70E,$C1:B724,23,BattleSys_UnkB70E,$C1,Battle system,verified,416fc08d9654,"For the !Battle_Unk2989 bit-5 battle: all three PCs latched and queued at once: !Battle_UnkB188-B18A = $81 (bit 7 | 1), each BattleCmd.State = $41 (bit 6, ""queued"", | 1)."
+$C1:B725,$C1:B761,61,BattleSys_UnkB725,$C1,Battle system,verified,c57bba7e3848,"For the !Battle_Unk2989 bit-5 battle: !Battle_CmdQueue[0] = PC 0, !Battle_CmdQueueLen = 1, each !Pc_AtbCur = 0 and !Pc_AtbMax = $30, and the three BattleCmd records (21 bytes) are copied from bank $FD"
+$C1:B762,$C1:B7F1,144,BattleSys_UnkB762,$C1,Battle system,verified,0ee1a7c1e249,
+$C1:B7F2,$C1:B80C,27,BattleSys_UnkB7F2,$C1,Battle system,verified,972784af9e7b,"Service !BattleSys_ServiceRemoveReady (BattleMenu_RemoveBattlerFromReady) for PC slots 0, 1 and 2 in turn: takes every PC out of the menu's ready state."
 $C1:B80D,$C1:B85E,82,BattleAi_TestTable,$C1,Battle engine,verified,e728f31b28bd,"Handlers of the script's test codes $00-$28, by code * 2: JSR (T,X) in BattleAi_RunMainPart ($C1:B006, $C1:B021) and BattleSys_Unk8461 ($C1:874E, $C1:8769)."
 $C1:B85F,$C1:B88C,46,BattleAi_ChooseTable,$C1,Battle engine,verified,110407870049,"Handlers of the action codes $00-$16 as a block is chosen, by code * 2: JSR (T,X) in BattleAi_TestPassed ($C1:8CE7)."
 $C1:B88D,$C1:B8BA,46,BattleAi_RunTable,$C1,Battle engine,verified,60b773b423ce,"Handlers of the same action codes $00-$16 on the enemy's turn, by code * 2: JSR (T,X) in BattleAi_EnemyTurn ($C1:8D88)."
 $C1:B8BB,$C1:B92C,114,BattleAi_TargetTable,$C1,Battle engine,verified,f505490a18eb,"Handlers of the script's target codes $00-$38, by code * 2: JSR (T,X) in BattleAi_ReadTargets ($C1:AC2E)."
 $C1:B92D,$C1:B946,26,BattleSys_ListHandlerTable,$C1,Battle system,verified,1e86489bd301,"Handler of each turn list, indexed by list number * 2: BattleSys_Main runs entry n (JSR (T,X) at $C1:8333) for each list whose !Battle_ListDue bit is set."
 $C1:B947,$C1:B960,26,BattleSys_ListOffsetTable,$C1,Battle system,verified,f8b395112504,"Address of each turn list's !Battle_ListFlags bytes (list * 11 past the start), indexed by list number * 2; BattleSys_Main's scan reads it with LDA.l at $C1:82C5."
+$C1:B961,$C1:B966,6,BattleSys_RemoveReadyLong,$C1,Battle system,verified,bece4b1ab2bb,Service !BattleSys_ServiceRemoveReady (BattleMenu_RemoveBattlerFromReady) for bank-$FD code: a long-callable wrapper.
+$C1:B967,$C1:BC5F,761,BattleSys_UnkB967,$C1,Battle system,verified,c1c711338449,
+$C1:BC60,$C1:BCE0,129,BattleSys_UnkBC60,$C1,Battle system,verified,987acd0ead68,
+$C1:BCE1,$C1:BCF7,23,BattleSys_UnkBCE1,$C1,Battle system,verified,0563f7f73093,"Ends a PC's turn: reloads the gauge of the PC !Battle_UnkB18B (!Battler_UnkAFAB = !Battle_UnkB158, then BattleSys_UnkBD6F), sets its turn-list-12 byte to 1 if it was non-zero (re-armed, not due)."
+$C1:BCF8,$C1:BD6A,115,BattleSys_UnkBCE1_ClearRecords,$C1,Battle system,verified,9e9e562cb96b,
+$C1:BD6B,$C1:BD6E,4,BattleSys_UnkBCE1_Done,$C1,Battle system,verified,2c1199b17014,
+$C1:BD6F,$C1:BDB2,68,BattleSys_UnkBD6F,$C1,Battle system,verified,8e86878ebf81,"Applies the battler's speed bits to its !Battler_UnkAFAB (the gauge reload): halved when BattlerStats.Unk4C+1 or +6 has bit 7 (!Battle_ListHalveBit), then doubled, at most $FF, when .Status2 has bit 5"
+$C1:BDB3,$C1:BF45,403,BattleSys_ResetTechUsers,$C1,Battle system,verified,c200e6eebc10,"After a tech (BattleSys_UnkB967's tech path, played or skipped): clears the BattleCmd record of the first user's slot (.State, .Kind, .Menu, .Target, .ActionId = 0; slot = !Battle_UnkB1BE of !Battle_T"
+$C1:BF46,$C1:BF78,51,BattleSys_UnkBF46,$C1,Battle system,verified,3b318d99b91d,
+$C1:BF79,$C1:BF80,8,BattleSys_UnkBF79,$C1,Battle system,verified,6b649c67f8bf,"!Battle_UnkAF23 = 0, then BattleSys_UnkD523 (not analysed; the callers test !Battle_UnkAF23 afterwards, so it may set it)."
+$C1:BF81,$C1:BFA3,35,BattleSys_UnkBF81,$C1,Battle system,verified,80c7f9981f9c,
+$C1:BFA4,$C1:BFA9,6,BattleSys_UnkBFA4,$C1,Battle system,verified,c37ce8324b99,"Service !BattleSys_ServiceRunAction (BattleSys_RunAction), which plays the action block."
+$C1:BFAA,$C1:C029,128,BattleSys_RunPcAttack,$C1,Battle system,verified,865130704b48,"Plays the attack of battler !Battle_UnkB18B on the slot in !Battle_UnkAD8E: !Battle_UnkB1FC bit 1 is set over it; the action block is cleared (id, flags, both masks, !Battle_ActUnkAE9B = 0, !Battle_Ac"
 $C1:C90B,$C1:C929,31,Battle_Mul16,$C1,Battle engine,verified,612f61b006df,16 x 16 -> 32-bit unsigned shift-and-add multiply: !Battle_MathHi:MathLo = !Battle_MathA * !Battle_MathB.
 $C1:C92A,$C1:C95B,50,Battle_Div32,$C1,Battle engine,verified,88b78fe9eece,"32 / 16-bit unsigned restoring divide of !Battle_MathHi:MathA by !Battle_MathB: !Battle_MathRem = the remainder, !Battle_MathLo = the quotient's low word."
-$C1:E89F,$C1:E8BF,33,Battle_HitEntryOffset,$C1,Battle engine,verified,b9a122df6146,
-$C1:EBF8,$C1:EC38,65,Battle_RecordHit,$C1,Battle engine,verified,618c072fc7d6,"Stores !Battle_UnkAD89 as slot Y's amount in !Battle_HitAmount set !Battle_UnkB2C7, and !Battle_UnkB202 as the high byte of its !Battle_HitFlags (the low byte is left alone)."
+$C1:C96A,$C1:CA19,176,BattleSys_UnkC96A,$C1,Battle system,verified,e6e6f22a6195,
+$C1:CA1A,$C1:CB47,302,BattleSys_UnkCA1A,$C1,Battle system,verified,652b599ffbf4,
+$C1:CB48,$C1:CB60,25,BattleSys_TechMpCost1,$C1,Battle system,verified,5c2bcd168c0f,A = the MP cost of the first user's part of tech A: !BattleRom_TechMpCost[BattleRom_TechRec[A].Part1 & $7F].
+$C1:CB61,$C1:CB79,25,BattleSys_TechMpCost2,$C1,Battle system,verified,58949a0351f1,"As BattleSys_TechMpCost1, for the second user (.Part2)."
+$C1:CB7A,$C1:CB92,25,BattleSys_TechMpCost3,$C1,Battle system,verified,f33e3a676430,"As BattleSys_TechMpCost1, for the third user (.Part3)."
+$C1:CB93,$C1:CBC2,48,BattleSys_LoadTechUsers,$C1,Battle system,verified,f05b11ad29b2,"!Battle_TechUsers = the three character ids of the user set of tech A (BattleRom_TechRec[A].UserSet & $7F, 3 bytes each in !BattleRom_TechUserSets; $FF = no user)."
+$C1:CBC3,$C1:CBF5,51,BattleSys_StoreMpCost,$C1,Battle system,verified,7dee1bc72695,
+$C1:CBF6,$C1:CC0A,21,BattleSys_AdjustMpCost,$C1,Battle system,verified,79359216d0cf,"Cuts the MP cost in Y's low byte by A, the PC's !Pc_UnkB3BA: $A2 halves it, $A3 quarters it (each halving rounds up); any other value leaves it."
+$C1:CC0B,$C1:CC3D,51,BattleSys_StoreMpCost10,$C1,Battle system,verified,5772c07397d6,"As BattleSys_StoreMpCost, into the entry 10 records past the address in DP $04 (TechMenuRec[10])."
+$C1:CC3E,$C1:CC70,51,BattleSys_StoreMpCost18,$C1,Battle system,verified,fa33d5c243bb,"As BattleSys_StoreMpCost, into the entry 18 records past the address in DP $04 (TechMenuRec[18])."
+$C1:CC71,$C1:CCCA,90,BattleSys_PayTechMp,$C1,Battle system,verified,869c83b0640c,
+$C1:CCCB,$C1:CDFE,308,BattleSys_UnkCCCB,$C1,Battle system,verified,0a6dca3d3217,
+$C1:CDFF,$C1:CE35,55,BattleSys_UnkCDFF,$C1,Battle system,verified,bae3ae182668,
+$C1:CE36,$C1:CE39,4,BattleSys_UnkCE36,$C1,Battle system,verified,1c9b8762508e,"BattleFD_UnkAEF2, then falls into BattleSys_UnkCE3A."
+$C1:CE3A,$C1:CF14,219,BattleSys_UnkCE3A,$C1,Battle system,verified,666369e30e19,
+$C1:CF15,$C1:CF51,61,BattleSys_UnkCF15,$C1,Battle system,verified,f96237ec576a,
+$C1:CF52,$C1:CF68,23,BattleSys_UnkCF52,$C1,Battle system,verified,48741ddcedf5,"X = (B : DP $06) * 4 (16-bit), A = 0: it loads DP $06 into A (the incoming A is not used), tests it for $29, but both branches do the same (REP, ASL, ASL, CLC), so the test has no effect."
+$C1:CF69,$C1:CFBD,85,BattleSys_UnkCF69,$C1,Battle system,verified,06b0ef63035a,
+$C1:E89F,$C1:E8BF,33,Battle_HitEntryOffset,$C1,Battle engine,verified,d2f17ebe5793,
+$C1:EBF8,$C1:EC38,65,Battle_RecordHit,$C1,Battle engine,verified,5ba7bf3d88ec,"Stores !Battle_UnkAD89 as slot Y's amount in !Battle_HitAmount set !Battle_UnkB2C7, and !Battle_UnkB202 as the high byte of its !Battle_HitFlags (the low byte is left alone)."
 $C1:EC39,$C1:EC7E,70,Battle_ClearCancelledHits,$C1,Battle engine,verified,b32fdbed75d3,"For each battler slot whose entry has !Battle_HitCancelBitHi in any of the 3 !Battle_HitAmount sets, zeroes its amount in all three; for an enemy slot also !Battle_UnkAEB2, its !Battle_UnkAEB3 entry a"
-$C1:EC7F,$C1:ED88,266,Battle_ApplyHits,$C1,Battle engine,verified,a681844aba75,"Battle_ClearCancelledHits, then for each battler slot (X = its BattlerStats offset, Y = its entry): - HP, skipped when the entry of set 0 has the MP bit in its flags (the HP amounts of sets 1 and 2 ar"
-$C1:FA8B,$C1:FDAD,803,Battle_SetupBattle,$C1,Battle engine,verified,a1bf9b587e8e,
+$C1:EC7F,$C1:ED88,266,Battle_ApplyHits,$C1,Battle engine,verified,c3d3621fd0a9,"Battle_ClearCancelledHits, then for each battler slot (X = its BattlerStats offset, Y = its entry): - HP, skipped when the entry of set 0 has the MP bit in its flags (the HP amounts of sets 1 and 2 ar"
+$C1:FA8B,$C1:FDAD,803,Battle_SetupBattle,$C1,Battle engine,verified,f4754ff5f169,
 $C1:FDAE,$C1:FDBE,17,Battle_CalcUnk56,$C1,Battle engine,verified,a6aeeebac40f,A / 24 + $44: Battle_SetupBattle's BattlerStats.Unk56 from .Unk3F for a PC whose .Unk2D is 5.
+$C1:FDBF,$C1:FDC2,4,Battle_Mul16Long,$C1,Battle engine,verified,b4fb2795f5bb,JSL form of Battle_Mul16.
+$C1:FDC3,$C1:FDC6,4,BankC1_AddItemLong,$C1,Engine,verified,b298e537f032,JSL form of BankC1_AddItem (not analysed: add one of item Y).
+$C1:FDC7,$C1:FDCA,4,BattleSys_RunPcAttackLong,$C1,Battle system,verified,05069c188a49,JSL form of BattleSys_RunPcAttack.
+$C1:FDCB,$C1:FDCE,4,Battle_RandRangeLong,$C1,Battle engine,verified,f833456ca33f,JSL form of Battle_RandRange.
+$C1:FDCF,$C1:FDD2,4,BattleSys_RefundItemLong,$C1,Battle system,verified,cdadbf53fd6f,JSL form of BattleSys_RefundItem.
 $C2:0000,$C2:0002,3,BankC2_Entry0000,$C2,Engine,verified,c51dbc575e59,"vectors, five JMPs reached from other banks by JML/JSL: $0000 BankC2_Entry0000 → BankC2_SceneBoot (JML from GameLoop_Main for Loc_Id $01F0-$81EF; it never returns) $0003 BankC2_Entry0003 and $0006 Ban"
 $C2:0003,$C2:0005,3,BankC2_Entry0003,$C2,Engine,verified,6025c7bf6088,
 $C2:0006,$C2:0008,3,BankC2_Entry0006,$C2,Engine,verified,6b951ff48fea,
@@ -914,7 +1122,7 @@ $C2:0C4D,$C2:0CE9,157,C2Scene_SprResetLists,$C2,Engine,verified,ca271cbb965c,
 $C2:0CEA,$C2:0D07,30,C2Scene_SprDrawList,$C2,Engine,verified,c8a3005581c7,
 $C2:0D08,$C2:0E0C,261,C2Scene_SprDrawNode,$C2,Engine,verified,83deb7798041,
 $C2:0E0D,$C2:0E1C,16,C2Scene_OamHiBitsTable,$C2,Engine,verified,bbbcd50fd442,"The OAM high-table bits of one sprite, indexed by (slot AND 3) * 4 + size * 2 + X bit 8: the 2-bit value size:Xbit8 shifted to the slot's place in its byte (C2Scene_SprDrawNode)."
-$C2:0E1D,$C2:0E49,45,C2Anim_Run,$C2,Engine,verified,a15dd8a42d25,"Runs the running task's animation script (.AnimPtr, .AnimBank) from where it stopped: calls the handler of each op from C2Anim_OpTable with C2Anim_Ptr on the opcode."
+$C2:0E1D,$C2:0E49,45,C2Anim_Run,$C2,Engine,verified,bc91aeec2aaa,"Runs the running task's animation script (.AnimPtr, .AnimBank) from where it stopped: calls the handler of each op from C2Anim_OpTable with C2Anim_Ptr on the opcode."
 $C2:0E4A,$C2:0E59,16,C2Anim_OpTable,$C2,Engine,verified,ba46489dd0c0,"The handler of each animation opcode 0-7 (C2Anim_Run: JSR (T,X) with X = the opcode * 2)."
 $C2:0E5A,$C2:0E6A,17,C2Anim_OpClearByte,$C2,Engine,verified,972e05eab3b2,"Animation op 0, 2 bytes: zeroes the task's byte at offset arg 1 (any of the 64 record bytes, through C2Scene_TaskCur)."
 $C2:0E6B,$C2:0E7D,19,C2Anim_OpIncByte,$C2,Engine,verified,0e54ffdb1afa,"Animation op 1, 2 bytes: adds 1 to the task's byte at offset arg 1."
@@ -924,7 +1132,7 @@ $C2:0EA3,$C2:0EDB,57,C2Anim_OpShowFrame,$C2,Engine,verified,253f926dc6bc,"Animat
 $C2:0EDC,$C2:0EFF,36,C2Anim_OpWait,$C2,Engine,verified,2dfbb424ea3f,"Animation op 5, 2 bytes: waits arg 1 calls without drawing, counting in .AnimTimer as C2Anim_OpShowFrame does (0 loads it, then -1 per call; at 0 it advances 2 at once)."
 $C2:0F00,$C2:0F34,53,C2Anim_OpQueueVram,$C2,Engine,verified,f2c6e156855f,"Animation op 6, 8 bytes: adds a VRAM DMA to the queue the NMI flushes (C2Scene_VramQ at C2Scene_VramQEnd): .Bank = arg 1, .Src = arg 2-3, .Dest = arg 4-5, .Size = arg 6-7, .Vmain = VMAIN_IncAfterHigh;"
 $C2:0F35,$C2:0F37,3,C2Anim_OpEnd,$C2,Engine,verified,ec4037c5068c,"Animation op 7: stops (A = 0, Z=1) with C=1 and does not advance, so every later call stops here again."
-$C2:0F38,$C2:0F62,43,C2Scene_TaskMove,$C2,Engine,verified,f6da499e562e,"Moves the running task by its velocity, in 16.16 fixed point: .XFrac/.SprX += .XVelFrac/.XVel and .YFrac/.SprY += .YVelFrac/.YVel (inferred from the carry chain: the fraction words are added first and"
+$C2:0F38,$C2:0F62,43,C2Scene_TaskMove,$C2,Engine,verified,b4cca5e1f495,"Moves the running task by its velocity, in 16.16 fixed point: .XFrac/.SprX += .XVelFrac/.XVel and .YFrac/.SprY += .YVelFrac/.YVel (inferred from the carry chain: the fraction words are added first and"
 $C2:0F63,$C2:0F90,46,C2Scene_TaskRunScript,$C2,Engine,verified,d0edc6970de5,Task handler of the script tasks (C2Scene_TaskSpawnScript and C2Scene_TaskSpawnScriptLow install it); also called by other handlers (the party leader's and members' script states).
 $C2:0F91,$C2:1036,166,C2Script_OpTable,$C2,Engine,verified,373ed6a7cd43,"The handler of each script opcode $00-$52 (C2Scene_TaskRunScript: JSR (T,X) with X = the opcode * 2); a larger opcode is not checked for and would jump through the code after the table."
 $C2:1037,$C2:1090,90,C2Script_ResetTask,$C2,Engine,verified,68cdc151be61,"Op $00, 1 byte: zeroes the task's record from +$05 on, except the script fields +$07-$0A: .ScriptReturn, the animation, the sprite fields, position and velocity and all words up to +$3F (16-bit STZs a"
@@ -1022,7 +1230,7 @@ $C2:1C81,$C2:1C83,3,C2Script_End,$C2,Engine,verified,ff194c7a9760,"Op $52, 1 byt
 $C2:1C84,$C2:1C9D,26,C2Scene_NegateXVel,$C2,Engine,verified,1b96dbcd2cf9,"Negates the task's X velocity as one 32-bit value (.XVelFrac/.XVel: invert both words and add 1 with the carry), turning it around."
 $C2:1C9E,$C2:1CB7,26,C2Scene_NegateYVel,$C2,Engine,verified,3f05a36e10b4,C2Scene_NegateXVel for .YVelFrac/.YVel.
 $C2:1CB8,$C2:1CD9,34,C2Scene_WrapTaskPos,$C2,Engine,verified,2c358910696f,"Wraps the task's position into the scene map: .SprX gets C2Scene_MapWidthPx (1536, the 96 metatile columns) added when it is negative or taken off when it is that or more (once, so it assumes the posi"
-$C2:1CDA,$C2:1CF4,27,C2Scene_SetAnim,$C2,Engine,verified,0036378a7371,"Starts animation script A (low byte) on the running task: .AnimPtr = entry A of C2SceneRom_AnimTable, .AnimBank = C2SceneRom_AnimBank (the table's own bank), .AnimTimer = 0."
+$C2:1CDA,$C2:1CF4,27,C2Scene_SetAnim,$C2,Engine,verified,aa4b5548d3af,"Starts animation script A (low byte) on the running task: .AnimPtr = entry A of C2SceneRom_AnimTable, .AnimBank = C2SceneRom_AnimBank (the table's own bank), .AnimTimer = 0."
 $C2:1CF5,$C2:1D01,13,C2Scene_TaskUnk1CF5,$C2,Engine,verified,de51ed7ae7ae,"Task handler: runs the state in .State (C2Scene_UploadTask; the record's .Unk02, 0 from C2Scene_TaskSpawn) through C2Scene_UploadTileStates: 0 C2Scene_UploadTilesStart, 1 C2Scene_UploadTilesStep."
 $C2:1D02,$C2:1D05,4,C2Scene_UploadTileStates,$C2,Engine,verified,e9bab179336d,"The state handlers of C2Scene_TaskUnk1CF5 (JMP (T,X) with X = .State * 2)."
 $C2:1D06,$C2:1D4B,70,C2Scene_UploadTilesStart,$C2,Engine,verified,6dda2fa95263,
@@ -1110,7 +1318,7 @@ $C2:2EC1,$C2:2EC3,3,C2Scene_ScrFadeOut,$C2,Engine,verified,365fa531e2e5,"Fade ou
 $C2:2EC4,$C2:2EC6,3,C2Scene_ScrFadeIn,$C2,Engine,verified,1a30acf12596,"Fade in at 1 frame per step (op $29, C2Scene_TaskUnk2105), then end."
 $C2:2EC7,$C2:2ECF,9,C2Scene_ScrMosaicFadeOut,$C2,Engine,verified,5782d1467ba5,"Started by C2Scene_Mode6: clears the task's fields (op $00), starts a mosaic grow (op $2A) on BG1-3 (arg 1 = 7) at 2 frames per step, waits 16 frames, fades out at 1 frame per step, ends."
 $C2:2ED0,$C2:2ED8,9,C2Scene_ScrMosaicFadeIn,$C2,Engine,verified,b70cd010eeff,"Started by C2Scene_Mode6 on the way back: clears the task's fields, fades in at 1 frame per step, waits 8 frames, starts a mosaic shrink (op $2B) on BG1-3 at 2 frames per step, ends."
-$C2:2ED9,$C2:2F0E,54,C2Scene_QueueSoundCmd,$C2,Engine,verified,30794972fc59,"Queues the sound command in C2Scene_SoundCmdBuf (command byte and three argument bytes) for the frame loop to send: copies it to the driver block Audio_CmdId-Audio_CmdArg2, keeps its rank C2Scene_Soun"
+$C2:2ED9,$C2:2F0E,54,C2Scene_QueueSoundCmd,$C2,Engine,verified,e003ada1a03a,"Queues the sound command in C2Scene_SoundCmdBuf (command byte and three argument bytes) for the frame loop to send: copies it to the driver block Audio_CmdId-Audio_CmdArg2, keeps its rank C2Scene_Soun"
 $C2:2F0F,$C2:2F4D,63,C2Scene_ZoneSoundAtEntry,$C2,Engine,verified,289e8b5e4afd,"Sends C2Scene_SoundCmd10 straight to the driver (Audio_DriverCommand) with the zone sound of the field's entry tile: metatile column Loc_EntryX / 2, row Loc_EntryY / 2 (C2Scene_GetSoundZone, C2Scene_Z"
 $C2:2F4E,$C2:2F93,70,C2Scene_ZoneSoundAtView,$C2,Engine,verified,19f9b3983e87,"Queues (C2Scene_QueueSoundCmd) C2Scene_SoundCmd10 with the zone sound of the metatile at the middle of BG1's view: column BgTileX / 2 + 8, row (BgTileY / 2 + 7) AND 63; or with Menu_Config1E's byte wh"
 $C2:2F94,$C2:2F9C,9,C2Scene_TaskZoneSound,$C2,Engine,verified,676ab2ded190,Task handler: runs .State through C2Scene_ZoneSoundStates.
@@ -1187,7 +1395,7 @@ $C2:3953,$C2:397E,44,C2Scene_SetWalkAnim,$C2,Engine,verified,d2ecdea833f9,"Start
 $C2:397F,$C2:3986,8,C2Scene_WalkAnims,$C2,Engine,verified,97cb8dc59550,"Walk animation numbers (C2Scene_SetAnim), two per facing: up, down, left, right."
 $C2:3987,$C2:39A9,35,C2Scene_SetStandAnim,$C2,Engine,verified,1a47c7a4d45c,"Starts the stand animation of the task's facing: entry .Facing AND C2Scene_FacingMask of C2Scene_StandAnims, C2Scene_AltAnimOfs further on for C2Scene_AltAnimChar, as C2Scene_SetWalkAnim."
 $C2:39AA,$C2:39AD,4,C2Scene_StandAnims,$C2,Engine,verified,f3d024d49f37,"Stand animation numbers per facing: up, down, left, right."
-$C2:39AE,$C2:39C2,21,C2Scene_OnTrigTiles,$C2,Engine,verified,99b4511e2095,"C=1 when both upper property nibbles (.PropUL, .PropUR) have bit 2 set (C2Scene_TilePropTrig); its callers then set C2Scene_TrigRecheck and C2Scene_TrigKeep."
+$C2:39AE,$C2:39C2,21,C2Scene_OnTrigTiles,$C2,Engine,verified,7695639bd412,"C=1 when both upper property nibbles (.PropUL, .PropUR) have bit 2 set (C2Scene_TilePropTrig); the leader's callers then set C2Scene_TrigRecheck and C2Scene_TrigKeep, and C2Scene_ObjBFly does not let "
 $C2:39C3,$C2:39D4,18,C2Scene_TileBlocked,$C2,Engine,verified,feafc848f886,"C=1 when either upper property nibble (.PropUL, .PropUR) has bit 0 or 1 set (C2Scene_TilePropWall): the step is not taken."
 $C2:39D5,$C2:3A55,129,C2Scene_GetTileProps,$C2,Engine,verified,6b96a4c25493,"Reads the property nibbles of the four 8x8 tiles around the pixel point (C2Scene_PropX, C2Scene_PropY) into the task's .PropUL-.PropDR (C2Scene_GetTileProp, with BG2's metatile map at $7E:5800 and the"
 $C2:3A56,$C2:3A8E,57,C2Scene_SetStepTarget,$C2,Engine,verified,22793cc4cf79,".TargetX/Y = the task's position, moved C2Scene_TilePx (8) pixels in the direction of each non-zero whole-pixel velocity (.XVel, .YVel; minus for a negative one)."
@@ -1241,13 +1449,96 @@ $C2:4184,$C2:41B4,49,C2Scene_MemberWalkAnim,$C2,Engine,verified,8a8adfe6afd8,Zer
 $C2:41B5,$C2:4204,80,C2Scene_PathBlocked,$C2,Engine,verified,673069e76130,"Tests the two one-turn paths between 8x8 tiles (C2Scene_RouteFromX, C2Scene_RouteFromY) and (C2Scene_RouteToX, C2Scene_RouteToY) for wall tiles: C2Scene_PathXYBlocked when the path along the row to th"
 $C2:4205,$C2:4259,85,C2Scene_ScanRow,$C2,Engine,verified,7b6f6185fe41,"Walks C2Scene_ScanX one column at a time to C2Scene_ScanEnd along tile row C2Scene_ScanY - 1 (the row above the point, as the leader's .PropUL/UR), testing each new column's property nibble (C2Scene_G"
 $C2:425A,$C2:42DC,131,C2Scene_ScanCol,$C2,Engine,verified,31730a385848,"C2Scene_ScanRow down or up a column: C2Scene_ScanY (and C2Scene_ScanEnd) are taken one row up, then C2Scene_ScanY walks to C2Scene_ScanEnd testing the two tiles of each new row at columns C2Scene_Scan"
-$C2:5775,$C2:5797,35,C2Scene_Unk5775,$C2,Engine,verified,37e05eaff152,"Copies C2Scene_Unk8600Init (4 bytes) to C2Scene_Unk8600 and C2Scene_Unk8604Init (C2Scene_Unk8604Size bytes, MVN) to C2Scene_Unk8604."
+$C2:42DD,$C2:42E5,9,C2Scene_ObjATask,$C2,Engine,verified,fcb33e14fad9,Task handler: runs the C2Scene_ObjAStates handler of .State.
+$C2:42E6,$C2:42F7,18,C2Scene_ObjAStates,$C2,Engine,verified,ab030e10dd18,C2Scene_ObjATask's handler for each .State 0-8.
+$C2:42F8,$C2:43CA,211,C2Scene_ObjAInit,$C2,Engine,verified,e9f8c2f085db,"State 0: puts the sprite at C2Scene_ObjAX/Y (fractions and .SprTile 0), then by C2Scene_Unk0294: - C2Scene_ObjBusy clear: .State C2Scene_ObjAStWait, .SprAttr C2Scene_ObjAttrPrio2, facing down (.Facing"
+$C2:43CB,$C2:443B,113,C2Scene_ObjAWait,$C2,Engine,verified,e5b38c2289d8,"State 1: runs the animation until C2Scene_ObjWatch reaches state C2Scene_ObjWatchStBusyA (the whole party is in), then sets C2Scene_ObjBusy and: - without C2Scene_ObjAFlag5: sets C2Scene_ObjAInMode8, "
+$C2:443C,$C2:44B6,123,C2Scene_ObjARise,$C2,Engine,verified,cd7e1b80aa9f,"State 2: moves by the velocity (C2Scene_TaskMove, C2Scene_WrapTaskPos) until .Frames reaches .Duration; on frame C2Scene_RiseAttrAt the sprite gets .SprAttr C2Scene_ObjAttrPrio3."
+$C2:44B7,$C2:4674,446,C2Scene_ObjAFly,$C2,Engine,verified,dee3d49e1a2b,"State 3 (C2Scene_ObjAStFly): in scene mode C2Scene_ModeIdle1, with any bit of Pad_Unk00F8 (read as a word) set, the first that applies: - Pad_Unk00F8Bit7 with C2Scene_ObjAOnSpot: unless C2Scene_Unk029"
+$C2:4675,$C2:46E1,109,C2Scene_ObjAMove,$C2,Engine,verified,16f9889d4178,"State 4: moves by the velocity (C2Scene_TaskMove, C2Scene_WrapTaskPos) and scrolls BG layers 1 and 2 with it (C2Scene_Unk0568 by .XVel, C2Scene_Unk066C by .YVel, the low bytes), as the leader's step d"
+$C2:46E2,$C2:4727,70,C2Scene_ObjALand,$C2,Engine,verified,93b1dae76d9a,"State 5 (C2Scene_ObjAStLand): moves by the velocity until .Frames reaches .Duration (low byte), with .SprAttr C2Scene_ObjAttrPrio2 from frame C2Scene_LandAttrAt; C2Anim_Run."
+$C2:4728,$C2:4822,251,C2Scene_ObjAAfterMode8,$C2,Engine,verified,9108c2908818,"State 6 (C2Scene_ObjAStMode8): waits for C2Scene_ObjANextLoc, which C2Scene_ObjAWait and C2Scene_ObjAFly zero before scene mode C2Scene_ModeUnk8 (so probably mode 8's sub-program C2Scene_Unk6A34 sets "
+$C2:4823,$C2:4887,101,C2Scene_ObjAScript,$C2,Engine,verified,830f7c696de4,State 7 (C2Scene_ObjAStScript): runs the task's own script (C2Scene_TaskRunScript on .ScriptPtr: C2Scene_ObjAScrArrive or C2Scene_ObjAScrLeave).
+$C2:4888,$C2:4898,17,C2Scene_ObjAWaitEmpty,$C2,Engine,verified,9c176191a6d6,"State 8 (C2Scene_ObjAStWaitEmpty): when C2Scene_ObjWatch reaches C2Scene_ObjWatchStEmpty (the party is getting out), .State 0; C2Anim_Run every frame."
+$C2:4899,$C2:48A8,16,C2Scene_ObjAStepVel,$C2,Engine,verified,5edbc5aca85c,"C2Scene_ObjAFly's step velocity per facing: .XVel then .YVel (whole pixels a frame, signed)."
+$C2:48A9,$C2:48C4,28,C2Scene_ObjAFaceAnim,$C2,Engine,verified,38896401b451,"Starts the animation of the task's .Facing: entry .Facing of C2Scene_ObjAFaceAnims, or of C2Scene_ObjAFaceAnims5 with C2Scene_ObjAFlag5 (C2Scene_SetAnim, by JMP)."
+$C2:48C5,$C2:48C8,4,C2Scene_ObjAFaceAnims,$C2,Engine,verified,6b7293cbf128,"Animation numbers per facing (up, down, left, right) of C2Scene_ObjAFaceAnim."
+$C2:48C9,$C2:48CC,4,C2Scene_ObjAFaceAnims5,$C2,Engine,verified,4443158a7898,The same with C2Scene_ObjAFlag5.
+$C2:48CD,$C2:48E7,27,C2Scene_ObjAJump,$C2,Engine,verified,d47eddb59fd8,"points (back when it is negative) and wraps the position (C2Scene_WrapTaskPos, by JMP)."
+$C2:48E8,$C2:4916,47,C2Scene_ObjAOverlap,$C2,Engine,verified,5c75a77a9117,"C=1 when object A is active (C2Scene_ObjActive in C2Scene_Unk0294), at the current location (Loc_Id equal to C2Scene_ObjALoc, unmasked) and its box (C2Scene_ObjAFlyBox at C2Scene_ObjAX/Y) overlaps box"
+$C2:4917,$C2:4945,47,C2Scene_ObjBOverlap,$C2,Engine,verified,403a2096a74a,"C2Scene_ObjAOverlap for object B: active (C2Scene_ObjBFlags), Loc_Id C2Scene_ObjBLocId (unmasked) and C2Scene_ObjBLandBox at C2Scene_ObjBX/Y against box A."
+$C2:4946,$C2:494D,8,C2Scene_ObjAFlyBox,$C2,Engine,verified,66157ea08945,"C2Scene_BoxesOverlap extents (left, right, up, down) of object A in C2Scene_ObjAFly and C2Scene_ObjASpotWatch: 8 each way."
+$C2:494E,$C2:4955,8,C2Scene_ObjBLandBox,$C2,Engine,verified,2c1cf8177edd,Object B's extents for C2Scene_ObjBOverlap: 8 each way.
+$C2:4956,$C2:495D,8,C2Scene_SpotBox,$C2,Engine,verified,189c5119a2e7,The extents of the spot at C2Scene_SpotX/Y (C2Scene_ObjASpotWatch): 8 each way.
+$C2:495E,$C2:4966,9,C2Scene_ObjAMarkTask,$C2,Engine,verified,945d232b6950,"Task handler of a second sprite that goes with object A (no reference in the bank's code, as C2Scene_ObjATask): runs the C2Scene_ObjAMarkStates handler of .State."
+$C2:4967,$C2:496A,4,C2Scene_ObjAMarkStates,$C2,Engine,verified,a6f3aa498956,C2Scene_ObjAMarkTask's handler for .State 0 and 1.
+$C2:496B,$C2:498B,33,C2Scene_ObjAMarkInit,$C2,Engine,verified,b7f0749881d3,State 0: ends the task (C=1) unless object A is at this location (Loc_Id AND C2Scene_LocIdMask equal to C2Scene_ObjALoc).
+$C2:498C,$C2:49CE,67,C2Scene_ObjAMarkShow,$C2,Engine,verified,0c961bba72ab,"State 1, every frame: with C2Scene_ObjAFlag5 and C2Scene_ObjAAloft set, animation C2Scene_AnimMarkBelow at C2Scene_ObjAX, C2Scene_ObjAY + C2Scene_Lift (24 pixels below object A: probably its shadow wh"
+$C2:49CF,$C2:4A29,91,C2Scene_ObjASpotWatch,$C2,Engine,verified,05e3dd8490e5,"Task handler (no reference in the bank's code): while C2Scene_ObjWatch is in C2Scene_ObjWatchStBusyA (the party in object A) and C2Scene_ObjAInMode8 is clear, tests object A's box (C2Scene_ObjAFlyBox "
+$C2:4A2A,$C2:4A57,46,C2Scene_ObjASound,$C2,Engine,verified,938244846813,"Queues C2Scene_SoundCmd10 with C2Scene_ObjASongArg (arguments C2Scene_SoundArgUnused, C2Scene_SoundArg80, rank 0), as C2Scene_ZoneSoundQueue does with a zone's sound; when it is queued (C=0) the argum"
+$C2:4A58,$C2:4A9A,67,C2Scene_ObjAGetProps,$C2,Engine,verified,782e924b8fa7,"After C2Scene_GetTileProps (C2Scene_PropX/Y = the point's 8x8 column and row): .PropBL = the property nibble of the tile below-left (column - 1, wrapping to C2Scene_MapTilesX - 1, row + 1 AND 127) and"
+$C2:4A9B,$C2:4AAC,18,C2Scene_ObjAScrGo1DD,$C2,Engine,verified,aaae72b4e9d7,"Script of a task C2Scene_ObjARise starts with C2Scene_Flag0ObjAGo1DD: the new task (a copy of object A's record) puts its sprite at .SprY $198 with animation $1B, fades out and leaves for location $1D"
+$C2:4AAD,$C2:4B8B,223,C2Scene_ObjAScrLeave,$C2,Engine,verified,f1937715a7ab,Object A's own script for state C2Scene_ObjAStScript after mode 8 chose a location (C2Scene_ObjAAfterMode8).
+$C2:4B8C,$C2:4BF7,108,C2Scene_ObjAScrArrive,$C2,Engine,verified,841764c2a793,Object A's own script when the scene loads with the party in it after mode 8 (C2Scene_ObjAInit).
+$C2:4BF8,$C2:4C1A,35,C2Scene_ObjAScrSlowVel,$C2,Engine,verified,9b5844f62104,Script subroutine (C2Script_Call): the velocity half a pixel a frame in the .Facing direction (the other axis left as it is).
+$C2:4C1B,$C2:4C3D,35,C2Scene_ObjAScrFastVel,$C2,Engine,verified,3fc0e8d9ce32,C2Scene_ObjAScrSlowVel at 8 pixels a frame.
+$C2:4C3E,$C2:4C47,10,C2Scene_ObjAScrDash,$C2,Engine,verified,8f61ecfa740c,"Script subroutine: task byte +$22 rounds of 2 frames' movement (C2Script_MoveFrames), each starting a C2Scene_ObjAScrTrail task."
+$C2:4C48,$C2:4C6E,39,C2Scene_ObjAScrTrail,$C2,Engine,verified,1943c5f2b326,"Script of the tasks C2Scene_ObjAScrDash starts (each a copy of object A's record, so at its position): the animation for the copied .Facing ($33 up, $32 down, $34 left, $35 right), shown for 8 rounds "
+$C2:4C6F,$C2:4C8E,32,C2Scene_ObjAScrUnk4C6F,$C2,Engine,verified,cafddf85373a,"A script with no reference found (no pointer to it in the bank): fade out, swap the low bytes of Loc_Id and Loc_ReturnId (through task byte +$22), C2Scene_ObjALoc = Loc_Id, scene mode C2Scene_ModeUnk2"
+$C2:4C8F,$C2:4CC4,54,C2Scene_ObjAScrSpot,$C2,Engine,verified,0a360ca2802f,"Script of the task C2Scene_ObjAFly starts on the spot (C2Scene_ObjAOnSpot): fade out, Loc_Id, Loc_EntryX/Y and Loc_EntryFacing copied to Loc_ReturnId-Loc_ReturnFacing, then location $1C1 at tile (7, 2"
+$C2:4CC5,$C2:4CCD,9,C2Scene_ObjBTask,$C2,Engine,verified,f4d47ea00d5b,Task handler: runs the C2Scene_ObjBStates handler of .State.
+$C2:4CCE,$C2:4CD9,12,C2Scene_ObjBStates,$C2,Engine,verified,bac53cc26e18,C2Scene_ObjBTask's handler for each .State 0-5.
+$C2:4CDA,$C2:4D36,93,C2Scene_ObjBInit,$C2,Engine,verified,2595bda7bf03,"State 0: the sprite at C2Scene_ObjBX/Y (fractions and .SprTile 0), facing down (.Facing, .PrevFacing)."
+$C2:4D37,$C2:4D78,66,C2Scene_ObjBWait,$C2,Engine,verified,f452b648d13f,"State 1: runs the animation until C2Scene_ObjWatch reaches C2Scene_ObjWatchStBusyB (the party is in B); then sets C2Scene_ObjBusy in C2Scene_ObjBFlags, .State 2, the property nibbles at the position ("
+$C2:4D79,$C2:4DCE,86,C2Scene_ObjBRise,$C2,Engine,verified,ac629107ad4a,"State 2: as C2Scene_ObjARise with fixed counts: moves for C2Scene_RiseFrames frames (.SprAttr C2Scene_ObjBAttrPrio3 from frame C2Scene_RiseAttrAt); then .State C2Scene_ObjBStFly, C2Scene_ObjBAloft = 1"
+$C2:4DCF,$C2:4F7D,431,C2Scene_ObjBFly,$C2,Engine,verified,1915f93bc420,
+$C2:4F7E,$C2:4FEA,109,C2Scene_ObjBMove,$C2,Engine,verified,f9d4fc367162,"State 4: C2Scene_ObjAMove for object B: moves, scrolls BG layers 1 and 2, C2Scene_Unk1BF1/1BF3 = the velocity, C2Anim_Run, C2Scene_ObjBX/Y = the position, and at the target .State = C2Scene_ObjBStFly "
+$C2:4FEB,$C2:5036,76,C2Scene_ObjBLand,$C2,Engine,verified,b86b5d5c1268,"State 5 (C2Scene_ObjBStLand): moves for C2Scene_LandFrames frames (.SprAttr C2Scene_ObjBAttrPrio2 from frame C2Scene_LandAttrAt); then C2Scene_ObjBusy and C2Scene_ObjBLanding cleared, .State C2Scene_O"
+$C2:5037,$C2:5046,16,C2Scene_ObjBStepVel,$C2,Engine,verified,2f089e56e7e4,"C2Scene_ObjBFly's step velocity per facing (.XVel, .YVel), as C2Scene_ObjAStepVel."
+$C2:5047,$C2:504A,4,C2Scene_ObjBFaceAnims,$C2,Engine,verified,ebfd080527a3,"Object B's animation per facing (up, down, left, right)."
+$C2:504B,$C2:5053,9,C2Scene_ObjBMarkTask,$C2,Engine,verified,7a3955615725,Task handler of object B's second sprite (no reference in the bank's code): runs the C2Scene_ObjBMarkStates handler of .State.
+$C2:5054,$C2:5057,4,C2Scene_ObjBMarkStates,$C2,Engine,verified,885af0f886f1,C2Scene_ObjBMarkTask's handler for .State 0 and 1.
+$C2:5058,$C2:5067,16,C2Scene_ObjBMarkInit,$C2,Engine,verified,b8e722dba589,"State 0: .State 1, .SprAttr C2Scene_ObjAttrPrio3, .SprTile 0; falls into C2Scene_ObjBMarkShow."
+$C2:5068,$C2:508E,39,C2Scene_ObjBMarkShow,$C2,Engine,verified,f92acf0c2e7e,"State 1, every frame: the C2Scene_ObjBMarkOfs entry of C2Scene_ObjBAloft (0: above B, C2Scene_AnimMarkAbove; 1: below, C2Scene_AnimMarkBelow): the sprite at C2Scene_ObjBX, C2Scene_ObjBY + the entry's "
+$C2:508F,$C2:5096,8,C2Scene_ObjBMarkOfs,$C2,Engine,verified,eab327c08043,Per C2Scene_ObjBAloft: the Y offset from object B and the animation.
+$C2:5097,$C2:509F,9,C2Scene_ObjBMateTask,$C2,Engine,verified,1ff540d7ad8e,Task handler of one of object B's mates (see the banner): runs the C2Scene_ObjBMateStates handler of .State.
+$C2:50A0,$C2:50AB,12,C2Scene_ObjBMateStates,$C2,Engine,verified,45100dda0b0b,C2Scene_ObjBMateTask's handler for each .State 0-5.
+$C2:50AC,$C2:510F,100,C2Scene_ObjBMateInit,$C2,Engine,verified,929a26121491,"State 0: the sprite at C2Scene_ObjBX/Y (fractions and .SprTile 0), facing down, .SprAttr C2Scene_MemberAttr with the slot's palette (C2Scene_Member1Pal for .Slot C2Scene_Slot1, else C2Scene_Member2Pal"
+$C2:5110,$C2:514B,60,C2Scene_ObjBMateWait,$C2,Engine,verified,bba0fcf5075e,State 1: nothing (C=0) until C2Scene_ObjWatch reaches C2Scene_ObjWatchStBusyB.
+$C2:514C,$C2:51A4,89,C2Scene_ObjBMateRise,$C2,Engine,verified,c40ef2350395,"State 2: moves for C2Scene_RiseFrames frames (OAM priority 3 from frame C2Scene_RiseAttrAt), saving the position (C2Scene_ObjBMateSavePos) and running the animation each frame."
+$C2:51A5,$C2:5226,130,C2Scene_ObjBMateFollow,$C2,Engine,verified,951f8ecfc603,"State 3, also re-entered from C2Scene_ObjBMateMove every C2Scene_MateAimFrames frames: - with C2Scene_ObjBLanding (object B is coming down): .State C2Scene_MateStLand, .Frames 0, +$22 = 0, .SprY - C2S"
+$C2:5227,$C2:5248,34,C2Scene_ObjBMateMove,$C2,Engine,verified,29bef98bbc4d,"State 4: for C2Scene_MateAimFrames frames moves without overshooting the target (C2Scene_ObjBMateClampVel, C2Scene_TaskMove, C2Scene_WrapTaskPos), saves the position and runs the animation; then .Stat"
+$C2:5249,$C2:5289,65,C2Scene_ObjBMateLand,$C2,Engine,verified,41c6be64ee6c,"State 5 (C2Scene_MateStLand): moves until .Frames passes C2Scene_LandFrames, which is $30 frames (C2Scene_TaskRunAll has already counted .Frames to 1 on the frame Follow ended), saving the position; t"
+$C2:528A,$C2:531C,147,C2Scene_ObjBMateClampVel,$C2,Engine,verified,c83f47439894,
+$C2:531D,$C2:5360,68,C2Scene_ObjBMateSpot,$C2,Engine,verified,fd727858112c,
+$C2:5361,$C2:5373,19,C2Scene_ObjBMateToObjB,$C2,Engine,verified,69916c1b2053,.TargetX/Y = C2Scene_ObjBX/Y.
+$C2:5374,$C2:53D2,95,C2Scene_ObjBMateAim,$C2,Engine,verified,3f94f0ab86b1,
+$C2:53D3,$C2:543B,105,C2Scene_ObjBMateGlideVel,$C2,Engine,verified,e3dc992a1986,
+$C2:543C,$C2:545B,32,C2Scene_ObjBMateSpots,$C2,Engine,verified,af530e166a13,"C2Scene_ObjBMateSpot's X and Y offsets from object B per party facing (up, down, left, right) and slot (1, 2): 24 pixels across and 24 along."
+$C2:545C,$C2:546F,20,C2Scene_ObjBMateFaceDir,$C2,Engine,verified,35431d980a10,.PrevFacing = .Facing; .Facing = Rom_DirToFacing's entry for the direction in C2Scene_AimDir (C2Scene_ObjBMateAim's).
+$C2:5470,$C2:548B,28,C2Scene_ObjBMateFaceAnim,$C2,Engine,verified,5b6caf04785d,"When .Facing differs from .PrevFacing: starts entry (.Slot - 1) * 4 + .Facing of C2Scene_ObjBMateFaceAnims (C2Scene_SetAnim, by JMP)."
+$C2:548C,$C2:5493,8,C2Scene_ObjBMateFaceAnims,$C2,Engine,verified,96a8d71b7bf9,"The mates' animation per slot (1, then 2) and facing (up, down, left, right)."
+$C2:5494,$C2:549C,9,C2Scene_ObjBMateMarkTask,$C2,Engine,verified,984168f03d23,Task handler of a mate's second sprite (.Slot as the mate's; no reference in the bank's code): runs the C2Scene_ObjBMateMarkStates handler of .State.
+$C2:549D,$C2:54A6,10,C2Scene_ObjBMateMarkStates,$C2,Engine,verified,586e9e6af393,C2Scene_ObjBMateMarkTask's handler for each .State 0-4.
+$C2:54A7,$C2:550D,103,C2Scene_ObjBMateMarkInit,$C2,Engine,verified,07bca1e46433,State 0: .SprAttr C2Scene_ObjAttrPrio3.
+$C2:550E,$C2:5541,52,C2Scene_ObjBMateMarkWait,$C2,Engine,verified,8b1d5d486b54,"State 1: nothing (C=0) until C2Scene_ObjWatch reaches C2Scene_ObjWatchStBusyB; then .State 2, .Frames 0, velocity half a pixel up and half a pixel sideways (right for slot 1, left for slot 2), and fal"
+$C2:5542,$C2:556C,43,C2Scene_ObjBMateMarkRise,$C2,Engine,verified,7f6b9e29b9f5,"State 2: moves for C2Scene_RiseFrames frames with C2Anim_Run; then .State C2Scene_MateStFollow, .SprY + C2Scene_MateMarkDrop, animation C2Scene_AnimMarkBelow, and falls into C2Scene_ObjBMateMarkFollow"
+$C2:556D,$C2:55D0,100,C2Scene_ObjBMateMarkFollow,$C2,Engine,verified,a6dc9c639946,"State 3: with C2Scene_ObjBLanding: .State C2Scene_MateMarkStLand, .Frames 0, the target C2Scene_ObjBX, C2Scene_ObjBY - C2Scene_Lift, .SprY - C2Scene_MateMarkDrop, the glide velocity to the target (C2S"
+$C2:55D1,$C2:5604,52,C2Scene_ObjBMateMarkLand,$C2,Engine,verified,8285dd772a5e,"State 4 (C2Scene_MateMarkStLand): moves until .Frames passes C2Scene_LandFrames, $30 frames (.Frames is already 1 when it starts); then .State C2Scene_MateStWait, fractions and velocity 0."
+$C2:5605,$C2:5627,35,C2Scene_ObjBMateSavePos,$C2,Engine,verified,d1a964567620,"Copies the task's position to C2Scene_ObjBMate1X/Y (.Slot bit 0 set: slot 1) or C2Scene_ObjBMate2X/Y, where the mark tasks read it."
+$C2:5628,$C2:5636,15,C2Scene_LabelTask,$C2,Engine,verified,919ce0e98a7c,"Task handler (no reference in the bank's code, as the object tasks): draws string C2Scene_Unk1B58 of C2SceneRom_LabelStrings with the text window code into a buffer, uploads it to VRAM and shows it as"
+$C2:5637,$C2:563E,8,C2Scene_LabelStates,$C2,Engine,verified,5d8ff02e8ebf,C2Scene_LabelTask's handler for each .State 0-3.
+$C2:563F,$C2:5662,36,C2Scene_LabelInit,$C2,Engine,verified,3fb108ac06c8,"State 0: .State 1, .SprAttr C2Scene_ObjAttrPrio3, .SprTile 0, the animation and frame templates copied to C2Scene_Unk8600/8604 (C2Scene_Unk5775), and the animation pointer on C2Scene_Unk8600 (its firs"
+$C2:5663,$C2:5698,54,C2Scene_LabelWait,$C2,Engine,verified,e636671639bf,State 1: nothing (C=0) while C2Scene_Unk1B58 is 0.
+$C2:5699,$C2:56F8,96,C2Scene_LabelDraw,$C2,Engine,verified,a95677d9c4ac,State 2: one TextWin_Step of one character (TextWin_StepCount 1) per frame while TextWin_Status comes back TextWin_StatusStepDone (C=0).
+$C2:56F9,$C2:5774,124,C2Scene_LabelShow,$C2,Engine,verified,2b06086b2649,"State 3: with C2Scene_Unk1B58 0, .State C2Scene_LabelStWait and the buffer cleared (C2Scene_ClearUnk8621), and the sprite still drawn this frame; with C2Scene_Unk1B59 set (probably ""the label changed"""
+$C2:5775,$C2:5797,35,C2Scene_Unk5775,$C2,Engine,verified,e4850e7963e8,"Copies C2Scene_Unk8600Init (4 bytes) to C2Scene_Unk8600 and C2Scene_Unk8604Init (C2Scene_Unk8604Size bytes, MVN) to C2Scene_Unk8604: an animation script for C2Scene_LabelTask's sprite (C2Anim_OpShowFr"
 $C2:5798,$C2:57AF,24,C2Scene_ClearUnk8621,$C2,Engine,verified,ed79443fec25,"Zeroes the first C2Scene_Unk8621Bytes bytes of C2Scene_HdmaArea ($7E:8621-$8A20, up to C2Scene_HdmaValues): a zero word at the start, then an overlapping MVN."
 $C2:57B0,$C2:57C1,18,C2Scene_Unk57B0,$C2,Engine,verified,3eda458b77ca,"Data with no reference found in the bank (no pointer to any of its bytes): 0, 1, 2, 3, 3, 4, 5, 6, 6, two zeros, then $F4 down to $D0 in steps of 6."
 $C2:57C2,$C2:57C5,4,C2Scene_Unk8600Init,$C2,Engine,verified,b06897d9c841,C2Scene_Unk5775's source for C2Scene_Unk8600.
 $C2:57C6,$C2:57DE,25,C2Scene_Unk8604Init,$C2,Engine,verified,d16aff26b390,"C2Scene_Unk5775's source for C2Scene_Unk8604: a 0 word, $D0, then five groups $E0+2n,$01,$10+16n,$D0 (n = 0-4), and $EA,$01."
-$C2:57DF,$C2:5822,68,TextWin_Init,$C2,Engine,verified,c4aa90a3d217,"Starts string TextWin_StrIndex: TextWin_TextPtr = the 16-bit entry TextWin_StrIndex of the table at TextWin_StrTable, in the table's bank; state 0 (TextWin_State), status TextWin_StatusStart, TextWin_"
-$C2:5823,$C2:5841,31,TextWin_Step,$C2,Engine,verified,e05ff6e627b0,"One step of the text box: TextWin_CheckStatus decides from TextWin_Status whether to go on (C=0); if so, the handler of TextWin_State in TextWin_StateTable runs."
+$C2:57DF,$C2:5822,68,TextWin_Init,$C2,Engine,verified,bf71dbbff3ed,"Starts string TextWin_StrIndex: TextWin_TextPtr = the 16-bit entry TextWin_StrIndex of the table at TextWin_StrTable, in the table's bank; state 0 (TextWin_State), status TextWin_StatusStart, TextWin_"
+$C2:5823,$C2:5841,31,TextWin_Step,$C2,Engine,verified,59af1fe2310e,"One step of the text box: TextWin_CheckStatus decides from TextWin_Status whether to go on (C=0); if so, the handler of TextWin_State in TextWin_StateTable runs."
 $C2:5842,$C2:5849,8,TextWin_StateTable,$C2,Engine,verified,f9ef3e0824d0,TextWin_Step's handler for each TextWin_State (unmatched).
 $C2:584A,$C2:5850,7,TextWin_CheckStatus,$C2,Engine,verified,f5188da234f6,"Jumps to TextWin_Status's handler in TextWin_StatusTable, which returns C=1 to skip this step's state handler (status 0, TextWin_StatusIdle) or C=0 to run it."
 $C2:5851,$C2:5892,66,TextWin_StatusTable,$C2,Engine,verified,f05ec191a0f4,TextWin_CheckStatus's handler for each TextWin_Status value $00-$20.
@@ -1367,8 +1658,59 @@ $C2:95BB,$C2:960A,80,Menu_ClearConfigAndFlags,$C2,Engine,verified,6281d397f22f,"
 $CC:F365,$CC:F382,30,Battle_Mul8CC,$CC,Battle engine,verified,c491ba6627c5,A byte-identical copy of Battle_Mul8 ($C1:0089): 8×8→16 hardware multiply through WRMPYA/WRMPYB/RDMPYL.
 $CF:F9FB,$CF:FA42,72,Battle_SinLookupCF,$CF,Battle engine,verified,39075df1547d,Bank $CF's own scaled sine: returns (sin(A) × !BattleCF_SinScale) >> 8 in A.
 $CF:FDAD,$CF:FE1F,115,BattleMsg_FormatNumber4Digits,$CF,Battle text & numbers,verified,53f4a2a24f11,"A four-digit, long-call version of BattleMsg_FormatNumberDigits ($C1:011F): the same subtract-and-count loops with one more for the thousands, and the digits looked up in !BattleRom_DigitTilesB (tiles"
-$FD:BA61,$FD:BB60,256,RandomTableFD,$FD,Engine,verified,a51edfe7ef24,A byte-identical copy of RandomTable ($C0:FE00): the same shuffle of 0-255.
+$FD:A982,$FD:A98F,14,BattleFD_UnkA982,$FD,Battle engine,verified,b08658efa2bc,"Zeroes $7E:AD89-$B3F4: the battle's working variables from !Battle_UnkAD89 to !Battle_UnkB3F4 (the turn lists, the action block, the reward sums and most of the other !Battle_Unk* bytes this file and "
+$FD:A990,$FD:AA97,264,BattleFD_RestoreEnemies,$FD,Battle engine,verified,1f16b6825a18,
+$FD:AA98,$FD:AAAF,24,BattleFD_UnkAA98,$FD,Battle engine,verified,b1da0bce10bf,"Sets BattlerStats.Status of all 8 enemy slots (3-10) to !Battle_StatusKo ($80, the other status bits cleared)."
+$FD:AAB0,$FD:AAD1,34,BattleFD_UnkAAB0,$FD,Battle engine,verified,325f45253205,
+$FD:AAD2,$FD:AB00,47,BattleFD_LoadUnkB18E,$FD,Battle engine,verified,be4571a6b6b6,"Fills the 4 bytes !Battle_UnkB18E-B191 from the 11-byte record !Battle_UnkB18C of !BattleRom_UnkCC6FCB: B18E = record byte 0, B18F = the record number, B190 = record byte 1, B191 = 0; !Battle_UnkB2C3 "
+$FD:AB01,$FD:AB2F,47,BattleFD_LoadUnkB18E2,$FD,Battle engine,verified,3a63ae809b4e,BattleFD_LoadUnkB18E with the records of !BattleRom_UnkCC88CB.
+$FD:AB30,$FD:ABA1,114,BattleFD_UnkAB30,$FD,Battle engine,verified,d108dddc8ff4,
+$FD:ABA2,$FD:AC6D,204,BattleFD_AddEnemyRewards,$FD,Battle engine,verified,cae0cd26d2a0,
+$FD:AC6E,$FD:ACED,128,BattleFD_UnkAC6E,$FD,Battle engine,verified,4d640ca3db30,
+$FD:ACEE,$FD:ACFC,15,BattleFD_UnkACEE,$FD,Battle engine,verified,7d5c98757ae1,Zeroes !Battle_UnkAD9B and the $B0 bytes from !Battle_ActPcHitAmount ($AD9C-$AE4B: the first four of the $2C-byte record sets the hit opcodes read).
+$FD:ACFD,$FD:AD08,12,BattleFD_UnkACFD,$FD,Battle engine,verified,662f4d2fe90b,"Zeroes the $84 bytes from !Battle_HitAmount ($B328-$B3AB): the three $2C-byte hit sets (!Battle_HitAmount/!Battle_HitFlags per battler slot) that Battle_RecordHit fills and Battle_ApplyHits applies, w"
+$FD:AD09,$FD:AD16,14,BattleFD_UnkAD09,$FD,Battle engine,verified,8c616bcdd106,"Sets the three PCs' Tech_MenuEntry blocks ($1A80-$1C23, 3 x $8C bytes) to $FF."
+$FD:AD17,$FD:AE51,315,BattleFD_UnkAD17,$FD,Battle engine,verified,51f01c03d03b,"BattleSys_Main's victory path, after the gold: shows the end-of-battle messages, each one a JSL BattleSys_UnkVecCD0021 with A = the message and its arguments in !Battle_MsgArg0.."
+$FD:AE52,$FD:AE98,71,BattleFD_UnkAE52,$FD,Battle engine,verified,3f52a041ec63,
+$FD:AE99,$FD:AEC3,43,BattleFD_UnkAE99,$FD,Battle engine,verified,5d2451f5ae10,Copies BattlerStats.Unk57 of PCs 0-2 to !Battle_UnkB3BA-B3BC and counts in !Battle_UnkB3BD how many of them are !Battle_Unk57CountId ($A9).
+$FD:AEC4,$FD:AEF1,46,BattleFD_UnkAEC4,$FD,Battle engine,verified,7c1720dc038a,"For each PC 0-2 whose BattlerStats.Unk57 is !Battle_Unk57FlagId ($AB), sets bit 2 of its BattlerStats.Unk4C+4 (+$50)."
+$FD:AEF2,$FD:AF7F,142,BattleFD_UnkAEF2,$FD,Battle engine,verified,f298a6cb266a,
+$FD:AF80,$FD:B01B,156,BattleFD_AddItemEntry,$FD,Battle engine,verified,8d036dc097ab,
+$FD:B01C,$FD:B032,23,BattleFD_AddItemEntry_Skip,$FD,Battle engine,verified,51127ebed1d5,
+$FD:B033,$FD:B0D4,162,BattleFD_ItemRecOffset,$FD,Battle engine,verified,34a33d99ce28,"Offset in bank $CC of item A's record, by id range: below $5A: id * 5 + $0262;     $5A-$7A: (id - $5A) * 3 + $047E; $7B-$93: (id - $7B) * 3 + $04E1; $94-$BB: (id - $94) * 4 + $052C; $BC-$F1: (id - $BC"
+$FD:B0D5,$FD:B120,76,BattleFD_UnkB0D5,$FD,Battle engine,verified,a695d3f6b257,"Turn-list and panel setup: zeroes the flags of all 13 turn lists (!Battle_ListFlags), sets every !Battle_ListRuns entry to 10 (!Battle_ListRunsReset: this is where the runs are first set), zeroes the "
+$FD:B121,$FD:B140,32,BattleFD_UnkB121,$FD,Battle engine,verified,b651e468d5b8,Copies bits 0-1 of each enemy's BattlerStats.Unk47 (slots 3-10) to !Battle_UnkA020 (one byte per enemy entry).
+$FD:B141,$FD:B14C,12,BattleFD_ApplyRecBoost,$FD,Battle engine,verified,2610d3577f52,"Applies the stat boost an item record names: byte 4 of the record at DP $08 (an address in bank $CC; BattleSys_UnkCE3A points it at three equipment records of a PC, probably the weapon, armour and hel"
+$FD:B14D,$FD:B1FF,179,BattleFD_UnkB14D,$FD,Battle engine,verified,3c35fbfdf265,
+$FD:B200,$FD:B200,1,BattleFD_UnkB14D_Done,$FD,Battle engine,verified,0025738c3466,
+$FD:B201,$FD:B222,34,BattleFD_UnkB201,$FD,Battle engine,verified,7b54a7803602,"BattleSys_Main's victory path, before the gold is paid: when a PC has BattlerStats.Unk57 = $A9 (!Battle_UnkB3BD non-zero, BattleFD_UnkAE99), adds the !Battle_UnkB28C sum to !Battle_RewardGold, zeroes "
+$FD:B223,$FD:B22D,11,BattleFD_UnkB223,$FD,Battle engine,verified,1de9cabd135e,Sets !Battle_UnkAE6D entry n to n for n = 0-10.
+$FD:B22E,$FD:B2DD,176,BattleFD_UnkB22E,$FD,Battle engine,verified,3240c18f00ba,Battle_SetupBattle's second step: the battlers' entries.
+$FD:B2DE,$FD:B33E,97,BattleFD_UnkB2DE,$FD,Battle engine,verified,f7e3bf78345c,Battle_SetupBattle's first step.
+$FD:B33F,$FD:B362,36,BattleFD_UnkB33F,$FD,Battle engine,verified,6621b6ddbc25,"BattleFD_UnkB2DE's helper: !Battle_UnkAF1D = 0, !Battle_PcCount = 3, copies $230 bytes from !MenuRom_CharRecordInit ($CC:0000, the new-game records Menu_InitNewGameData copies) to !Menu_CharRecords ($"
+$FD:B363,$FD:B3EA,136,BattleFD_UnkB363,$FD,Battle engine,verified,dcfc8cda4301,
+$FD:B3EB,$FD:B3FD,19,BattleFD_UnkB3EB,$FD,Battle engine,verified,eb33416038d0,Sets BattlerStats.Unk72 of the slot at X to $32 when its .Unk56 is $3D or $42.
+$FD:B3FE,$FD:B437,58,BattleFD_UnkB3FE,$FD,Battle engine,verified,38b4722ecd97,"For PC X with an id in !Battler_UnkAEFF: sets the 4 bytes of its BattlerStats.Unk6C to 4, then the byte picked by the highest of BattlerStats.Unk2E bits 7-4 (bit 7: +0, 6: +1, 5: +2, 4: +3) to 5; none"
+$FD:B438,$FD:B4D5,158,BattleFD_UnkB438,$FD,Battle engine,verified,0fcf2d8ef5e5,
+$FD:B4D6,$FD:B4E6,17,BattleFD_ZeroStatBlock,$FD,Battle engine,verified,8d9802022821,"Zeroes $80 bytes from BattlerStats[3].Unk2D + Y (an enemy's stat block, running into the next record's first $2D bytes)."
+$FD:B4E7,$FD:B554,110,BattleFD_UnkB4E7,$FD,Battle engine,verified,723cbfcb24c0,"Sets the starting values of the turn lists for all 11 slots: the reload value (!Battle_ListReload) and the countdown (!Battle_ListTimers) of lists 0-11 get the same number per list: 0: 60, 1: 150, 2: "
+$FD:B555,$FD:B654,256,BattleFD_UnkB555,$FD,Battle engine,verified,05bce3f75948,"One of Battle_SetupBattle's last steps: - zeroes !Battle_UnkAEE6 (17 B), !Battle_UnkB19E (32 B) and the 32 bytes from !Enemy_AnimWanted ($5E0D-$5E2C); - BattleFD_UnkB3EB for each PC whose BattlerStats"
+$FD:B655,$FD:B731,221,BattleFD_UnkB655,$FD,Battle engine,verified,cdf8c37358b0,
+$FD:B732,$FD:B7EA,185,BattleFD_UnkB732,$FD,Battle engine,verified,0a8fb53dc5f5,"Clears the battle's per-battle state (Battle_SetupBattle): - DP $16-$21 and !Battle_UnkAF25 (16-bit) = 0; !Battle_UnkB1FC, !Battle_UnkB253, !Battle_UnkAECB, !Battle_UnkB2C0, !Battle_UnkB3B9 = 0; - the"
+$FD:B7EB,$FD:B956,364,BattleFD_UnkB7EB,$FD,Battle engine,verified,032a9b2bdfda,
+$FD:BA61,$FD:BB60,256,RandomTableFD,$FD,Engine,verified,874215dd3d17,A byte-identical copy of RandomTable ($C0:FE00): the same shuffle of 0-255.
 $FD:C000,$FD:C0D6,215,MainInit,$FD,Boot,verified,7521404a3159,"Called via: JML from Reset ($00:FF03), which also carries the soft resets, and JML $FDC000 at $C0:418D (unmatched; after JSR InitHW and S=$06FF)."
 $FD:C0D7,$FD:C123,77,Ppu_SetBgLayout,$FD,Engine,verified,30473a455a95,"Sets a fixed background layout through DP=$2100, the way MainInit writes the PPU: mode 1 with BG3 on top, BG1/BG2 tiles at VRAM word $1000 and BG3 tiles at $5000, 64x32 maps at $6800 (BG1), $7000 (BG2"
+$FD:C124,$FD:C1ED,202,EngFD_UnkC124,$FD,Engine,verified,707b97cc9715,Fills the HDMA data block in bank $7F (DB = $7F while it runs).
+$FD:C1EE,$FD:C2C0,211,Hdma_InitChannelsFD,$FD,Engine,verified,5bcfd77624f3,"Sets up all 8 HDMA channels through DP=$4300 (saved and restored): channel 0: indirect, 4 registers from BG1SC (BG1SC-BG4SC); channels 1-3: indirect, 2 registers written twice, from BG1HOFS, BG2HOFS, "
+$FD:C2C1,$FD:C2DE,30,EngFD_UnkC2C1,$FD,Engine,verified,2ab566b0c9cb,Once a frame: runs entry !Field_Unk26 (0-2) of one of two handler tables and flips !Field_Unk53 bit 0.
+$FD:C2DF,$FD:C2E4,6,EngFD_UnkC2C1Table1,$FD,Engine,verified,7022117e20c5,EngFD_UnkC2C1's handlers by !Field_Unk26 when !Field_Unk53 bit 0 is set.
+$FD:C2E5,$FD:C2EA,6,EngFD_UnkC2C1Table0,$FD,Engine,verified,62ab96a3000d,The same when !Field_Unk53 bit 0 is clear.
+$FD:D52D,$FD:D5D3,167,EngFD_UnkD52D,$FD,Engine,verified,8f252469d19d,"EngFD_UnkC124's helper: builds a table of (CGADSUB, COLDATA) byte pairs at $7F:1538 (channel 6's registers in Hdma_InitChannelsFD), then copies $100 bytes from $7F:1538 to $7F:1600 (MVN; the source ov"
+$FD:DE98,$FD:E021,394,FieldFD_LoadAnimSetA,$FD,Engine,verified,d4b4deef7b96,
+$FD:E292,$FD:E39B,266,FieldFD_LoadAnimSetB,$FD,Engine,verified,9aaf6ca6255c,
+$FD:FFF4,$FD:FFF6,3,FdVec_FFF4,$FD,Engine,verified,f26478b3b778,"The bank's service vectors: three JMPs at fixed addresses near the end of the bank, so code in other banks can JSL them."
+$FD:FFF7,$FD:FFF9,3,FdVec_FFF7,$FD,Engine,verified,238149e99e7a,"JMP to EngFD_UnkE39C (not analysed; Field_EndOfFrame runs it every frame, and its header says it ticks the counter table at $0520, the FieldAnimB records)."
+$FD:FFFA,$FD:FFFC,3,FdVec_FFFA,$FD,Engine,verified,f881da582a77,JMP to FieldFD_LoadAnimSetA.
 $FF:F759,$FF:F798,64,ScrollWaveFF_A,$FF,Engine,verified,d17d9f59305b,"Wave tables ($FF:F759–$FF:F7D8) A byte-identical copy of ScrollWaveA/ScrollWaveB in bank $00 ($C0:FF30–$C0:FFAF): one period of a sine-like wave between -6 and +6 (32 signed 16-bit entries), stored tw"
 $FF:F799,$FF:F7D8,64,ScrollWaveFF_B,$FF,Engine,verified,bc184cf5dbb3,

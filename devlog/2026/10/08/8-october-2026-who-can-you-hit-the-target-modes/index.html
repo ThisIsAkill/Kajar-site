@@ -192,21 +192,21 @@
       <div class="wk-party">
         <div class="wk-party-row" title="Bytes matched: the rebuilt ROM is byte-identical here">
           <span class="wk-party-k">HP</span>
-          <span class="wk-party-v">107,392<small>/359,278</small></span>
+          <span class="wk-party-v">128,218<small>/359,278</small></span>
         </div>
-        <div class="wk-stat-track"><div class="wk-stat-fill" style="width:29.89%"></div></div>
-        <p class="wk-party-note">bytes matched · 29.89% of code</p>
+        <div class="wk-stat-track"><div class="wk-stat-fill" style="width:35.69%"></div></div>
+        <p class="wk-party-note">bytes matched · 35.69% of code</p>
 
         <div class="wk-party-row" title="Matched functions that also meet the readability standard">
           <span class="wk-party-k">MP</span>
-          <span class="wk-party-v">1373<small>/1373</small></span>
+          <span class="wk-party-v">1715<small>/1715</small></span>
         </div>
         <div class="wk-stat-track"><div class="wk-stat-fill wk-stat-fill-mp" style="width:100.0%"></div></div>
         <p class="wk-party-note">functions readable</p>
 
         <div class="wk-party-row" title="Readable functions that passed an independent review">
           <span class="wk-party-k">TP</span>
-          <span class="wk-party-v">1373<small>/1373</small></span>
+          <span class="wk-party-v">1715<small>/1715</small></span>
         </div>
         <div class="wk-stat-track"><div class="wk-stat-fill wk-stat-fill-dim" style="width:100.0%"></div></div>
         <p class="wk-party-note">functions verified</p>
@@ -447,8 +447,16 @@
 <li><strong>Enemy behaviour scripts</strong> (<code>$C1</code>, 2,415 bytes). The core that reads each enemy's script: a list of blocks, each one or two tests followed by actions, plus a separate reaction part. A block whose tests hold chooses its next action, and later turns step through the block's actions in order. Two finds: one action code jumps back into the middle of the test-passed routine after picking a random action (25/50/75% thresholds for one, two or three steps further along), and one target picker loops forever if an enemy's target marks disagree. The routine that turns a hit into a record offset also wraps for the last two slots of the sixth hit set. Thirty of its 39 routines passed review the first time; the other nine needed a second round, and one a third.</li>
 </ul>
 <p><code>main</code> now stands at 107,392 bytes, 29.89% of the game's code, all 1,373 <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr> routines independently verified.</p>
+<p>Around midnight, four more batches went through review and merged:</p>
+<ul>
+<li><strong>Player commands</strong> (<code>$C1</code>, 5,174 bytes). What happens after a party member picks a command: the battler checks each pass makes (the low-HP pose bit, which turn lists a battler takes part in, the KO check), the command runner for attacks, techs and items, the tech MP costs and who pays them, and the end-of-battle copies back to the field. The batch was written before the workflow overhaul, so it was ported onto the new layout first. Review found that a tech's first user never gets its extra wait: the divisor is never stored, so the code divides by 0, which the divide routine answers with 0. A KO'd party member with the right flag is revived with a heal that is recorded twice, once as a positive amount for the action and once negated for the hit set.</li>
+<li><strong>Battle helpers in bank <code>$FD</code></strong> (5,364 bytes). The enemy rewards, the battle item list, restoring enemies, stat boosts from equipment, the first gauge values and the turn-list timers, plus the field's HDMA set-up and location animation loaders. One routine builds a brightness gradient for the screen as 90 pairs of colour-math bytes. Merging it with the player-command batch turned up 18 names defined twice, which the assembler accepts silently, so each now has one definition.</li>
+<li><strong>Field event commands</strong> (<code>$C0</code>, 5,016 bytes). Dozens of event-script <abbr title="First bytes of CPU instructions, identifying operations (e.g. $60 = RTS, $78 = SEI).">opcodes</abbr>: calls into other objects' scripts, jumps and conditions, button tests, loads, stores and block copies, arithmetic and bit operations, animation and wait commands, and the message commands. The message commands halt the game with a coloured screen if no message pointer was set.</li>
+<li><strong>Scene objects</strong> (<code>$C2</code>, 5,272 bytes). Two objects in the <code>$C2</code> scenes that the party can get into (probably vehicles), their position markers, two companions that glide after object B, and a task that draws a label (probably a place name) as a sprite above the party. One of them reads absolute address <code>$0028</code> instead of its own facing byte.</li>
+</ul>
+<p><code>main</code> now stands at 128,218 bytes, 35.69% of the game's code, all 1,715 <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr> routines independently verified.</p>
 <h2 id="next">Next</h2>
-<p>Matching continues on four fronts: the battle-engine helpers in bank <code>$FD</code>, the <code>$C2</code> scene objects after the party, the rest of the <code>$C0</code> event command handlers, and the <code>$C1</code> player-command batch being ported onto the new workflow.</p>
+<p>Matching continues with the rest of the field event commands in <code>$C0</code>, the mode 6 and mode 8 sub-programs in <code>$C2</code>, and the item and tech handling in <code>$C1</code>. The wiki pages are also being brought up to date one by one.</p>
   
   <p class="wk-post-back"><a href="../../../../">← Back to devlog</a></p>
 </article>

@@ -1,71 +1,71 @@
 {
   "schema": 2,
-  "emitted_bytes": 107392,
+  "emitted_bytes": 128218,
   "code_bytes": 359278,
   "totals": {
     "matched": {
-      "functions": 1373,
-      "bytes": 107392
+      "functions": 1715,
+      "bytes": 128218
     },
     "readable": {
-      "functions": 1373,
-      "bytes": 107392
+      "functions": 1715,
+      "bytes": 128218
     },
     "verified": {
-      "functions": 1373,
-      "bytes": 107392
+      "functions": 1715,
+      "bytes": 128218
     }
   },
   "banks": [
     {
       "bank": "$C0",
       "code_bytes": 61779,
-      "emitted_bytes": 46461,
+      "emitted_bytes": 51477,
       "matched": {
-        "functions": 425,
-        "bytes": 46461
+        "functions": 582,
+        "bytes": 51477
       },
       "readable": {
-        "functions": 425,
-        "bytes": 46461
+        "functions": 582,
+        "bytes": 51477
       },
       "verified": {
-        "functions": 425,
-        "bytes": 46461
+        "functions": 582,
+        "bytes": 51477
       }
     },
     {
       "bank": "$C1",
       "code_bytes": 63904,
-      "emitted_bytes": 39231,
+      "emitted_bytes": 44425,
       "matched": {
-        "functions": 442,
-        "bytes": 39231
+        "functions": 493,
+        "bytes": 44425
       },
       "readable": {
-        "functions": 442,
-        "bytes": 39231
+        "functions": 493,
+        "bytes": 44425
       },
       "verified": {
-        "functions": 442,
-        "bytes": 39231
+        "functions": 493,
+        "bytes": 44425
       }
     },
     {
       "bank": "$C2",
       "code_bytes": null,
-      "emitted_bytes": 20807,
+      "emitted_bytes": 26079,
       "matched": {
-        "functions": 498,
-        "bytes": 20807
+        "functions": 581,
+        "bytes": 26079
       },
       "readable": {
-        "functions": 498,
-        "bytes": 20807
+        "functions": 581,
+        "bytes": 26079
       },
       "verified": {
-        "functions": 498,
-        "bytes": 20807
+        "functions": 581,
+        "bytes": 26079
       }
     },
     {
@@ -105,18 +105,18 @@
     {
       "bank": "$FD",
       "code_bytes": null,
-      "emitted_bytes": 548,
+      "emitted_bytes": 5892,
       "matched": {
-        "functions": 3,
-        "bytes": 548
+        "functions": 54,
+        "bytes": 5892
       },
       "readable": {
-        "functions": 3,
-        "bytes": 548
+        "functions": 54,
+        "bytes": 5892
       },
       "verified": {
-        "functions": 3,
-        "bytes": 548
+        "functions": 54,
+        "bytes": 5892
       }
     },
     {
@@ -232,7 +232,7 @@
       "bank": "$C0",
       "start": "$C0:2000",
       "end": "$C0:2FFF",
-      "emitted_bytes": 2482,
+      "emitted_bytes": 2891,
       "functions": [
         "Field_EventHookDispatch",
         "Field_EventHookTable",
@@ -258,15 +258,49 @@
         "Field_Unk2B78",
         "VramDma_Upload",
         "ClearRAMDMA",
-        "Sys_HaltWithColor"
+        "Sys_HaltWithColor",
+        "Evt_OpAA_SetAnimRow",
+        "Evt_SetAnimRow",
+        "Evt_SetAnimMode",
+        "Evt_OpB3_AnimRow0",
+        "Evt_OpB4_AnimRow1",
+        "Evt_OpAE_AnimReset",
+        "Evt_OpAB_PlayAnimOnce",
+        "Evt_OpB7_PlayAnimLoops",
+        "Evt_OpAC_ShowFrame",
+        "Evt_OpAD_WaitRuns",
+        "Evt_OpB9_Wait4",
+        "Evt_OpBA_Wait8",
+        "Evt_OpBD_Wait32",
+        "Evt_OpBC_Wait16",
+        "Evt_WaitRuns",
+        "Evt_OpAF_PartyControlOnce"
       ]
     },
     {
       "bank": "$C0",
       "start": "$C0:3000",
       "end": "$C0:3FFF",
-      "emitted_bytes": 0,
-      "functions": []
+      "emitted_bytes": 1086,
+      "functions": [
+        "Evt_OpB0_PartyControl",
+        "Obj_Unk305D",
+        "Obj_Unk30B3",
+        "Evt_StartTargetFunc2",
+        "Evt_PushTarget",
+        "Evt_OpB1_Yield",
+        "Evt_OpB2_Halt",
+        "Evt_OpB5_FollowObj",
+        "Evt_OpB6_FollowPc",
+        "Evt_OpB8_SetMsgPtr",
+        "Evt_OpBB_Msg",
+        "Evt_OpC1_MsgUnk30_1",
+        "Evt_OpC2_MsgUnk30_2",
+        "Evt_OpC0_MsgChoice",
+        "Evt_MsgChoiceStart",
+        "Evt_OpC3_MsgChoiceUnk30_1",
+        "Evt_OpC4_MsgChoiceUnk30_2"
+      ]
     },
     {
       "bank": "$C0",
@@ -287,7 +321,7 @@
       "bank": "$C0",
       "start": "$C0:5000",
       "end": "$C0:5FFF",
-      "emitted_bytes": 3438,
+      "emitted_bytes": 3584,
       "functions": [
         "Evt_Op97_WalkToTileVar",
         "Evt_OpA0_MoveToTile",
@@ -345,15 +379,139 @@
         "Evt_FindOrAddUnk0920",
         "LocLoad_CheckEvtData",
         "LocLoad_InitUnk7F3700",
-        "LocLoad_Unk7F3700Init"
+        "LocLoad_Unk7F3700Init",
+        "Evt_UnusedOpcode",
+        "Evt_Op00_Return",
+        "Evt_Op02_CallObjFunc",
+        "Evt_Op02_Body"
       ]
     },
     {
       "bank": "$C0",
       "start": "$C0:6000",
       "end": "$C0:6FFF",
-      "emitted_bytes": 668,
+      "emitted_bytes": 4043,
       "functions": [
+        "Evt_Op03_CallObjFuncRetry",
+        "Evt_Op03_Body",
+        "Evt_Op04_CallObjFuncWait",
+        "Evt_Op04_Start",
+        "Evt_Op04_WaitSlot",
+        "Evt_Op05_CallPcFunc",
+        "Evt_Op06_CallPcFuncRetry",
+        "Evt_Op07_CallPcFuncWait",
+        "Evt_Op08_BlockCalls",
+        "Evt_Op08_Next",
+        "Evt_Op09_AllowCalls",
+        "Evt_Op0A_RemoveObj",
+        "Evt_Op0B_StopObjScript",
+        "Evt_Op0C_StartObjScript",
+        "Evt_Op0D_SetUnk1C80",
+        "Evt_Op0E_SetUnk1C81",
+        "Evt_Op0E_Next",
+        "Evt_Op10_JumpFwd",
+        "Evt_Op11_JumpBack",
+        "Evt_Op12_IfVarByte",
+        "Evt_Op13_IfVarWord",
+        "Evt_JumpFromOfsPos",
+        "Evt_Op14_IfVarVarByte",
+        "Evt_Op15_IfVarVarWord",
+        "Evt_Op16_IfMemByte",
+        "Evt_Op18_IfUnk7F0000Below",
+        "Evt_CmpTable8",
+        "Evt_CmpTable16",
+        "Evt_Cmp8Eq",
+        "Evt_Cmp8Ne",
+        "Evt_Cmp8Gt",
+        "Evt_Cmp8Lt",
+        "Evt_Cmp8Ge",
+        "Evt_Cmp8Holds",
+        "Evt_Cmp8Le",
+        "Evt_Cmp8And",
+        "Evt_Cmp8Or",
+        "Evt_Cmp16Eq",
+        "Evt_Cmp16Ne",
+        "Evt_Cmp16Gt",
+        "Evt_Cmp16Lt",
+        "Evt_Cmp16Ge",
+        "Evt_Cmp16Le",
+        "Evt_Cmp16Holds",
+        "Evt_Cmp16And",
+        "Evt_Cmp16Or",
+        "Evt_Op19_SetUnk7F0A80Var",
+        "Evt_Op1C_SetUnk7F0A80Mem",
+        "Evt_Op1A_IfUnk7F0A80",
+        "Evt_Op20_GetPartyMember0",
+        "Evt_Op21_GetObjTile",
+        "Evt_Op21_Body",
+        "Evt_Op22_GetPcTile",
+        "Evt_Op23_GetObjFacing",
+        "Evt_Op23_Body",
+        "Evt_Op24_GetPcFacing",
+        "Evt_Op27_IfObjUnk0F00",
+        "Evt_Op28_IfObjInsideScreen",
+        "Evt_Op2D_IfAnyHeld",
+        "Evt_Op30_IfMapHeldBit1",
+        "Evt_Op31_IfMapHeldBit7",
+        "Evt_Op34_IfHeldA",
+        "Evt_PadJump",
+        "Evt_Op35_IfHeldB",
+        "Evt_Op36_IfHeldX",
+        "Evt_Op37_IfHeldY",
+        "Evt_PadGoOn",
+        "Evt_Op38_IfHeldL",
+        "Evt_Op39_IfHeldR",
+        "Evt_Op3B_IfMapPressedBit1",
+        "Evt_Op3C_IfMapPressedBit7",
+        "Evt_Op3F_IfPressedA",
+        "Evt_Op40_IfPressedB",
+        "Evt_Op41_IfPressedX",
+        "Evt_Op42_IfPressedY",
+        "Evt_Op43_IfPressedL",
+        "Evt_Op44_IfPressedR",
+        "Evt_PadGoOn2",
+        "Evt_Op47_SetScanlineLimit",
+        "Evt_Op48_GetLongByte",
+        "Evt_ReadSrcPtrAndVar",
+        "Evt_Op49_GetLongWord",
+        "Evt_Op4A_SetLongByte",
+        "Evt_ReadDstPtr",
+        "Evt_Op4B_SetLongWord",
+        "Evt_Op4C_SetLongVarByte",
+        "Evt_Op4D_SetLongVarWord",
+        "Evt_Op4E_CopyData",
+        "Evt_Op4F_SetVarByte",
+        "Evt_Op50_SetVarWord",
+        "Evt_Op51_CopyVarByte",
+        "Evt_Op52_CopyVarWord",
+        "Evt_Op53_GetMemByte",
+        "Evt_Op54_GetMemWord",
+        "Evt_Op55_GetUnk7F0000",
+        "Evt_Op56_SetMemByte",
+        "Evt_Op58_SetMemVarByte",
+        "Evt_Op59_SetMemVarWord",
+        "Evt_Op5A_SetUnk7F0000",
+        "Evt_Op5B_AddVarByte",
+        "Evt_Op5D_AddVarVarByte",
+        "Evt_Op5E_AddVarVarWord",
+        "Evt_Op5F_SubVarByte",
+        "Evt_Op60_SubVarWord",
+        "Evt_Op61_SubVarVarByte",
+        "Evt_Op63_SetVarBit",
+        "Evt_Op64_ClearVarBit",
+        "Evt_Op65_SetMemBit",
+        "Evt_Op66_ClearMemBit",
+        "Evt_Op67_AndVarByte",
+        "Evt_Op69_OrVarByte",
+        "Evt_Op6B_EorVarByte",
+        "Evt_Op6F_ShrVarByte",
+        "Evt_Op71_IncVarByte",
+        "Evt_Op72_IncVarWord",
+        "Evt_Op73_DecVarByte",
+        "Evt_Op75_SetVarByte1",
+        "Evt_Op76_SetVarWord1",
+        "Evt_Op77_ClearVarByte",
+        "Evt_Op7F_RandomVarByte",
         "LocLoad_UploadPack",
         "LocLoad_UnpackPacks67",
         "LocLoad_Unk6DCF",
@@ -1207,26 +1365,72 @@
       "bank": "$C1",
       "start": "$C1:B000",
       "end": "$C1:BFFF",
-      "emitted_bytes": 584,
+      "emitted_bytes": 4096,
       "functions": [
+        "BattleSys_UnkB093",
+        "BattleSys_UnkB0B6",
+        "BattleSys_UnkB223",
+        "BattleSys_UpdateKo",
+        "BattleSys_UnkB3BB",
+        "BattleSys_UnkB3D2",
+        "BattleSys_UnkB3F9",
+        "BattleSys_UnkB442",
         "BattleAi_FindReactPart",
         "BattleAi_PickScript",
+        "BattleSys_UnkB4E9",
+        "BattleSys_UnkB575",
+        "BattleSys_RefundItem",
+        "BattleSys_UnkB70E",
+        "BattleSys_UnkB725",
+        "BattleSys_UnkB762",
+        "BattleSys_UnkB7F2",
         "BattleAi_TestTable",
         "BattleAi_ChooseTable",
         "BattleAi_RunTable",
         "BattleAi_TargetTable",
         "BattleSys_ListHandlerTable",
-        "BattleSys_ListOffsetTable"
+        "BattleSys_ListOffsetTable",
+        "BattleSys_RemoveReadyLong",
+        "BattleSys_UnkB967",
+        "BattleSys_UnkBC60",
+        "BattleSys_UnkBCE1",
+        "BattleSys_UnkBCE1_ClearRecords",
+        "BattleSys_UnkBCE1_Done",
+        "BattleSys_UnkBD6F",
+        "BattleSys_ResetTechUsers",
+        "BattleSys_UnkBF46",
+        "BattleSys_UnkBF79",
+        "BattleSys_UnkBF81",
+        "BattleSys_UnkBFA4",
+        "BattleSys_RunPcAttack"
       ]
     },
     {
       "bank": "$C1",
       "start": "$C1:C000",
       "end": "$C1:CFFF",
-      "emitted_bytes": 81,
+      "emitted_bytes": 1743,
       "functions": [
         "Battle_Mul16",
-        "Battle_Div32"
+        "Battle_Div32",
+        "BattleSys_UnkC96A",
+        "BattleSys_UnkCA1A",
+        "BattleSys_TechMpCost1",
+        "BattleSys_TechMpCost2",
+        "BattleSys_TechMpCost3",
+        "BattleSys_LoadTechUsers",
+        "BattleSys_StoreMpCost",
+        "BattleSys_AdjustMpCost",
+        "BattleSys_StoreMpCost10",
+        "BattleSys_StoreMpCost18",
+        "BattleSys_PayTechMp",
+        "BattleSys_UnkCCCB",
+        "BattleSys_UnkCDFF",
+        "BattleSys_UnkCE36",
+        "BattleSys_UnkCE3A",
+        "BattleSys_UnkCF15",
+        "BattleSys_UnkCF52",
+        "BattleSys_UnkCF69"
       ]
     },
     {
@@ -1252,10 +1456,15 @@
       "bank": "$C1",
       "start": "$C1:F000",
       "end": "$C1:FFFF",
-      "emitted_bytes": 820,
+      "emitted_bytes": 840,
       "functions": [
         "Battle_SetupBattle",
-        "Battle_CalcUnk56"
+        "Battle_CalcUnk56",
+        "Battle_Mul16Long",
+        "BankC1_AddItemLong",
+        "BattleSys_RunPcAttackLong",
+        "Battle_RandRangeLong",
+        "BattleSys_RefundItemLong"
       ]
     },
     {
@@ -1657,7 +1866,7 @@
       "bank": "$C2",
       "start": "$C2:4000",
       "end": "$C2:4FFF",
-      "emitted_bytes": 733,
+      "emitted_bytes": 4096,
       "functions": [
         "C2Scene_MemberRouteYFirst",
         "C2Scene_MemberRouteXFirst",
@@ -1670,15 +1879,98 @@
         "C2Scene_MemberWalkAnim",
         "C2Scene_PathBlocked",
         "C2Scene_ScanRow",
-        "C2Scene_ScanCol"
+        "C2Scene_ScanCol",
+        "C2Scene_ObjATask",
+        "C2Scene_ObjAStates",
+        "C2Scene_ObjAInit",
+        "C2Scene_ObjAWait",
+        "C2Scene_ObjARise",
+        "C2Scene_ObjAFly",
+        "C2Scene_ObjAMove",
+        "C2Scene_ObjALand",
+        "C2Scene_ObjAAfterMode8",
+        "C2Scene_ObjAScript",
+        "C2Scene_ObjAWaitEmpty",
+        "C2Scene_ObjAStepVel",
+        "C2Scene_ObjAFaceAnim",
+        "C2Scene_ObjAFaceAnims",
+        "C2Scene_ObjAFaceAnims5",
+        "C2Scene_ObjAJump",
+        "C2Scene_ObjAOverlap",
+        "C2Scene_ObjBOverlap",
+        "C2Scene_ObjAFlyBox",
+        "C2Scene_ObjBLandBox",
+        "C2Scene_SpotBox",
+        "C2Scene_ObjAMarkTask",
+        "C2Scene_ObjAMarkStates",
+        "C2Scene_ObjAMarkInit",
+        "C2Scene_ObjAMarkShow",
+        "C2Scene_ObjASpotWatch",
+        "C2Scene_ObjASound",
+        "C2Scene_ObjAGetProps",
+        "C2Scene_ObjAScrGo1DD",
+        "C2Scene_ObjAScrLeave",
+        "C2Scene_ObjAScrArrive",
+        "C2Scene_ObjAScrSlowVel",
+        "C2Scene_ObjAScrFastVel",
+        "C2Scene_ObjAScrDash",
+        "C2Scene_ObjAScrTrail",
+        "C2Scene_ObjAScrUnk4C6F",
+        "C2Scene_ObjAScrSpot",
+        "C2Scene_ObjBTask",
+        "C2Scene_ObjBStates",
+        "C2Scene_ObjBInit",
+        "C2Scene_ObjBWait",
+        "C2Scene_ObjBRise",
+        "C2Scene_ObjBFly",
+        "C2Scene_ObjBMove",
+        "C2Scene_ObjBLand"
       ]
     },
     {
       "bank": "$C2",
       "start": "$C2:5000",
       "end": "$C2:5FFF",
-      "emitted_bytes": 2187,
+      "emitted_bytes": 4096,
       "functions": [
+        "C2Scene_ObjBStepVel",
+        "C2Scene_ObjBFaceAnims",
+        "C2Scene_ObjBMarkTask",
+        "C2Scene_ObjBMarkStates",
+        "C2Scene_ObjBMarkInit",
+        "C2Scene_ObjBMarkShow",
+        "C2Scene_ObjBMarkOfs",
+        "C2Scene_ObjBMateTask",
+        "C2Scene_ObjBMateStates",
+        "C2Scene_ObjBMateInit",
+        "C2Scene_ObjBMateWait",
+        "C2Scene_ObjBMateRise",
+        "C2Scene_ObjBMateFollow",
+        "C2Scene_ObjBMateMove",
+        "C2Scene_ObjBMateLand",
+        "C2Scene_ObjBMateClampVel",
+        "C2Scene_ObjBMateSpot",
+        "C2Scene_ObjBMateToObjB",
+        "C2Scene_ObjBMateAim",
+        "C2Scene_ObjBMateGlideVel",
+        "C2Scene_ObjBMateSpots",
+        "C2Scene_ObjBMateFaceDir",
+        "C2Scene_ObjBMateFaceAnim",
+        "C2Scene_ObjBMateFaceAnims",
+        "C2Scene_ObjBMateMarkTask",
+        "C2Scene_ObjBMateMarkStates",
+        "C2Scene_ObjBMateMarkInit",
+        "C2Scene_ObjBMateMarkWait",
+        "C2Scene_ObjBMateMarkRise",
+        "C2Scene_ObjBMateMarkFollow",
+        "C2Scene_ObjBMateMarkLand",
+        "C2Scene_ObjBMateSavePos",
+        "C2Scene_LabelTask",
+        "C2Scene_LabelStates",
+        "C2Scene_LabelInit",
+        "C2Scene_LabelWait",
+        "C2Scene_LabelDraw",
+        "C2Scene_LabelShow",
         "C2Scene_Unk5775",
         "C2Scene_ClearUnk8621",
         "C2Scene_Unk57B0",
@@ -2181,15 +2473,56 @@
       "bank": "$FD",
       "start": "$FD:A000",
       "end": "$FD:AFFF",
-      "emitted_bytes": 0,
-      "functions": []
+      "emitted_bytes": 1662,
+      "functions": [
+        "BattleFD_UnkA982",
+        "BattleFD_RestoreEnemies",
+        "BattleFD_UnkAA98",
+        "BattleFD_UnkAAB0",
+        "BattleFD_LoadUnkB18E",
+        "BattleFD_LoadUnkB18E2",
+        "BattleFD_UnkAB30",
+        "BattleFD_AddEnemyRewards",
+        "BattleFD_UnkAC6E",
+        "BattleFD_UnkACEE",
+        "BattleFD_UnkACFD",
+        "BattleFD_UnkAD09",
+        "BattleFD_UnkAD17",
+        "BattleFD_UnkAE52",
+        "BattleFD_UnkAE99",
+        "BattleFD_UnkAEC4",
+        "BattleFD_UnkAEF2",
+        "BattleFD_AddItemEntry"
+      ]
     },
     {
       "bank": "$FD",
       "start": "$FD:B000",
       "end": "$FD:BFFF",
-      "emitted_bytes": 256,
+      "emitted_bytes": 2647,
       "functions": [
+        "BattleFD_AddItemEntry_Skip",
+        "BattleFD_ItemRecOffset",
+        "BattleFD_UnkB0D5",
+        "BattleFD_UnkB121",
+        "BattleFD_ApplyRecBoost",
+        "BattleFD_UnkB14D",
+        "BattleFD_UnkB14D_Done",
+        "BattleFD_UnkB201",
+        "BattleFD_UnkB223",
+        "BattleFD_UnkB22E",
+        "BattleFD_UnkB2DE",
+        "BattleFD_UnkB33F",
+        "BattleFD_UnkB363",
+        "BattleFD_UnkB3EB",
+        "BattleFD_UnkB3FE",
+        "BattleFD_UnkB438",
+        "BattleFD_ZeroStatBlock",
+        "BattleFD_UnkB4E7",
+        "BattleFD_UnkB555",
+        "BattleFD_UnkB655",
+        "BattleFD_UnkB732",
+        "BattleFD_UnkB7EB",
         "RandomTableFD"
       ]
     },
@@ -2197,32 +2530,46 @@
       "bank": "$FD",
       "start": "$FD:C000",
       "end": "$FD:CFFF",
-      "emitted_bytes": 292,
+      "emitted_bytes": 747,
       "functions": [
         "MainInit",
-        "Ppu_SetBgLayout"
+        "Ppu_SetBgLayout",
+        "EngFD_UnkC124",
+        "Hdma_InitChannelsFD",
+        "EngFD_UnkC2C1",
+        "EngFD_UnkC2C1Table1",
+        "EngFD_UnkC2C1Table0"
       ]
     },
     {
       "bank": "$FD",
       "start": "$FD:D000",
       "end": "$FD:DFFF",
-      "emitted_bytes": 0,
-      "functions": []
+      "emitted_bytes": 527,
+      "functions": [
+        "EngFD_UnkD52D",
+        "FieldFD_LoadAnimSetA"
+      ]
     },
     {
       "bank": "$FD",
       "start": "$FD:E000",
       "end": "$FD:EFFF",
-      "emitted_bytes": 0,
-      "functions": []
+      "emitted_bytes": 300,
+      "functions": [
+        "FieldFD_LoadAnimSetB"
+      ]
     },
     {
       "bank": "$FD",
       "start": "$FD:F000",
       "end": "$FD:FFFF",
-      "emitted_bytes": 0,
-      "functions": []
+      "emitted_bytes": 9,
+      "functions": [
+        "FdVec_FFF4",
+        "FdVec_FFF7",
+        "FdVec_FFFA"
+      ]
     },
     {
       "bank": "$FF",
