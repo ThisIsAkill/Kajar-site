@@ -192,21 +192,21 @@
       <div class="wk-party">
         <div class="wk-party-row" title="Bytes matched: the rebuilt ROM is byte-identical here">
           <span class="wk-party-k">HP</span>
-          <span class="wk-party-v">85,158<small>/359,278</small></span>
+          <span class="wk-party-v">87,664<small>/359,278</small></span>
         </div>
-        <div class="wk-stat-track"><div class="wk-stat-fill" style="width:23.7%"></div></div>
-        <p class="wk-party-note">bytes matched · 23.7% of code</p>
+        <div class="wk-stat-track"><div class="wk-stat-fill" style="width:24.4%"></div></div>
+        <p class="wk-party-note">bytes matched · 24.4% of code</p>
 
         <div class="wk-party-row" title="Matched functions that also meet the readability standard">
           <span class="wk-party-k">MP</span>
-          <span class="wk-party-v">987<small>/987</small></span>
+          <span class="wk-party-v">1007<small>/1007</small></span>
         </div>
         <div class="wk-stat-track"><div class="wk-stat-fill wk-stat-fill-mp" style="width:100.0%"></div></div>
         <p class="wk-party-note">functions readable</p>
 
         <div class="wk-party-row" title="Readable functions that passed an independent review">
           <span class="wk-party-k">TP</span>
-          <span class="wk-party-v">987<small>/987</small></span>
+          <span class="wk-party-v">1007<small>/1007</small></span>
         </div>
         <div class="wk-stat-track"><div class="wk-stat-fill wk-stat-fill-dim" style="width:100.0%"></div></div>
         <p class="wk-party-note">functions verified</p>
@@ -417,10 +417,15 @@
 <p>Into the night:</p>
 <ul>
 <li><strong>Scene layer scrolling, modes and sound zones</strong> (<code>$C2</code>, 2,268 bytes). Scenes scroll a layer one pixel at a time and draw each newly visible tile column or row as it comes into view. Modes 2-8 cover a location change, leaving the scene, the menu and the mode-7 sub-program. Sound zones pick the music from a 4-bit map packed at the front of each scene's data. A reviewer found four real calls that the caller tool had dismissed as doubtful, so the tool is on the list for a fix.</li>
-<li><strong>The battle's main routine</strong> (<code>$C1</code>, 2,109 bytes). This one routine runs a whole battle: it shuffles the turn order, counts down 13 per-slot turn lists, checks for victory and defeat, hands out gold and items, and leaves. Next to it are the battle setup and the 16-bit multiply, divide and random-range helpers the rest of the battle uses more than 200 times. A debug "instant win" check reads a flag byte that is 0 in the retail ROM, so it never fires.</li>
+<li>
+<p><strong>The battle's main routine</strong> (<code>$C1</code>, 2,109 bytes). This one routine runs a whole battle: it shuffles the turn order, counts down 13 per-slot turn lists, checks for victory and defeat, hands out gold and items, and leaves. Next to it are the battle setup and the 16-bit multiply, divide and random-range helpers the rest of the battle uses more than 200 times. A debug "instant win" check reads a flag byte that is 0 in the retail ROM, so it never fires.</p>
+</li>
+<li>
+<p><strong>The field/battle hand-off</strong> (<code>$C0</code>, 2,506 bytes). Before a battle the field saves its objects, the party's positions and the <abbr title="Picture Processing Unit — the SNES graphics chip handling BGs, sprites, palettes, windows, and compositing.">PPU</abbr> settings. Afterwards it rebuilds itself according to the battle's result: wait for a button and restart, reload the location, or rebuild in place. The batch also covers linking objects into and out of their draw lists, the location's audio step, and two tilemap builders. One quirk: a test meant as <code>BIT #$10</code> reads memory at <code>$0010</code> instead.</p>
+</li>
 </ul>
-<p>The same batches also tidied 68 older headers that still called now-<abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr> code "unmatched". Every one of them went back through review.</p>
-<p><code>main</code> now stands at 85,158 bytes, 23.70% of the game's code, all 987 <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr> routines independently verified.</p>
+<p>The same batches also tidied 66 older headers that still called now-<abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr> code "unmatched". Each of them went back through review. One turned out to be not just stale but wrong: a hook banner credited code with setting the event hook, when its stores actually land on the map's step counters.</p>
+<p><code>main</code> now stands at 87,664 bytes, 24.40% of the game's code, all 1,007 <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr> routines independently verified.</p>
 <h2 id="next">Next</h2>
 <p>Keep the pipeline full: bank <code>$C1</code> from its second half at <code>$C1:8000</code>, the <code>$C0</code> scene reload callees and audio setup, and the <code>$C2</code> scene modes and text decoder.</p>
   
