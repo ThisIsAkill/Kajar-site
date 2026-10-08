@@ -89,7 +89,8 @@
 
     {% for item in nav.items %}
       {% if item.children %}
-        <p class="wk-nav-heading">{{ item.title }}</p>
+        <details class="wk-nav-group"{% if item.active %} open{% endif %}>
+        <summary class="wk-nav-heading">{{ item.title }}</summary>
         {% for child in item.children if not (child.children and child.title == 'Categories') %}
           {% if child.children %}
             <p class="wk-nav-subheading">{{ child.title }}</p>
@@ -100,6 +101,7 @@
           <a class="wk-nav-link{% if child.active %} is-active{% endif %}" href="{{ child.url | url }}">{{ child.title }}</a>
           {% endif %}
         {% endfor %}
+        </details>
       {% else %}
       <a class="wk-nav-link{% if item.active %} is-active{% endif %}" href="{{ item.url | url }}">{{ item.title }}</a>
       {% endif %}
@@ -232,6 +234,14 @@ function applyTheme(t) {
   document.documentElement.setAttribute('data-theme', t);
   try { localStorage.setItem('wk-theme', t); } catch (e) {}
 }
+
+/* ── Sidebar sections: one open at a time, so the menu fits without scrolling ── */
+document.querySelectorAll('.wk-nav-group').forEach(function (g) {
+  g.addEventListener('toggle', function () {
+    if (!g.open) return;
+    document.querySelectorAll('.wk-nav-group[open]').forEach(function (o) { if (o !== g) o.open = false; });
+  });
+});
 
 /* ── Mobile nav ────────────────────────────────────────────── */
 var navToggle  = document.getElementById('wk-nav-toggle');

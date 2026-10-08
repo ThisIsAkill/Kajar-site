@@ -2015,3 +2015,65 @@ summary::marker { color: var(--gold); }
   100%    { box-shadow: 0 0 0 0 transparent; }
 }
 .wk-addrmap-bank.wk-flash, .wk-bank-empty.wk-flash, code.wk-flash { animation: wk-flash-ring 1.8s ease-out; }
+
+/* ── Compact sidebar: collapsible sections, smaller emblem ── */
+.wk-portal-icon { margin: 0 auto 4px; width: 132px; }
+.wk-emblem { padding: 4px 4px 5px; }
+.wk-emblem-caption { margin-top: 4px; font-size: 9px; }
+.wk-nav-group { border-top: 1px solid var(--border); }
+.wk-nav-group > summary.wk-nav-heading {
+  list-style: none;
+  cursor: pointer;
+  border-top: 0;
+  margin-top: 0;
+  padding: 11px 14px 9px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  user-select: none;
+}
+.wk-nav-group > summary.wk-nav-heading::-webkit-details-marker { display: none; }
+.wk-nav-group > summary.wk-nav-heading::after {
+  content: "";
+  width: 6px; height: 6px;
+  border-right: 2px solid currentColor;
+  border-bottom: 2px solid currentColor;
+  transform: rotate(-45deg);
+  transition: transform .15s ease;
+  opacity: .8;
+}
+.wk-nav-group[open] > summary.wk-nav-heading::after { transform: rotate(45deg); }
+.wk-nav-group > summary.wk-nav-heading:hover { background: var(--bg-h); }
+.wk-nav-group > summary.wk-nav-heading:focus-visible { outline: 2px solid var(--gold); outline-offset: -2px; }
+.wk-nav-group[open] { padding-bottom: 6px; }
+.wk-nav-group + .wk-nav-link { border-top: 1px solid var(--border); }
+.wk-nav-link { padding-top: 4px; padding-bottom: 4px; }
+.wk-stats .wk-nav-heading { padding-top: 12px; }
+.wk-party-note { margin-bottom: 2px; }
+.wk-nav details.wk-nav-group {
+  border: 0;
+  border-top: 1px solid var(--border);
+  border-radius: 0;
+  background: none;
+  padding: 0;
+  margin: 0;
+}
+.wk-nav details.wk-nav-group[open] { padding-bottom: 6px; }
+.wk-nav details.wk-nav-group[open] > summary { margin-bottom: 0; }
+.wk-nav details.wk-nav-group > summary {
+  font-family: var(--font-label);
+  font-size: 10.5px;
+  font-weight: 400;
+  color: var(--gold);
+}
+/* Party Status: bars only (the numbers carry the meaning; full notes are on the Progress page) */
+.wk-nav .wk-party-note { display: none; }
+.wk-nav .wk-party-row { margin-top: 6px; }
+.wk-nav .wk-stats .wk-stat-link { margin-top: 6px; }
+.wk-portal-icon { width: 104px; }
+.wk-nav-group > summary.wk-nav-heading, .wk-nav details.wk-nav-group > summary { padding-top: 9px; padding-bottom: 8px; }
+/* Short screens: Party Status lives on the home and Progress pages, so drop it from the menu */
+@media (max-height: 820px) {
+  .wk-nav .wk-stats { display: none; }
+}
+.wk-emblem-caption { white-space: nowrap; font-size: 8px; letter-spacing: .03em; }

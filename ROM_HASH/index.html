@@ -76,7 +76,8 @@
       
     
       
-        <p class="wk-nav-heading">The Journey</p>
+        <details class="wk-nav-group">
+        <summary class="wk-nav-heading">The Journey</summary>
         
           
           <a class="wk-nav-link" href="../devlog/">Devlog</a>
@@ -90,10 +91,12 @@
           <a class="wk-nav-link" href="../PROGRESS/">Progress</a>
           
         
+        </details>
       
     
       
-        <p class="wk-nav-heading">Systems</p>
+        <details class="wk-nav-group">
+        <summary class="wk-nav-heading">Systems</summary>
         
           
           <a class="wk-nav-link" href="../systems/">Overview</a>
@@ -127,10 +130,12 @@
           <a class="wk-nav-link" href="../systems/battle-status/">Status bar & text</a>
           
         
+        </details>
       
     
       
-        <p class="wk-nav-heading">How It Works</p>
+        <details class="wk-nav-group" open>
+        <summary class="wk-nav-heading">How It Works</summary>
         
           
           <a class="wk-nav-link" href="../ARCHITECTURE/">Architecture</a>
@@ -148,10 +153,12 @@
           <a class="wk-nav-link is-active" href="./">Target ROM</a>
           
         
+        </details>
       
     
       
-        <p class="wk-nav-heading">For Time Travelers</p>
+        <details class="wk-nav-group">
+        <summary class="wk-nav-heading">For Time Travelers</summary>
         
           
           <a class="wk-nav-link" href="../CONTRIBUTING/">Contributing</a>
@@ -169,6 +176,7 @@
           <a class="wk-nav-link" href="../CI_SETUP/">CI Setup</a>
           
         
+        </details>
       
     
       
@@ -300,6 +308,14 @@ function applyTheme(t) {
   document.documentElement.setAttribute('data-theme', t);
   try { localStorage.setItem('wk-theme', t); } catch (e) {}
 }
+
+/* ── Sidebar sections: one open at a time, so the menu fits without scrolling ── */
+document.querySelectorAll('.wk-nav-group').forEach(function (g) {
+  g.addEventListener('toggle', function () {
+    if (!g.open) return;
+    document.querySelectorAll('.wk-nav-group[open]').forEach(function (o) { if (o !== g) o.open = false; });
+  });
+});
 
 /* ── Mobile nav ────────────────────────────────────────────── */
 var navToggle  = document.getElementById('wk-nav-toggle');
