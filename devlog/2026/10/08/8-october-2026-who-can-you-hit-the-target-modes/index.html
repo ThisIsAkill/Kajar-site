@@ -192,21 +192,21 @@
       <div class="wk-party">
         <div class="wk-party-row" title="Bytes matched: the rebuilt ROM is byte-identical here">
           <span class="wk-party-k">HP</span>
-          <span class="wk-party-v">92,057<small>/359,278</small></span>
+          <span class="wk-party-v">94,399<small>/359,278</small></span>
         </div>
-        <div class="wk-stat-track"><div class="wk-stat-fill" style="width:25.62%"></div></div>
-        <p class="wk-party-note">bytes matched · 25.62% of code</p>
+        <div class="wk-stat-track"><div class="wk-stat-fill" style="width:26.27%"></div></div>
+        <p class="wk-party-note">bytes matched · 26.27% of code</p>
 
         <div class="wk-party-row" title="Matched functions that also meet the readability standard">
           <span class="wk-party-k">MP</span>
-          <span class="wk-party-v">1113<small>/1113</small></span>
+          <span class="wk-party-v">1130<small>/1130</small></span>
         </div>
         <div class="wk-stat-track"><div class="wk-stat-fill wk-stat-fill-mp" style="width:100.0%"></div></div>
         <p class="wk-party-note">functions readable</p>
 
         <div class="wk-party-row" title="Readable functions that passed an independent review">
           <span class="wk-party-k">TP</span>
-          <span class="wk-party-v">1113<small>/1113</small></span>
+          <span class="wk-party-v">1130<small>/1130</small></span>
         </div>
         <div class="wk-stat-track"><div class="wk-stat-fill wk-stat-fill-dim" style="width:100.0%"></div></div>
         <p class="wk-party-note">functions verified</p>
@@ -432,9 +432,14 @@
 <p>Then the workflow got its overhaul. Generated files no longer travel in pull requests, so parallel branches stop conflicting. Callers lines are now written by a tool and left out of the review hash, so <abbr title="Writing assembly source that assembles byte-for-byte identically to the original ROM via asar.">matching</abbr> new code no longer voids older reviews. Three new lint checks catch the header mistakes reviewers kept finding: wrong byte ranges, stale "unmatched" mentions, and Entry lines that leave out <abbr title="Direct Page — the 65816's relocatable 256-byte zero-page window; address = D register + 8-bit offset.">DP</abbr> or DB. The caller-finding tool also learned to follow code through routines that change register widths, which found 39 more real calls in a held-out test.</p>
 <p>The first batch through the new pipeline:</p>
 <ul>
-<li><strong>Scene triggers and the text decoder</strong> (<code>$C2</code>, 2,328 bytes). Two watcher state machines for scene objects and tile triggers, and the whole text decoder: its four states and every control code from $00 to $20, covering numbers, character and party-member names, wide glyphs, and tech, enemy and item names. An empty party slot prints the first character's name, because an 8-bit shift drops the "empty" bit. Of 87 routines, 84 passed review the first time, and the lint had already caught four header mistakes before any reviewer saw them.</li>
+<li>
+<p><strong>Scene triggers and the text decoder</strong> (<code>$C2</code>, 2,328 bytes). Two watcher state machines for scene objects and tile triggers, and the whole text decoder: its four states and every control code from $00 to $20, covering numbers, character and party-member names, wide glyphs, and tech, enemy and item names. An empty party slot prints the first character's name, because an 8-bit shift drops the "empty" bit. Of 87 routines, 84 passed review the first time, and the lint had already caught four header mistakes before any reviewer saw them.</p>
+</li>
+<li>
+<p><strong>Object motion and view culling</strong> (<code>$C0</code>, 2,342 bytes). The per-frame object pass, deciding which objects are in view, stepping objects along straight lines and arcs, and turning an angle into a velocity through the sine table and the hardware multiplier. Also the copy of a map region and the draw pass run at load time. All 21 routines passed review on the first try. The branch also came up to date with a plain merge from <code>main</code>, with no conflicts.</p>
+</li>
 </ul>
-<p><code>main</code> now stands at 92,057 bytes, 25.62% of the game's code, all 1,113 <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr> routines independently verified.</p>
+<p><code>main</code> now stands at 94,399 bytes, 26.27% of the game's code, all 1,130 <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr> routines independently verified.</p>
 <h2 id="next">Next</h2>
 <p>Next, the workflow gets faster: generated files leave the pull requests, Callers lines are written by a tool, and new lint checks catch the mistakes reviewers keep finding. Matching continues with the enemy turn in bank <code>$C1</code>, object motion in <code>$C0</code>, and the <code>$C2</code> scene triggers and text decoder.</p>
   

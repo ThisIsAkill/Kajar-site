@@ -1,37 +1,37 @@
 {
   "schema": 2,
-  "emitted_bytes": 92057,
+  "emitted_bytes": 94399,
   "code_bytes": 359278,
   "totals": {
     "matched": {
-      "functions": 1113,
-      "bytes": 92057
+      "functions": 1130,
+      "bytes": 94399
     },
     "readable": {
-      "functions": 1113,
-      "bytes": 92057
+      "functions": 1130,
+      "bytes": 94399
     },
     "verified": {
-      "functions": 1113,
-      "bytes": 92057
+      "functions": 1130,
+      "bytes": 94399
     }
   },
   "banks": [
     {
       "bank": "$C0",
       "code_bytes": 61779,
-      "emitted_bytes": 38723,
+      "emitted_bytes": 41065,
       "matched": {
-        "functions": 326,
-        "bytes": 38723
+        "functions": 343,
+        "bytes": 41065
       },
       "readable": {
-        "functions": 326,
-        "bytes": 38723
+        "functions": 343,
+        "bytes": 41065
       },
       "verified": {
-        "functions": 326,
-        "bytes": 38723
+        "functions": 343,
+        "bytes": 41065
       }
     },
     {
@@ -454,7 +454,7 @@
       "bank": "$C0",
       "start": "$C0:A000",
       "end": "$C0:AFFF",
-      "emitted_bytes": 1362,
+      "emitted_bytes": 3269,
       "functions": [
         "LocLoad_UnkA33B",
         "LocLoad_EmptyStep",
@@ -464,16 +464,32 @@
         "Map_LoadTreasureTiles",
         "Map_TreasureTaken",
         "Obj_ResetFrameState",
+        "Vblank_UnkA810",
+        "Obj_UpdateInView",
+        "Obj_FlagInView",
         "Obj_DrawUnlink",
-        "Obj_DrawLink"
+        "Obj_DrawLink",
+        "Obj_MoveStep",
+        "Obj_MoveStep_Arc",
+        "Obj_MoveStepFree",
+        "Obj_CalcScreenPos",
+        "Obj_CalcDirection",
+        "Obj_SetVelocity",
+        "Obj_SetVelocityChecked",
+        "Obj_SetVelocityChecked_Probe",
+        "Obj_SetVelocityAxis",
+        "Field_UnkAF4E"
       ]
     },
     {
       "bank": "$C0",
       "start": "$C0:B000",
       "end": "$C0:BFFF",
-      "emitted_bytes": 3694,
+      "emitted_bytes": 4096,
       "functions": [
+        "Map_CopyRegionPlane",
+        "Field_UnkB0E6",
+        "Obj_ActivateIfInView",
         "Obj_ResetStates",
         "VramQ_Flush",
         "Obj_ResetDrawLists",
@@ -539,7 +555,7 @@
       "bank": "$C0",
       "start": "$C0:E000",
       "end": "$C0:EFFF",
-      "emitted_bytes": 2626,
+      "emitted_bytes": 2659,
       "functions": [
         "Spr_LoadLargeObj",
         "Spr_CopyTileFlipped",
@@ -554,7 +570,8 @@
         "SprBuf_Alloc3",
         "SprBuf_Free1",
         "SprBuf_Free2",
-        "SprBuf_Free3"
+        "SprBuf_Free3",
+        "SprBuf_FreeObj"
       ]
     },
     {
