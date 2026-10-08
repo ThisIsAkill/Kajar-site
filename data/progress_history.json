@@ -1,0 +1,79 @@
+[
+  {
+    "date": "2026-08-06",
+    "matched_bytes": 10013,
+    "matched_functions": 60,
+    "readable_functions": null,
+    "verified_functions": null
+  },
+  {
+    "date": "2026-08-07",
+    "matched_bytes": 12583,
+    "matched_functions": 76,
+    "readable_functions": null,
+    "verified_functions": null
+  },
+  {
+    "date": "2026-08-09",
+    "matched_bytes": 13752,
+    "matched_functions": 85,
+    "readable_functions": null,
+    "verified_functions": null
+  },
+  {
+    "date": "2026-08-10",
+    "matched_bytes": 13914,
+    "matched_functions": 86,
+    "readable_functions": null,
+    "verified_functions": null
+  },
+  {
+    "date": "2026-08-11",
+    "matched_bytes": 16291,
+    "matched_functions": 94,
+    "readable_functions": null,
+    "verified_functions": null
+  },
+  {
+    "date": "2026-08-12",
+    "matched_bytes": 19800,
+    "matched_functions": 104,
+    "readable_functions": null,
+    "verified_functions": null
+  },
+  {
+    "date": "2026-08-14",
+    "matched_bytes": 23885,
+    "matched_functions": 164,
+    "readable_functions": null,
+    "verified_functions": null
+  },
+  {
+    "date": "2026-09-19",
+    "matched_bytes": 25363,
+    "matched_functions": 186,
+    "readable_functions": null,
+    "verified_functions": null
+  },
+  {
+    "date": "2026-09-22",
+    "matched_bytes": 26000,
+    "matched_functions": 206,
+    "readable_functions": null,
+    "verified_functions": null
+  },
+  {
+    "date": "2026-09-24",
+    "matched_bytes": 26828,
+    "matched_functions": 207,
+    "readable_functions": null,
+    "verified_functions": null
+  },
+  {
+    "date": "2026-10-08",
+    "matched_bytes": 29032,
+    "matched_functions": 256,
+    "readable_functions": 256,
+    "verified_functions": 23
+  }
+]

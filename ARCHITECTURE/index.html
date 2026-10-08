@@ -1,0 +1,1285 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  
+  <meta name="description" content="Byte-exact matching decompilation of Chrono Trigger (SNES, US 1.0)">
+  <link rel="canonical" href="https://thisisakill.github.io/Kajar-site/ARCHITECTURE/">
+  
+  
+  <title>Architecture — Kajar</title>
+  
+  
+  <link rel="stylesheet" href="../stylesheets/wiki.css">
+  
+  
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Press+Start+2P&family=Silkscreen&display=swap">
+  
+</head>
+<body>
+
+<!-- ── Header ──────────────────────────────────────────────── -->
+<header class="wk-header">
+  <button class="wk-nav-toggle" id="wk-nav-toggle" aria-label="Toggle navigation" aria-expanded="false" aria-controls="wk-nav">☰</button>
+  <a class="wk-wordmark" href=".." aria-label="Kajar home">
+    <svg class="wk-wordmark-clock" viewBox="0 0 32 32" aria-hidden="true">
+      <circle cx="16" cy="16" r="13.5" fill="#0f1438" stroke="#ffd76e" stroke-width="2.5"/>
+      <g stroke="#cdd5ff" stroke-width="1.6" stroke-linecap="round">
+        <path d="M16 5.2v2.4M16 24.4v2.4M5.2 16h2.4M24.4 16h2.4"/>
+      </g>
+      <path d="M16 16l-5 -3.2" stroke="#ffd76e" stroke-width="2.4" stroke-linecap="round"/>
+      <path class="hand-m" d="M16 16V7.6" stroke="#ffffff" stroke-width="1.8" stroke-linecap="round"/>
+      <circle cx="16" cy="16" r="1.8" fill="#ffd76e"/>
+    </svg>
+    <span>Kajar</span>
+    <small class="wk-tagline">notes of ChronoRET, rebuilding Chrono Trigger one matched routine at a time</small>
+  </a>
+
+  <div class="wk-header-right">
+    
+    <div class="wk-searchbox">
+      <input class="wk-search-input" id="wk-q" type="search"
+             placeholder="Search…  [/]" autocomplete="off" aria-label="Search">
+      <div class="wk-search-results" id="wk-results" hidden role="listbox"></div>
+    </div>
+    <button class="wk-toggle" id="wk-toggle" title="Toggle theme" aria-label="Toggle dark/light">
+      <svg class="i-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.5" fill="currentColor"/><g stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 1.8v2.6M12 19.6v2.6M1.8 12h2.6M19.6 12h2.6M4.8 4.8l1.8 1.8M17.4 17.4l1.8 1.8M4.8 19.2l1.8-1.8M17.4 6.6l1.8-1.8"/></g></svg>
+      <svg class="i-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.5 14.6A8.6 8.6 0 0 1 9.4 3.5a8.6 8.6 0 1 0 11.1 11.1z" fill="currentColor"/></svg>
+    </button>
+  </div>
+</header>
+
+<!-- ── Layout ──────────────────────────────────────────────── -->
+<div class="wk-layout">
+
+  <div class="wk-nav-backdrop" id="wk-nav-backdrop" hidden></div>
+
+  <!-- Left sidebar -->
+  <nav class="wk-nav" id="wk-nav" aria-label="Site navigation">
+    <a href=".." class="wk-portal-icon" aria-label="Home">
+      <span class="wk-emblem">
+        <span class="wk-emblem-art">
+          <img src="../assets/ct-icon.png" alt="Crono" width="220" height="220">
+        </span>
+        <span class="wk-emblem-caption">Crono · 1000 AD</span>
+      </span>
+    </a>
+
+    
+      
+      <a class="wk-nav-link" href="..">Home</a>
+      
+    
+      
+        <p class="wk-nav-heading">The Journey</p>
+        
+          
+          <a class="wk-nav-link" href="../devlog/">Devlog</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../gallery/">Gallery</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../PROGRESS/">Progress</a>
+          
+        
+      
+    
+      
+        <p class="wk-nav-heading">Systems</p>
+        
+          
+          <a class="wk-nav-link" href="../systems/">Overview</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../systems/boot/">Boot</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../systems/engine/">Engine core</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../systems/sprites/">Sprites & objects</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../systems/battle-engine/">Battle engine</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../systems/battle-menu/">Battle menu</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../systems/battle-targeting/">Battle targeting</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../systems/battle-status/">Status bar & text</a>
+          
+        
+      
+    
+      
+        <p class="wk-nav-heading">How It Works</p>
+        
+          
+          <a class="wk-nav-link is-active" href="./">Architecture</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../ADDRESS_MAP/">Address Map</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../BANK_MAP/">Bank Map</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../how-sprite-init-works/">Sprite Init Explainer</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../ROM_HASH/">Target ROM</a>
+          
+        
+      
+    
+      
+        <p class="wk-nav-heading">For Time Travelers</p>
+        
+          
+          <a class="wk-nav-link" href="../CONTRIBUTING/">Contributing</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../ASAR_QUIRKS/">asar Quirks</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../glossary/">Glossary</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../CI_SETUP/">CI Setup</a>
+          
+        
+      
+    
+      
+      <a class="wk-nav-link" href="../credits/">Credits</a>
+      
+    
+
+    <!-- Party Status: every value from docs/data/ (hooks/progress_data.py) -->
+    
+    <div class="wk-stats">
+      <p class="wk-nav-heading" title="Project progress">Party Status</p>
+      
+      <div class="wk-party">
+        <div class="wk-party-row" title="Bytes matched: the rebuilt ROM is byte-identical here">
+          <span class="wk-party-k">HP</span>
+          <span class="wk-party-v">29,032<small>/359,278</small></span>
+        </div>
+        <div class="wk-stat-track"><div class="wk-stat-fill" style="width:8.08%"></div></div>
+        <p class="wk-party-note">bytes matched · 8.08% of code</p>
+
+        <div class="wk-party-row" title="Matched functions that also meet the readability standard">
+          <span class="wk-party-k">MP</span>
+          <span class="wk-party-v">256<small>/256</small></span>
+        </div>
+        <div class="wk-stat-track"><div class="wk-stat-fill wk-stat-fill-mp" style="width:100.0%"></div></div>
+        <p class="wk-party-note">functions readable</p>
+
+        <div class="wk-party-row" title="Readable functions that passed an independent review">
+          <span class="wk-party-k">TP</span>
+          <span class="wk-party-v">23<small>/256</small></span>
+        </div>
+        <div class="wk-stat-track"><div class="wk-stat-fill wk-stat-fill-dim" style="width:9.0%"></div></div>
+        <p class="wk-party-note">functions verified</p>
+      </div>
+      
+      <p class="wk-stat-link"><a href="../PROGRESS/">View full progress →</a></p>
+    </div>
+  </nav>
+
+  <!-- Main content -->
+  <main class="wk-main">
+    <div class="wk-article">
+
+      
+      
+      <div class="wk-toc" id="wk-toc">
+        <div class="wk-toc-header">
+          <b>Contents</b>
+          <button class="wk-toc-toggle"
+            onclick="var l=document.getElementById('wk-toc-list');l.hidden=!l.hidden;this.textContent=l.hidden?'[show]':'[hide]'">[hide]</button>
+        </div>
+        <ol class="wk-toc-list" id="wk-toc-list">
+          
+          <li>
+            <a href="#engine-architecture" class="wk-toc-link">Engine Architecture</a>
+            
+            <ol><li><a href="#boot-sequence" class="wk-toc-link">Boot sequence</a></li><li><a href="#game-loop" class="wk-toc-link">Game loop</a></li><li><a href="#vblank-handler" class="wk-toc-link">VBlank handler</a></li><li><a href="#per-frame-reset" class="wk-toc-link">Per-frame reset</a></li><li><a href="#ram-resident-handlers" class="wk-toc-link">RAM-resident handlers</a></li><li><a href="#key-data-structures" class="wk-toc-link">Key data structures</a></li><li><a href="#sprite-renderinit-cluster" class="wk-toc-link">Sprite render/init cluster</a></li><li><a href="#sprite-system-overview" class="wk-toc-link">Sprite System Overview</a></li><li><a href="#mode-handler-cluster-c00d7816db-doorswitch-tile-opening-dispatch" class="wk-toc-link">Mode handler cluster ($C0:0D78–$16DB) — door/switch tile-opening dispatch</a></li><li><a href="#defaulthandler-c016dc18d8" class="wk-toc-link">DefaultHandler ($C0:16DC–$18D8)</a></li><li><a href="#unmatched-next-targets" class="wk-toc-link">Unmatched (next targets)</a></li></ol>
+            
+          </li>
+          
+        </ol>
+      </div>
+      
+      
+
+      <div class="wk-article-body">
+      
+      
+      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="August 7, 2026 19:54:10 UTC">August 7, 2026</span></p>
+      
+      <h1 id="engine-architecture">Engine Architecture</h1>
+<p>A high-level map of the Chrono Trigger SNES engine as recovered from <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr> code.
+Everything here is verified — it comes from <abbr title="The assembled output matches the original ROM byte-for-byte — not just equivalent behavior, literally identical bytes.">byte-exact</abbr> <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr> routines, not guesswork.</p>
+<h2 id="boot-sequence">Boot sequence</h2>
+<div class="language-text highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>Power-on / RESET vector ($00:FF00)
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>  └─ Reset (7 bytes)
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>       SEI / CLC / XCE        native mode on
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>       JML MainInit            jump to bank $FD
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>$FD:C000 — MainInit (215 bytes)
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>  ├─ CPU: SEI, native mode, DP=0, DB=0, SP=$01FF
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>  ├─ PPU: forced blank, zero all PPU registers
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>  ├─ APU: boot SPC700 with silent init payload
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>  ├─ WRAM: DMA zero-fill all 128KB via ClearRAMDMA stub address
+<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>  └─ JML GameLoop              jump to bank $C0
+</code></pre></div>
+<h2 id="game-loop">Game loop</h2>
+<div class="language-text highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>$C0:000E — GameLoop (one-shot startup)
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>  ├─ JSR ClearRAMDMA ($C0:2DF1)   zero-fill WRAM via DMA
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>  ├─ JSR InstallNMI ($C0:0B64)    write JML $C0:EA63 → $7E:0500
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>  ├─ JSR InstallIRQ ($C0:0B75)    write JML $C0:ECCC → $7E:0504
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>  └─ falls into GameLoop_Main
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>
+<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>$C0:005D — GameLoop_Main (per-mode outer loop)
+<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>  ├─ JSR FrameStateInit ($C0:0B86) reset per-frame state
+<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>  ├─ LDA/STA mode dispatch on $0100
+<a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>  ├─ enters GameLoop_FrameBody
+<a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a>  └─ loops back
+<a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a>
+<a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a>$C0:0097 — GameLoop_FrameBody (tight per-frame inner loop)
+<a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a>  ├─ JSR $C0:881E    (unknown — possibly DMA trigger)
+<a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a>  ├─ JSR Sub_0C76    (door/switch tile-opening dispatch + scene transition gate)
+<a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a>  ├─ JSR Sub_18D9    (screen-transition gate: fade, reinit, scene context save/restore)
+<a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a>  ├─ JSR $C0:1AAC    (unknown)
+<a id="__codelineno-1-18" name="__codelineno-1-18" href="#__codelineno-1-18"></a>  ├─ JSL $C0:1F87    (cross-bank — possibly audio)
+<a id="__codelineno-1-19" name="__codelineno-1-19" href="#__codelineno-1-19"></a>  ├─ JSL $C0:21E1
+<a id="__codelineno-1-20" name="__codelineno-1-20" href="#__codelineno-1-20"></a>  ├─ JSL $C0:274D
+<a id="__codelineno-1-21" name="__codelineno-1-21" href="#__codelineno-1-21"></a>  └─ BRL → VBlankHandler / loops
+</code></pre></div>
+<h2 id="vblank-handler"><abbr title="Vertical blank — the ~1.2ms gap each frame when the PPU isn't drawing, safe for register writes.">VBlank</abbr> handler</h2>
+<div class="language-text highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>$C0:00BF — VBlankHandler (per-NMI, each frame)
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>  ├─ JSR $C0:881E    (shared with frame loop)
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>  ├─ audio/DMA work
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>  └─ BRL PostVBlank  (tail call — no RTS; returns to VBlankHandler's caller)
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>
+<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>$C0:00DE — VBlankHandlerShort (minimal path, no audio)
+<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>  └─ RTS
+<a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>
+<a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a>$C0:B271 — PostVBlank (152 bytes, matched)
+<a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a>  ├─ Reset OAM hardware DMA channel registers
+<a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a>  ├─ Walk sprite descriptor table ($7E:0E00, 63 entries × 2 bytes)
+<a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a>  │    for each active entry: JSR Sub_B309 (build OAM buffer slot)
+<a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a>  │    follow chain links until chain byte &lt; 0 (end marker)
+<a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a>  ├─ Fill unused OAM slots with Y=$E0 (off-screen)
+<a id="__codelineno-2-15" name="__codelineno-2-15" href="#__codelineno-2-15"></a>  └─ RTS
+<a id="__codelineno-2-16" name="__codelineno-2-16" href="#__codelineno-2-16"></a>
+<a id="__codelineno-2-17" name="__codelineno-2-17" href="#__codelineno-2-17"></a>$C0:B309 — Sub_B309 (1016 bytes, matched)
+<a id="__codelineno-2-18" name="__codelineno-2-18" href="#__codelineno-2-18"></a>  ├─ JSR Sub_B701 → BCC skip  (gate: skip if sprite not ready)
+<a id="__codelineno-2-19" name="__codelineno-2-19" href="#__codelineno-2-19"></a>  ├─ LDX $6D / LDA $1201,X / AND #$03 → sprite type dispatch (0/1/2/3+)
+<a id="__codelineno-2-20" name="__codelineno-2-20" href="#__codelineno-2-20"></a>  │
+<a id="__codelineno-2-21" name="__codelineno-2-21" href="#__codelineno-2-21"></a>  ├─ Each type path:
+<a id="__codelineno-2-22" name="__codelineno-2-22" href="#__codelineno-2-22"></a>  │    PHD / REP #$20 / LDA #$2100 / TCD / SEP #$20   (DP=$2100 trick)
+<a id="__codelineno-2-23" name="__codelineno-2-23" href="#__codelineno-2-23"></a>  │    LDA $0F80,X / AND #$0C → OAM range dispatch (bits 2-3)
+<a id="__codelineno-2-24" name="__codelineno-2-24" href="#__codelineno-2-24"></a>  │
+<a id="__codelineno-2-25" name="__codelineno-2-25" href="#__codelineno-2-25"></a>  ├─ Range dispatch (per type, 3 sub-paths):
+<a id="__codelineno-2-26" name="__codelineno-2-26" href="#__codelineno-2-26"></a>  │    Range 1 (bits 2-3 = 00): OAM write-head at $0181, WRAM dest at $01DB
+<a id="__codelineno-2-27" name="__codelineno-2-27" href="#__codelineno-2-27"></a>  │    Range 2 (bit 2 set):     OAM write-head at $0185, WRAM dest at $01DD
+<a id="__codelineno-2-28" name="__codelineno-2-28" href="#__codelineno-2-28"></a>  │    Range 3 (bit 3 only):    OAM write-head at $0189, WRAM dest at $01DF
+<a id="__codelineno-2-29" name="__codelineno-2-29" href="#__codelineno-2-29"></a>  │
+<a id="__codelineno-2-30" name="__codelineno-2-30" href="#__codelineno-2-30"></a>  ├─ OAM write per type (from bank $7F staging buffer → OAM slot):
+<a id="__codelineno-2-31" name="__codelineno-2-31" href="#__codelineno-2-31"></a>  │    type 0: 1 byte  (LDA.l $7F4F00,X → STX $0181 range → STA.w $0000,X)
+<a id="__codelineno-2-32" name="__codelineno-2-32" href="#__codelineno-2-32"></a>  │    type 1: 2 bytes (LDA.l $7F4F01,X / PHA / LDA.l $7F4F00,X → write pair)
+<a id="__codelineno-2-33" name="__codelineno-2-33" href="#__codelineno-2-33"></a>  │    type 2: 3 bytes (LDA.l $7F4B40,X / PHA / $7F4F01,X / PHA / $7F4F00,X)
+<a id="__codelineno-2-34" name="__codelineno-2-34" href="#__codelineno-2-34"></a>  │    type 3+: 6 bytes (5×PHA + 1 in A, from $7F4F81/$7F4F80/$7F4B41/$7F4B40/$7F4F01/$7F4F00)
+<a id="__codelineno-2-35" name="__codelineno-2-35" href="#__codelineno-2-35"></a>  │
+<a id="__codelineno-2-36" name="__codelineno-2-36" href="#__codelineno-2-36"></a>  ├─ WRAM dest advance (per type):
+<a id="__codelineno-2-37" name="__codelineno-2-37" href="#__codelineno-2-37"></a>  │    LDX $01DB / STX $81 (→ WMADDL=$2181 via DP=$2100 trick)
+<a id="__codelineno-2-38" name="__codelineno-2-38" href="#__codelineno-2-38"></a>  │    REP #$20 / LDA $01DB / CLC / ADC #$0010 (or $20/$30/$60) / STA $01DB
+<a id="__codelineno-2-39" name="__codelineno-2-39" href="#__codelineno-2-39"></a>  │
+<a id="__codelineno-2-40" name="__codelineno-2-40" href="#__codelineno-2-40"></a>  ├─ Shared gfx+palette loop (per type, all 3 ranges converge here):
+<a id="__codelineno-2-41" name="__codelineno-2-41" href="#__codelineno-2-41"></a>  │    LDA $1700,X → TAX  (sprite gfx index, 16-bit)
+<a id="__codelineno-2-42" name="__codelineno-2-42" href="#__codelineno-2-42"></a>  │    LDA #$04 (or $08/$0C/$18) → STA $01C9  (palette loop counter)
+<a id="__codelineno-2-43" name="__codelineno-2-43" href="#__codelineno-2-43"></a>  │    loop: LDA.l $7F4BC0,X / STA $80 (WMDATA via DP trick) ×4 per iter
+<a id="__codelineno-2-44" name="__codelineno-2-44" href="#__codelineno-2-44"></a>  │           REP #$20 / TXA / CLC / ADC #$0008 / TAX / SEP #$20
+<a id="__codelineno-2-45" name="__codelineno-2-45" href="#__codelineno-2-45"></a>  │           DEC $01C9 / BNE loop
+<a id="__codelineno-2-46" name="__codelineno-2-46" href="#__codelineno-2-46"></a>  │
+<a id="__codelineno-2-47" name="__codelineno-2-47" href="#__codelineno-2-47"></a>  └─ PLD / RTS
+<a id="__codelineno-2-48" name="__codelineno-2-48" href="#__codelineno-2-48"></a>
+<a id="__codelineno-2-49" name="__codelineno-2-49" href="#__codelineno-2-49"></a>$C0:B701 — Sub_B701 (135 bytes, matched)
+<a id="__codelineno-2-50" name="__codelineno-2-50" href="#__codelineno-2-50"></a>  (see below)
+</code></pre></div>
+<h2 id="per-frame-reset">Per-frame reset</h2>
+<div class="language-text highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>$C0:0B86 — FrameStateInit (240 bytes, matched)
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>  ├─ Save sprite registers ($00/$02/$04) → ($0A/$0C/$0E)
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>  ├─ STZ ~25 per-frame flags ($10, $11, $17, $18, $38, etc.)
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>  ├─ Set defaults: sprite Y=$E0, OAM write-head limits
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>  │    $7D=$0900 / $7F=$0770 / $7B=$08A0
+<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>  ├─ Set palette defaults: $B1/$B4/$B7/$BA=$E4
+<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>  ├─ REP #$20 → 16-bit A section:
+<a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>  │    STZ $2B / STZ $0150 / STZ $58
+<a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a>  │    LDA.l $E4FFE0/$E2/$E4/$E6 → STA $AF/$B2/$B5/$B8  (ROM seeds)
+<a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a>  │    STA.l $7E:2000 = 0
+<a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a>  ├─ SEP #$20 → 8-bit A:
+<a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a>  │    STA #$80 → $97/$99/$9B/$8D/$8E/$8F/$91/$90/$92/$93
+<a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a>  │    LDA.l $7E:2980/$81/$82 → $94/$95/$96  (WRAM color vars)
+<a id="__codelineno-3-14" name="__codelineno-3-14" href="#__codelineno-3-14"></a>  │    STA $EB=$AE=$80 / $55=$01 / $FC=$53 / $FB=$65 / $FA=$45
+<a id="__codelineno-3-15" name="__codelineno-3-15" href="#__codelineno-3-15"></a>  │    STA.l $7E:2989 = 0
+<a id="__codelineno-3-16" name="__codelineno-3-16" href="#__codelineno-3-16"></a>  │    STA $0BD9/$0BDA/$0BDB/$0BE9 = 0
+<a id="__codelineno-3-17" name="__codelineno-3-17" href="#__codelineno-3-17"></a>  │    LDA $0400 → STA $F8    (scene entry point)
+<a id="__codelineno-3-18" name="__codelineno-3-18" href="#__codelineno-3-18"></a>  └─ RTS
+</code></pre></div>
+<h2 id="ram-resident-handlers">RAM-resident handlers</h2>
+<p><abbr title="Non-Maskable Interrupt — fires at the start of VBlank each frame; the safe window for PPU updates.">NMI</abbr> and IRQ handlers live in <abbr title="Work RAM — 128KB of SNES main RAM at $7E:0000–$7F:FFFF, holds all runtime game state.">WRAM</abbr>, installed at boot:</p>
+<table>
+<thead>
+<tr>
+<th><abbr title="Work RAM — 128KB of SNES main RAM at $7E:0000–$7F:FFFF, holds all runtime game state.">WRAM</abbr> addr</th>
+<th>Installed by</th>
+<th>Target</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>$7E:0500</code></td>
+<td><code>InstallNMI</code></td>
+<td><abbr title="Jump Long — unconditional 24-bit goto, no return address pushed.">JML</abbr> $C0:EA63</td>
+<td>Real <abbr title="Non-Maskable Interrupt — fires at the start of VBlank each frame; the safe window for PPU updates.">NMI</abbr> handler (unmatched)</td>
+</tr>
+<tr>
+<td><code>$7E:0504</code></td>
+<td><code>InstallIRQ</code></td>
+<td><abbr title="Jump Long — unconditional 24-bit goto, no return address pushed.">JML</abbr> $C0:ECCC</td>
+<td>Real IRQ handler (unmatched)</td>
+</tr>
+</tbody>
+</table>
+<p>This pattern allows the game to swap handlers at runtime without patching ROM.</p>
+<h2 id="key-data-structures">Key data structures</h2>
+<p><strong>Sprite descriptor table</strong> (<code>$7E:0E00</code>, 63 entries × 2 bytes):
+- Byte 0: sprite type index (negative = inactive slot)
+- Byte 1: chain link (index of next sprite in chain, negative = end)
+- PostVBlank walks this table each frame to build the <abbr title="Object Attribute Memory — the PPU's 512+32-byte sprite table (up to 128 sprites: X/Y, tile, palette, size).">OAM</abbr> buffer</p>
+<p><strong><abbr title="Object Attribute Memory — the PPU's 512+32-byte sprite table (up to 128 sprites: X/Y, tile, palette, size).">OAM</abbr> buffer ranges</strong> (in <abbr title="Work RAM — 128KB of SNES main RAM at $7E:0000–$7F:FFFF, holds all runtime game state.">WRAM</abbr>):
+- Range 1: <code>$7B</code>–<code>$08A0</code> (pointer stored at <code>$7B</code>)
+- Range 2: <code>$7D</code>–<code>$0900</code> (pointer stored at <code>$7D</code>)
+- Range 3: <code>$7F</code>–<code>$0770</code> (pointer stored at <code>$7F</code>)
+- Filled with <code>Y=$E0</code> for unused slots to hide off-screen</p>
+<p><strong>Per-frame <abbr title="Direct Page mode — 2-byte instruction using an 8-bit offset added to the D register.">dp</abbr> variables</strong> (<abbr title="Direct Page — the 65816's relocatable 256-byte zero-page window; address = D register + 8-bit offset.">DP</abbr>=$0100 in game loop):</p>
+<table>
+<thead>
+<tr>
+<th><abbr title="Direct Page mode — 2-byte instruction using an 8-bit offset added to the D register.">dp</abbr></th>
+<th><abbr title="Work RAM — 128KB of SNES main RAM at $7E:0000–$7F:FFFF, holds all runtime game state.">WRAM</abbr></th>
+<th>Width</th>
+<th>Contents</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>$00</td>
+<td>$0100</td>
+<td>16-bit</td>
+<td>Active sprite X position</td>
+</tr>
+<tr>
+<td>$02</td>
+<td>$0102</td>
+<td>16-bit</td>
+<td>Active sprite Y position</td>
+</tr>
+<tr>
+<td>$04</td>
+<td>$0104</td>
+<td>8-bit</td>
+<td>Active sprite attribute</td>
+</tr>
+<tr>
+<td>$0A</td>
+<td>$010A</td>
+<td>16-bit</td>
+<td>Saved previous-frame sprite X</td>
+</tr>
+<tr>
+<td>$0C</td>
+<td>$010C</td>
+<td>16-bit</td>
+<td>Saved previous-frame sprite Y</td>
+</tr>
+<tr>
+<td>$0E</td>
+<td>$010E</td>
+<td>8-bit</td>
+<td>Saved previous-frame attribute</td>
+</tr>
+<tr>
+<td>$17</td>
+<td>$0117</td>
+<td>8-bit</td>
+<td>Per-frame flag (branch key in $C0:0C76)</td>
+</tr>
+<tr>
+<td>$18</td>
+<td>$0118</td>
+<td>8-bit</td>
+<td>Per-frame flags (bits 2/8 tested for <abbr title="Jump to Subroutine — same-bank call, pushes a 16-bit return address onto the stack.">JSR</abbr> targets)</td>
+</tr>
+<tr>
+<td>$19</td>
+<td>$0119</td>
+<td>8-bit</td>
+<td>Scene transition counter</td>
+</tr>
+<tr>
+<td>$6D</td>
+<td>$016D</td>
+<td>16-bit</td>
+<td>Current sprite descriptor index (PostVBlank loop var)</td>
+</tr>
+<tr>
+<td>$97</td>
+<td>$0197</td>
+<td>8-bit</td>
+<td>Palette seed index (default $80)</td>
+</tr>
+<tr>
+<td>$F8</td>
+<td>$01F8</td>
+<td>8-bit</td>
+<td>Scene entry point (from $0400)</td>
+</tr>
+</tbody>
+</table>
+<h2 id="sprite-renderinit-cluster">Sprite render/init cluster</h2>
+<p>Calls from <code>Sub_B309</code> → <code>Sub_B701</code> → per-type init and render routines:</p>
+<div class="language-text highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>Sub_B701 type 0:
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>  positive state → JSR Sub_B8CA (init helper 1) → JSR Sub_E9E2 (init helper 2)
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>  negative state → JSR Sub_B788 (renderer)
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>Sub_B701 type 1:
+<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>  positive high-state → JSR Sub_BCDC (high-state init) → JSR Sub_E9FF (init pass 2)
+<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>  negative low-state  → JSR Sub_BA65 (low-state init)
+<a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>
+<a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a>Sub_B701 types 2/3+:
+<a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a>  low-state (neg) → JSR Sub_BFF2 (12-tile low-state init; BMI-split pos path; BCS/BPL type-3+ path)
+<a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a>  high-state (pos) → JSR Sub_C2BF (12-tile high-state init; BPL/CMP/BCS pos path, no BMI-split; raw→staging copies)
+<a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a>
+<a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a>Sub_B701 type 3+:
+<a id="__codelineno-4-14" name="__codelineno-4-14" href="#__codelineno-4-14"></a>  BRL Sub_C73A (renderer, 6-tile)
+<a id="__codelineno-4-15" name="__codelineno-4-15" href="#__codelineno-4-15"></a>  Sub_C73A calls Sub_C6E7 ×6 (X-pos helper, 4 tiles each)
+</code></pre></div>
+<h3 id="y-dispatch-3-way-patterns-not-uniform-across-routines">Y-dispatch 3-way patterns — NOT uniform across routines</h3>
+<p>All <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr> routines with Y-clamp logic share the same logical structure — dispatch on <code>$C6</code>
+first, then on the sign of <code>$C5</code> — but use <strong>different branch mnemonics and clamp conditions</strong>
+in each path. Do not assume a pattern from one routine applies to another. Verify each branch
+byte explicitly.</p>
+<table>
+<thead>
+<tr>
+<th>Routine</th>
+<th>C6=0 dispatch (on C5)</th>
+<th>C6≠0 clamp logic</th>
+<th>C6=0 neg clamp</th>
+<th>C6=0 pos clamp</th>
+<th>Tiles</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Sub_B788</code></td>
+<td><code>BPL</code> → positive</td>
+<td>BCS→clamp, BMI→clamp</td>
+<td>BPL+4/BCS+2</td>
+<td>BPL+4/BCS+2</td>
+<td>8</td>
+</tr>
+<tr>
+<td><code>Sub_B8CA</code></td>
+<td><code>BPL</code> → positive</td>
+<td>BCC→clamp, CMP/BCS→store</td>
+<td>BCC+6/BCC+2</td>
+<td>BPL+6/BCS+2</td>
+<td>8</td>
+</tr>
+<tr>
+<td><code>Sub_C73A</code></td>
+<td><code>BMI</code> → no-clamp</td>
+<td>BCS→clamp, BPL→store</td>
+<td>BPL+2/BCS+2</td>
+<td>BPL+2/BCS+2</td>
+<td>24</td>
+</tr>
+<tr>
+<td><code>Sub_BA65</code></td>
+<td><code>BPL</code> → positive</td>
+<td>BCC→$E0, CMP/BCS→store</td>
+<td>CMP/BCC→store</td>
+<td>BMI-split: BPL/CMP/BCS</td>
+<td>8</td>
+</tr>
+<tr>
+<td><code>Sub_BCDC</code></td>
+<td><code>BMI</code> → negative</td>
+<td>BCC→clamp, CMP/BCS→store</td>
+<td>CMP/BCC→store</td>
+<td>BPL/CMP/BCS (no BMI-split)</td>
+<td>8</td>
+</tr>
+<tr>
+<td><code>Sub_BFF2</code></td>
+<td><code>BMI</code> → negative</td>
+<td><strong>BCS/BPL</strong> clamp (new variant)</td>
+<td>direct add, no clamp</td>
+<td><strong>BMI-split: BPL/CMP/BCS</strong></td>
+<td>12</td>
+</tr>
+<tr>
+<td><code>Sub_C2BF</code></td>
+<td><code>BMI</code> → negative</td>
+<td><strong>BCS/BPL</strong> clamp (same as BFF2)</td>
+<td>raw copy + direct add</td>
+<td>raw copy + BPL/CMP/BCS (no BMI-split)</td>
+<td>12</td>
+</tr>
+</tbody>
+</table>
+<p>The <code>BPL</code>/<code>BMI</code> switch on C5 is especially counterintuitive: <code>Sub_B788</code>, <code>Sub_B8CA</code>, and
+<code>Sub_BA65</code> use <code>BPL</code> to reach the <em>positive</em> (C5&lt;$80) path, while <code>Sub_C73A</code>, <code>Sub_BCDC</code>,
+and <code>Sub_BFF2</code> use <code>BMI</code> to reach the <em>negative</em> (C5≥$80) path. Same logical signal, opposite dispatch direction.</p>
+<p><code>Sub_BFF2</code> and <code>Sub_C2BF</code> together confirm two patterns:</p>
+<ol>
+<li><strong>BMI-split tracks the low-state family — now confirmed across both type pairs.</strong>
+   <code>Sub_BFF2</code>'s positive path (low-state, types 2/3+) uses the BMI-split (BPL → skip,
+   CMP #$E0, BCS → skip, else LDA #$E0) — same as <code>Sub_BA65</code> (low-state, type 1).
+   <code>Sub_C2BF</code>'s positive path (high-state, types 2/3+) uses NO BMI-split, reading raw
+   table ($4804,X → $4BC4,X) before applying BPL/CMP/BCS — same as <code>Sub_BCDC</code>
+   (high-state, type 1). The correlation holds across TWO type pairs:</li>
+<li><strong>High-state</strong> (Sub_BCDC type 1, Sub_C2BF types 2/3+): no BMI-split, raw table copy in Y path</li>
+<li>
+<p><strong>Low-state</strong> (Sub_BA65 type 1, Sub_BFF2 types 2/3+): BMI-split, reads staging Y directly</p>
+</li>
+<li>
+<p><strong>BCS/BPL clamp ordering is shared between low-state and high-state C6≠0 paths.</strong>
+   <code>Sub_C2BF</code>'s C6≠0 path uses <code>BCS → #$E0 / BPL → keep</code> (carry first, sign second),
+   identical to <code>Sub_BFF2</code>'s C6≠0 path. This ordering is distinct from the earlier
+   routines (Sub_BCDC, Sub_B8CA) which used <code>BCC→clamp / CMP #$E0 / BCS→store</code>.
+   There are now three distinct carry/sign clamp orderings across the <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr> set.</p>
+</li>
+</ol>
+<h3 id="disasmpy-m-flag-linear-decoder-trap-at-loop-exit-branches">disasm.py — M-flag linear-decoder trap at loop-exit branches</h3>
+<p><strong>Symptom</strong>: the decoder generates wrong M-state (and thus wrong instruction widths) for code
+immediately after a conditional branch that exits a loop containing <code>REP #$20</code>.</p>
+<p><strong>Root cause</strong>: when a <code>BEQ</code>/<code>BPL</code>/etc. exits a loop, the decoder queues the branch target
+(correct state) but continues linearly through the loop-continuation code. If that code contains
+<code>REP #$20</code>, the decoder's running M-flag becomes 0. When the linear scan then reaches the branch
+target address, it visits it with M=0 instead of M=1, and the queued correct-state entry is
+skipped (already-visited check).</p>
+<p><strong>Affected code</strong>: any loop where <code>SEP #$20</code> is in the body but <code>REP #$20</code> appears in the
+loop-continuation tail before the back-branch. Hit in <code>Sub_C73A</code> (sessions 11) and
+<code>Sub_B8CA</code> (session 12).</p>
+<p><strong>Fix</strong> (<code>tools/disasm.py</code>, branch handling): instead of falling through linearly after a
+conditional branch, terminate the linear scan and queue the fall-through as a separate work item.
+Both the branch-taken and fall-through paths then start from the correct M-state captured at the
+branch point, with neither able to contaminate the other.</p>
+<p><strong>Implication for manual decoding</strong>: if using an un-patched disasm.py output near a loop exit,
+manually re-derive M-state from the actual execution entry rather than trusting the disassembler's
+annotation. The error is always at the branch target of a <code>BEQ</code>/<code>BPL</code> that exits a loop, and
+the symptom is an immediate-mode instruction being decoded at double width.</p>
+<h3 id="staging-buffer-layout-7f4bxx">Staging buffer layout (<code>$7F:4BXX</code>)</h3>
+<p>8-byte stride per tile. For <code>gfx_index</code>-relative addressing (X = gfx_index):</p>
+<table>
+<thead>
+<tr>
+<th>X offset</th>
+<th>Width</th>
+<th>Written by</th>
+<th>Contents</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>+$00</code> (<code>$4BC0,X</code>)</td>
+<td>8-bit</td>
+<td>Sub_B788, Sub_B8CA, Sub_C6E7</td>
+<td>Tile X low byte</td>
+</tr>
+<tr>
+<td><code>+$01</code> (<code>$4BC1,X</code>)</td>
+<td>8-bit</td>
+<td>Sub_B788, Sub_B8CA, Sub_C73A</td>
+<td>Tile Y position (clamped)</td>
+</tr>
+<tr>
+<td><code>+$02</code> (<code>$4BC2,X</code>)</td>
+<td>16-bit</td>
+<td>Sub_B788, Sub_B8CA</td>
+<td>Raw X offset (copy from $4802,X)</td>
+</tr>
+<tr>
+<td><code>+$04</code> (<code>$4BC4,X</code>)</td>
+<td>8-bit</td>
+<td>Sub_B8CA</td>
+<td>Raw Y source (copy from $4804,X)</td>
+</tr>
+<tr>
+<td><code>+$06</code> (<code>$4BC6,X</code>)</td>
+<td>16-bit</td>
+<td>Sub_B8CA</td>
+<td>Extra 16-bit field (copy from $4806,X)</td>
+</tr>
+</tbody>
+</table>
+<h2 id="sprite-system-overview">Sprite System Overview</h2>
+<p>The sprite subsystem is a fully <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr>, self-contained cluster spanning fourteen routines across two address ranges in bank $C0 ($B271–$C989 and $E9E2–$EA41). Every callee within the cluster is now <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr>; the cluster has no external call targets except <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr> helpers.</p>
+<p><strong>Entry point and frame trigger.</strong> Every frame, VBlankHandler tail-calls PostVBlank ($C0:B271). PostVBlank resets the <abbr title="Object Attribute Memory — the PPU's 512+32-byte sprite table (up to 128 sprites: X/Y, tile, palette, size).">OAM</abbr> <abbr title="Direct Memory Access — hardware block copy bypassing the CPU; used for VRAM uploads, WRAM clears, OAM.">DMA</abbr> channel registers, then walks the sprite descriptor table at $7E:0E00 (63 entries, 2 bytes each). For each active entry it calls Sub_B309 ($C0:B309), following chain-link bytes to handle multi-sprite objects, then fills any remaining <abbr title="Object Attribute Memory — the PPU's 512+32-byte sprite table (up to 128 sprites: X/Y, tile, palette, size).">OAM</abbr> slots with Y=$E0 to park them off-screen.</p>
+<p><strong>Render dispatch (Sub_B309).</strong> Sub_B309 is the main per-sprite entry. It first calls Sub_B701 as a gate: if the gate sets carry, the sprite is not ready and Sub_B309 returns immediately. If the gate clears carry, Sub_B309 reads the sprite type from $7E:1201,X (bits 0–1: type 0/1/2/3+), then reads range selection bits (bits 2–3 of $7F:0F80,X) to pick one of three <abbr title="Object Attribute Memory — the PPU's 512+32-byte sprite table (up to 128 sprites: X/Y, tile, palette, size).">OAM</abbr> write-heads ($0181/$0185/$0189) and <abbr title="Work RAM — 128KB of SNES main RAM at $7E:0000–$7F:FFFF, holds all runtime game state.">WRAM</abbr> destinations ($01DB/$01DD/$01DF). It uses the <abbr title="Direct Page — the 65816's relocatable 256-byte zero-page window; address = D register + 8-bit offset.">DP</abbr>=$2100 trick (PHD/LDA #$2100/TCD) to alias <abbr title="Picture Processing Unit — the SNES graphics chip handling BGs, sprites, palettes, windows, and compositing.">PPU</abbr> registers into the direct page. After writing the <abbr title="Object Attribute Memory — the PPU's 512+32-byte sprite table (up to 128 sprites: X/Y, tile, palette, size).">OAM</abbr> position bytes from the $7F:4F00 <abbr title="Bank $7F WRAM area ($7F:4F00+X, $7F:4BC0+X) where sprite OAM data is pre-assembled each frame before Sub_B309 copies it into OAM buffer slots.">staging buffer</abbr>, it iterates the palette copy loop (4/8/12/24 iterations depending on type), reading from $7F:4BC0 into <abbr title="PPU register $2180 — write a byte to the WRAM address set by WMADDL/H; auto-increments the address.">WMDATA</abbr> ($2180 via <abbr title="Direct Page — the 65816's relocatable 256-byte zero-page window; address = D register + 8-bit offset.">DP</abbr> trick).</p>
+<p><strong>State gate (Sub_B701).</strong> Sub_B701 dispatches on sprite type and reads the state byte at $7E:1B00,X. State zero means inactive (carry set, skip). A positive state below the per-type threshold means partially initialised (carry set, skip). A positive state at or above the threshold triggers the high-state init path. A negative state (bit 7 set, bits 0–6 non-zero) triggers the low-state init path. A state of exactly $80 means fully initialised and triggers rendering.</p>
+<p><strong>Init helpers — high state and low state.</strong> The distinction is the most important structural insight in the cluster. High-state init reads raw animation data from ROM/<abbr title="Work RAM — 128KB of SNES main RAM at $7E:0000–$7F:FFFF, holds all runtime game state.">WRAM</abbr> tables and copies it into the $7F:4B00 <abbr title="Bank $7F WRAM area ($7F:4F00+X, $7F:4BC0+X) where sprite OAM data is pre-assembled each frame before Sub_B309 copies it into OAM buffer slots.">staging buffer</abbr> before applying Y clamping. Low-state init reads Y data directly from the <abbr title="Bank $7F WRAM area ($7F:4F00+X, $7F:4BC0+X) where sprite OAM data is pre-assembled each frame before Sub_B309 copies it into OAM buffer slots.">staging buffer</abbr> that the previous high-state pass already populated. This produces different clamp code in each family.</p>
+<p>For types 0: Sub_B8CA handles init (high-state only; type 0 has no separate low-state init path — Sub_B788 is its renderer). For type 1: Sub_BCDC is high-state init (raw table → staging, BPL/CMP/BCS positive path, no BMI-split); Sub_BA65 is low-state init (reads staging, BMI-split on positive path). For types 2/3+: Sub_C2BF is high-state init (same BPL/CMP/BCS pattern as BCDC, no BMI-split); Sub_BFF2 is low-state init (BMI-split, identical pattern to BA65). The BMI-split thus tracks exactly with the low-state family across both type pairs, and its absence tracks with the high-state family.</p>
+<p><strong>Pass 2 init (mark-and-exit).</strong> After each init helper runs, Sub_B701 calls a pass-2 helper to record the sprite's slot in the $7E:0BC0 entity table. Sub_E9E2 handles type 0 (4-entry search, marks 1 byte). Sub_E9FF handles type 1 (3-entry search, marks 2 bytes: $0BC0,X and $0BC1,X). Sub_EA1F handles types 2/3+ (2-entry search, marks 3 bytes: $0BC0,X, $0BC1,X, $0BC2,X). The pattern is consistent: the number of <abbr title="Object Attribute Memory — the PPU's 512+32-byte sprite table (up to 128 sprites: X/Y, tile, palette, size).">OAM</abbr> slots a type uses equals the number of table bytes marked.</p>
+<p><strong>Renderers.</strong> Sub_B788 is the type 0 renderer (8-bit sprites, single <abbr title="Object Attribute Memory — the PPU's 512+32-byte sprite table (up to 128 sprites: X/Y, tile, palette, size).">OAM</abbr> entry). Sub_C73A is the type 3+ renderer (6-tile sprites, 24 <abbr title="Object Attribute Memory — the PPU's 512+32-byte sprite table (up to 128 sprites: X/Y, tile, palette, size).">OAM</abbr> entries); it calls Sub_C6E7 six times, once per tile group, to pack X-position overflow bits into the <abbr title="Object Attribute Memory — the PPU's 512+32-byte sprite table (up to 128 sprites: X/Y, tile, palette, size).">OAM</abbr> attribute byte. Types 1 and 2 do not have separate renderer routines in the <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr> cluster; their render path is served by Sub_B309's direct <abbr title="Object Attribute Memory — the PPU's 512+32-byte sprite table (up to 128 sprites: X/Y, tile, palette, size).">OAM</abbr> write.</p>
+<p><strong>Y-clamp ordering summary.</strong> Three distinct branch orderings appear. Type 3+ (Sub_C73A) uses BCS/BPL: carry first, sign second, because large tile X coordinates enter the clamp path with carry already set. High-state init routines (Sub_BCDC, Sub_C2BF) use BPL/CMP/BCS on the positive path: sign first, then compare against $E0, then carry — no BMI-split because the raw table value is always bounded. Low-state init routines (Sub_BA65, Sub_BFF2) add a BMI-split on the positive path: BPL skips the clamp check entirely for small positive Y values, because the <abbr title="Bank $7F WRAM area ($7F:4F00+X, $7F:4BC0+X) where sprite OAM data is pre-assembled each frame before Sub_B309 copies it into OAM buffer slots.">staging buffer</abbr> can hold values that the high-state pass already bounded, but a second clamp pass may still encounter borderline cases where an intermediate BMI branch saves work.</p>
+<h2 id="mode-handler-cluster-c00d7816db-doorswitch-tile-opening-dispatch">Mode handler cluster ($C0:0D78–$16DB) — door/switch tile-opening dispatch</h2>
+<p>Five mode-specific scroll-map update handlers live in a contiguous block starting at $C0:0D78 and ending at $C0:16DB (just before the default handler at $16DC). These handlers implement the tile-opening animation for doors and interactive switches on the map: each frame, Sub_0C76 dispatches to the appropriate handler based on the current animation mode, the handler advances the <code>$7E:3000</code> layer-state table, computes <abbr title="Video RAM — dedicated PPU memory for tile graphics and tilemaps; written via DMA during VBlank.">VRAM</abbr> tilemap write indices corner-by-corner, and triggers an SPC audio cue. All five handlers share a two-phase structure:</p>
+<p><strong>Phase 1 — Mode-table prologue.</strong> Increments selected entries in the <code>$7E:3000</code> layer-state table using <code>LDA.l $7E3000,X</code> / <code>INC A</code> / <code>STA.l $7E3000,X</code>. The number of entries updated scales with the handler: E6=2, EC=4, EE=4, FA=6, FC=6. All but E6 include at least one <code>REP #$20; TXA; SEC; SBC #$0100; TAX; SEP #$20</code> block to index $100 rows back in the table. The prologue ends with <code>JSR Sub_1B90</code> (SPC audio command $19) and a write to <abbr title="Direct Page mode — 2-byte instruction using an 8-bit offset added to the D register.">dp</abbr>:$60.</p>
+<p><strong>Phase 2 — <abbr title="Video RAM — dedicated PPU memory for tile graphics and tilemaps; written via DMA during VBlank.">VRAM</abbr> index computation.</strong> A <code>REP #$20</code> block loads the scroll bases from <code>$1D0A</code>/<code>$1D0E</code> into <abbr title="Direct Page mode — 2-byte instruction using an 8-bit offset added to the D register.">dp</abbr>:$DB/$DD. Then N passes × 4 corner iterations call <code>JSR Sub_1B36</code> to compute a tilemap word index (col×32 + row with $0400 wrap) for each of the four corners of a 2×2 tile block, offset by <code>ADC $1D7C</code>, and store the result into a <code>$09CA</code>–<code>$09F8</code> <abbr title="Video RAM — dedicated PPU memory for tile graphics and tilemaps; written via DMA during VBlank.">VRAM</abbr> slot.</p>
+<p><strong>Pass structure per corner block (62 bytes, invariant across all handlers):</strong>
+<div class="language-text highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>; Corner 1: (row, col) — X=col_idx, Y=row_idx already set
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>JSR Sub_1B36  →  CLC / ADC $1D7C  →  STA $09CA
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>; Corner 2: (row+1, col)
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>TYA / PHA / INC / AND #$003F / TAY / TXA / JSR Sub_1B36  →  CLC / ADC $1D7C  →  STA $09CC
+<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>; Corner 3: (row, col+1)  — restores pushed row
+<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>PLY / TXA / INC / AND #$001F / TAX / JSR Sub_1B36  →  CLC / ADC $1D7C  →  STA $09CE
+<a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a>; Corner 4: (row+1, col+1) — uses current Y/X from corner 3
+<a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a>TYA / INC / AND #$003F / TAY / TXA / JSR Sub_1B36  →  CLC / ADC $1D7C  →  STA $09D0
+</code></pre></div></p>
+<p><strong>Row/col base selection per handler:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Handler</th>
+<th>Row bases</th>
+<th>Col bases</th>
+<th>Passes</th>
+<th><abbr title="Video RAM — dedicated PPU memory for tile graphics and tilemaps; written via DMA during VBlank.">VRAM</abbr> slots</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ModeE6_Handler</td>
+<td>$5B</td>
+<td>$5C, $5C−1</td>
+<td>2</td>
+<td>$09CA–$09D0, $09D2–$09D8</td>
+</tr>
+<tr>
+<td>ModeEC_Handler</td>
+<td>$5B, $5B+1</td>
+<td>$5C, $5C−1</td>
+<td>4</td>
+<td>$09CA–$09E8</td>
+</tr>
+<tr>
+<td>ModeEE_Handler</td>
+<td>$5B−1, $5B</td>
+<td>$5C, $5C−1</td>
+<td>4</td>
+<td>$09CA–$09E8</td>
+</tr>
+<tr>
+<td>ModeFA_Handler</td>
+<td>$5B, $5B+1</td>
+<td>$5C, $5C−1, $5C−2</td>
+<td>6</td>
+<td>$09CA–$09F8</td>
+</tr>
+<tr>
+<td>ModeFC_Handler</td>
+<td>$5B−1, $5B</td>
+<td>$5C, $5C−1, $5C−2</td>
+<td>6</td>
+<td>$09CA–$09F8</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Pass 1 LDX anomaly.</strong> The compiler emits <code>LDX $5B; TXA</code> (3 bytes) instead of <code>LDA $5B</code> (2 bytes) for the row setup of every handler's first pass. All subsequent passes use <code>LDA $5B</code> normally. In Mode-EC and Mode-FA (positive row handlers), pass 1 has no additional modifier. In Mode-EE and Mode-FC (negative row handlers), pass 1 adds <code>DEC A</code> between <code>TXA</code> and <code>ASL</code>.</p>
+<p><strong>Tail.</strong> All handlers except ModeFC end with <code>SEP #$20; LDA #$10; TSB $5F; BRL &lt;raw_offset&gt;</code> to reach the default handler at $16DC. ModeFC sits immediately before $16DC and falls through without a <abbr title="Branch Long — 16-bit relative branch (signed offset from next PC); asar 1.91 quirk: BRL $XXXX stores $XXXX raw, not a target address.">BRL</abbr> (tail is only <code>SEP #$20; LDA #$10; TSB $5F</code>).</p>
+<p><strong><abbr title="Direct Page mode — 2-byte instruction using an 8-bit offset added to the D register.">dp</abbr>:$60 value</strong> encodes the scroll update width: $00 = 2-entry (E6), $01 = 4-entry (EC/EE), $02 = 6-entry (FA/FC). This value is consumed by the default handler or the SPC audio subsystem.</p>
+<h2 id="defaulthandler-c016dc18d8">DefaultHandler ($C0:16DC–$18D8)</h2>
+<p>The DefaultHandler is the sixth arm of Sub_0C76's per-frame dispatch. It occupies 509 bytes immediately after ModeFC_Handler and is architecturally distinct from the five named mode handlers in several concrete ways.</p>
+<p><strong>Different layer-state variables.</strong> The named handlers (E6/EC/EE/FA/FC) read their layer-state index from <abbr title="Direct Page mode — 2-byte instruction using an 8-bit offset added to the D register.">dp</abbr>:$5B/$5C. DefaultHandler reads from <abbr title="Direct Page mode — 2-byte instruction using an 8-bit offset added to the D register.">dp</abbr>:$5D/$5E. This is not a convention difference — Sub_0C76 stores separate index values in each pair, and the handler uses whichever pair matches its role.</p>
+<p><strong>Different <abbr title="Video RAM — dedicated PPU memory for tile graphics and tilemaps; written via DMA during VBlank.">VRAM</abbr> slots.</strong> The named handlers write their computed tilemap word-indices into the <code>$09CA–$09F8</code> range. DefaultHandler writes to <code>$09B2–$09B8</code> (four slots, one pass of 4 corners). The computation formula is identical (Sub_1B36 + ADC $1D7C), only the destination addresses differ.</p>
+<p><strong>Different SPC callee.</strong> The named handlers call <code>Sub_1B90</code> with <abbr title="Direct Page mode — 2-byte instruction using an 8-bit offset added to the D register.">dp</abbr>:$FC as the audio argument. DefaultHandler calls <code>Sub_1BA7</code>, a 4-byte wrapper that loads <abbr title="Direct Page mode — 2-byte instruction using an 8-bit offset added to the D register.">dp</abbr>:$FB instead and then branches into <code>Sub_1B90</code>'s body at the second instruction. The parameter register ($FB vs $FC) selects a different SPC command argument from the audio table.</p>
+<p><strong>No mode-table prologue.</strong> The named handlers begin by incrementing selected entries in the <code>$7E:3000</code> layer-state table (2–6 entries depending on mode). DefaultHandler has no such prologue. Its <abbr title="Video RAM — dedicated PPU memory for tile graphics and tilemaps; written via DMA during VBlank.">VRAM</abbr> section is conditional: it only runs if <abbr title="Direct Page mode — 2-byte instruction using an 8-bit offset added to the D register.">dp</abbr>:$17 bit 1 is set, and only advances the layer-state entry if it reads <code>$FE</code> or <code>$E0</code> (terminal values).</p>
+<p><strong>Bit-5 transition loop.</strong> After the optional <abbr title="Video RAM — dedicated PPU memory for tile graphics and tilemaps; written via DMA during VBlank.">VRAM</abbr> section, DefaultHandler checks <abbr title="Direct Page mode — 2-byte instruction using an 8-bit offset added to the D register.">dp</abbr>:$17 bit 5. If set, it clears it and enters a busy-loop: <code>JSR $885A</code> (a large unmatched frame-work routine) followed by <code>JSR $00BF</code> (VBlankHandler), repeating until <abbr title="Direct Page mode — 2-byte instruction using an 8-bit offset added to the D register.">dp</abbr>:$38 reaches zero. After the loop it dispatches on <abbr title="Direct Page mode — 2-byte instruction using an 8-bit offset added to the D register.">dp</abbr>:$45 (values 1–4) to one of four transition sub-modes, each calling a mode-specific renderer with <abbr title="Direct Page — the 65816's relocatable 256-byte zero-page window; address = D register + 8-bit offset.">DP</abbr> temporarily set to $1D00, then tail-calling Sub_EC60.</p>
+<p><strong>Bit-0 scene-swap.</strong> If bit 5 was clear, DefaultHandler checks bit 0 of <abbr title="Direct Page mode — 2-byte instruction using an 8-bit offset added to the D register.">dp</abbr>:$17. If set, it calls a scene-state probe at <code>$024C</code>. A carry-clear result triggers a full scene-swap sequence (<abbr title="Jump to Subroutine Long — 24-bit cross-bank call, pushes a 24-bit return address.">JSL</abbr> $C02C41, <abbr title="Jump to Subroutine Long — 24-bit cross-bank call, pushes a 24-bit return address.">JSL</abbr> $C10000, <abbr title="Jump to Subroutine — same-bank call, pushes a 16-bit return address onto the stack.">JSR</abbr> $0B64/$0B75, etc.); carry-set takes a quick-clear path and tail-calls the <code>$00EB</code> fragment.</p>
+<p><strong>Summary of differences:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Named handlers (E6/EC/EE/FA/FC)</th>
+<th>DefaultHandler</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Layer-state index</td>
+<td><abbr title="Direct Page mode — 2-byte instruction using an 8-bit offset added to the D register.">dp</abbr>:$5B/$5C</td>
+<td><abbr title="Direct Page mode — 2-byte instruction using an 8-bit offset added to the D register.">dp</abbr>:$5D/$5E</td>
+</tr>
+<tr>
+<td><abbr title="Video RAM — dedicated PPU memory for tile graphics and tilemaps; written via DMA during VBlank.">VRAM</abbr> slots</td>
+<td>$09CA–$09F8</td>
+<td>$09B2–$09B8</td>
+</tr>
+<tr>
+<td>SPC callee</td>
+<td>Sub_1B90 (<abbr title="Direct Page mode — 2-byte instruction using an 8-bit offset added to the D register.">dp</abbr>:$FC)</td>
+<td>Sub_1BA7 (<abbr title="Direct Page mode — 2-byte instruction using an 8-bit offset added to the D register.">dp</abbr>:$FB)</td>
+</tr>
+<tr>
+<td>Mode-table prologue</td>
+<td>Yes (2–6 entries)</td>
+<td>No</td>
+</tr>
+<tr>
+<td><abbr title="Video RAM — dedicated PPU memory for tile graphics and tilemaps; written via DMA during VBlank.">VRAM</abbr> update</td>
+<td>Unconditional</td>
+<td>Conditional on <abbr title="Direct Page mode — 2-byte instruction using an 8-bit offset added to the D register.">dp</abbr>:$17 bit 1</td>
+</tr>
+<tr>
+<td>Post-<abbr title="Video RAM — dedicated PPU memory for tile graphics and tilemaps; written via DMA during VBlank.">VRAM</abbr> action</td>
+<td><abbr title="Branch Long — 16-bit relative branch (signed offset from next PC); asar 1.91 quirk: BRL $XXXX stores $XXXX raw, not a target address.">BRL</abbr> tail to $16DC</td>
+<td>Bit-5/bit-0 section</td>
+</tr>
+</tbody>
+</table>
+<h2 id="unmatched-next-targets">Unmatched (next targets)</h2>
+<p><strong>State byte encoding</strong> at <code>$7F:1B00+X</code>:
+- <code>$00</code> = inactive (skip)
+- <code>positive, &lt; threshold</code> = partially initialized (C=1, skip)
+- <code>positive, ≥ threshold</code> = ready to init (run JSRs, set <code>$80</code>)
+- <code>negative, bits 0-6 non-zero</code> = partially done (re-run init)
+- exactly <code>$80</code> = fully initialized, proceed to render</p>
+<table>
+<thead>
+<tr>
+<th>Routine</th>
+<th>Addr</th>
+<th>Complexity</th>
+<th>Caller</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Sub_595C</code></td>
+<td><code>$C0:595C</code></td>
+<td>33 bytes; scene table dispatcher; dispatches via $7F2003 table</td>
+<td>Sub_01A5</td>
+</tr>
+<tr>
+<td><code>Sub_597D</code></td>
+<td><code>$C0:597D</code></td>
+<td>92 bytes; sprite slot init/reset; jump table at $5D6E</td>
+<td>Sub_1A03</td>
+</tr>
+<tr>
+<td><code>$C0:881E</code></td>
+<td>—</td>
+<td>Unknown; ~60 bytes body + callee tree</td>
+<td>Frame loop + VBlankHandler</td>
+</tr>
+<tr>
+<td><code>Sub_E12A</code></td>
+<td><code>$C0:E12A</code></td>
+<td>829+ instructions traced; deferred</td>
+<td>Sub_01A5</td>
+</tr>
+<tr>
+<td><code>$C0:1AAC</code></td>
+<td>—</td>
+<td>Unknown</td>
+<td><code>GameLoop_FrameBody</code></td>
+</tr>
+<tr>
+<td><code>$C0:EC60</code></td>
+<td>—</td>
+<td>Unknown</td>
+<td>Frame loop tail (<abbr title="Branch Long — 16-bit relative branch (signed offset from next PC); asar 1.91 quirk: BRL $XXXX stores $XXXX raw, not a target address.">BRL</abbr>)</td>
+</tr>
+<tr>
+<td><code>$C0:EA63</code></td>
+<td>—</td>
+<td>Unknown</td>
+<td><abbr title="Non-Maskable Interrupt — fires at the start of VBlank each frame; the safe window for PPU updates.">NMI</abbr> stub (installed to <abbr title="Work RAM — 128KB of SNES main RAM at $7E:0000–$7F:FFFF, holds all runtime game state.">WRAM</abbr>)</td>
+</tr>
+<tr>
+<td><code>$C0:ECCC</code></td>
+<td>—</td>
+<td>Unknown</td>
+<td>IRQ stub (installed to <abbr title="Work RAM — 128KB of SNES main RAM at $7E:0000–$7F:FFFF, holds all runtime game state.">WRAM</abbr>)</td>
+</tr>
+</tbody>
+</table>
+      
+      </div>
+
+    </div>
+
+    <footer class="wk-footer">
+      <ul class="wk-eras" aria-label="Eras">
+        <li style="--c:var(--era-prehistory)">65,000,000 BC</li>
+        <li style="--c:var(--era-zeal)">12,000 BC</li>
+        <li style="--c:var(--era-medieval)">600 AD</li>
+        <li style="--c:var(--era-present)">1000 AD</li>
+        <li style="--c:var(--era-lavos)">1999 AD</li>
+        <li style="--c:var(--era-future)">2300 AD</li>
+        <li style="--c:var(--era-eot)">End of Time</li>
+      </ul>
+      <p class="wk-footer-motto">Every byte, every era</p>
+      <p>Made by people who love Chrono Trigger, so that it can be studied, preserved and understood,
+      one verified routine at a time.</p>
+      <p>A fan project. Not affiliated with or endorsed by Square Enix. No ROM data is shared here:
+      bring your own copy.</p>
+    </footer>
+  </main>
+
+</div>
+
+<!-- Address-map pop-up (a menu window) -->
+<div class="wk-modal" id="wk-modal" hidden>
+  <div class="wk-modal-backdrop" data-close></div>
+  <div class="wk-modal-win" role="dialog" aria-modal="true" aria-labelledby="wk-modal-title" tabindex="-1">
+    <button type="button" class="wk-modal-close" data-close aria-label="Close">&times;</button>
+    <div class="wk-modal-body" id="wk-modal-body"></div>
+  </div>
+</div>
+
+<!-- Back to top -->
+<button class="wk-top" id="wk-top" title="Back to top" aria-label="Scroll to top">↑</button>
+
+
+<script>
+(function () {
+'use strict';
+
+/* ── Theme ─────────────────────────────────────────────────── */
+var stored = 'dark';
+try { stored = localStorage.getItem('wk-theme') || 'dark'; } catch (e) {}
+applyTheme(stored);
+document.getElementById('wk-toggle').addEventListener('click', function () {
+  applyTheme(document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
+});
+function applyTheme(t) {
+  document.documentElement.setAttribute('data-theme', t);
+  try { localStorage.setItem('wk-theme', t); } catch (e) {}
+}
+
+/* ── Mobile nav ────────────────────────────────────────────── */
+var navToggle  = document.getElementById('wk-nav-toggle');
+var navEl      = document.getElementById('wk-nav');
+var navBackdrop = document.getElementById('wk-nav-backdrop');
+function openNav() {
+  navEl.classList.add('is-open');
+  navBackdrop.hidden = false;
+  navToggle.setAttribute('aria-expanded', 'true');
+}
+function closeNav() {
+  navEl.classList.remove('is-open');
+  navBackdrop.hidden = true;
+  navToggle.setAttribute('aria-expanded', 'false');
+}
+if (navToggle && navEl && navBackdrop) {
+  navToggle.addEventListener('click', function () {
+    if (navEl.classList.contains('is-open')) { closeNav(); } else { openNav(); }
+  });
+  navBackdrop.addEventListener('click', closeNav);
+  navEl.addEventListener('click', function (e) {
+    if (e.target.closest('a')) { closeNav(); }
+  });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') { closeNav(); }
+  });
+  window.addEventListener('resize', function () {
+    if (window.innerWidth > 720) { closeNav(); }
+  });
+}
+
+/* ── Search ─────────────────────────────────────────────────── */
+var input   = document.getElementById('wk-q');
+var results = document.getElementById('wk-results');
+var docs    = null;
+if (input) {
+  fetch("../search/search_index.json")
+    .then(function (r) { return r.json(); })
+    .then(function (d) { docs = d.docs; });
+
+  input.addEventListener('input', onSearch);
+
+  document.addEventListener('click', function (e) {
+    if (results && !results.contains(e.target) && e.target !== input) results.hidden = true;
+  });
+  input.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') { results.hidden = true; this.blur(); }
+    if (e.key === 'Enter' && results && !results.hidden) {
+      var first = results.querySelector('.wk-result');
+      if (first) { first.click(); }
+    }
+  });
+}
+
+/* Press / to focus search */
+document.addEventListener('keydown', function (e) {
+  if (e.key === '/' && document.activeElement !== input &&
+      document.activeElement.tagName !== 'INPUT' &&
+      document.activeElement.tagName !== 'TEXTAREA') {
+    e.preventDefault();
+    if (input) { input.focus(); input.select(); }
+  }
+});
+
+function onSearch() {
+  var q = this.value.trim().toLowerCase();
+  if (!docs || q.length < 2) { results.hidden = true; return; }
+  var hits = docs.filter(function (d) {
+    return (d.title + ' ' + d.text).toLowerCase().indexOf(q) !== -1;
+  }).slice(0, 8);
+  if (!hits.length) { results.hidden = true; return; }
+  var base = "..";
+  results.innerHTML = hits.map(function (d) {
+    var text  = d.text || '';
+    var i     = text.toLowerCase().indexOf(q);
+    var start = Math.max(0, i - 35);
+    var end   = Math.min(text.length, i + q.length + 70);
+    var snip  = (start > 0 ? '…' : '') + text.slice(start, end) + (end < text.length ? '…' : '');
+    var url   = base + '/' + d.location;
+    return '<a class="wk-result" href="' + esc(url) + '" role="option">'
+         + '<div class="wk-result-title">' + esc(d.title || d.location) + '</div>'
+         + '<div class="wk-result-snip">'  + esc(snip) + '</div></a>';
+  }).join('');
+  results.hidden = false;
+}
+
+function esc(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+/* ── Back to top ────────────────────────────────────────────── */
+var topBtn = document.getElementById('wk-top');
+if (topBtn) {
+  window.addEventListener('scroll', function () {
+    topBtn.classList.toggle('visible', window.scrollY > 400);
+  }, {passive: true});
+  topBtn.addEventListener('click', function () {
+    window.scrollTo({top: 0, behavior: 'smooth'});
+  });
+}
+
+/* ── Copy-to-clipboard ───────────────────────────────────────── */
+document.querySelectorAll('.highlight').forEach(function (block) {
+  var btn = document.createElement('button');
+  btn.className = 'wk-copy-btn';
+  btn.title     = 'Copy code';
+  btn.textContent = '⎘';
+  block.appendChild(btn);
+  btn.addEventListener('click', function () {
+    var pre = block.querySelector('pre');
+    if (!pre) return;
+    navigator.clipboard.writeText(pre.innerText).then(function () {
+      btn.textContent = '✓';
+      btn.classList.add('copied');
+      setTimeout(function () {
+        btn.textContent = '⎘';
+        btn.classList.remove('copied');
+      }, 1500);
+    });
+  });
+});
+
+/* ── TOC scroll spy ─────────────────────────────────────────── */
+var tocLinks = document.querySelectorAll('.wk-toc-link');
+if (tocLinks.length && 'IntersectionObserver' in window) {
+  var headings = Array.from(document.querySelectorAll('.wk-article h1, .wk-article h2, .wk-article h3'));
+  var active   = null;
+  var obs = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
+      if (e.isIntersecting) {
+        var id  = e.target.id;
+        var lnk = document.querySelector('.wk-toc-link[href="#' + id + '"]');
+        if (lnk && lnk !== active) {
+          if (active) active.classList.remove('is-current');
+          lnk.classList.add('is-current');
+          active = lnk;
+        }
+      }
+    });
+  }, {rootMargin: '-10% 0px -80% 0px'});
+  headings.forEach(function (h) { if (h.id) obs.observe(h); });
+}
+
+
+/* ── Status badges in "Status" table columns ────────────────── */
+var STATUS = { 'matched': 'matched', 'in progress': 'progress', 'partial': 'partial',
+               'identified': 'identified', 'unmapped': 'unmapped', 'unknown': 'unknown' };
+document.querySelectorAll('.wk-article-body table').forEach(function (tbl) {
+  var col = -1;
+  tbl.querySelectorAll('thead th').forEach(function (th, i) {
+    if (th.textContent.trim().toLowerCase() === 'status') col = i;
+  });
+  if (col < 0) return;
+  tbl.querySelectorAll('tbody tr').forEach(function (tr) {
+    var td = tr.children[col];
+    if (!td || td.querySelector('.wk-status')) return;
+    var whole = td.textContent.trim().toLowerCase();
+    var target = null, key = STATUS[whole];
+    if (key) { target = td; }
+    else if (td.firstElementChild && td.firstElementChild.tagName === 'STRONG' &&
+             td.firstChild === td.firstElementChild) {
+      key = STATUS[td.firstElementChild.textContent.trim().toLowerCase()];
+      if (key) target = td.firstElementChild;
+    }
+    if (!target) return;
+    var span = document.createElement('span');
+    span.className = 'wk-status wk-status-' + key;
+    if (target === td) { while (td.firstChild) span.appendChild(td.firstChild); td.appendChild(span); }
+    else { td.insertBefore(span, target); span.appendChild(target); }
+  });
+});
+
+/* ── Address map pop-up ─────────────────────────────────────── */
+var modal = document.getElementById('wk-modal');
+var mbody = document.getElementById('wk-modal-body');
+var mwin  = modal ? modal.querySelector('.wk-modal-win') : null;
+var lastFocus = null, closeTimer = null, current = null;
+var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+var LABEL = { matched: 'Matched', progress: 'In progress', identified: 'Identified',
+              unmapped: 'Unmapped', gap: 'Uncharted' };
+
+function md(s) {
+  return esc(s || '').replace(/`([^`]+)`/g, '<code>$1</code>')
+                     .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+}
+function hex4(n) { return ('000' + n.toString(16).toUpperCase()).slice(-4); }
+function num(n) { return n == null ? '?' : n.toLocaleString('en-US'); }
+function badge(st) {
+  var k = st === 'gap' ? 'unmapped' : st;
+  return '<span class="wk-status wk-status-' + k + '">' + (LABEL[st] || st) + '</span>';
+}
+
+function openModal(html, from) {
+  if (!modal) return;
+  clearTimeout(closeTimer);
+  mbody.innerHTML = html;
+  if (modal.hidden) {
+    lastFocus = from || document.activeElement;
+    modal.hidden = false;
+    document.documentElement.classList.add('wk-modal-lock');
+    void modal.offsetWidth;            /* commit start state, then animate */
+    modal.classList.add('is-open');
+  }
+  mbody.scrollTop = 0;
+  mwin.focus({ preventScroll: true });
+}
+function closeModal() {
+  if (!modal || modal.hidden) return;
+  modal.classList.remove('is-open');
+  document.documentElement.classList.remove('wk-modal-lock');
+  document.querySelectorAll('.wk-amap-slice.is-selected, .wk-heat-cell.is-selected, .wk-slice-cell.is-selected')
+    .forEach(function (el) { el.classList.remove('is-selected'); });
+  closeTimer = setTimeout(function () { modal.hidden = true; }, reduceMotion ? 0 : 200);
+  if (lastFocus && lastFocus.focus) lastFocus.focus({ preventScroll: true });
+  current = null;
+}
+if (modal) {
+  modal.addEventListener('click', function (e) {
+    if (e.target.closest('[data-close]')) { closeModal(); return; }
+    var nav = e.target.closest('[data-step]');
+    if (nav && current) { stepRegion(+nav.getAttribute('data-step')); return; }
+    var jump = e.target.closest('[data-jump]');
+    if (jump) { e.preventDefault(); jumpTo(jump.getAttribute('data-jump'), jump.getAttribute('data-row')); }
+  });
+  document.addEventListener('keydown', function (e) {
+    if (modal.hidden) return;
+    if (e.key === 'Escape') { e.preventDefault(); closeModal(); return; }
+    if (current && (e.key === 'ArrowRight' || e.key === 'ArrowLeft') &&
+        !/INPUT|TEXTAREA/.test(document.activeElement.tagName)) {
+      e.preventDefault(); stepRegion(e.key === 'ArrowRight' ? 1 : -1); return;
+    }
+    if (e.key === 'Tab') {               /* keep focus inside the window */
+      var f = Array.prototype.filter.call(
+        mwin.querySelectorAll('button, a[href], [tabindex="0"]'),
+        function (el) { return el.offsetParent !== null; });
+      if (!f.length) return;
+      var a = f[0], z = f[f.length - 1];
+      if (e.shiftKey && (document.activeElement === a || document.activeElement === mwin)) { e.preventDefault(); z.focus(); }
+      else if (!e.shiftKey && document.activeElement === z) { e.preventDefault(); a.focus(); }
+    }
+  });
+}
+
+var maps = {};
+document.querySelectorAll('.wk-amap').forEach(function (el) {
+  var data;
+  try { data = JSON.parse(el.querySelector('.wk-amap-data').textContent); } catch (e) { return; }
+  maps[data.bank] = { el: el, data: data };
+  el.addEventListener('click', function (e) {
+    var b = e.target.closest('.wk-amap-slice');
+    if (b) showRegion(data.bank, +b.getAttribute('data-i'), b);
+  });
+});
+
+function regionRange(bank, r) {
+  return '$' + bank + ':' + hex4(r.s) + (r.e != null ? '–$' + hex4(r.e) : '–?');
+}
+function showRegion(bank, i, from) {
+  var m = maps[bank]; if (!m) return;
+  var regs = m.data.regions, r = regs[i]; if (!r) return;
+  current = { bank: bank, i: i };
+  m.el.querySelectorAll('.wk-amap-slice.is-selected').forEach(function (el) { el.classList.remove('is-selected'); });
+  m.el.querySelectorAll('.wk-amap-slice[data-i="' + i + '"]').forEach(function (el) { el.classList.add('is-selected'); });
+
+  var h = '<p class="wk-modal-eyebrow">Bank $' + bank + ' · ' + regionRange(bank, r) + '</p>';
+  h += '<h3 id="wk-modal-title">' + (r.st === 'gap' ? 'Uncharted territory' : md(r.n)) + '</h3>';
+  h += '<div class="wk-modal-facts">' + badge(r.st) +
+       '<span>' + (r.b != null ? num(r.b) + ' bytes' : 'size unknown') + '</span>' +
+       (r.o ? '<span>file <code>' + esc(r.o) + '</code></span>' : '') + '</div>';
+  if (r.st === 'gap') {
+    var prev = regs[i - 1], next = regs[i + 1];
+    h += '<p>Nothing in this stretch of Bank $' + bank + ' has been charted in the bank map yet: ' +
+         '<strong>' + num(r.b) + ' bytes</strong> still waiting to be explored, labelled and matched.</p>';
+    if (prev || next) h += '<p class="wk-modal-dim">Between ' + (prev ? md(prev.n) : 'the bank start') +
+         ' and ' + (next ? md(next.n) : 'the end of the bank') + '.</p>';
+  } else {
+    if (r.d) h += '<p>' + md(r.d) + '</p>';
+    if (r.e == null) h += '<p class="wk-modal-dim">The end address of this region is not known yet.</p>';
+  }
+  if (r.k && r.k.length) {
+    var done = 0, doneB = 0, todoB = 0;
+    r.k.forEach(function (k) { if (k.st === 'matched') { done++; doneB += k.b || 0; } else { todoB += k.b || 0; } });
+    h += '<h4>Inside this region <span class="wk-modal-dim">· ' + done + ' of ' + r.k.length + ' matched' +
+         (doneB ? ', ' + num(doneB) + ' B verified' : '') + (todoB ? ', ' + num(todoB) + ' B to do' : '') + '</span></h4>';
+    h += '<ul class="wk-modal-list">' + r.k.map(function (k) {
+      return '<li class="is-' + k.st + '">' + badge(k.st) + ' <span class="wk-modal-name">' + md(k.n) + '</span>' +
+             '<span class="wk-modal-addr">' + esc(k.a) + (k.b ? ' · ' + num(k.b) + ' B' : '') + '</span>' +
+             (k.d ? '<span class="wk-modal-desc">' + md(k.d) + '</span>' : '') + '</li>';
+    }).join('') + '</ul>';
+  } else if (r.st === 'matched') {
+    h += '<p class="wk-modal-ok">Byte-exact: verified against the original ROM with <code>make diff</code>.</p>';
+  } else if (r.st !== 'gap') {
+    h += '<p class="wk-modal-todo">Still to do: this region is ' + LABEL[r.st].toLowerCase() + ' but not yet matched.</p>';
+  }
+  h += '<div class="wk-modal-actions">' +
+       '<button type="button" class="wk-btn" data-step="-1"' + (i === 0 ? ' disabled' : '') + ' aria-label="Previous region">◀ Prev</button>' +
+       (r.st !== 'gap' ? '<button type="button" class="wk-btn" data-jump="row" data-row="' + esc(r.n) + '">Show in table</button>' : '') +
+       '<button type="button" class="wk-btn" data-step="1"' + (i === regs.length - 1 ? ' disabled' : '') + ' aria-label="Next region">Next ▶</button>' +
+       '</div>';
+  openModal(h, from);
+}
+function stepRegion(d) {
+  if (!current) return;
+  var regs = maps[current.bank].data.regions, j = current.i + d;
+  if (j < 0 || j >= regs.length) return;
+  var btn = maps[current.bank].el.querySelector('.wk-amap-slice[data-i="' + j + '"]');
+  showRegion(current.bank, j, lastFocus);
+  if (btn) btn.scrollIntoView({ block: 'nearest' });
+}
+function jumpTo(kind, key) {
+  var target = null;
+  if (kind === 'row') {
+    var want = key.replace(/[`*]/g, '').trim();
+    document.querySelectorAll('.wk-article-body table tbody tr').forEach(function (tr) {
+      if (!target && tr.firstElementChild && tr.firstElementChild.textContent.trim() === want) target = tr;
+    });
+  } else {
+    target = document.getElementById(kind);
+  }
+  closeModal();
+  if (!target) return;
+  target.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'center' });
+  target.classList.remove('wk-flash'); void target.offsetWidth; target.classList.add('wk-flash');
+}
+
+/* Address Map page: a slice cell opens its pre-rendered panel in the pop-up */
+document.querySelectorAll('.wk-addrmap').forEach(function (map) {
+  map.addEventListener('click', function (e) {
+    var cell = e.target.closest('a.wk-slice-cell');
+    if (!cell) return;
+    var panel = document.getElementById(cell.getAttribute('href').slice(1));
+    if (!panel) return;
+    e.preventDefault();
+    map.querySelectorAll('.wk-slice-cell.is-selected').forEach(function (el) { el.classList.remove('is-selected'); });
+    cell.classList.add('is-selected');
+    current = null;
+    var clone = panel.cloneNode(true);
+    clone.removeAttribute('id');
+    var x = clone.querySelector('.wk-slice-close'); if (x) x.remove();
+    var h3 = clone.querySelector('h3'); if (h3) h3.id = 'wk-modal-title';
+    openModal(clone.innerHTML, cell);
+  });
+});
+
+/* Bank heat map (64 banks) */
+document.querySelectorAll('.wk-heat-wrap').forEach(function (wrap) {
+  var meta;
+  try { meta = JSON.parse(wrap.querySelector('.wk-heat-data').textContent); } catch (e) { return; }
+  wrap.addEventListener('click', function (e) {
+    var c = e.target.closest('.wk-heat-cell'); if (!c) return;
+    var bank = c.getAttribute('data-heat'), m = meta[bank]; if (!m) return;
+    wrap.querySelectorAll('.is-selected').forEach(function (el) { el.classList.remove('is-selected'); });
+    c.classList.add('is-selected');
+    current = null;
+    var pct = m.code != null ? (m.code / 65536 * 100) : null;
+    var h = '<p class="wk-modal-eyebrow">Bank $' + bank + ' · file $' +
+            ('0' + (parseInt(bank, 16) - 0xC0).toString(16).toUpperCase()).slice(-2) + '0000</p>';
+    h += '<h3 id="wk-modal-title">Bank $' + bank + '</h3>';
+    h += '<div class="wk-modal-facts">' +
+         (m.matched ? badge('progress') : (m.code ? badge('unmapped') : '<span class="wk-status wk-status-unknown">Data only</span>')) +
+         '<span>' + (m.code != null ? num(m.code) + ' code bytes (' + pct.toFixed(pct < 1 ? 1 : 0) + '%)' : 'not surveyed') + '</span></div>';
+    if (m.note) h += '<p>' + md(m.note) + '</p>';
+    if (m.matched) {
+      var mp = m.code ? Math.min(100, m.matched / m.code * 100) : 0;
+      h += '<div class="wk-modal-gauge" role="img" aria-label="' + mp.toFixed(1) + '% of code matched"><span style="width:' + mp.toFixed(2) + '%"></span></div>';
+      h += '<p><strong>' + num(m.matched) + ' bytes</strong> matched and verified' +
+           (m.code ? ' — ' + mp.toFixed(1) + '% of this bank\'s code. ' + num(Math.max(0, m.code - m.matched)) + ' code bytes to go.' : '.') + '</p>';
+    } else if (m.code) {
+      h += '<p class="wk-modal-todo">Not started: ' + num(m.code) + ' bytes of code waiting to be matched.</p>';
+    } else {
+      h += '<p class="wk-modal-dim">No executable code here: graphics, music or map data (incbin).</p>';
+    }
+    h += '<div class="wk-modal-actions">' +
+         (m.map ? '<button type="button" class="wk-btn" data-jump="wk-amap-' + bank + '">Open the $' + bank + ' address map ▶</button>' : '') +
+         '</div>';
+    openModal(h, c);
+  });
+});
+
+}());
+</script>
+</body>
+</html>

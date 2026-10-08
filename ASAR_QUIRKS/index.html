@@ -1,0 +1,800 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  
+  <meta name="description" content="Byte-exact matching decompilation of Chrono Trigger (SNES, US 1.0)">
+  <link rel="canonical" href="https://thisisakill.github.io/Kajar-site/ASAR_QUIRKS/">
+  
+  
+  <title>asar Quirks — Kajar</title>
+  
+  
+  <link rel="stylesheet" href="../stylesheets/wiki.css">
+  
+  
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Press+Start+2P&family=Silkscreen&display=swap">
+  
+</head>
+<body>
+
+<!-- ── Header ──────────────────────────────────────────────── -->
+<header class="wk-header">
+  <button class="wk-nav-toggle" id="wk-nav-toggle" aria-label="Toggle navigation" aria-expanded="false" aria-controls="wk-nav">☰</button>
+  <a class="wk-wordmark" href=".." aria-label="Kajar home">
+    <svg class="wk-wordmark-clock" viewBox="0 0 32 32" aria-hidden="true">
+      <circle cx="16" cy="16" r="13.5" fill="#0f1438" stroke="#ffd76e" stroke-width="2.5"/>
+      <g stroke="#cdd5ff" stroke-width="1.6" stroke-linecap="round">
+        <path d="M16 5.2v2.4M16 24.4v2.4M5.2 16h2.4M24.4 16h2.4"/>
+      </g>
+      <path d="M16 16l-5 -3.2" stroke="#ffd76e" stroke-width="2.4" stroke-linecap="round"/>
+      <path class="hand-m" d="M16 16V7.6" stroke="#ffffff" stroke-width="1.8" stroke-linecap="round"/>
+      <circle cx="16" cy="16" r="1.8" fill="#ffd76e"/>
+    </svg>
+    <span>Kajar</span>
+    <small class="wk-tagline">notes of ChronoRET, rebuilding Chrono Trigger one matched routine at a time</small>
+  </a>
+
+  <div class="wk-header-right">
+    
+    <div class="wk-searchbox">
+      <input class="wk-search-input" id="wk-q" type="search"
+             placeholder="Search…  [/]" autocomplete="off" aria-label="Search">
+      <div class="wk-search-results" id="wk-results" hidden role="listbox"></div>
+    </div>
+    <button class="wk-toggle" id="wk-toggle" title="Toggle theme" aria-label="Toggle dark/light">
+      <svg class="i-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.5" fill="currentColor"/><g stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 1.8v2.6M12 19.6v2.6M1.8 12h2.6M19.6 12h2.6M4.8 4.8l1.8 1.8M17.4 17.4l1.8 1.8M4.8 19.2l1.8-1.8M17.4 6.6l1.8-1.8"/></g></svg>
+      <svg class="i-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.5 14.6A8.6 8.6 0 0 1 9.4 3.5a8.6 8.6 0 1 0 11.1 11.1z" fill="currentColor"/></svg>
+    </button>
+  </div>
+</header>
+
+<!-- ── Layout ──────────────────────────────────────────────── -->
+<div class="wk-layout">
+
+  <div class="wk-nav-backdrop" id="wk-nav-backdrop" hidden></div>
+
+  <!-- Left sidebar -->
+  <nav class="wk-nav" id="wk-nav" aria-label="Site navigation">
+    <a href=".." class="wk-portal-icon" aria-label="Home">
+      <span class="wk-emblem">
+        <span class="wk-emblem-art">
+          <img src="../assets/ct-icon.png" alt="Crono" width="220" height="220">
+        </span>
+        <span class="wk-emblem-caption">Crono · 1000 AD</span>
+      </span>
+    </a>
+
+    
+      
+      <a class="wk-nav-link" href="..">Home</a>
+      
+    
+      
+        <p class="wk-nav-heading">The Journey</p>
+        
+          
+          <a class="wk-nav-link" href="../devlog/">Devlog</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../gallery/">Gallery</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../PROGRESS/">Progress</a>
+          
+        
+      
+    
+      
+        <p class="wk-nav-heading">Systems</p>
+        
+          
+          <a class="wk-nav-link" href="../systems/">Overview</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../systems/boot/">Boot</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../systems/engine/">Engine core</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../systems/sprites/">Sprites & objects</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../systems/battle-engine/">Battle engine</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../systems/battle-menu/">Battle menu</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../systems/battle-targeting/">Battle targeting</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../systems/battle-status/">Status bar & text</a>
+          
+        
+      
+    
+      
+        <p class="wk-nav-heading">How It Works</p>
+        
+          
+          <a class="wk-nav-link" href="../ARCHITECTURE/">Architecture</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../ADDRESS_MAP/">Address Map</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../BANK_MAP/">Bank Map</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../how-sprite-init-works/">Sprite Init Explainer</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../ROM_HASH/">Target ROM</a>
+          
+        
+      
+    
+      
+        <p class="wk-nav-heading">For Time Travelers</p>
+        
+          
+          <a class="wk-nav-link" href="../CONTRIBUTING/">Contributing</a>
+          
+        
+          
+          <a class="wk-nav-link is-active" href="./">asar Quirks</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../glossary/">Glossary</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../CI_SETUP/">CI Setup</a>
+          
+        
+      
+    
+      
+      <a class="wk-nav-link" href="../credits/">Credits</a>
+      
+    
+
+    <!-- Party Status: every value from docs/data/ (hooks/progress_data.py) -->
+    
+    <div class="wk-stats">
+      <p class="wk-nav-heading" title="Project progress">Party Status</p>
+      
+      <div class="wk-party">
+        <div class="wk-party-row" title="Bytes matched: the rebuilt ROM is byte-identical here">
+          <span class="wk-party-k">HP</span>
+          <span class="wk-party-v">29,032<small>/359,278</small></span>
+        </div>
+        <div class="wk-stat-track"><div class="wk-stat-fill" style="width:8.08%"></div></div>
+        <p class="wk-party-note">bytes matched · 8.08% of code</p>
+
+        <div class="wk-party-row" title="Matched functions that also meet the readability standard">
+          <span class="wk-party-k">MP</span>
+          <span class="wk-party-v">256<small>/256</small></span>
+        </div>
+        <div class="wk-stat-track"><div class="wk-stat-fill wk-stat-fill-mp" style="width:100.0%"></div></div>
+        <p class="wk-party-note">functions readable</p>
+
+        <div class="wk-party-row" title="Readable functions that passed an independent review">
+          <span class="wk-party-k">TP</span>
+          <span class="wk-party-v">23<small>/256</small></span>
+        </div>
+        <div class="wk-stat-track"><div class="wk-stat-fill wk-stat-fill-dim" style="width:9.0%"></div></div>
+        <p class="wk-party-note">functions verified</p>
+      </div>
+      
+      <p class="wk-stat-link"><a href="../PROGRESS/">View full progress →</a></p>
+    </div>
+  </nav>
+
+  <!-- Main content -->
+  <main class="wk-main">
+    <div class="wk-article">
+
+      
+      
+      <div class="wk-toc" id="wk-toc">
+        <div class="wk-toc-header">
+          <b>Contents</b>
+          <button class="wk-toc-toggle"
+            onclick="var l=document.getElementById('wk-toc-list');l.hidden=!l.hidden;this.textContent=l.hidden?'[show]':'[hide]'">[hide]</button>
+        </div>
+        <ol class="wk-toc-list" id="wk-toc-list">
+          
+          <li>
+            <a href="#asar-191-quirks" class="wk-toc-link">asar 1.91 Quirks</a>
+            
+            <ol><li><a href="#1-named-equate-sta-generates-long-mode" class="wk-toc-link">1. Named equate → STA generates LONG mode</a></li><li><a href="#2-stx-equatename-unknown-command" class="wk-toc-link">2. STX EquateName — "Unknown command"</a></li><li><a href="#3-sta-0001x-dpx-mode-not-absx" class="wk-toc-link">3. STA $0001,X → dp,X mode (not abs,X)</a></li><li><a href="#4-brl-label-stores-the-raw-operand-not-a-target-address" class="wk-toc-link">4. BRL label stores the raw operand, not a target address</a></li><li><a href="#5-jsr-equatename-unknown-command" class="wk-toc-link">5. JSR EquateName — "Unknown command"</a></li><li><a href="#6-lda-7f-in-m0-context-rom-uses-2-byte-form-asar-emits-3-bytes" class="wk-toc-link">6. LDA #$7F in M=0 context: ROM uses 2-byte form, asar emits 3 bytes</a></li><li><a href="#7-sbc-nnnn-adc-nnnn-in-m0-context-wrong-encoding" class="wk-toc-link">7. SBC #$NNNN / ADC #$NNNN in M=0 context: wrong encoding</a></li><li><a href="#quick-reference" class="wk-toc-link">Quick reference</a></li></ol>
+            
+          </li>
+          
+        </ol>
+      </div>
+      
+      
+
+      <div class="wk-article-body">
+      
+      
+      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="August 14, 2026 17:51:53 UTC">August 14, 2026</span></p>
+      
+      <h1 id="asar-191-quirks"><abbr title="The 65816 assembler used for this project — patches matched .asm source into a ROM copy for byte-exact verification.">asar</abbr> 1.91 Quirks</h1>
+<p>Surprises encountered during this project. Future contributors: read this before spending an hour debugging a byte offset.</p>
+<h2 id="1-named-equate-sta-generates-long-mode">1. Named equate → <code>STA</code> generates LONG mode</h2>
+<p><strong>Symptom:</strong> <code>STA INIDISP</code> emits <abbr title="The first byte of a CPU instruction, identifying the operation (e.g. $60 = RTS, $78 = SEI).">opcode</abbr> <code>8F</code> (STA long, 4 bytes) instead of <code>8D</code> (STA abs, 3 bytes). Every instruction downstream shifts by 1 byte.</p>
+<p><strong>Cause:</strong> When the operand is a named equate (e.g. <code>INIDISP = $2100</code>), <abbr title="The 65816 assembler used for this project — patches matched .asm source into a ROM copy for byte-exact verification.">asar</abbr> promotes to 24-bit addressing regardless of the value's size.</p>
+<p><strong>Fix:</strong> Force abs mode with the <code>.w</code> suffix:
+<div class="language-asm highlight"><span class="filename">65C816 Assembly</span><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1"></a><a href="#__codelineno-0-1"><span class="linenos" data-linenos="1 "></span></a><span class="nf">STA.w</span><span class="w"> </span><span class="no">INIDISP</span><span class="w">    </span><span class="c1">; $8D 00 21 — correct (3 bytes)</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2"></a><a href="#__codelineno-0-2"><span class="linenos" data-linenos="2 "></span></a><span class="nf">STA.w</span><span class="w"> </span><span class="no">NMITIMEN</span><span class="w">   </span><span class="c1">; etc.</span>
+</code></pre></div>
+This applies to all hardware register writes where the register is defined as a named constant.</p>
+<h2 id="2-stx-equatename-unknown-command">2. <code>STX EquateName</code> — "Unknown command"</h2>
+<p><strong>Symptom:</strong> <code>STX A1T7L</code> (where <code>A1T7L = $4372</code>) produces an <abbr title="The 65816 assembler used for this project — patches matched .asm source into a ROM copy for byte-exact verification.">asar</abbr> error.</p>
+<p><strong>Cause:</strong> <abbr title="The 65816 assembler used for this project — patches matched .asm source into a ROM copy for byte-exact verification.">asar</abbr> 1.91 does not accept named equates as the operand for <code>STX</code>.</p>
+<p><strong>Fix:</strong> Use the raw hex literal:
+<div class="language-asm highlight"><span class="filename">65C816 Assembly</span><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1"></a><a href="#__codelineno-1-1"><span class="linenos" data-linenos="1 "></span></a><span class="nf">STX</span><span class="w"> </span><span class="no">$4372</span><span class="w">        </span><span class="c1">; works fine</span>
+</code></pre></div></p>
+<h2 id="3-sta-0001x-dpx-mode-not-absx">3. <code>STA $0001,X</code> → <abbr title="Direct Page mode — 2-byte instruction using an 8-bit offset added to the D register.">dp</abbr>,X mode (not abs,X)</h2>
+<p><strong>Symptom:</strong> <code>STA $0001,X</code> emits <abbr title="The first byte of a CPU instruction, identifying the operation (e.g. $60 = RTS, $78 = SEI).">opcode</abbr> <code>95</code> (<abbr title="Direct Page mode — 2-byte instruction using an 8-bit offset added to the D register.">dp</abbr>,X) instead of <code>9D</code> (abs,X). The value <code>$0001</code> fits in 8 bits so <abbr title="The 65816 assembler used for this project — patches matched .asm source into a ROM copy for byte-exact verification.">asar</abbr> defaults to direct-page indexed.</p>
+<p><strong>Fix:</strong>
+<div class="language-asm highlight"><span class="filename">65C816 Assembly</span><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1"></a><a href="#__codelineno-2-1"><span class="linenos" data-linenos="1 "></span></a><span class="nf">STA.w</span><span class="w"> </span><span class="no">$0001</span><span class="p">,</span><span class="no">X</span><span class="w">    </span><span class="c1">; forces abs,X: $9D 01 00</span>
+</code></pre></div>
+Comes up in the PostVBlank <abbr title="Object Attribute Memory — the PPU's 512+32-byte sprite table (up to 128 sprites: X/Y, tile, palette, size).">OAM</abbr>-fill loop.</p>
+<h2 id="4-brl-label-stores-the-raw-operand-not-a-target-address">4. <code>BRL label</code> stores the raw operand, not a target address</h2>
+<p><strong>Symptom:</strong> <code>BRL SomeLabel</code> works fine. <code>BRL $XXXX</code> stores <code>$XXXX</code> as the branch offset directly, not the absolute address.</p>
+<p><strong>Cause:</strong> By design in <abbr title="The 65816 assembler used for this project — patches matched .asm source into a ROM copy for byte-exact verification.">asar</abbr>. The <abbr title="Branch Long — 16-bit relative branch (signed offset from next PC); asar 1.91 quirk: BRL $XXXX stores $XXXX raw, not a target address.">BRL</abbr> operand is a <em>signed 16-bit offset from the next instruction</em>, not an address. When you write <code>BRL $XXXX</code>, <abbr title="The 65816 assembler used for this project — patches matched .asm source into a ROM copy for byte-exact verification.">asar</abbr> stores <code>$XXXX</code> literally.</p>
+<p><strong>Context in this project:</strong> <code>VBlankHandler</code> contains <code>BRL $B193</code>. That <code>$B193</code> is the raw signed offset that lands at <code>PostVBlank ($C0:B271)</code> — it is NOT the address <code>$B193</code>.</p>
+<p><strong>Fix:</strong> When <abbr title="Writing assembly source that assembles byte-for-byte identically to the original ROM via asar.">matching</abbr> a <code>BRL</code>, extract the signed 16-bit operand from the ROM bytes and use it directly:
+<div class="language-asm highlight"><span class="filename">65C816 Assembly</span><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1"></a><a href="#__codelineno-3-1"><span class="linenos" data-linenos="1 "></span></a><span class="nf">BRL</span><span class="w"> </span><span class="no">$B193</span><span class="w">        </span><span class="c1">; raw offset, not an address label</span>
+</code></pre></div>
+Using a label reference like <code>BRL PostVBlank</code> would likely produce a different offset.</p>
+<h2 id="5-jsr-equatename-unknown-command">5. <code>JSR EquateName</code> — "Unknown command"</h2>
+<p><strong>Symptom:</strong> Similar to the STX issue — <code>JSR SomeEquate</code> fails.</p>
+<p><strong>Fix:</strong> Define a label stub at the target address with <code>org</code>:
+<div class="language-asm highlight"><span class="filename">65C816 Assembly</span><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1"></a><a href="#__codelineno-4-1"><span class="linenos" data-linenos="1 "></span></a><span class="nf">org</span><span class="w"> </span><span class="no">$C0B309</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2"></a><a href="#__codelineno-4-2"><span class="linenos" data-linenos="2 "></span></a><span class="nl">Sub_B309:</span><span class="w">        </span><span class="c1">; no bytes emitted — just a label for JSR to resolve</span>
+<a id="__codelineno-4-3" name="__codelineno-4-3"></a><a href="#__codelineno-4-3"><span class="linenos" data-linenos="3 "></span></a>
+<a id="__codelineno-4-4" name="__codelineno-4-4"></a><a href="#__codelineno-4-4"><span class="linenos" data-linenos="4 "></span></a><span class="c1">; ... later, or elsewhere:</span>
+<a id="__codelineno-4-5" name="__codelineno-4-5"></a><a href="#__codelineno-4-5"><span class="linenos" data-linenos="5 "></span></a><span class="w">    </span><span class="nf">JSR</span><span class="w"> </span><span class="no">Sub_B309</span><span class="w"> </span><span class="c1">; resolves correctly to $B309</span>
+</code></pre></div></p>
+<h2 id="6-lda-7f-in-m0-context-rom-uses-2-byte-form-asar-emits-3-bytes">6. <code>LDA #$7F</code> in M=0 context: ROM uses 2-byte form, <abbr title="The 65816 assembler used for this project — patches matched .asm source into a ROM copy for byte-exact verification.">asar</abbr> emits 3 bytes</h2>
+<p><strong>Symptom:</strong> <code>LDA #$7F</code> in a 16-bit accumulator (M=0) context assembles as <code>$A9 $7F $00</code> (3 bytes: immediate sign-zero-extended to 16 bits). If the ROM contains the 2-byte sequence <code>$A9 $7F</code> followed by an unrelated byte, <code>make diff</code> will show a 1-byte shift.</p>
+<p><strong>Cause:</strong> With M=0, LDA immediate is a 3-byte instruction. The assembler always emits the full 16-bit operand even if the value fits in 8 bits.</p>
+<p><strong>When it occurs:</strong> The ROM sometimes stores <code>$A9 $7F</code> (2 bytes) intending the next byte to be the <em>following instruction</em>, not the high byte of the immediate. This happens when the compiler originally ran in M=1 mode or used an 8-bit trick that <abbr title="The 65816 assembler used for this project — patches matched .asm source into a ROM copy for byte-exact verification.">asar</abbr> doesn't replicate automatically.</p>
+<p><strong>Fix:</strong> Emit the raw bytes directly:
+<div class="language-asm highlight"><span class="filename">65C816 Assembly</span><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1"></a><a href="#__codelineno-5-1"><span class="linenos" data-linenos="1 "></span></a><span class="nf">db</span><span class="w"> </span><span class="no">$A9</span><span class="p">,</span><span class="no">$7F</span><span class="w">        </span><span class="c1">; forces the 2-byte sequence in M=0 context</span>
+</code></pre></div>
+Do not write <code>LDA #$7F</code> when in 16-bit accumulator mode and the ROM has only 2 bytes here.</p>
+<p><strong>Discovered:</strong> session 26, during Sub_E12A Phase 1 <abbr title="Writing assembly source that assembles byte-for-byte identically to the original ROM via asar.">matching</abbr> (<code>LDA #$7F / STA $D2</code>).</p>
+<h2 id="7-sbc-nnnn-adc-nnnn-in-m0-context-wrong-encoding">7. <code>SBC #$NNNN</code> / <code>ADC #$NNNN</code> in M=0 context: wrong encoding</h2>
+<p><strong>Symptom:</strong> <code>SBC #$0040</code> (or <code>ADC #$0040</code>, etc.) in a 16-bit accumulator (M=0) context
+may assemble to the 2-byte M=1 form (<code>$E9 $40</code>) rather than the correct 3-byte M=0 form
+(<code>$E9 $40 $00</code>). This causes a 1-byte shift and a cascade of mismatches downstream.</p>
+<p><strong>Cause:</strong> <abbr title="The 65816 assembler used for this project — patches matched .asm source into a ROM copy for byte-exact verification.">asar</abbr> 1.91 does not always track the <abbr title="Processor status bit controlling accumulator width: M=1 → 8-bit A, M=0 → 16-bit A. Changed via SEP/REP.">M flag</abbr> correctly across <code>REP #$20</code> when
+choosing immediate operand width for <code>SBC</code> and <code>ADC</code>.</p>
+<p><strong>When it occurs:</strong> Any <code>SBC #$xxxx</code> or <code>ADC #$xxxx</code> in M=0 (16-bit A) context, especially
+when the upper byte of the immediate is <code>$00</code> (i.e., the value fits in 8 bits, making the
+2-byte vs 3-byte ambiguity matter).</p>
+<p><strong>Fix:</strong> Emit the raw bytes directly, same pattern as the <code>LDA #$7F</code> workaround:
+<div class="language-asm highlight"><span class="filename">65C816 Assembly</span><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1"></a><a href="#__codelineno-6-1"><span class="linenos" data-linenos="1 "></span></a><span class="nf">REP</span><span class="w"> </span><span class="c1">#$20                        ; M=0</span>
+<a id="__codelineno-6-2" name="__codelineno-6-2"></a><a href="#__codelineno-6-2"><span class="linenos" data-linenos="2 "></span></a><span class="c1">; instead of: SBC #$0040        (may emit 2 bytes)</span>
+<a id="__codelineno-6-3" name="__codelineno-6-3"></a><a href="#__codelineno-6-3"><span class="linenos" data-linenos="3 "></span></a><span class="nf">db</span><span class="w"> </span><span class="no">$E9</span><span class="p">,</span><span class="no">$40</span><span class="p">,</span><span class="no">$00</span><span class="w">                  </span><span class="c1">; SBC #$0040 — explicit 3-byte M=0 encoding</span>
+<a id="__codelineno-6-4" name="__codelineno-6-4"></a><a href="#__codelineno-6-4"><span class="linenos" data-linenos="4 "></span></a><span class="c1">; instead of: ADC #$000E        (may emit 2 bytes)</span>
+<a id="__codelineno-6-5" name="__codelineno-6-5"></a><a href="#__codelineno-6-5"><span class="linenos" data-linenos="5 "></span></a><span class="nf">db</span><span class="w"> </span><span class="no">$69</span><span class="p">,</span><span class="no">$0E</span><span class="p">,</span><span class="no">$00</span><span class="w">                  </span><span class="c1">; ADC #$000E — explicit 3-byte M=0 encoding</span>
+</code></pre></div></p>
+<p>The <abbr title="The first byte of a CPU instruction, identifying the operation (e.g. $60 = RTS, $78 = SEI).">opcode</abbr> bytes are: <code>$E9</code> = SBC immediate, <code>$69</code> = ADC immediate; followed by the
+16-bit little-endian operand.</p>
+<p><strong>Discovered:</strong> session 35 (BattleMsg_FormatNumberDigits); applies to all 16-bit SBC/ADC
+immediates in M=0 context. Confirmed again in session 36 (BattleUI_BuildStatusBarFrame).</p>
+<h2 id="quick-reference">Quick reference</h2>
+<table>
+<thead>
+<tr>
+<th>Instruction</th>
+<th>Broken form</th>
+<th>Working form</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>STA to named register</td>
+<td><code>STA INIDISP</code></td>
+<td><code>STA.w INIDISP</code></td>
+</tr>
+<tr>
+<td>STX to named equate</td>
+<td><code>STX A1T7L</code></td>
+<td><code>STX $4372</code></td>
+</tr>
+<tr>
+<td>STA indexed small offset</td>
+<td><code>STA $0001,X</code></td>
+<td><code>STA.w $0001,X</code></td>
+</tr>
+<tr>
+<td><abbr title="Branch Long — 16-bit relative branch (signed offset from next PC); asar 1.91 quirk: BRL $XXXX stores $XXXX raw, not a target address.">BRL</abbr> with raw offset</td>
+<td><code>BRL PostVBlank</code></td>
+<td><code>BRL $B193</code> (raw offset)</td>
+</tr>
+<tr>
+<td><abbr title="Jump to Subroutine — same-bank call, pushes a 16-bit return address onto the stack.">JSR</abbr> to named equate</td>
+<td><code>JSR SomeEquate</code></td>
+<td>define <code>org</code>/label stub</td>
+</tr>
+<tr>
+<td>LDA #small in M=0</td>
+<td><code>LDA #$7F</code> (3 bytes)</td>
+<td><code>db $A9,$7F</code> (2 bytes)</td>
+</tr>
+<tr>
+<td>SBC/ADC 16-bit imm in M=0</td>
+<td><code>SBC #$0040</code> (2 bytes)</td>
+<td><code>db $E9,$40,$00</code> (3 bytes)</td>
+</tr>
+<tr>
+<td>SBC/ADC 16-bit imm in M=0</td>
+<td><code>ADC #$000E</code> (2 bytes)</td>
+<td><code>db $69,$0E,$00</code> (3 bytes)</td>
+</tr>
+</tbody>
+</table>
+      
+      </div>
+
+    </div>
+
+    <footer class="wk-footer">
+      <ul class="wk-eras" aria-label="Eras">
+        <li style="--c:var(--era-prehistory)">65,000,000 BC</li>
+        <li style="--c:var(--era-zeal)">12,000 BC</li>
+        <li style="--c:var(--era-medieval)">600 AD</li>
+        <li style="--c:var(--era-present)">1000 AD</li>
+        <li style="--c:var(--era-lavos)">1999 AD</li>
+        <li style="--c:var(--era-future)">2300 AD</li>
+        <li style="--c:var(--era-eot)">End of Time</li>
+      </ul>
+      <p class="wk-footer-motto">Every byte, every era</p>
+      <p>Made by people who love Chrono Trigger, so that it can be studied, preserved and understood,
+      one verified routine at a time.</p>
+      <p>A fan project. Not affiliated with or endorsed by Square Enix. No ROM data is shared here:
+      bring your own copy.</p>
+    </footer>
+  </main>
+
+</div>
+
+<!-- Address-map pop-up (a menu window) -->
+<div class="wk-modal" id="wk-modal" hidden>
+  <div class="wk-modal-backdrop" data-close></div>
+  <div class="wk-modal-win" role="dialog" aria-modal="true" aria-labelledby="wk-modal-title" tabindex="-1">
+    <button type="button" class="wk-modal-close" data-close aria-label="Close">&times;</button>
+    <div class="wk-modal-body" id="wk-modal-body"></div>
+  </div>
+</div>
+
+<!-- Back to top -->
+<button class="wk-top" id="wk-top" title="Back to top" aria-label="Scroll to top">↑</button>
+
+
+<script>
+(function () {
+'use strict';
+
+/* ── Theme ─────────────────────────────────────────────────── */
+var stored = 'dark';
+try { stored = localStorage.getItem('wk-theme') || 'dark'; } catch (e) {}
+applyTheme(stored);
+document.getElementById('wk-toggle').addEventListener('click', function () {
+  applyTheme(document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
+});
+function applyTheme(t) {
+  document.documentElement.setAttribute('data-theme', t);
+  try { localStorage.setItem('wk-theme', t); } catch (e) {}
+}
+
+/* ── Mobile nav ────────────────────────────────────────────── */
+var navToggle  = document.getElementById('wk-nav-toggle');
+var navEl      = document.getElementById('wk-nav');
+var navBackdrop = document.getElementById('wk-nav-backdrop');
+function openNav() {
+  navEl.classList.add('is-open');
+  navBackdrop.hidden = false;
+  navToggle.setAttribute('aria-expanded', 'true');
+}
+function closeNav() {
+  navEl.classList.remove('is-open');
+  navBackdrop.hidden = true;
+  navToggle.setAttribute('aria-expanded', 'false');
+}
+if (navToggle && navEl && navBackdrop) {
+  navToggle.addEventListener('click', function () {
+    if (navEl.classList.contains('is-open')) { closeNav(); } else { openNav(); }
+  });
+  navBackdrop.addEventListener('click', closeNav);
+  navEl.addEventListener('click', function (e) {
+    if (e.target.closest('a')) { closeNav(); }
+  });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') { closeNav(); }
+  });
+  window.addEventListener('resize', function () {
+    if (window.innerWidth > 720) { closeNav(); }
+  });
+}
+
+/* ── Search ─────────────────────────────────────────────────── */
+var input   = document.getElementById('wk-q');
+var results = document.getElementById('wk-results');
+var docs    = null;
+if (input) {
+  fetch("../search/search_index.json")
+    .then(function (r) { return r.json(); })
+    .then(function (d) { docs = d.docs; });
+
+  input.addEventListener('input', onSearch);
+
+  document.addEventListener('click', function (e) {
+    if (results && !results.contains(e.target) && e.target !== input) results.hidden = true;
+  });
+  input.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') { results.hidden = true; this.blur(); }
+    if (e.key === 'Enter' && results && !results.hidden) {
+      var first = results.querySelector('.wk-result');
+      if (first) { first.click(); }
+    }
+  });
+}
+
+/* Press / to focus search */
+document.addEventListener('keydown', function (e) {
+  if (e.key === '/' && document.activeElement !== input &&
+      document.activeElement.tagName !== 'INPUT' &&
+      document.activeElement.tagName !== 'TEXTAREA') {
+    e.preventDefault();
+    if (input) { input.focus(); input.select(); }
+  }
+});
+
+function onSearch() {
+  var q = this.value.trim().toLowerCase();
+  if (!docs || q.length < 2) { results.hidden = true; return; }
+  var hits = docs.filter(function (d) {
+    return (d.title + ' ' + d.text).toLowerCase().indexOf(q) !== -1;
+  }).slice(0, 8);
+  if (!hits.length) { results.hidden = true; return; }
+  var base = "..";
+  results.innerHTML = hits.map(function (d) {
+    var text  = d.text || '';
+    var i     = text.toLowerCase().indexOf(q);
+    var start = Math.max(0, i - 35);
+    var end   = Math.min(text.length, i + q.length + 70);
+    var snip  = (start > 0 ? '…' : '') + text.slice(start, end) + (end < text.length ? '…' : '');
+    var url   = base + '/' + d.location;
+    return '<a class="wk-result" href="' + esc(url) + '" role="option">'
+         + '<div class="wk-result-title">' + esc(d.title || d.location) + '</div>'
+         + '<div class="wk-result-snip">'  + esc(snip) + '</div></a>';
+  }).join('');
+  results.hidden = false;
+}
+
+function esc(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+/* ── Back to top ────────────────────────────────────────────── */
+var topBtn = document.getElementById('wk-top');
+if (topBtn) {
+  window.addEventListener('scroll', function () {
+    topBtn.classList.toggle('visible', window.scrollY > 400);
+  }, {passive: true});
+  topBtn.addEventListener('click', function () {
+    window.scrollTo({top: 0, behavior: 'smooth'});
+  });
+}
+
+/* ── Copy-to-clipboard ───────────────────────────────────────── */
+document.querySelectorAll('.highlight').forEach(function (block) {
+  var btn = document.createElement('button');
+  btn.className = 'wk-copy-btn';
+  btn.title     = 'Copy code';
+  btn.textContent = '⎘';
+  block.appendChild(btn);
+  btn.addEventListener('click', function () {
+    var pre = block.querySelector('pre');
+    if (!pre) return;
+    navigator.clipboard.writeText(pre.innerText).then(function () {
+      btn.textContent = '✓';
+      btn.classList.add('copied');
+      setTimeout(function () {
+        btn.textContent = '⎘';
+        btn.classList.remove('copied');
+      }, 1500);
+    });
+  });
+});
+
+/* ── TOC scroll spy ─────────────────────────────────────────── */
+var tocLinks = document.querySelectorAll('.wk-toc-link');
+if (tocLinks.length && 'IntersectionObserver' in window) {
+  var headings = Array.from(document.querySelectorAll('.wk-article h1, .wk-article h2, .wk-article h3'));
+  var active   = null;
+  var obs = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
+      if (e.isIntersecting) {
+        var id  = e.target.id;
+        var lnk = document.querySelector('.wk-toc-link[href="#' + id + '"]');
+        if (lnk && lnk !== active) {
+          if (active) active.classList.remove('is-current');
+          lnk.classList.add('is-current');
+          active = lnk;
+        }
+      }
+    });
+  }, {rootMargin: '-10% 0px -80% 0px'});
+  headings.forEach(function (h) { if (h.id) obs.observe(h); });
+}
+
+
+/* ── Status badges in "Status" table columns ────────────────── */
+var STATUS = { 'matched': 'matched', 'in progress': 'progress', 'partial': 'partial',
+               'identified': 'identified', 'unmapped': 'unmapped', 'unknown': 'unknown' };
+document.querySelectorAll('.wk-article-body table').forEach(function (tbl) {
+  var col = -1;
+  tbl.querySelectorAll('thead th').forEach(function (th, i) {
+    if (th.textContent.trim().toLowerCase() === 'status') col = i;
+  });
+  if (col < 0) return;
+  tbl.querySelectorAll('tbody tr').forEach(function (tr) {
+    var td = tr.children[col];
+    if (!td || td.querySelector('.wk-status')) return;
+    var whole = td.textContent.trim().toLowerCase();
+    var target = null, key = STATUS[whole];
+    if (key) { target = td; }
+    else if (td.firstElementChild && td.firstElementChild.tagName === 'STRONG' &&
+             td.firstChild === td.firstElementChild) {
+      key = STATUS[td.firstElementChild.textContent.trim().toLowerCase()];
+      if (key) target = td.firstElementChild;
+    }
+    if (!target) return;
+    var span = document.createElement('span');
+    span.className = 'wk-status wk-status-' + key;
+    if (target === td) { while (td.firstChild) span.appendChild(td.firstChild); td.appendChild(span); }
+    else { td.insertBefore(span, target); span.appendChild(target); }
+  });
+});
+
+/* ── Address map pop-up ─────────────────────────────────────── */
+var modal = document.getElementById('wk-modal');
+var mbody = document.getElementById('wk-modal-body');
+var mwin  = modal ? modal.querySelector('.wk-modal-win') : null;
+var lastFocus = null, closeTimer = null, current = null;
+var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+var LABEL = { matched: 'Matched', progress: 'In progress', identified: 'Identified',
+              unmapped: 'Unmapped', gap: 'Uncharted' };
+
+function md(s) {
+  return esc(s || '').replace(/`([^`]+)`/g, '<code>$1</code>')
+                     .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+}
+function hex4(n) { return ('000' + n.toString(16).toUpperCase()).slice(-4); }
+function num(n) { return n == null ? '?' : n.toLocaleString('en-US'); }
+function badge(st) {
+  var k = st === 'gap' ? 'unmapped' : st;
+  return '<span class="wk-status wk-status-' + k + '">' + (LABEL[st] || st) + '</span>';
+}
+
+function openModal(html, from) {
+  if (!modal) return;
+  clearTimeout(closeTimer);
+  mbody.innerHTML = html;
+  if (modal.hidden) {
+    lastFocus = from || document.activeElement;
+    modal.hidden = false;
+    document.documentElement.classList.add('wk-modal-lock');
+    void modal.offsetWidth;            /* commit start state, then animate */
+    modal.classList.add('is-open');
+  }
+  mbody.scrollTop = 0;
+  mwin.focus({ preventScroll: true });
+}
+function closeModal() {
+  if (!modal || modal.hidden) return;
+  modal.classList.remove('is-open');
+  document.documentElement.classList.remove('wk-modal-lock');
+  document.querySelectorAll('.wk-amap-slice.is-selected, .wk-heat-cell.is-selected, .wk-slice-cell.is-selected')
+    .forEach(function (el) { el.classList.remove('is-selected'); });
+  closeTimer = setTimeout(function () { modal.hidden = true; }, reduceMotion ? 0 : 200);
+  if (lastFocus && lastFocus.focus) lastFocus.focus({ preventScroll: true });
+  current = null;
+}
+if (modal) {
+  modal.addEventListener('click', function (e) {
+    if (e.target.closest('[data-close]')) { closeModal(); return; }
+    var nav = e.target.closest('[data-step]');
+    if (nav && current) { stepRegion(+nav.getAttribute('data-step')); return; }
+    var jump = e.target.closest('[data-jump]');
+    if (jump) { e.preventDefault(); jumpTo(jump.getAttribute('data-jump'), jump.getAttribute('data-row')); }
+  });
+  document.addEventListener('keydown', function (e) {
+    if (modal.hidden) return;
+    if (e.key === 'Escape') { e.preventDefault(); closeModal(); return; }
+    if (current && (e.key === 'ArrowRight' || e.key === 'ArrowLeft') &&
+        !/INPUT|TEXTAREA/.test(document.activeElement.tagName)) {
+      e.preventDefault(); stepRegion(e.key === 'ArrowRight' ? 1 : -1); return;
+    }
+    if (e.key === 'Tab') {               /* keep focus inside the window */
+      var f = Array.prototype.filter.call(
+        mwin.querySelectorAll('button, a[href], [tabindex="0"]'),
+        function (el) { return el.offsetParent !== null; });
+      if (!f.length) return;
+      var a = f[0], z = f[f.length - 1];
+      if (e.shiftKey && (document.activeElement === a || document.activeElement === mwin)) { e.preventDefault(); z.focus(); }
+      else if (!e.shiftKey && document.activeElement === z) { e.preventDefault(); a.focus(); }
+    }
+  });
+}
+
+var maps = {};
+document.querySelectorAll('.wk-amap').forEach(function (el) {
+  var data;
+  try { data = JSON.parse(el.querySelector('.wk-amap-data').textContent); } catch (e) { return; }
+  maps[data.bank] = { el: el, data: data };
+  el.addEventListener('click', function (e) {
+    var b = e.target.closest('.wk-amap-slice');
+    if (b) showRegion(data.bank, +b.getAttribute('data-i'), b);
+  });
+});
+
+function regionRange(bank, r) {
+  return '$' + bank + ':' + hex4(r.s) + (r.e != null ? '–$' + hex4(r.e) : '–?');
+}
+function showRegion(bank, i, from) {
+  var m = maps[bank]; if (!m) return;
+  var regs = m.data.regions, r = regs[i]; if (!r) return;
+  current = { bank: bank, i: i };
+  m.el.querySelectorAll('.wk-amap-slice.is-selected').forEach(function (el) { el.classList.remove('is-selected'); });
+  m.el.querySelectorAll('.wk-amap-slice[data-i="' + i + '"]').forEach(function (el) { el.classList.add('is-selected'); });
+
+  var h = '<p class="wk-modal-eyebrow">Bank $' + bank + ' · ' + regionRange(bank, r) + '</p>';
+  h += '<h3 id="wk-modal-title">' + (r.st === 'gap' ? 'Uncharted territory' : md(r.n)) + '</h3>';
+  h += '<div class="wk-modal-facts">' + badge(r.st) +
+       '<span>' + (r.b != null ? num(r.b) + ' bytes' : 'size unknown') + '</span>' +
+       (r.o ? '<span>file <code>' + esc(r.o) + '</code></span>' : '') + '</div>';
+  if (r.st === 'gap') {
+    var prev = regs[i - 1], next = regs[i + 1];
+    h += '<p>Nothing in this stretch of Bank $' + bank + ' has been charted in the bank map yet: ' +
+         '<strong>' + num(r.b) + ' bytes</strong> still waiting to be explored, labelled and matched.</p>';
+    if (prev || next) h += '<p class="wk-modal-dim">Between ' + (prev ? md(prev.n) : 'the bank start') +
+         ' and ' + (next ? md(next.n) : 'the end of the bank') + '.</p>';
+  } else {
+    if (r.d) h += '<p>' + md(r.d) + '</p>';
+    if (r.e == null) h += '<p class="wk-modal-dim">The end address of this region is not known yet.</p>';
+  }
+  if (r.k && r.k.length) {
+    var done = 0, doneB = 0, todoB = 0;
+    r.k.forEach(function (k) { if (k.st === 'matched') { done++; doneB += k.b || 0; } else { todoB += k.b || 0; } });
+    h += '<h4>Inside this region <span class="wk-modal-dim">· ' + done + ' of ' + r.k.length + ' matched' +
+         (doneB ? ', ' + num(doneB) + ' B verified' : '') + (todoB ? ', ' + num(todoB) + ' B to do' : '') + '</span></h4>';
+    h += '<ul class="wk-modal-list">' + r.k.map(function (k) {
+      return '<li class="is-' + k.st + '">' + badge(k.st) + ' <span class="wk-modal-name">' + md(k.n) + '</span>' +
+             '<span class="wk-modal-addr">' + esc(k.a) + (k.b ? ' · ' + num(k.b) + ' B' : '') + '</span>' +
+             (k.d ? '<span class="wk-modal-desc">' + md(k.d) + '</span>' : '') + '</li>';
+    }).join('') + '</ul>';
+  } else if (r.st === 'matched') {
+    h += '<p class="wk-modal-ok">Byte-exact: verified against the original ROM with <code>make diff</code>.</p>';
+  } else if (r.st !== 'gap') {
+    h += '<p class="wk-modal-todo">Still to do: this region is ' + LABEL[r.st].toLowerCase() + ' but not yet matched.</p>';
+  }
+  h += '<div class="wk-modal-actions">' +
+       '<button type="button" class="wk-btn" data-step="-1"' + (i === 0 ? ' disabled' : '') + ' aria-label="Previous region">◀ Prev</button>' +
+       (r.st !== 'gap' ? '<button type="button" class="wk-btn" data-jump="row" data-row="' + esc(r.n) + '">Show in table</button>' : '') +
+       '<button type="button" class="wk-btn" data-step="1"' + (i === regs.length - 1 ? ' disabled' : '') + ' aria-label="Next region">Next ▶</button>' +
+       '</div>';
+  openModal(h, from);
+}
+function stepRegion(d) {
+  if (!current) return;
+  var regs = maps[current.bank].data.regions, j = current.i + d;
+  if (j < 0 || j >= regs.length) return;
+  var btn = maps[current.bank].el.querySelector('.wk-amap-slice[data-i="' + j + '"]');
+  showRegion(current.bank, j, lastFocus);
+  if (btn) btn.scrollIntoView({ block: 'nearest' });
+}
+function jumpTo(kind, key) {
+  var target = null;
+  if (kind === 'row') {
+    var want = key.replace(/[`*]/g, '').trim();
+    document.querySelectorAll('.wk-article-body table tbody tr').forEach(function (tr) {
+      if (!target && tr.firstElementChild && tr.firstElementChild.textContent.trim() === want) target = tr;
+    });
+  } else {
+    target = document.getElementById(kind);
+  }
+  closeModal();
+  if (!target) return;
+  target.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'center' });
+  target.classList.remove('wk-flash'); void target.offsetWidth; target.classList.add('wk-flash');
+}
+
+/* Address Map page: a slice cell opens its pre-rendered panel in the pop-up */
+document.querySelectorAll('.wk-addrmap').forEach(function (map) {
+  map.addEventListener('click', function (e) {
+    var cell = e.target.closest('a.wk-slice-cell');
+    if (!cell) return;
+    var panel = document.getElementById(cell.getAttribute('href').slice(1));
+    if (!panel) return;
+    e.preventDefault();
+    map.querySelectorAll('.wk-slice-cell.is-selected').forEach(function (el) { el.classList.remove('is-selected'); });
+    cell.classList.add('is-selected');
+    current = null;
+    var clone = panel.cloneNode(true);
+    clone.removeAttribute('id');
+    var x = clone.querySelector('.wk-slice-close'); if (x) x.remove();
+    var h3 = clone.querySelector('h3'); if (h3) h3.id = 'wk-modal-title';
+    openModal(clone.innerHTML, cell);
+  });
+});
+
+/* Bank heat map (64 banks) */
+document.querySelectorAll('.wk-heat-wrap').forEach(function (wrap) {
+  var meta;
+  try { meta = JSON.parse(wrap.querySelector('.wk-heat-data').textContent); } catch (e) { return; }
+  wrap.addEventListener('click', function (e) {
+    var c = e.target.closest('.wk-heat-cell'); if (!c) return;
+    var bank = c.getAttribute('data-heat'), m = meta[bank]; if (!m) return;
+    wrap.querySelectorAll('.is-selected').forEach(function (el) { el.classList.remove('is-selected'); });
+    c.classList.add('is-selected');
+    current = null;
+    var pct = m.code != null ? (m.code / 65536 * 100) : null;
+    var h = '<p class="wk-modal-eyebrow">Bank $' + bank + ' · file $' +
+            ('0' + (parseInt(bank, 16) - 0xC0).toString(16).toUpperCase()).slice(-2) + '0000</p>';
+    h += '<h3 id="wk-modal-title">Bank $' + bank + '</h3>';
+    h += '<div class="wk-modal-facts">' +
+         (m.matched ? badge('progress') : (m.code ? badge('unmapped') : '<span class="wk-status wk-status-unknown">Data only</span>')) +
+         '<span>' + (m.code != null ? num(m.code) + ' code bytes (' + pct.toFixed(pct < 1 ? 1 : 0) + '%)' : 'not surveyed') + '</span></div>';
+    if (m.note) h += '<p>' + md(m.note) + '</p>';
+    if (m.matched) {
+      var mp = m.code ? Math.min(100, m.matched / m.code * 100) : 0;
+      h += '<div class="wk-modal-gauge" role="img" aria-label="' + mp.toFixed(1) + '% of code matched"><span style="width:' + mp.toFixed(2) + '%"></span></div>';
+      h += '<p><strong>' + num(m.matched) + ' bytes</strong> matched and verified' +
+           (m.code ? ' — ' + mp.toFixed(1) + '% of this bank\'s code. ' + num(Math.max(0, m.code - m.matched)) + ' code bytes to go.' : '.') + '</p>';
+    } else if (m.code) {
+      h += '<p class="wk-modal-todo">Not started: ' + num(m.code) + ' bytes of code waiting to be matched.</p>';
+    } else {
+      h += '<p class="wk-modal-dim">No executable code here: graphics, music or map data (incbin).</p>';
+    }
+    h += '<div class="wk-modal-actions">' +
+         (m.map ? '<button type="button" class="wk-btn" data-jump="wk-amap-' + bank + '">Open the $' + bank + ' address map ▶</button>' : '') +
+         '</div>';
+    openModal(h, c);
+  });
+});
+
+}());
+</script>
+</body>
+</html>

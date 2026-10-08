@@ -1,0 +1,687 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  
+  <meta name="description" content="Byte-exact matching decompilation of Chrono Trigger (SNES, US 1.0)">
+  <link rel="canonical" href="https://thisisakill.github.io/Kajar-site/systems/battle-menu/">
+  
+  
+  <title>Battle menu — Kajar</title>
+  
+  
+  <link rel="stylesheet" href="../../stylesheets/wiki.css">
+  
+  
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Press+Start+2P&family=Silkscreen&display=swap">
+  
+</head>
+<body>
+
+<!-- ── Header ──────────────────────────────────────────────── -->
+<header class="wk-header">
+  <button class="wk-nav-toggle" id="wk-nav-toggle" aria-label="Toggle navigation" aria-expanded="false" aria-controls="wk-nav">☰</button>
+  <a class="wk-wordmark" href="../.." aria-label="Kajar home">
+    <svg class="wk-wordmark-clock" viewBox="0 0 32 32" aria-hidden="true">
+      <circle cx="16" cy="16" r="13.5" fill="#0f1438" stroke="#ffd76e" stroke-width="2.5"/>
+      <g stroke="#cdd5ff" stroke-width="1.6" stroke-linecap="round">
+        <path d="M16 5.2v2.4M16 24.4v2.4M5.2 16h2.4M24.4 16h2.4"/>
+      </g>
+      <path d="M16 16l-5 -3.2" stroke="#ffd76e" stroke-width="2.4" stroke-linecap="round"/>
+      <path class="hand-m" d="M16 16V7.6" stroke="#ffffff" stroke-width="1.8" stroke-linecap="round"/>
+      <circle cx="16" cy="16" r="1.8" fill="#ffd76e"/>
+    </svg>
+    <span>Kajar</span>
+    <small class="wk-tagline">notes of ChronoRET, rebuilding Chrono Trigger one matched routine at a time</small>
+  </a>
+
+  <div class="wk-header-right">
+    
+    <div class="wk-searchbox">
+      <input class="wk-search-input" id="wk-q" type="search"
+             placeholder="Search…  [/]" autocomplete="off" aria-label="Search">
+      <div class="wk-search-results" id="wk-results" hidden role="listbox"></div>
+    </div>
+    <button class="wk-toggle" id="wk-toggle" title="Toggle theme" aria-label="Toggle dark/light">
+      <svg class="i-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.5" fill="currentColor"/><g stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 1.8v2.6M12 19.6v2.6M1.8 12h2.6M19.6 12h2.6M4.8 4.8l1.8 1.8M17.4 17.4l1.8 1.8M4.8 19.2l1.8-1.8M17.4 6.6l1.8-1.8"/></g></svg>
+      <svg class="i-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.5 14.6A8.6 8.6 0 0 1 9.4 3.5a8.6 8.6 0 1 0 11.1 11.1z" fill="currentColor"/></svg>
+    </button>
+  </div>
+</header>
+
+<!-- ── Layout ──────────────────────────────────────────────── -->
+<div class="wk-layout">
+
+  <div class="wk-nav-backdrop" id="wk-nav-backdrop" hidden></div>
+
+  <!-- Left sidebar -->
+  <nav class="wk-nav" id="wk-nav" aria-label="Site navigation">
+    <a href="../.." class="wk-portal-icon" aria-label="Home">
+      <span class="wk-emblem">
+        <span class="wk-emblem-art">
+          <img src="../../assets/ct-icon.png" alt="Crono" width="220" height="220">
+        </span>
+        <span class="wk-emblem-caption">Crono · 1000 AD</span>
+      </span>
+    </a>
+
+    
+      
+      <a class="wk-nav-link" href="../..">Home</a>
+      
+    
+      
+        <p class="wk-nav-heading">The Journey</p>
+        
+          
+          <a class="wk-nav-link" href="../../devlog/">Devlog</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../../gallery/">Gallery</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../../PROGRESS/">Progress</a>
+          
+        
+      
+    
+      
+        <p class="wk-nav-heading">Systems</p>
+        
+          
+          <a class="wk-nav-link" href="../">Overview</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../boot/">Boot</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../engine/">Engine core</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../sprites/">Sprites & objects</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../battle-engine/">Battle engine</a>
+          
+        
+          
+          <a class="wk-nav-link is-active" href="./">Battle menu</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../battle-targeting/">Battle targeting</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../battle-status/">Status bar & text</a>
+          
+        
+      
+    
+      
+        <p class="wk-nav-heading">How It Works</p>
+        
+          
+          <a class="wk-nav-link" href="../../ARCHITECTURE/">Architecture</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../../ADDRESS_MAP/">Address Map</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../../BANK_MAP/">Bank Map</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../../how-sprite-init-works/">Sprite Init Explainer</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../../ROM_HASH/">Target ROM</a>
+          
+        
+      
+    
+      
+        <p class="wk-nav-heading">For Time Travelers</p>
+        
+          
+          <a class="wk-nav-link" href="../../CONTRIBUTING/">Contributing</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../../ASAR_QUIRKS/">asar Quirks</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../../glossary/">Glossary</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../../CI_SETUP/">CI Setup</a>
+          
+        
+      
+    
+      
+      <a class="wk-nav-link" href="../../credits/">Credits</a>
+      
+    
+
+    <!-- Party Status: every value from docs/data/ (hooks/progress_data.py) -->
+    
+    <div class="wk-stats">
+      <p class="wk-nav-heading" title="Project progress">Party Status</p>
+      
+      <div class="wk-party">
+        <div class="wk-party-row" title="Bytes matched: the rebuilt ROM is byte-identical here">
+          <span class="wk-party-k">HP</span>
+          <span class="wk-party-v">29,032<small>/359,278</small></span>
+        </div>
+        <div class="wk-stat-track"><div class="wk-stat-fill" style="width:8.08%"></div></div>
+        <p class="wk-party-note">bytes matched · 8.08% of code</p>
+
+        <div class="wk-party-row" title="Matched functions that also meet the readability standard">
+          <span class="wk-party-k">MP</span>
+          <span class="wk-party-v">256<small>/256</small></span>
+        </div>
+        <div class="wk-stat-track"><div class="wk-stat-fill wk-stat-fill-mp" style="width:100.0%"></div></div>
+        <p class="wk-party-note">functions readable</p>
+
+        <div class="wk-party-row" title="Readable functions that passed an independent review">
+          <span class="wk-party-k">TP</span>
+          <span class="wk-party-v">23<small>/256</small></span>
+        </div>
+        <div class="wk-stat-track"><div class="wk-stat-fill wk-stat-fill-dim" style="width:9.0%"></div></div>
+        <p class="wk-party-note">functions verified</p>
+      </div>
+      
+      <p class="wk-stat-link"><a href="../../PROGRESS/">View full progress →</a></p>
+    </div>
+  </nav>
+
+  <!-- Main content -->
+  <main class="wk-main">
+    <div class="wk-article">
+
+      
+      
+      <div class="wk-toc" id="wk-toc">
+        <div class="wk-toc-header">
+          <b>Contents</b>
+          <button class="wk-toc-toggle"
+            onclick="var l=document.getElementById('wk-toc-list');l.hidden=!l.hidden;this.textContent=l.hidden?'[show]':'[hide]'">[hide]</button>
+        </div>
+        <ol class="wk-toc-list" id="wk-toc-list">
+          
+          <li>
+            <a href="#battle-menu" class="wk-toc-link">Battle menu</a>
+            
+          </li>
+          
+        </ol>
+      </div>
+      
+      
+
+      <div class="wk-article-body">
+      
+      
+      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="October 8, 2026 05:05:53 UTC">October 8, 2026</span></p>
+      
+      <h1 id="battle-menu">Battle menu</h1>
+<p>The battle command menu: item and tech list rendering, window upkeep, the dirty-flag refresh
+gate, command-window input, confirm dispatch, the tech and item list input clusters and the
+cursor overlay.</p>
+<p>See also: <a href="../battle-targeting/">Battle targeting</a>, <a href="../battle-status/">Status bar &amp; text</a>.</p>
+<div class="wk-stat-tiles"><div class="wk-stat-tile"><span class="wk-stat-tile-val">57</span><span class="wk-stat-tile-label">functions matched</span></div><div class="wk-stat-tile"><span class="wk-stat-tile-val">4,537</span><span class="wk-stat-tile-label">bytes matched</span></div><div class="wk-stat-tile"><span class="wk-stat-tile-val">57</span><span class="wk-stat-tile-label">readable</span></div><div class="wk-stat-tile"><span class="wk-stat-tile-val">0</span><span class="wk-stat-tile-label">verified</span></div></div>
+<h2 id="functions">Functions</h2>
+<table class="wk-fntable"><thead><tr><th>Address</th><th>Function</th><th>Size</th><th>Status</th><th>Notes</th></tr></thead><tbody><tr><td><code>$C1:081E</code></td><td><code>BattleMenu_<wbr>DrawReadyWindowEdges</code></td><td>84</td><td><span class="wk-status wk-status-readable">readable</span></td><td></td></tr><tr><td><code>$C1:0929</code></td><td><code>BattleMenu_<wbr>DrawWindowEdgeStrip</code></td><td>52</td><td><span class="wk-status wk-status-readable">readable</span></td><td></td></tr><tr><td><code>$C1:095D</code></td><td><code>BattleMenu_<wbr>RenderItemListRows</code></td><td>83</td><td><span class="wk-status wk-status-readable">readable</span></td><td></td></tr><tr><td><code>$C1:09B0</code></td><td><code>BattleMenu_<wbr>RenderItemRow</code></td><td>215</td><td><span class="wk-status wk-status-readable">readable</span></td><td></td></tr><tr><td><code>$C1:0A88</code></td><td><code>BattleMenu_<wbr>RenderTechListRows</code></td><td>75</td><td><span class="wk-status wk-status-readable">readable</span></td><td></td></tr><tr><td><code>$C1:0AD3</code></td><td><code>BattleMenu_<wbr>BuildTechAvailFlags</code></td><td>56</td><td><span class="wk-status wk-status-readable">readable</span></td><td></td></tr><tr><td><code>$C1:0B0B</code></td><td><code>BattleMenu_<wbr>RenderTechRow</code></td><td>171</td><td><span class="wk-status wk-status-readable">readable</span></td><td>Renders one tech-list line: blanks the text rows (!BattleMsg_TextTiles / TextTopTiles), fills them by the line code !Tech_ListCode[TechCodeIdx], and copies them into the tech text buffer at !BattleMen</td></tr><tr><td><code>$C1:0BD3</code></td><td><code>BattleMenu_<wbr>BlankMpCostDigits</code></td><td>45</td><td><span class="wk-status wk-status-readable">readable</span></td><td>Blanks cols 3-5 (left of the name) on both rows of the tech-list line at !BattleMenu_RowMapOffset (blank tile, palette 3).</td></tr><tr><td><code>$C1:0C2D</code></td><td><code>BattleMenu_<wbr>UpdateWindows</code></td><td>25</td><td><span class="wk-status wk-status-readable">readable</span></td><td>Per-frame window upkeep dispatcher.</td></tr><tr><td><code>$C1:0C49</code></td><td><code>BattleMenu_<wbr>UpdateMainWindow</code></td><td>58</td><td><span class="wk-status wk-status-readable">readable</span></td><td>Main command-window upkeep (submenu 0): - If !BattleMenu_RosterIdx differs from !BattleMenu_RosterIdxDrawn: reload the command window map and rebuild the status bar.</td></tr><tr><td><code>$C1:0C83</code></td><td><code>BattleMenu_<wbr>UpdateTechWindow</code></td><td>471</td><td><span class="wk-status wk-status-readable">readable</span></td><td></td></tr><tr><td><code>$C1:0E5A</code></td><td><code>BattleMenu_<wbr>DrawTechCursorRow</code></td><td>96</td><td><span class="wk-status wk-status-readable">readable</span></td><td></td></tr><tr><td><code>$C1:0EBA</code></td><td><code>BattleMenu_<wbr>ClearTechCursorTiles</code></td><td>39</td><td><span class="wk-status wk-status-readable">readable</span></td><td>Blanks cols 1-2 (the row-cursor columns) of all 6 tech-window rows.</td></tr><tr><td><code>$C1:0EE1</code></td><td><code>BattleMenu_<wbr>UpdateTechMpAvail</code></td><td>71</td><td><span class="wk-status wk-status-readable">readable</span></td><td></td></tr><tr><td><code>$C1:10E3</code></td><td><code>BattleMenu_<wbr>RefreshIfDirtyL</code></td><td>23</td><td><span class="wk-status wk-status-readable">readable</span></td><td>JSL-entry twin of BattleMenu_RefreshIfDirtyAndTick, reached via the bank&#x27;s cross-bank entry-vector table: JSL $C10012 -&gt; JMP $C110E3.</td></tr><tr><td><code>$C1:10FA</code></td><td><code>BattleMenu_<wbr>RefreshIfDirtyAndTick</code></td><td>27</td><td><span class="wk-status wk-status-readable">readable</span></td><td>Same-bank JSR twin of BattleMenu_RefreshIfDirtyL — identical dirty- flag gate and menu rebuild chain, but always follows up with a cross-bank per-frame service tick (BattleSys_FrameTickVec) before ret</td></tr><tr><td><code>$C1:1115</code></td><td><code>BattleMenu_<wbr>DrawCursorSprites</code></td><td>62</td><td><span class="wk-status wk-status-readable">readable</span></td><td>Builds OAM sprites 0-3 (BattleOam) for the command cursor over the shown PC: each of the 4 template sprites in BattleRom_CursorSprite is offset by the PC&#x27;s !Battler_ScreenX/Y, and its palette bits are</td></tr><tr><td><code>$C1:1153</code></td><td><code>BattleMenu_<wbr>ProcessInput</code></td><td>142</td><td><span class="wk-status wk-status-readable">readable</span></td><td>Battle command-window input handler, called once per frame from the menu dirty-flag gates (RefreshIfDirtyL/AndTick).</td></tr><tr><td><code>$C1:11E1</code></td><td><code>BattleMenu_<wbr>CycleActivePcPrev</code></td><td>55</td><td><span class="wk-status wk-status-readable">readable</span></td><td>Left D-pad: step !BattleMenu_RosterIdx back (wrap 0..2), skipping roster entries that are negative.</td></tr><tr><td><code>$C1:1218</code></td><td><code>BattleMenu_<wbr>CycleActivePcNext</code></td><td>56</td><td><span class="wk-status wk-status-readable">readable</span></td><td>Right D-pad: mirror of CycleActivePcPrev — steps !BattleMenu_RosterIdx forward (wrap at 3 back to 0) instead.</td></tr><tr><td><code>$C1:1250</code></td><td><code>BattleMenu_<wbr>CursorUp</code></td><td>20</td><td><span class="wk-status wk-status-readable">readable</span></td><td>Up D-pad: step the shown PC&#x27;s !Pc_MenuRow back (wrap 0..2) and flag the cursor redraw (!BattleUI_PanelRedraw).</td></tr><tr><td><code>$C1:1264</code></td><td><code>BattleMenu_<wbr>CursorDown</code></td><td>23</td><td><span class="wk-status wk-status-readable">readable</span></td><td>Down D-pad: step the shown PC&#x27;s !Pc_MenuRow forward (wrap at 3 back to 0) and flag the cursor redraw (!BattleUI_PanelRedraw).</td></tr><tr><td><code>$C1:127B</code></td><td><code>BattleMenu_<wbr>ConfirmCommand</code></td><td>33</td><td><span class="wk-status wk-status-readable">readable</span></td><td>Confirm-button dispatch: sets !BattleUI_UnkA0D7 to $FF (compared by BattleUI_BuildStatusBarFrame with the first selected target), calls BattleFx_SetPtrA2FromTable for the shown PC, then tail-jumps on</td></tr><tr><td><code>$C1:129C</code></td><td><code>BattleMenu_<wbr>ChooseAttack</code></td><td>32</td><td><span class="wk-status wk-status-readable">readable</span></td><td>Row 0 (Attack) confirm: message call with &quot;none&quot;, flags the cursor redraw (twice), sets !BattleTgt_Mode = attack, !BattleMenu_CmdMenu = 0, builds the target list, then enters target selection.</td></tr><tr><td><code>$C1:12BC</code></td><td><code>BattleMenu_<wbr>OpenTechList</code></td><td>49</td><td><span class="wk-status wk-status-readable">readable</span></td><td>Row 1 (Tech) confirm: unless !BattleMenu_Lock bit 0 is set, renders the tech list lines, builds !Tech_ListAvail, switches to the tech list (!BattleMenu_Submenu = !BattleMenu_CmdMenu = 1) and requests</td></tr><tr><td><code>$C1:12ED</code></td><td><code>BattleMenu_<wbr>OpenItemList</code></td><td>51</td><td><span class="wk-status wk-status-readable">readable</span></td><td>Row 2 (Item) confirm: unless !BattleMenu_Lock is non-zero, renders the item list at !BattleMenu_ItemScroll, queues the item map upload, copies the item box frame (!BattleRom_ItemBoxMap, &quot;ItemBoxBattle</td></tr><tr><td><code>$C1:1320</code></td><td><code>BattleMenu_<wbr>TechListInput</code></td><td>73</td><td><span class="wk-status wk-status-readable">readable</span></td><td></td></tr><tr><td><code>$C1:1369</code></td><td><code>BattleMenu_<wbr>TechConfirm</code></td><td>38</td><td><span class="wk-status wk-status-readable">readable</span></td><td>Confirms the highlighted tech: aborts unless the rows have been graded (!BattleMenu_TechAvailDone) and Tech_CursorEntry.Flags bit 7 is clear.</td></tr><tr><td><code>$C1:138F</code></td><td><code>BattleMenu_<wbr>TechListCancel</code></td><td>30</td><td><span class="wk-status wk-status-readable">readable</span></td><td>Closes the tech list: reload the command window, back to the main menu, force a window rebuild, and restore this PC&#x27;s saved tech-list cursor (!Pc_SavedTechRow / SavedTechScroll -&gt; !Pc_TechRow / TechSc</td></tr><tr><td><code>$C1:13AD</code></td><td><code>BattleMenu_<wbr>TechListPrev</code></td><td>71</td><td><span class="wk-status wk-status-readable">readable</span></td><td></td></tr><tr><td><code>$C1:13F4</code></td><td><code>BattleMenu_<wbr>TechListNext</code></td><td>73</td><td><span class="wk-status wk-status-readable">readable</span></td><td>Down/Right in the tech list: mirror of TechListPrev — walks forward instead of backward, bounded by the list length (!Pc_TechCount) instead of the start of the list, and scrolls down instead of up whe</td></tr><tr><td><code>$C1:143D</code></td><td><code>BattleMenu_<wbr>ItemListInput</code></td><td>91</td><td><span class="wk-status wk-status-readable">readable</span></td><td>Per-frame input handler while the item list is open (submenu 2).</td></tr><tr><td><code>$C1:1498</code></td><td><code>BattleMenu_<wbr>ItemConfirm</code></td><td>67</td><td><span class="wk-status wk-status-readable">readable</span></td><td></td></tr><tr><td><code>$C1:14DB</code></td><td><code>BattleMenu_<wbr>ItemListCancel</code></td><td>17</td><td><span class="wk-status wk-status-readable">readable</span></td><td>Closes the item list: reload the command window, back to the main menu, force a window rebuild, and invalidate the scroll-arrow cache.</td></tr><tr><td><code>$C1:14EC</code></td><td><code>BattleMenu_<wbr>ItemCursorUp</code></td><td>22</td><td><span class="wk-status wk-status-readable">readable</span></td><td>Up/Left in the item list: decrement !BattleMenu_ItemRow, scrolling the list up via ItemListScrollUp when already at the top row.</td></tr><tr><td><code>$C1:1502</code></td><td><code>BattleMenu_<wbr>ItemCursorDown</code></td><td>26</td><td><span class="wk-status wk-status-readable">readable</span></td><td>Down/Right in the item list: increment !BattleMenu_ItemRow (max 2), scrolling the list down via ItemListScrollDown when already at the bottom row.</td></tr><tr><td><code>$C1:151C</code></td><td><code>BattleMenu_<wbr>ItemListPageDown</code></td><td>27</td><td><span class="wk-status wk-status-readable">readable</span></td><td>Page-down button: page the item list down 3 rows at once, clamped at scroll position $FA.</td></tr><tr><td><code>$C1:1537</code></td><td><code>BattleMenu_<wbr>ItemListPageUp</code></td><td>20</td><td><span class="wk-status wk-status-readable">readable</span></td><td>Page-up button: page the item list up 3 rows at once, clamped at 0.</td></tr><tr><td><code>$C1:154B</code></td><td><code>BattleMenu_<wbr>ItemListRefresh</code></td><td>22</td><td><span class="wk-status wk-status-readable">readable</span></td><td>Re-renders the item list rows and invalidates both draw caches when !BattleMenu_ItemRefresh is set, clearing it.</td></tr><tr><td><code>$C1:1561</code></td><td><code>BattleMenu_<wbr>TargetSelectInput</code></td><td>185</td><td><span class="wk-status wk-status-readable">readable</span></td><td>Per-frame input handler while target selection runs (entered from BattleMenu_ProcessInput when !BattleMenu_TargetSelect != 0).</td></tr><tr><td><code>$C1:161A</code></td><td><code>BattleMenu_<wbr>CommitAction</code></td><td>308</td><td><span class="wk-status wk-status-readable">readable</span></td><td></td></tr><tr><td><code>$C1:174E</code></td><td><code>BattleMenu_<wbr>ConsumePartnerSlot</code></td><td>30</td><td><span class="wk-status wk-status-readable">readable</span></td><td>Removes PC slot !BattleMenu_PartnerArg from the ready state as part of committing a double/triple tech: if it&#x27;s in the roster, decrements !BattleMenu_ReadyCount; either way marks its roster entry empt</td></tr><tr><td><code>$C1:176C</code></td><td><code>BattleMenu_<wbr>TargetNext</code></td><td>26</td><td><span class="wk-status wk-status-readable">readable</span></td><td>Right/Down while cycling targets: advance !BattleTgt_Cursor (wrap at 11), skipping empty candidate entries, and select the battler it lands on (!BattleTgt_Selected).</td></tr><tr><td><code>$C1:1786</code></td><td><code>BattleMenu_<wbr>TargetPrev</code></td><td>22</td><td><span class="wk-status wk-status-readable">readable</span></td><td>Left/Up while cycling targets: mirror of TargetNext — steps !BattleTgt_Cursor back (wrap to 10) instead.</td></tr><tr><td><code>$C1:17A1</code></td><td><code>BattleMenu_<wbr>ItemListScrollUp</code></td><td>16</td><td><span class="wk-status wk-status-readable">readable</span></td><td>Scrolls the item list up one row: decrements !BattleMenu_ItemScroll (min 0), then re-renders and invalidates both draw caches (row cursor, arrows).</td></tr><tr><td><code>$C1:17B1</code></td><td><code>BattleMenu_<wbr>ItemListScrollUp_<wbr>SetScroll</code></td><td>2</td><td><span class="wk-status wk-status-readable">readable</span></td><td></td></tr><tr><td><code>$C1:17B3</code></td><td><code>BattleMenu_<wbr>ItemListScrollUp_<wbr>RenderTail</code></td><td>3</td><td><span class="wk-status wk-status-readable">readable</span></td><td></td></tr><tr><td><code>$C1:17B6</code></td><td><code>BattleMenu_<wbr>ItemListScrollUp_<wbr>SkipRender</code></td><td>9</td><td><span class="wk-status wk-status-readable">readable</span></td><td></td></tr><tr><td><code>$C1:17BF</code></td><td><code>BattleMenu_<wbr>ItemListScrollDown</code></td><td>18</td><td><span class="wk-status wk-status-readable">readable</span></td><td>Scrolls the item list down one row: increments !BattleMenu_ItemScroll (clamped at $FA), then re-renders and invalidates both draw caches.</td></tr><tr><td><code>$C1:17D1</code></td><td><code>BattleMenu_<wbr>ItemListScrollDown_<wbr>RenderTail</code></td><td>3</td><td><span class="wk-status wk-status-readable">readable</span></td><td></td></tr><tr><td><code>$C1:17D4</code></td><td><code>BattleMenu_<wbr>ItemListScrollDown_<wbr>SkipRender</code></td><td>9</td><td><span class="wk-status wk-status-readable">readable</span></td><td></td></tr><tr><td><code>$C1:17DD</code></td><td><code>BattleMenu_<wbr>UpdateCursorOverlay</code></td><td>828</td><td><span class="wk-status wk-status-readable">readable</span></td><td></td></tr><tr><td><code>$C1:1B19</code></td><td><code>BattleMenu_<wbr>EnqueueReadyBattler</code></td><td>60</td><td><span class="wk-status wk-status-readable">readable</span></td><td>Service 1 of the cross-bank $C10045 service API (dispatch table at $C10051: service 0 -&gt; $0023, 1 -&gt; here, 2 -&gt; RemoveBattlerFromReady).</td></tr><tr><td><code>$C1:1B67</code></td><td><code>BattleMenu_<wbr>DequeueReadyBattler</code></td><td>67</td><td><span class="wk-status wk-status-readable">readable</span></td><td>Pops the head of !BattleMenu_ReadyQueue (up to 3 deep, count in !BattleMenu_ReadyQueueLen) into the roster: clears its !Battle_Unk9F38, restores its tech-list cursor (!Pc_SavedTechRow / SavedTechScrol</td></tr><tr><td><code>$C1:1BAA</code></td><td><code>BattleMenu_<wbr>RemoveBattlerFromReady</code></td><td>144</td><td><span class="wk-status wk-status-readable">readable</span></td><td></td></tr><tr><td><code>$C1:1C3A</code></td><td><code>BattleMenu_<wbr>LoadCommandWindowMap</code></td><td>16</td><td><span class="wk-status wk-status-readable">readable</span></td><td>Copies the $180-byte command window map (!BattleRom_CommandWindowMap, bank $D1) into !BattleMenu_WindowMap.</td></tr><tr><td><code>$C1:1F79</code></td><td><code>BattleMenu_<wbr>BuildTargetList</code></td><td>100</td><td><span class="wk-status wk-status-readable">readable</span></td><td>Records the requesting PC (!BattleTgt_Caster), resets the selection state (!BattleTgt_Result/CanCycle/TargetAll, two Unk bytes) and blanks !BattleTgt_Candidates and !BattleTgt_Selected (indices 0-11)</td></tr></tbody></table>
+<p class="wk-page-meta">Generated from <code>functions.csv</code>. Do not edit.</p>
+      
+      </div>
+
+    </div>
+
+    <footer class="wk-footer">
+      <ul class="wk-eras" aria-label="Eras">
+        <li style="--c:var(--era-prehistory)">65,000,000 BC</li>
+        <li style="--c:var(--era-zeal)">12,000 BC</li>
+        <li style="--c:var(--era-medieval)">600 AD</li>
+        <li style="--c:var(--era-present)">1000 AD</li>
+        <li style="--c:var(--era-lavos)">1999 AD</li>
+        <li style="--c:var(--era-future)">2300 AD</li>
+        <li style="--c:var(--era-eot)">End of Time</li>
+      </ul>
+      <p class="wk-footer-motto">Every byte, every era</p>
+      <p>Made by people who love Chrono Trigger, so that it can be studied, preserved and understood,
+      one verified routine at a time.</p>
+      <p>A fan project. Not affiliated with or endorsed by Square Enix. No ROM data is shared here:
+      bring your own copy.</p>
+    </footer>
+  </main>
+
+</div>
+
+<!-- Address-map pop-up (a menu window) -->
+<div class="wk-modal" id="wk-modal" hidden>
+  <div class="wk-modal-backdrop" data-close></div>
+  <div class="wk-modal-win" role="dialog" aria-modal="true" aria-labelledby="wk-modal-title" tabindex="-1">
+    <button type="button" class="wk-modal-close" data-close aria-label="Close">&times;</button>
+    <div class="wk-modal-body" id="wk-modal-body"></div>
+  </div>
+</div>
+
+<!-- Back to top -->
+<button class="wk-top" id="wk-top" title="Back to top" aria-label="Scroll to top">↑</button>
+
+
+<script>
+(function () {
+'use strict';
+
+/* ── Theme ─────────────────────────────────────────────────── */
+var stored = 'dark';
+try { stored = localStorage.getItem('wk-theme') || 'dark'; } catch (e) {}
+applyTheme(stored);
+document.getElementById('wk-toggle').addEventListener('click', function () {
+  applyTheme(document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
+});
+function applyTheme(t) {
+  document.documentElement.setAttribute('data-theme', t);
+  try { localStorage.setItem('wk-theme', t); } catch (e) {}
+}
+
+/* ── Mobile nav ────────────────────────────────────────────── */
+var navToggle  = document.getElementById('wk-nav-toggle');
+var navEl      = document.getElementById('wk-nav');
+var navBackdrop = document.getElementById('wk-nav-backdrop');
+function openNav() {
+  navEl.classList.add('is-open');
+  navBackdrop.hidden = false;
+  navToggle.setAttribute('aria-expanded', 'true');
+}
+function closeNav() {
+  navEl.classList.remove('is-open');
+  navBackdrop.hidden = true;
+  navToggle.setAttribute('aria-expanded', 'false');
+}
+if (navToggle && navEl && navBackdrop) {
+  navToggle.addEventListener('click', function () {
+    if (navEl.classList.contains('is-open')) { closeNav(); } else { openNav(); }
+  });
+  navBackdrop.addEventListener('click', closeNav);
+  navEl.addEventListener('click', function (e) {
+    if (e.target.closest('a')) { closeNav(); }
+  });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') { closeNav(); }
+  });
+  window.addEventListener('resize', function () {
+    if (window.innerWidth > 720) { closeNav(); }
+  });
+}
+
+/* ── Search ─────────────────────────────────────────────────── */
+var input   = document.getElementById('wk-q');
+var results = document.getElementById('wk-results');
+var docs    = null;
+if (input) {
+  fetch("../../search/search_index.json")
+    .then(function (r) { return r.json(); })
+    .then(function (d) { docs = d.docs; });
+
+  input.addEventListener('input', onSearch);
+
+  document.addEventListener('click', function (e) {
+    if (results && !results.contains(e.target) && e.target !== input) results.hidden = true;
+  });
+  input.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') { results.hidden = true; this.blur(); }
+    if (e.key === 'Enter' && results && !results.hidden) {
+      var first = results.querySelector('.wk-result');
+      if (first) { first.click(); }
+    }
+  });
+}
+
+/* Press / to focus search */
+document.addEventListener('keydown', function (e) {
+  if (e.key === '/' && document.activeElement !== input &&
+      document.activeElement.tagName !== 'INPUT' &&
+      document.activeElement.tagName !== 'TEXTAREA') {
+    e.preventDefault();
+    if (input) { input.focus(); input.select(); }
+  }
+});
+
+function onSearch() {
+  var q = this.value.trim().toLowerCase();
+  if (!docs || q.length < 2) { results.hidden = true; return; }
+  var hits = docs.filter(function (d) {
+    return (d.title + ' ' + d.text).toLowerCase().indexOf(q) !== -1;
+  }).slice(0, 8);
+  if (!hits.length) { results.hidden = true; return; }
+  var base = "../..";
+  results.innerHTML = hits.map(function (d) {
+    var text  = d.text || '';
+    var i     = text.toLowerCase().indexOf(q);
+    var start = Math.max(0, i - 35);
+    var end   = Math.min(text.length, i + q.length + 70);
+    var snip  = (start > 0 ? '…' : '') + text.slice(start, end) + (end < text.length ? '…' : '');
+    var url   = base + '/' + d.location;
+    return '<a class="wk-result" href="' + esc(url) + '" role="option">'
+         + '<div class="wk-result-title">' + esc(d.title || d.location) + '</div>'
+         + '<div class="wk-result-snip">'  + esc(snip) + '</div></a>';
+  }).join('');
+  results.hidden = false;
+}
+
+function esc(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+/* ── Back to top ────────────────────────────────────────────── */
+var topBtn = document.getElementById('wk-top');
+if (topBtn) {
+  window.addEventListener('scroll', function () {
+    topBtn.classList.toggle('visible', window.scrollY > 400);
+  }, {passive: true});
+  topBtn.addEventListener('click', function () {
+    window.scrollTo({top: 0, behavior: 'smooth'});
+  });
+}
+
+/* ── Copy-to-clipboard ───────────────────────────────────────── */
+document.querySelectorAll('.highlight').forEach(function (block) {
+  var btn = document.createElement('button');
+  btn.className = 'wk-copy-btn';
+  btn.title     = 'Copy code';
+  btn.textContent = '⎘';
+  block.appendChild(btn);
+  btn.addEventListener('click', function () {
+    var pre = block.querySelector('pre');
+    if (!pre) return;
+    navigator.clipboard.writeText(pre.innerText).then(function () {
+      btn.textContent = '✓';
+      btn.classList.add('copied');
+      setTimeout(function () {
+        btn.textContent = '⎘';
+        btn.classList.remove('copied');
+      }, 1500);
+    });
+  });
+});
+
+/* ── TOC scroll spy ─────────────────────────────────────────── */
+var tocLinks = document.querySelectorAll('.wk-toc-link');
+if (tocLinks.length && 'IntersectionObserver' in window) {
+  var headings = Array.from(document.querySelectorAll('.wk-article h1, .wk-article h2, .wk-article h3'));
+  var active   = null;
+  var obs = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
+      if (e.isIntersecting) {
+        var id  = e.target.id;
+        var lnk = document.querySelector('.wk-toc-link[href="#' + id + '"]');
+        if (lnk && lnk !== active) {
+          if (active) active.classList.remove('is-current');
+          lnk.classList.add('is-current');
+          active = lnk;
+        }
+      }
+    });
+  }, {rootMargin: '-10% 0px -80% 0px'});
+  headings.forEach(function (h) { if (h.id) obs.observe(h); });
+}
+
+
+/* ── Status badges in "Status" table columns ────────────────── */
+var STATUS = { 'matched': 'matched', 'in progress': 'progress', 'partial': 'partial',
+               'identified': 'identified', 'unmapped': 'unmapped', 'unknown': 'unknown' };
+document.querySelectorAll('.wk-article-body table').forEach(function (tbl) {
+  var col = -1;
+  tbl.querySelectorAll('thead th').forEach(function (th, i) {
+    if (th.textContent.trim().toLowerCase() === 'status') col = i;
+  });
+  if (col < 0) return;
+  tbl.querySelectorAll('tbody tr').forEach(function (tr) {
+    var td = tr.children[col];
+    if (!td || td.querySelector('.wk-status')) return;
+    var whole = td.textContent.trim().toLowerCase();
+    var target = null, key = STATUS[whole];
+    if (key) { target = td; }
+    else if (td.firstElementChild && td.firstElementChild.tagName === 'STRONG' &&
+             td.firstChild === td.firstElementChild) {
+      key = STATUS[td.firstElementChild.textContent.trim().toLowerCase()];
+      if (key) target = td.firstElementChild;
+    }
+    if (!target) return;
+    var span = document.createElement('span');
+    span.className = 'wk-status wk-status-' + key;
+    if (target === td) { while (td.firstChild) span.appendChild(td.firstChild); td.appendChild(span); }
+    else { td.insertBefore(span, target); span.appendChild(target); }
+  });
+});
+
+/* ── Address map pop-up ─────────────────────────────────────── */
+var modal = document.getElementById('wk-modal');
+var mbody = document.getElementById('wk-modal-body');
+var mwin  = modal ? modal.querySelector('.wk-modal-win') : null;
+var lastFocus = null, closeTimer = null, current = null;
+var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+var LABEL = { matched: 'Matched', progress: 'In progress', identified: 'Identified',
+              unmapped: 'Unmapped', gap: 'Uncharted' };
+
+function md(s) {
+  return esc(s || '').replace(/`([^`]+)`/g, '<code>$1</code>')
+                     .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+}
+function hex4(n) { return ('000' + n.toString(16).toUpperCase()).slice(-4); }
+function num(n) { return n == null ? '?' : n.toLocaleString('en-US'); }
+function badge(st) {
+  var k = st === 'gap' ? 'unmapped' : st;
+  return '<span class="wk-status wk-status-' + k + '">' + (LABEL[st] || st) + '</span>';
+}
+
+function openModal(html, from) {
+  if (!modal) return;
+  clearTimeout(closeTimer);
+  mbody.innerHTML = html;
+  if (modal.hidden) {
+    lastFocus = from || document.activeElement;
+    modal.hidden = false;
+    document.documentElement.classList.add('wk-modal-lock');
+    void modal.offsetWidth;            /* commit start state, then animate */
+    modal.classList.add('is-open');
+  }
+  mbody.scrollTop = 0;
+  mwin.focus({ preventScroll: true });
+}
+function closeModal() {
+  if (!modal || modal.hidden) return;
+  modal.classList.remove('is-open');
+  document.documentElement.classList.remove('wk-modal-lock');
+  document.querySelectorAll('.wk-amap-slice.is-selected, .wk-heat-cell.is-selected, .wk-slice-cell.is-selected')
+    .forEach(function (el) { el.classList.remove('is-selected'); });
+  closeTimer = setTimeout(function () { modal.hidden = true; }, reduceMotion ? 0 : 200);
+  if (lastFocus && lastFocus.focus) lastFocus.focus({ preventScroll: true });
+  current = null;
+}
+if (modal) {
+  modal.addEventListener('click', function (e) {
+    if (e.target.closest('[data-close]')) { closeModal(); return; }
+    var nav = e.target.closest('[data-step]');
+    if (nav && current) { stepRegion(+nav.getAttribute('data-step')); return; }
+    var jump = e.target.closest('[data-jump]');
+    if (jump) { e.preventDefault(); jumpTo(jump.getAttribute('data-jump'), jump.getAttribute('data-row')); }
+  });
+  document.addEventListener('keydown', function (e) {
+    if (modal.hidden) return;
+    if (e.key === 'Escape') { e.preventDefault(); closeModal(); return; }
+    if (current && (e.key === 'ArrowRight' || e.key === 'ArrowLeft') &&
+        !/INPUT|TEXTAREA/.test(document.activeElement.tagName)) {
+      e.preventDefault(); stepRegion(e.key === 'ArrowRight' ? 1 : -1); return;
+    }
+    if (e.key === 'Tab') {               /* keep focus inside the window */
+      var f = Array.prototype.filter.call(
+        mwin.querySelectorAll('button, a[href], [tabindex="0"]'),
+        function (el) { return el.offsetParent !== null; });
+      if (!f.length) return;
+      var a = f[0], z = f[f.length - 1];
+      if (e.shiftKey && (document.activeElement === a || document.activeElement === mwin)) { e.preventDefault(); z.focus(); }
+      else if (!e.shiftKey && document.activeElement === z) { e.preventDefault(); a.focus(); }
+    }
+  });
+}
+
+var maps = {};
+document.querySelectorAll('.wk-amap').forEach(function (el) {
+  var data;
+  try { data = JSON.parse(el.querySelector('.wk-amap-data').textContent); } catch (e) { return; }
+  maps[data.bank] = { el: el, data: data };
+  el.addEventListener('click', function (e) {
+    var b = e.target.closest('.wk-amap-slice');
+    if (b) showRegion(data.bank, +b.getAttribute('data-i'), b);
+  });
+});
+
+function regionRange(bank, r) {
+  return '$' + bank + ':' + hex4(r.s) + (r.e != null ? '–$' + hex4(r.e) : '–?');
+}
+function showRegion(bank, i, from) {
+  var m = maps[bank]; if (!m) return;
+  var regs = m.data.regions, r = regs[i]; if (!r) return;
+  current = { bank: bank, i: i };
+  m.el.querySelectorAll('.wk-amap-slice.is-selected').forEach(function (el) { el.classList.remove('is-selected'); });
+  m.el.querySelectorAll('.wk-amap-slice[data-i="' + i + '"]').forEach(function (el) { el.classList.add('is-selected'); });
+
+  var h = '<p class="wk-modal-eyebrow">Bank $' + bank + ' · ' + regionRange(bank, r) + '</p>';
+  h += '<h3 id="wk-modal-title">' + (r.st === 'gap' ? 'Uncharted territory' : md(r.n)) + '</h3>';
+  h += '<div class="wk-modal-facts">' + badge(r.st) +
+       '<span>' + (r.b != null ? num(r.b) + ' bytes' : 'size unknown') + '</span>' +
+       (r.o ? '<span>file <code>' + esc(r.o) + '</code></span>' : '') + '</div>';
+  if (r.st === 'gap') {
+    var prev = regs[i - 1], next = regs[i + 1];
+    h += '<p>Nothing in this stretch of Bank $' + bank + ' has been charted in the bank map yet: ' +
+         '<strong>' + num(r.b) + ' bytes</strong> still waiting to be explored, labelled and matched.</p>';
+    if (prev || next) h += '<p class="wk-modal-dim">Between ' + (prev ? md(prev.n) : 'the bank start') +
+         ' and ' + (next ? md(next.n) : 'the end of the bank') + '.</p>';
+  } else {
+    if (r.d) h += '<p>' + md(r.d) + '</p>';
+    if (r.e == null) h += '<p class="wk-modal-dim">The end address of this region is not known yet.</p>';
+  }
+  if (r.k && r.k.length) {
+    var done = 0, doneB = 0, todoB = 0;
+    r.k.forEach(function (k) { if (k.st === 'matched') { done++; doneB += k.b || 0; } else { todoB += k.b || 0; } });
+    h += '<h4>Inside this region <span class="wk-modal-dim">· ' + done + ' of ' + r.k.length + ' matched' +
+         (doneB ? ', ' + num(doneB) + ' B verified' : '') + (todoB ? ', ' + num(todoB) + ' B to do' : '') + '</span></h4>';
+    h += '<ul class="wk-modal-list">' + r.k.map(function (k) {
+      return '<li class="is-' + k.st + '">' + badge(k.st) + ' <span class="wk-modal-name">' + md(k.n) + '</span>' +
+             '<span class="wk-modal-addr">' + esc(k.a) + (k.b ? ' · ' + num(k.b) + ' B' : '') + '</span>' +
+             (k.d ? '<span class="wk-modal-desc">' + md(k.d) + '</span>' : '') + '</li>';
+    }).join('') + '</ul>';
+  } else if (r.st === 'matched') {
+    h += '<p class="wk-modal-ok">Byte-exact: verified against the original ROM with <code>make diff</code>.</p>';
+  } else if (r.st !== 'gap') {
+    h += '<p class="wk-modal-todo">Still to do: this region is ' + LABEL[r.st].toLowerCase() + ' but not yet matched.</p>';
+  }
+  h += '<div class="wk-modal-actions">' +
+       '<button type="button" class="wk-btn" data-step="-1"' + (i === 0 ? ' disabled' : '') + ' aria-label="Previous region">◀ Prev</button>' +
+       (r.st !== 'gap' ? '<button type="button" class="wk-btn" data-jump="row" data-row="' + esc(r.n) + '">Show in table</button>' : '') +
+       '<button type="button" class="wk-btn" data-step="1"' + (i === regs.length - 1 ? ' disabled' : '') + ' aria-label="Next region">Next ▶</button>' +
+       '</div>';
+  openModal(h, from);
+}
+function stepRegion(d) {
+  if (!current) return;
+  var regs = maps[current.bank].data.regions, j = current.i + d;
+  if (j < 0 || j >= regs.length) return;
+  var btn = maps[current.bank].el.querySelector('.wk-amap-slice[data-i="' + j + '"]');
+  showRegion(current.bank, j, lastFocus);
+  if (btn) btn.scrollIntoView({ block: 'nearest' });
+}
+function jumpTo(kind, key) {
+  var target = null;
+  if (kind === 'row') {
+    var want = key.replace(/[`*]/g, '').trim();
+    document.querySelectorAll('.wk-article-body table tbody tr').forEach(function (tr) {
+      if (!target && tr.firstElementChild && tr.firstElementChild.textContent.trim() === want) target = tr;
+    });
+  } else {
+    target = document.getElementById(kind);
+  }
+  closeModal();
+  if (!target) return;
+  target.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'center' });
+  target.classList.remove('wk-flash'); void target.offsetWidth; target.classList.add('wk-flash');
+}
+
+/* Address Map page: a slice cell opens its pre-rendered panel in the pop-up */
+document.querySelectorAll('.wk-addrmap').forEach(function (map) {
+  map.addEventListener('click', function (e) {
+    var cell = e.target.closest('a.wk-slice-cell');
+    if (!cell) return;
+    var panel = document.getElementById(cell.getAttribute('href').slice(1));
+    if (!panel) return;
+    e.preventDefault();
+    map.querySelectorAll('.wk-slice-cell.is-selected').forEach(function (el) { el.classList.remove('is-selected'); });
+    cell.classList.add('is-selected');
+    current = null;
+    var clone = panel.cloneNode(true);
+    clone.removeAttribute('id');
+    var x = clone.querySelector('.wk-slice-close'); if (x) x.remove();
+    var h3 = clone.querySelector('h3'); if (h3) h3.id = 'wk-modal-title';
+    openModal(clone.innerHTML, cell);
+  });
+});
+
+/* Bank heat map (64 banks) */
+document.querySelectorAll('.wk-heat-wrap').forEach(function (wrap) {
+  var meta;
+  try { meta = JSON.parse(wrap.querySelector('.wk-heat-data').textContent); } catch (e) { return; }
+  wrap.addEventListener('click', function (e) {
+    var c = e.target.closest('.wk-heat-cell'); if (!c) return;
+    var bank = c.getAttribute('data-heat'), m = meta[bank]; if (!m) return;
+    wrap.querySelectorAll('.is-selected').forEach(function (el) { el.classList.remove('is-selected'); });
+    c.classList.add('is-selected');
+    current = null;
+    var pct = m.code != null ? (m.code / 65536 * 100) : null;
+    var h = '<p class="wk-modal-eyebrow">Bank $' + bank + ' · file $' +
+            ('0' + (parseInt(bank, 16) - 0xC0).toString(16).toUpperCase()).slice(-2) + '0000</p>';
+    h += '<h3 id="wk-modal-title">Bank $' + bank + '</h3>';
+    h += '<div class="wk-modal-facts">' +
+         (m.matched ? badge('progress') : (m.code ? badge('unmapped') : '<span class="wk-status wk-status-unknown">Data only</span>')) +
+         '<span>' + (m.code != null ? num(m.code) + ' code bytes (' + pct.toFixed(pct < 1 ? 1 : 0) + '%)' : 'not surveyed') + '</span></div>';
+    if (m.note) h += '<p>' + md(m.note) + '</p>';
+    if (m.matched) {
+      var mp = m.code ? Math.min(100, m.matched / m.code * 100) : 0;
+      h += '<div class="wk-modal-gauge" role="img" aria-label="' + mp.toFixed(1) + '% of code matched"><span style="width:' + mp.toFixed(2) + '%"></span></div>';
+      h += '<p><strong>' + num(m.matched) + ' bytes</strong> matched and verified' +
+           (m.code ? ' — ' + mp.toFixed(1) + '% of this bank\'s code. ' + num(Math.max(0, m.code - m.matched)) + ' code bytes to go.' : '.') + '</p>';
+    } else if (m.code) {
+      h += '<p class="wk-modal-todo">Not started: ' + num(m.code) + ' bytes of code waiting to be matched.</p>';
+    } else {
+      h += '<p class="wk-modal-dim">No executable code here: graphics, music or map data (incbin).</p>';
+    }
+    h += '<div class="wk-modal-actions">' +
+         (m.map ? '<button type="button" class="wk-btn" data-jump="wk-amap-' + bank + '">Open the $' + bank + ' address map ▶</button>' : '') +
+         '</div>';
+    openModal(h, c);
+  });
+});
+
+}());
+</script>
+</body>
+</html>

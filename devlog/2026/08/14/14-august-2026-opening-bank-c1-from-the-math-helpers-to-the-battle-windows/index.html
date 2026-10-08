@@ -1,0 +1,1115 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  
+  <meta name="description" content="Byte-exact matching decompilation of Chrono Trigger (SNES, US 1.0)">
+  <link rel="canonical" href="https://thisisakill.github.io/Kajar-site/devlog/2026/08/14/14-august-2026-opening-bank-c1-from-the-math-helpers-to-the-battle-windows/">
+  
+  
+  <title>14 August 2026: opening bank C1, from the math helpers to the battle windows — Kajar</title>
+  
+  
+  <link rel="stylesheet" href="../../../../../stylesheets/wiki.css">
+  
+  
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Press+Start+2P&family=Silkscreen&display=swap">
+  
+</head>
+<body>
+
+<!-- ── Header ──────────────────────────────────────────────── -->
+<header class="wk-header">
+  <button class="wk-nav-toggle" id="wk-nav-toggle" aria-label="Toggle navigation" aria-expanded="false" aria-controls="wk-nav">☰</button>
+  <a class="wk-wordmark" href="../../../../.." aria-label="Kajar home">
+    <svg class="wk-wordmark-clock" viewBox="0 0 32 32" aria-hidden="true">
+      <circle cx="16" cy="16" r="13.5" fill="#0f1438" stroke="#ffd76e" stroke-width="2.5"/>
+      <g stroke="#cdd5ff" stroke-width="1.6" stroke-linecap="round">
+        <path d="M16 5.2v2.4M16 24.4v2.4M5.2 16h2.4M24.4 16h2.4"/>
+      </g>
+      <path d="M16 16l-5 -3.2" stroke="#ffd76e" stroke-width="2.4" stroke-linecap="round"/>
+      <path class="hand-m" d="M16 16V7.6" stroke="#ffffff" stroke-width="1.8" stroke-linecap="round"/>
+      <circle cx="16" cy="16" r="1.8" fill="#ffd76e"/>
+    </svg>
+    <span>Kajar</span>
+    <small class="wk-tagline">notes of ChronoRET, rebuilding Chrono Trigger one matched routine at a time</small>
+  </a>
+
+  <div class="wk-header-right">
+    
+    <div class="wk-searchbox">
+      <input class="wk-search-input" id="wk-q" type="search"
+             placeholder="Search…  [/]" autocomplete="off" aria-label="Search">
+      <div class="wk-search-results" id="wk-results" hidden role="listbox"></div>
+    </div>
+    <button class="wk-toggle" id="wk-toggle" title="Toggle theme" aria-label="Toggle dark/light">
+      <svg class="i-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.5" fill="currentColor"/><g stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 1.8v2.6M12 19.6v2.6M1.8 12h2.6M19.6 12h2.6M4.8 4.8l1.8 1.8M17.4 17.4l1.8 1.8M4.8 19.2l1.8-1.8M17.4 6.6l1.8-1.8"/></g></svg>
+      <svg class="i-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.5 14.6A8.6 8.6 0 0 1 9.4 3.5a8.6 8.6 0 1 0 11.1 11.1z" fill="currentColor"/></svg>
+    </button>
+  </div>
+</header>
+
+<!-- ── Layout ──────────────────────────────────────────────── -->
+<div class="wk-layout">
+
+  <div class="wk-nav-backdrop" id="wk-nav-backdrop" hidden></div>
+
+  <!-- Left sidebar -->
+  <nav class="wk-nav" id="wk-nav" aria-label="Site navigation">
+    <a href="../../../../.." class="wk-portal-icon" aria-label="Home">
+      <span class="wk-emblem">
+        <span class="wk-emblem-art">
+          <img src="../../../../../assets/ct-icon.png" alt="Crono" width="220" height="220">
+        </span>
+        <span class="wk-emblem-caption">Crono · 1000 AD</span>
+      </span>
+    </a>
+
+    
+      
+      <a class="wk-nav-link" href="../../../../..">Home</a>
+      
+    
+      
+        <p class="wk-nav-heading">The Journey</p>
+        
+          
+          <a class="wk-nav-link is-active" href="../../../../">Devlog</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../../../../../gallery/">Gallery</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../../../../../PROGRESS/">Progress</a>
+          
+        
+      
+    
+      
+        <p class="wk-nav-heading">Systems</p>
+        
+          
+          <a class="wk-nav-link" href="../../../../../systems/">Overview</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../../../../../systems/boot/">Boot</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../../../../../systems/engine/">Engine core</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../../../../../systems/sprites/">Sprites & objects</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../../../../../systems/battle-engine/">Battle engine</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../../../../../systems/battle-menu/">Battle menu</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../../../../../systems/battle-targeting/">Battle targeting</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../../../../../systems/battle-status/">Status bar & text</a>
+          
+        
+      
+    
+      
+        <p class="wk-nav-heading">How It Works</p>
+        
+          
+          <a class="wk-nav-link" href="../../../../../ARCHITECTURE/">Architecture</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../../../../../ADDRESS_MAP/">Address Map</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../../../../../BANK_MAP/">Bank Map</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../../../../../how-sprite-init-works/">Sprite Init Explainer</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../../../../../ROM_HASH/">Target ROM</a>
+          
+        
+      
+    
+      
+        <p class="wk-nav-heading">For Time Travelers</p>
+        
+          
+          <a class="wk-nav-link" href="../../../../../CONTRIBUTING/">Contributing</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../../../../../ASAR_QUIRKS/">asar Quirks</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../../../../../glossary/">Glossary</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../../../../../CI_SETUP/">CI Setup</a>
+          
+        
+      
+    
+      
+      <a class="wk-nav-link" href="../../../../../credits/">Credits</a>
+      
+    
+
+    <!-- Party Status: every value from docs/data/ (hooks/progress_data.py) -->
+    
+    <div class="wk-stats">
+      <p class="wk-nav-heading" title="Project progress">Party Status</p>
+      
+      <div class="wk-party">
+        <div class="wk-party-row" title="Bytes matched: the rebuilt ROM is byte-identical here">
+          <span class="wk-party-k">HP</span>
+          <span class="wk-party-v">29,032<small>/359,278</small></span>
+        </div>
+        <div class="wk-stat-track"><div class="wk-stat-fill" style="width:8.08%"></div></div>
+        <p class="wk-party-note">bytes matched · 8.08% of code</p>
+
+        <div class="wk-party-row" title="Matched functions that also meet the readability standard">
+          <span class="wk-party-k">MP</span>
+          <span class="wk-party-v">256<small>/256</small></span>
+        </div>
+        <div class="wk-stat-track"><div class="wk-stat-fill wk-stat-fill-mp" style="width:100.0%"></div></div>
+        <p class="wk-party-note">functions readable</p>
+
+        <div class="wk-party-row" title="Readable functions that passed an independent review">
+          <span class="wk-party-k">TP</span>
+          <span class="wk-party-v">23<small>/256</small></span>
+        </div>
+        <div class="wk-stat-track"><div class="wk-stat-fill wk-stat-fill-dim" style="width:9.0%"></div></div>
+        <p class="wk-party-note">functions verified</p>
+      </div>
+      
+      <p class="wk-stat-link"><a href="../../../../../PROGRESS/">View full progress →</a></p>
+    </div>
+  </nav>
+
+  <!-- Main content -->
+  <main class="wk-main">
+    <div class="wk-article">
+
+      
+      
+      <div class="wk-toc" id="wk-toc">
+        <div class="wk-toc-header">
+          <b>Contents</b>
+          <button class="wk-toc-toggle"
+            onclick="var l=document.getElementById('wk-toc-list');l.hidden=!l.hidden;this.textContent=l.hidden?'[show]':'[hide]'">[hide]</button>
+        </div>
+        <ol class="wk-toc-list" id="wk-toc-list">
+          
+          <li>
+            <a href="#14-august-2026-opening-bank-c1-from-the-math-helpers-to-the-battle-windows" class="wk-toc-link">14 August 2026: opening bank C1, from the math helpers to the battle windows</a>
+            
+            <ol><li><a href="#opening-a-new-bank" class="wk-toc-link">Opening a new bank</a></li><li><a href="#the-hardware-multiply-and-divide" class="wk-toc-link">The hardware multiply and divide</a></li><li><a href="#the-math-routines" class="wk-toc-link">The math routines</a></li><li><a href="#number-display" class="wk-toc-link">Number display</a></li><li><a href="#trig-and-geometry" class="wk-toc-link">Trig and geometry</a></li><li><a href="#the-battle-status-bar" class="wk-toc-link">The battle status bar</a></li><li><a href="#the-disassemblers-x-width-bug-fixed" class="wk-toc-link">The disassembler's X-width bug, fixed</a></li><li><a href="#rendering-the-item-and-tech-lists" class="wk-toc-link">Rendering the item and tech lists</a></li><li><a href="#window-upkeep-the-battle-menu-comes-alive" class="wk-toc-link">Window upkeep: the battle menu comes alive</a></li><li><a href="#the-day-in-numbers" class="wk-toc-link">The day in numbers</a></li><li><a href="#next" class="wk-toc-link">Next</a></li></ol>
+            
+          </li>
+          
+        </ol>
+      </div>
+      
+      
+
+      <div class="wk-article-body">
+      
+<article>
+  
+  <p class="wk-post-meta">
+    <time datetime="2026-08-14 00:00:00+00:00">2026-08-14</time>
+    
+    · <a href="../../../../category/progress/">Progress</a>, <a href="../../../../category/bank-c1/">Bank C1</a>, <a href="../../../../category/battle-engine/">Battle Engine</a>, <a href="../../../../category/ui/">UI</a>, <a href="../../../../category/bank-c1/">Bank C1</a>, <a href="../../../../category/battle-ui/">battle-ui</a>
+    
+  </p>
+  
+  
+  <h1 id="14-august-2026-opening-bank-c1-from-the-math-helpers-to-the-battle-windows">14 August 2026: opening bank C1, from the math helpers to the battle windows</h1>
+<p>Bank <code>$C1</code>, the battle engine, is open. In one day it went from an empty file to 4,085 <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr> bytes: math and number formatting, the battle status bar and all its callees, the item and tech list renderers, and the per-frame window upkeep. 33 functions over sessions 34 to 40, plus a root-cause fix in the disassembler.</p>
+<!-- more -->
+
+<h2 id="opening-a-new-bank">Opening a new bank</h2>
+<p>The build runs <abbr title="The 65816 assembler used for this project — patches matched .asm source into a ROM copy for byte-exact verification.">asar</abbr> in patch mode: it starts from the original ROM and overwrites only the ranges the source covers. Opening a bank means:</p>
+<ol>
+<li>creating <code>asm/bankC1/bankC1.asm</code></li>
+<li>adding it to <code>asm/main.asm</code></li>
+<li>checking that <code>make diff</code> still reports 4,194,304 bytes identical <em>before</em> writing any <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr> code</li>
+</ol>
+<p>The third step is not optional. If the new file emits or changes bytes outside its range by accident, the diff shows it at once. The build was clean before any code went in.</p>
+<p><strong>CPU state on entry.</strong> In bank <code>$C0</code> the boot sequence leaves native mode, M=1 (8-bit A), X=0 (16-bit X/Y), <abbr title="Direct Page — the 65816's relocatable 256-byte zero-page window; address = D register + 8-bit offset.">DP</abbr>=<code>$2100</code>, DB=<code>$00</code> and the stack at <code>$06FF</code>. Bank <code>$C1</code> is entered from the field engine with <code>JSL $C10000</code> (<code>Battle_Main</code>), which <code>JMP</code>s into a bootstrap chain. The math routines at <code>$C1:0089</code> are leaves called from deep inside that system, and their code assumes:</p>
+<ul>
+<li><strong>M=1</strong> on entry. Each uses <code>REP #$20</code> when it needs 16-bit A (to read a product) and <code>SEP #$20</code> after.</li>
+<li><strong>X=0</strong> (16-bit X/Y). The shift stubs never touch X; the multiply/divide routines use it once (an <code>LDX</code> in <code>Battle_MulAccum</code> to read the result register into a 16-bit index).</li>
+<li><strong><abbr title="Direct Page — the 65816's relocatable 256-byte zero-page window; address = D register + 8-bit offset.">DP</abbr>=0</strong>. Direct-page accesses (<code>$AD</code>, <code>$AE</code>, <code>$AF</code>, <code>$A5</code>, <code>$B1</code> and so on) reach <abbr title="Work RAM — 128KB of SNES main RAM at $7E:0000–$7F:FFFF, holds all runtime game state.">WRAM</abbr> <code>$7E:00xx</code>.</li>
+</ul>
+<p><strong>DB varies.</strong> <code>Battle_Mul8</code> writes the multiply registers at <code>$004202</code>/<code>$004203</code> with <code>STA.l</code> (4-byte long form), which works whatever DB is. <code>Battle_MulAccum</code> saves DB with <code>PHB</code>, sets DB=0 (<code>TDC / PHA / PLB</code>) and uses the shorter <code>STA.w</code>. <code>Battle_Divide</code> goes back to the long form. That reflects what each routine can assume about its callers, not carelessness.</p>
+<h2 id="the-hardware-multiply-and-divide">The hardware multiply and divide</h2>
+<p>The SNES CPU has math helpers at fixed addresses in the <code>$4200</code> space.</p>
+<p><strong>Multiply</strong> (<code>$4202</code>–<code>$4216</code>):</p>
+<ul>
+<li>write the 8-bit multiplicand to <code>$4202</code> (WRMPYA)</li>
+<li>write the 8-bit multiplier to <code>$4203</code> (WRMPYB); this starts the multiply</li>
+<li>wait at least 8 master cycles (2 <code>NOP</code>s are enough)</li>
+<li>read the 16-bit result from <code>$4216</code> (RDMPYL/H)</li>
+</ul>
+<p><strong>Divide</strong> (<code>$4204</code>–<code>$4214</code>):</p>
+<ul>
+<li>write the 16-bit dividend to <code>$4204</code> (WRDIVL) and <code>$4205</code> (WRDIVH)</li>
+<li>write the 8-bit divisor to <code>$4206</code> (WRDIVB); this starts the divide</li>
+<li>wait at least 16 master cycles; the game uses 6 <code>NOP</code>s, which is conservative and safe</li>
+<li>read the 16-bit quotient from <code>$4214</code> (RDDIVL/H) and the 16-bit remainder from <code>$4216</code> (RDMPYL/H)</li>
+</ul>
+<p>The remainder and the product share <code>$4216</code>. Which one is there depends on the last operation, which is why <code>RDMPYL</code> appears in both kinds of routine.</p>
+<h2 id="the-math-routines">The math routines</h2>
+<p><strong><code>Battle_Mul8</code></strong> (<code>$C1:0089–$00A6</code>, 30 bytes; scouting had said 29). Reads <code>$AD</code> and <code>$AE</code>, mirrors them to <code>$77</code>/<code>$78</code> (temporary storage, probably for the caller), writes both to the multiply registers in long form, reads the product with <code>REP #$20</code> around the read, stores it at <code>$AF</code>, restores M=1, returns. The two <code>NOP</code>s after WRMPYB are the timing guard.</p>
+<p><strong><code>Battle_MulAccum</code></strong> (<code>$C1:00A7–$00D6</code>, 48 bytes). Does two multiplies and adds both into a 32-bit total: set DB=0 (so <code>STA.w $4202</code> works), multiply <code>$A5 × $A7</code>, then <code>$A8 × $A7</code>, and add the products into <code>$A9</code>/<code>$AA</code> (16-bit low, 16-bit high). <code>REP #$21</code> before the final <code>ADC</code> clears both the <abbr title="Processor status bit controlling accumulator width: M=1 → 8-bit A, M=0 → 16-bit A. Changed via SEP/REP.">M flag</abbr> (16-bit A) and carry in one instruction, so no separate <code>CLC</code>. <code>PHP</code>/<code>PLP</code> around the second multiply keep the processor flags safe across the register writes.</p>
+<p><strong><code>Battle_Divide</code></strong> (<code>$C1:00D7–$010C</code>, 54 bytes). Writes <code>$B1</code> to WRDIVL, <code>$B2</code> to WRDIVH and <code>$B3</code> to WRDIVB, waits six <code>NOP</code>s (nearly twice what the hardware needs, a cautious choice for emulators and edge-case timing), reads the quotient from <code>$4214</code> and the remainder from <code>$4216</code>, stores them at <code>$B5</code> and <code>$B7</code>. An <code>INC</code>/<code>STZ</code> pair on <code>$A029</code> brackets the work, like a "divide unit busy" re-entrancy guard. Whether anything reads it is a question for later; it is <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr> as is.</p>
+<p><strong>Shift helpers</strong> (<code>$C1:010D–$011E</code>, 18 bytes). Two fall-through chains:</p>
+<ul>
+<li>Left: <code>Battle_ShiftLeft7</code> at <code>$010D</code> has four <code>ASL A</code>, falls into <code>Battle_ShiftLeft4</code> (one more <code>ASL</code> at <code>$0111</code>), which falls into <code>Battle_ShiftLeft3</code> (three <code>ASL</code> + <code>RTS</code> at <code>$0112–$0115</code>). From <code>ShiftLeft7</code> that is eight shifts, from <code>ShiftLeft4</code> five, from <code>ShiftLeft3</code> three. The reference names count each entry point's own contribution to the chain, not the total. (Eight shifts = ×256, handy for indexing 256-byte tables.)</li>
+<li>Right: the same with <code>LSR A</code>. <code>Loc_C10116</code> at <code>$0116</code> leads into <code>Battle_ShiftRight6</code> at <code>$0118</code>, then <code>ShiftRight5</code> (<code>$0119</code>), <code>ShiftRight4</code> (<code>$011A</code>) and <code>ShiftRight3</code> (<code>$011B–$011E</code>, three <code>LSR</code> + <code>RTS</code>).</li>
+</ul>
+<p>In <abbr title="The 65816 assembler used for this project — patches matched .asm source into a ROM copy for byte-exact verification.">asar</abbr> this is one <code>org</code> block with a label at each entry; labels emit no bytes. After these four routines the project crossed 20,000 bytes for the first time: 20,119 across 4 banks.</p>
+<h2 id="number-display">Number display</h2>
+<p>A caller audit of the math helpers: <code>Battle_Mul8</code> is called from 11 sites across the bank, <code>Battle_MulAccum</code> from 13, <code>Battle_Divide</code> from 13, the shift cluster from 3. Almost everything in the battle engine uses them: damage formulas, stat scaling, experience. The first caller of <code>Battle_MulAccum</code> is at <code>$C1:021C</code>, inside <code>Battle_SinLookup</code>, just past the shift cluster in address order. That set the path.</p>
+<p>The three routines between the shift cluster and the sine lookup format numbers:</p>
+<ul>
+<li><strong><code>BattleMsg_FormatNumberDigits</code></strong> (<code>$C1:011F</code>, 85 bytes) splits a 16-bit value in a <abbr title="Work RAM — 128KB of SNES main RAM at $7E:0000–$7F:FFFF, holds all runtime game state.">WRAM</abbr> slot into hundreds, tens and ones by repeated subtraction, not hardware division: subtract 100 in a loop to count hundreds, undo the overshoot, do the same with 10, and the ones digit is what's left. Each digit is looked up in a glyph table at <code>$CCF903</code> (bank <code>$CC</code>) to get its font tile, and the results go to four consecutive <abbr title="Work RAM — 128KB of SNES main RAM at $7E:0000–$7F:FFFF, holds all runtime game state.">WRAM</abbr> slots. The thousands slot always gets <code>$FF</code>, a blank marker that <code>BattleMsg_BlankLeadingZeros</code> later reads as "suppress this leading zero".</li>
+<li><strong><code>Battle_DivTen9499</code></strong> (<code>$C1:0174</code>, 53 bytes) is the tens-and-ones half of the same logic, for two-digit numbers. Same subtraction loop, same glyph table, no hundreds pass.</li>
+<li><strong><code>BattleMsg_ReencodeTextBuffer</code></strong> (<code>$C1:01A9</code>, 80 bytes) copies a 16-character text buffer with <code>MVN</code>, then turns each character into a pair: a tile index in one buffer and a "plane" byte in a parallel buffer. <code>$40</code>–<code>$68</code> get tile offset +<code>$40</code> and plane <code>$71</code>; <code>$69</code>–<code>$72</code> get +<code>$17</code> and plane <code>$72</code>; <code>$73</code> and up pass through with plane <code>$FF</code>. The plane byte tells the renderer which of two tilesets holds the glyph.</li>
+</ul>
+<p><strong>A new entry convention.</strong> These three enter with A already 16-bit (M=0), set by the caller. <code>BattleMsg_ReencodeTextBuffer</code> starts with its own <code>REP #$20</code> anyway. <code>FormatNumberDigits</code> and <code>DivTen9499</code> rely on the caller's M=0 for their 3-byte immediates (<code>E9 64 00</code> for <code>SBC #$0064</code> and so on). <abbr title="The 65816 assembler used for this project — patches matched .asm source into a ROM copy for byte-exact verification.">asar</abbr> 1.91 has no "assume M:16" directive, so those instructions are written as raw <code>db</code> bytes. Everything else around them (<code>LDA.w</code>, <code>STA.w</code>, branches, stack operations) doesn't depend on M. <code>make diff</code> was <abbr title="The assembled output matches the original ROM byte-for-byte — not just equivalent behavior, literally identical bytes.">byte-exact</abbr> on the first attempt.</p>
+<h2 id="trig-and-geometry">Trig and geometry</h2>
+<p><strong><code>Battle_SinLookup</code></strong> (<code>$C1:01F9</code>, 41 bytes) computes <code>sin(A) * $AE</code> and returns the high byte of the product in <code>$AA</code>. It multiplies the angle by 4, wraps it to 0–1023 with <code>AND #$03FF</code>, and uses it as a byte index into a 512-entry sine table at <code>$C0F900</code> in bank <code>$C0</code>. The table holds magnitudes only. For the second half of the cycle (indexes <code>$0200</code>–<code>$03FF</code>) the code negates the value with <code>EOR #$FFFF</code> plus 1 (16-bit two's complement). The result goes to <code>$A7</code>, <code>$AE</code> is copied to <code>$A5</code>, and <code>Battle_MulAccum</code> does the multiply. It is the first <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr> routine that calls another <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr> routine.</p>
+<p><strong><code>Calc_Delta16</code></strong> (<code>$C1:0222</code>, 119 bytes) turns a 2D displacement into a direction angle. It takes signed 8-bit coordinate pairs, (<code>$D3</code>, <code>$D5</code>) for X and (<code>$D4</code>, <code>$D6</code>) for Y, subtracts them into signed 16-bit deltas (sign-extending with the borrow trick <code>LDA #$00 / SBC #$00</code>), takes absolute values by XOR-and-subtract, and mixes them into a table index, roughly <code>(|ΔX| &gt;&gt; 3) + (|ΔY| &amp; $FFF8) * 4</code>, in <code>$E2</code>. That indexes a base direction byte at <code>$C0F300</code>. The sign bits of the high bytes (<code>$D8</code> for ΔX, <code>$DA</code> for ΔY) pick one of four quadrant paths, which add or subtract <code>$80</code> or negate the angle.</p>
+<p>It has dead code, kept byte for byte: after computing <code>$E2</code> it does <code>ASL A / TAX</code> (2 × <code>$E2</code> into X), then immediately overwrites X with <code>LDX $E2</code>.</p>
+<p><strong>Bank <code>$C1</code> conventions so far:</strong></p>
+<ul>
+<li><strong>M=1</strong> on entry for most routines</li>
+<li><strong>M=0</strong> on entry for the number-display routines, set by the caller and noted in each routine's header comment</li>
+<li><strong>X=0</strong> (16-bit X/Y) throughout; no <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr> routine changes it</li>
+<li><strong><abbr title="Direct Page — the 65816's relocatable 256-byte zero-page window; address = D register + 8-bit offset.">DP</abbr>=0</strong>: direct-page accesses reach <code>$7E:00xx</code></li>
+<li><strong>DB varies</strong>: the math helpers use <code>STA.l</code> for hardware registers because DB is unknown; <code>BattleMsg_ReencodeTextBuffer</code> and <code>Battle_SinLookup</code> inherit DB=<code>$7E</code> from their callers and use absolute accesses to <code>$94xx</code> <abbr title="Work RAM — 128KB of SNES main RAM at $7E:0000–$7F:FFFF, holds all runtime game state.">WRAM</abbr></li>
+<li><strong>no <code>RTL</code></strong>: all of these are <code>JSR</code>ed from inside bank <code>$C1</code></li>
+</ul>
+<h2 id="the-battle-status-bar">The battle status bar</h2>
+<h3 id="battleui_buildstatusbarframe">BattleUI_BuildStatusBarFrame</h3>
+<p><code>BattleUI_BuildStatusBarFrame</code> (<code>$C1:0299–$C1:05A6</code>, 782 bytes) rebuilds the whole status panel whenever the battle needs it: entering a fight, a change of active character, HP/MP changes. It doesn't just draw numbers; it rebuilds the entire tilemap buffer.</p>
+<p>The status bar is not a separate hardware layer. It is a rectangle of the same BG layer that shows the battle. The buffer at <code>$7E:0CC0</code> is 192 word pairs (384 bytes) of (tile index, attribute byte); the attribute byte holds palette, priority and flip bits, and a <abbr title="Direct Memory Access — hardware block copy bypassing the CPU; used for VRAM uploads, WRAM clears, OAM.">DMA</abbr> copies the buffer to <abbr title="Video RAM — dedicated PPU memory for tile graphics and tilemaps; written via DMA during VBlank.">VRAM</abbr> every frame. In this buffer <code>$29</code> is the normal palette and <code>$2D</code> the bright/highlight palette used for low HP or the active character. The font tiles for 0–9 live in <abbr title="Video RAM — dedicated PPU memory for tile graphics and tilemaps; written via DMA during VBlank.">VRAM</abbr>, so a digit is just a tile index, chosen through the table at <code>$CCF903</code>.</p>
+<p>The routine:</p>
+<ol>
+<li>clears all 192 pairs to (tile <code>$00</code>, attribute <code>$29</code>) in a tight loop</li>
+<li>writes border tiles (the separators between HP and MP columns, small corner tiles and so on) at offsets that depend on <code>BattleGaugeDisplayType</code> at <code>$7E:9F20</code> (0, 1 or 2, three UI layouts)</li>
+<li>for each of the three PC slots that is active:<ol>
+<li>writes the 5-character battle name from <code>$7E:9412</code> (per-slot start from a table at <code>$CCF837</code>) into two tilemap rows: the tile row and a copy 64 word pairs earlier (the palette row)</li>
+<li>reads <code>CurHp</code> and <code>MaxHp</code> (per-slot pointer from <code>$CCF8ED</code>), formats <code>CurHp</code> into three digit tiles with <code>BattleMsg_FormatNumberDigits</code>, blanks leading zeros with <code>BattleMsg_BlankLeadingZeros</code>, and writes them at a gauge-type offset. It sets a low-HP flag at <code>$7E:A10F</code> when <code>CurHp ≤ MaxHp/8</code>, which switches the digit attribute from <code>$29</code> to <code>$2D</code>, the palette that gives the flashing red</li>
+<li>for gauge type 0 (the "full" layout) does the same for <code>MaxHp</code></li>
+<li>formats <code>CurMp</code> with <code>Battle_DivTen9499</code> and writes it at another offset</li>
+<li>for gauge types 1 and 2, appends TP/ATB gauge tiles (<code>$5D</code>/<code>$5E</code>) and calls <code>BattleUI_DrawSlotGaugeBar</code></li>
+</ol>
+</li>
+<li>handles the enemy slots the same way for names (11 characters from <code>$7E:ACBC</code>)</li>
+<li>if the highlighted PC changed, updates the tracking variables and dispatches a column-attribute update</li>
+</ol>
+<p><strong><code>BattleMsg_BlankLeadingZeros</code></strong> (<code>$C1:104E–$C1:106D</code>, 32 bytes) is its helper.</p>
+<p><strong>The <code>db $69</code> pattern.</strong> The routine runs mostly with 16-bit A and adds or subtracts small constants like <code>#$000E</code> or <code>#$0040</code> to tilemap addresses. <abbr title="The 65816 assembler used for this project — patches matched .asm source into a ROM copy for byte-exact verification.">asar</abbr> 1.91 sometimes emits the 2-byte M=1 form (<code>$69 $0E</code>) instead of the 3-byte M=0 form (<code>$69 $0E $00</code>), which shifts every byte after it. The fix is the one used for <code>SBC #$0064</code>: write the bytes.</p>
+<div class="language-asm highlight"><span class="filename">65C816 Assembly</span><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1"></a><a href="#__codelineno-0-1"><span class="linenos" data-linenos="1 "></span></a><span class="nf">REP</span><span class="w"> </span><span class="c1">#$20</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2"></a><a href="#__codelineno-0-2"><span class="linenos" data-linenos="2 "></span></a><span class="nf">CLC</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3"></a><a href="#__codelineno-0-3"><span class="linenos" data-linenos="3 "></span></a><span class="nf">LDA.B</span><span class="w"> </span><span class="no">$84</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4"></a><a href="#__codelineno-0-4"><span class="linenos" data-linenos="4 "></span></a><span class="nf">db</span><span class="w"> </span><span class="no">$69</span><span class="p">,</span><span class="no">$0E</span><span class="p">,</span><span class="no">$00</span><span class="w">          </span><span class="c1">; ADC #$000E — explicit 3-byte M=0 encoding</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5"></a><a href="#__codelineno-0-5"><span class="linenos" data-linenos="5 "></span></a><span class="nf">TAY</span>
+</code></pre></div>
+<p>It came up thirteen times in this one routine, every <code>ADC</code>/<code>SBC</code> with a 16-bit immediate in M=0, so it now has its own entry in <code>ASAR_QUIRKS.md</code> (quirk #4). The original compiler happily emitted 3-byte immediates in 16-bit mode even for small operands; <abbr title="The 65816 assembler used for this project — patches matched .asm source into a ROM copy for byte-exact verification.">asar</abbr> tries to be clever about operand size and sometimes guesses wrong.</p>
+<p>At this point bank <code>$C1</code> stood at 1,342 of 63,904 bytes (2.10%).</p>
+<h3 id="the-callees">The callees</h3>
+<p>All four callees stubbed by <code>BuildStatusBarFrame</code> (<code>BattleUI_DrawSlotGaugeBar</code> at <code>$C106F0</code>, <code>BattleSys_SlotPanelRefresh</code> at <code>$C10785</code>, <code>BattleMenu_DrawReadyWindowEdges</code> at <code>$C1081E</code>, <code>BattleUI_SetPanelAttrColumn</code> at <code>$C108E8</code>) are <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr>, plus one more:</p>
+<p><strong><code>BattleUI_DrawSlotGaugeBar</code></strong> (<code>$C1:06F0</code>, 149 bytes) draws the ATB gauge, the bar that fills while you wait for your turn (a chime plays when it's full). It computes the fill with the hardware multiply/divide: current ATB shifted left 8 (×256), divided by the maximum, gives 0–255; shifted right 3 (÷8) that is 0–31, for a 32-unit strip. From that it writes full 8-wide block tiles (<code>$6F</code>), one partial tile (<code>$67</code> + remainder) and background tiles (<code>$67</code>) for the rest. The attribute is <code>$2D</code> if there is any ATB and <code>$29</code> if the gauge is empty, which is why an empty gauge looks dim and a filling one bright.</p>
+<p><strong><code>BattleSys_SlotPanelRefresh</code></strong> (<code>$C1:0785</code>, 153 bytes) redraws the panel behind one character's status when the active PC changes. It writes a 6-row × 7-column tile block from one of two tables: <code>$CCFA41</code> for the "empty" panel and <code>$CCFA6B</code> for the "ready" indicator (the look when a character's ATB is full and they're waiting for input). The choice goes through a cascade: a panel-state flag at <code>$95F1</code>, per-slot presence flags, a timing/animation flag at <code>$A117</code>, whether the PC-change flag <code>$A6DE</code> equals 3, and whether this slot is the active PC. Outer loop 6 rows, inner loop 7 tiles with attribute <code>$29</code>, plus 64 (the row stride) between rows. No callees.</p>
+<p><strong><code>BattleMenu_DrawWindowEdgeStrip</code></strong> (<code>$C1:0929</code>, 52 bytes) copies one vertical strip of the command window border (the Fight / Magic / Item box) into its tilemap at <code>$7E:0B40</code>. The tiles come from <code>$D159FC</code> in bank <code>$D1</code>. <abbr title="Direct Page mode — 2-byte instruction using an 8-bit offset added to the D register.">dp</abbr> <code>$84</code> picks the side: zero is the left edge (14 bytes per row, <code>$0E</code> in the table index), non-zero the right edge (12 bytes per row, offset 2 with <code>INX INX</code>). 6 rows, +64 per row. It is the first <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr> routine to read bank <code>$D1</code>; until now data came from <code>$CC</code> (tables) or <code>$7E</code> (<abbr title="Work RAM — 128KB of SNES main RAM at $7E:0000–$7F:FFFF, holds all runtime game state.">WRAM</abbr>). Bank <code>$D1</code> looks like the home of the window decoration graphics.</p>
+<p><strong><code>BattleUI_SetPanelAttrColumn</code></strong> (<code>$C1:08E8</code>, 65 bytes) updates the attribute column behind the active PC. It doubles the slot index in A and looks up the tilemap column from <code>$CCFA29</code> (gauge types 0 and 2) or <code>$CCFA23</code> (type 1), since the layouts place the columns differently. Then it writes <code>$29</code> to 10 positions, a 5-row × 2-column block, with absolute indexed stores.</p>
+<p><strong><code>BattleMenu_DrawReadyWindowEdges</code></strong> (<code>$C1:081E</code>, 202 bytes) draws the full border. It checks the slot states <code>$A6D9</code>, <code>$A6DA</code> and <code>$A6DB</code>; for each present slot (non-negative state) it picks a column and calls <code>BattleMenu_DrawWindowEdgeStrip</code>. The columns depend on who is present: if slot 0 is absent, slot 1's strip shifts left; if slot 1 is absent, slot 2's does. The <code>$84</code> flag alternates 0 (left) and 1 (right). Then it calls <code>BattleUI_SetPanelAttrColumn</code> for the active PC (<code>$A6DD</code>), increments a redraw flag at <code>$A43F</code>, and falls through into a sub-entry.</p>
+<p><strong><code>BattleUI_ClearActivePanelColumn</code></strong> (sub-entry at <code>$C1:0872</code>) is also called from <code>$C10C6E</code>, so it has its own label. It zeroes a 6-row × 2-column block for the current active slot (<code>$95D5</code>), and if the redraw flag is set, repaints four corner tiles (<code>$60</code>, <code>$61</code>, <code>$62</code>, <code>$63</code>) at the newly active PC (<code>$A6DD</code>): a small mark showing which character is acting.</p>
+<p>With these, every callee of <code>BattleUI_BuildStatusBarFrame</code> is <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr>.</p>
+<h3 id="battleui_updatenextpcpanel">BattleUI_UpdateNextPcPanel</h3>
+<p><code>BattleUI_UpdateNextPcPanel</code> (<code>$C1:05A7–$C1:06EF</code>, 329 bytes) is the incremental partner of <code>BuildStatusBarFrame</code>. Instead of a full redraw, it advances a rotating pointer (<code>$A6E0</code>) to one "next" PC slot, formats its HP/MP digits, picks the low-HP attribute, and draws the ATB bars for all three slots.</p>
+<p>The first 28 bytes are early exits:</p>
+<div class="language-text highlight"><span class="filename">Text Only</span><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1"></a><a href="#__codelineno-1-1"><span class="linenos" data-linenos="1 "></span></a>LDA $A6DB      ; slot 2 state
+<a id="__codelineno-1-2" name="__codelineno-1-2"></a><a href="#__codelineno-1-2"><span class="linenos" data-linenos="2 "></span></a>BMI .common    ; absent → still update counter
+<a id="__codelineno-1-3" name="__codelineno-1-3"></a><a href="#__codelineno-1-3"><span class="linenos" data-linenos="3 "></span></a>LDA $A09A      ; update-inhibit flag
+<a id="__codelineno-1-4" name="__codelineno-1-4"></a><a href="#__codelineno-1-4"><span class="linenos" data-linenos="4 "></span></a>BNE .common    ; inhibited → skip digit refresh
+<a id="__codelineno-1-5" name="__codelineno-1-5"></a><a href="#__codelineno-1-5"><span class="linenos" data-linenos="5 "></span></a>LDA $9F20      ; gauge display type
+<a id="__codelineno-1-6" name="__codelineno-1-6"></a><a href="#__codelineno-1-6"><span class="linenos" data-linenos="6 "></span></a>BEQ .common    ; type 0 → fixed layout, skip
+<a id="__codelineno-1-7" name="__codelineno-1-7"></a><a href="#__codelineno-1-7"><span class="linenos" data-linenos="7 "></span></a>DEC A          ; type 1 → 0 (falls through); type 2 → 1 (branches)
+<a id="__codelineno-1-8" name="__codelineno-1-8"></a><a href="#__codelineno-1-8"><span class="linenos" data-linenos="8 "></span></a>BNE .common    ; type 2 → skip
+<a id="__codelineno-1-9" name="__codelineno-1-9"></a><a href="#__codelineno-1-9"><span class="linenos" data-linenos="9 "></span></a>JMP .tp_gauges ; type 1 → skip to ATB-bar draw only
+</code></pre></div>
+<p>Only gauge type 1 (HP+MP) reaches the digit refresh; type 0 (HP+MaxHP+MP) and type 2 (HP+MP+TP) skip it. <code>.common</code> increments <code>$A6E0</code>, wraps at 3, and checks slot presence before the digit update. The HP path reuses the low-HP test:</p>
+<div class="language-text highlight"><span class="filename">Text Only</span><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1"></a><a href="#__codelineno-2-1"><span class="linenos" data-linenos=" 1 "></span></a>LDA $5E30,X    ; CurHP (16-bit, M=0)
+<a id="__codelineno-2-2" name="__codelineno-2-2"></a><a href="#__codelineno-2-2"><span class="linenos" data-linenos=" 2 "></span></a>STA $9499
+<a id="__codelineno-2-3" name="__codelineno-2-3"></a><a href="#__codelineno-2-3"><span class="linenos" data-linenos=" 3 "></span></a>BEQ .set_low_hp
+<a id="__codelineno-2-4" name="__codelineno-2-4"></a><a href="#__codelineno-2-4"><span class="linenos" data-linenos=" 4 "></span></a>LDA $5E32,X    ; MaxHP
+<a id="__codelineno-2-5" name="__codelineno-2-5"></a><a href="#__codelineno-2-5"><span class="linenos" data-linenos=" 5 "></span></a>JSR Battle_ShiftRight3   ; maxHP &gt;&gt; 3
+<a id="__codelineno-2-6" name="__codelineno-2-6"></a><a href="#__codelineno-2-6"><span class="linenos" data-linenos=" 6 "></span></a>CMP $9499
+<a id="__codelineno-2-7" name="__codelineno-2-7"></a><a href="#__codelineno-2-7"><span class="linenos" data-linenos=" 7 "></span></a>BEQ .check_a110          ; tied: check secondary gate
+<a id="__codelineno-2-8" name="__codelineno-2-8"></a><a href="#__codelineno-2-8"><span class="linenos" data-linenos=" 8 "></span></a>BCC .hp_ok               ; maxHP/8 &lt; curHP: not low
+<a id="__codelineno-2-9" name="__codelineno-2-9"></a><a href="#__codelineno-2-9"><span class="linenos" data-linenos=" 9 "></span></a>; else fall through to .check_a110
+<a id="__codelineno-2-10" name="__codelineno-2-10"></a><a href="#__codelineno-2-10"><span class="linenos" data-linenos="10 "></span></a>LDA $A110
+<a id="__codelineno-2-11" name="__codelineno-2-11"></a><a href="#__codelineno-2-11"><span class="linenos" data-linenos="11 "></span></a>BEQ .hp_ok
+<a id="__codelineno-2-12" name="__codelineno-2-12"></a><a href="#__codelineno-2-12"><span class="linenos" data-linenos="12 "></span></a>.set_low_hp:
+<a id="__codelineno-2-13" name="__codelineno-2-13"></a><a href="#__codelineno-2-13"><span class="linenos" data-linenos="13 "></span></a>INC.w $A10F    ; set low-HP flag (16-bit INC while M=0)
+</code></pre></div>
+<p>HP is low when <code>curHP == 0</code>, or when <code>curHP &lt;= maxHP/8</code> and <code>$A110</code> is non-zero. Low selects <code>$2D</code>, normal <code>$29</code>. For gauge type 0, three extra attribute bytes go to <code>$0CC9,Y / $0CCB,Y / $0CCD,Y</code>, the MaxHP digit columns that layout shows.</p>
+<p>The MP digits sit <code>+$10</code> from the HP base for type 0 (which has the MaxHP column first) and <code>+$08</code> for types 1 and 2, two more 3-byte immediates:</p>
+<div class="language-asm highlight"><span class="filename">65C816 Assembly</span><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1"></a><a href="#__codelineno-3-1"><span class="linenos" data-linenos=" 1 "></span></a><span class="nf">CLC</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2"></a><a href="#__codelineno-3-2"><span class="linenos" data-linenos=" 2 "></span></a><span class="nf">LDA.b</span><span class="w"> </span><span class="no">$86</span><span class="w">            </span><span class="c1">; base Y (saved earlier)</span>
+<a id="__codelineno-3-3" name="__codelineno-3-3"></a><a href="#__codelineno-3-3"><span class="linenos" data-linenos=" 3 "></span></a><span class="nf">db</span><span class="w"> </span><span class="no">$69</span><span class="p">,</span><span class="no">$10</span><span class="p">,</span><span class="no">$00</span><span class="w">       </span><span class="c1">; ADC #$0010 (type 0 path)</span>
+<a id="__codelineno-3-4" name="__codelineno-3-4"></a><a href="#__codelineno-3-4"><span class="linenos" data-linenos=" 4 "></span></a><span class="nf">TAY</span>
+<a id="__codelineno-3-5" name="__codelineno-3-5"></a><a href="#__codelineno-3-5"><span class="linenos" data-linenos=" 5 "></span></a><span class="nf">BRA</span><span class="w"> </span><span class="no">.mp_dest_done</span>
+<a id="__codelineno-3-6" name="__codelineno-3-6"></a><a href="#__codelineno-3-6"><span class="linenos" data-linenos=" 6 "></span></a><span class="na">...</span>
+<a id="__codelineno-3-7" name="__codelineno-3-7"></a><a href="#__codelineno-3-7"><span class="linenos" data-linenos=" 7 "></span></a><span class="nf">CLC</span>
+<a id="__codelineno-3-8" name="__codelineno-3-8"></a><a href="#__codelineno-3-8"><span class="linenos" data-linenos=" 8 "></span></a><span class="nf">LDA.b</span><span class="w"> </span><span class="no">$86</span>
+<a id="__codelineno-3-9" name="__codelineno-3-9"></a><a href="#__codelineno-3-9"><span class="linenos" data-linenos=" 9 "></span></a><span class="nf">db</span><span class="w"> </span><span class="no">$69</span><span class="p">,</span><span class="no">$08</span><span class="p">,</span><span class="no">$00</span><span class="w">       </span><span class="c1">; ADC #$0008 (types 1/2 path)</span>
+<a id="__codelineno-3-10" name="__codelineno-3-10"></a><a href="#__codelineno-3-10"><span class="linenos" data-linenos="10 "></span></a><span class="nl">.mp_dest_done:</span>
+<a id="__codelineno-3-11" name="__codelineno-3-11"></a><a href="#__codelineno-3-11"><span class="linenos" data-linenos="11 "></span></a><span class="nf">TAY</span>
+<a id="__codelineno-3-12" name="__codelineno-3-12"></a><a href="#__codelineno-3-12"><span class="linenos" data-linenos="12 "></span></a><span class="nf">JSR</span><span class="w"> </span><span class="no">Battle_DivTen9499</span>
+</code></pre></div>
+<p>The tail draws the ATB bars for all three slots. It is a global sub-entry, <strong><code>Battle_DrawHpBars</code></strong> at <code>$06DB</code>, because it can be called directly:</p>
+<div class="language-asm highlight"><span class="filename">65C816 Assembly</span><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1"></a><a href="#__codelineno-4-1"><span class="linenos" data-linenos=" 1 "></span></a><span class="nl">Battle_DrawHpBars:</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2"></a><a href="#__codelineno-4-2"><span class="linenos" data-linenos=" 2 "></span></a><span class="w">    </span><span class="nf">STX.b</span><span class="w"> </span><span class="no">$80</span><span class="w">       </span><span class="c1">; slot counter = 0 (16-bit X = 0 stored to $80/$81)</span>
+<a id="__codelineno-4-3" name="__codelineno-4-3"></a><a href="#__codelineno-4-3"><span class="linenos" data-linenos=" 3 "></span></a><span class="nl">.gauge_loop:</span>
+<a id="__codelineno-4-4" name="__codelineno-4-4"></a><a href="#__codelineno-4-4"><span class="linenos" data-linenos=" 4 "></span></a><span class="w">    </span><span class="nf">LDX.b</span><span class="w"> </span><span class="no">$80</span><span class="w">       </span><span class="c1">; load slot (16-bit DP load)</span>
+<a id="__codelineno-4-5" name="__codelineno-4-5"></a><a href="#__codelineno-4-5"><span class="linenos" data-linenos=" 5 "></span></a><span class="w">    </span><span class="nf">LDA</span><span class="w"> </span><span class="no">$96F5</span><span class="p">,</span><span class="no">X</span><span class="w">     </span><span class="c1">; slot presence flag</span>
+<a id="__codelineno-4-6" name="__codelineno-4-6"></a><a href="#__codelineno-4-6"><span class="linenos" data-linenos=" 6 "></span></a><span class="w">    </span><span class="nf">BEQ</span><span class="w"> </span><span class="no">.next_slot</span>
+<a id="__codelineno-4-7" name="__codelineno-4-7"></a><a href="#__codelineno-4-7"><span class="linenos" data-linenos=" 7 "></span></a><span class="w">    </span><span class="nf">JSR</span><span class="w"> </span><span class="no">BattleUI_DrawSlotGaugeBar</span>
+<a id="__codelineno-4-8" name="__codelineno-4-8"></a><a href="#__codelineno-4-8"><span class="linenos" data-linenos=" 8 "></span></a><span class="nl">.next_slot:</span>
+<a id="__codelineno-4-9" name="__codelineno-4-9"></a><a href="#__codelineno-4-9"><span class="linenos" data-linenos=" 9 "></span></a><span class="w">    </span><span class="nf">INC.b</span><span class="w"> </span><span class="no">$80</span><span class="w">       </span><span class="c1">; 8-bit DP increment (only increments $80, not $81)</span>
+<a id="__codelineno-4-10" name="__codelineno-4-10"></a><a href="#__codelineno-4-10"><span class="linenos" data-linenos="10 "></span></a><span class="w">    </span><span class="nf">LDA.b</span><span class="w"> </span><span class="no">$80</span>
+<a id="__codelineno-4-11" name="__codelineno-4-11"></a><a href="#__codelineno-4-11"><span class="linenos" data-linenos="11 "></span></a><span class="w">    </span><span class="nf">CMP</span><span class="w"> </span><span class="c1">#$03</span>
+<a id="__codelineno-4-12" name="__codelineno-4-12"></a><a href="#__codelineno-4-12"><span class="linenos" data-linenos="12 "></span></a><span class="w">    </span><span class="nf">BNE</span><span class="w"> </span><span class="no">.gauge_loop</span>
+</code></pre></div>
+<p><code>INC.b $80</code> (<code>E6 80</code>) only touches <code>$80</code>, so <code>$81</code> stays 0 and the 16-bit <code>LDX.b $80</code> gets <code>{$00, slot}</code>.</p>
+<p>Two <abbr title="Writing assembly source that assembles byte-for-byte identically to the original ROM via asar.">matching</abbr> notes. A global label inside a routine starts a new local-label scope, so after <code>Battle_DrawHpBars:</code> the earlier <code>JMP .done</code> and <code>BEQ .done</code> couldn't see a <code>.done:</code> defined after it. The shared exit became the global label <code>UpdateNpc_exit:</code>. And there are six <code>LDX.w #$0029</code> / <code>LDX.w #$002D</code> (3-byte forms, M=1 with 16-bit X), each followed by <code>TXA</code> to get the attribute into A for the <code>STA $0CCx,Y</code> writes.</p>
+<h2 id="the-disassemblers-x-width-bug-fixed">The disassembler's X-width bug, fixed</h2>
+<p>In the status-bar callees, <code>tools/disasm.py</code> read <code>LDX #$000C</code> (<code>A2 0C 00</code>, 3 bytes with 16-bit X) as <code>LDX #$0C</code> (2 bytes) followed by a <code>00</code>, producing fake <code>BRK</code>s and phantom <code>BRL</code>s into the <code>$31xx</code> range. The reference disassembly and the raw bytes gave the right decoding. <abbr title="The 65816 assembler used for this project — patches matched .asm source into a ROM copy for byte-exact verification.">asar</abbr> itself tracked X correctly from context, since no <code>SEP #$10</code> ever runs in this cluster.</p>
+<p>The root cause: <code>trace()</code> started every trace with <code>CPUState(m=True, x=True, e=True)</code>, emulation mode with 8-bit everything. That was fine in bank <code>$C0</code> (the reset vector starts in emulation mode, and routines there often set 8-bit X anyway). In bank <code>$C1</code>, routines are entered with 16-bit X and no routine in this region ever does <code>SEP #$10</code>, so the model was wrong for the whole bank. The first clear case was at <code>$C1:0640</code>, where <code>A2 29 00</code> decoded as <code>LDX #$29</code> plus a phantom <code>BRK</code>, with branch offsets shifted after it.</p>
+<p>The fix: <code>trace()</code> now defaults to <code>CPUState(m=True, x=False, e=False)</code> (native mode, 8-bit A, 16-bit X/Y), with a new <code>--state</code> option to override it per call. Full-bank linear sweeps of banks below <code>$C0</code> keep the emulation-mode default, since those do start in emulation mode. <code>$C1:0640 A2 29 00</code> now shows as <code>LDX #$0029</code>.</p>
+<h2 id="rendering-the-item-and-tech-lists">Rendering the item and tech lists</h2>
+<p>The range <code>$C1:095D–$C1:0C2C</code> (720 bytes, 8 routines) is the battle menu's list rendering, the code that builds the visible item list and tech list in the command window. It has two branches, items (<code>$C1:095D–$C1:0A87</code>) and techs (<code>$C1:0A88–$C1:0C2C</code>), with shared helpers at the bottom.</p>
+<p><strong>Names via <code>MVN</code>.</strong> The name strings live in <abbr title="A 64KB segment of the SNES address space; Chrono Trigger has 64 banks in HiROM mapping.">ROM bank</abbr> <code>$CC</code>, and the code copies them to <abbr title="Work RAM — 128KB of SNES main RAM at $7E:0000–$7F:FFFF, holds all runtime game state.">WRAM</abbr> with the block-move instruction. <abbr title="The 65816 assembler used for this project — patches matched .asm source into a ROM copy for byte-exact verification.">asar</abbr>'s syntax puts the destination bank first:</p>
+<div class="language-asm highlight"><span class="filename">65C816 Assembly</span><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1"></a><a href="#__codelineno-5-1"><span class="linenos" data-linenos="1 "></span></a><span class="nf">MVN</span><span class="w"> </span><span class="no">$7E</span><span class="p">,</span><span class="no">$CC</span>
+</code></pre></div>
+<p>That copies from bank <code>$CC</code> (ROM) to bank <code>$7E</code> (<abbr title="Work RAM — 128KB of SNES main RAM at $7E:0000–$7F:FFFF, holds all runtime game state.">WRAM</abbr>). The count is in 16-bit A, the source in X, the destination in Y. Each step copies a byte, decrements A, and increments X and Y, until A wraps from <code>$0000</code> to <code>$FFFF</code>. Ten bytes per name (<code>LDA.w #$000A</code> before the <code>MVN</code>). Then the raw text at <code>$7E:94A0</code> goes to <code>BattleMsg_ReencodeTextBuffer</code>.</p>
+<p><strong>A one-byte bug that shifted everything.</strong> <code>BattleMenu_RenderItemRow</code> computes an offset into the item-name table:</p>
+<div class="language-asm highlight"><span class="filename">65C816 Assembly</span><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1"></a><a href="#__codelineno-6-1"><span class="linenos" data-linenos="1 "></span></a><span class="nf">SBC.b</span><span class="w"> </span><span class="no">$84</span><span class="w">               </span><span class="c1">; * 11 (subtract factor)</span>
+<a id="__codelineno-6-2" name="__codelineno-6-2"></a><a href="#__codelineno-6-2"><span class="linenos" data-linenos="2 "></span></a><span class="nf">db</span><span class="w"> </span><span class="no">$69</span><span class="p">,</span><span class="no">$5E</span><span class="p">,</span><span class="no">$0B</span><span class="w">          </span><span class="c1">; ADC #$0B5E (M=0 three-byte form)</span>
+<a id="__codelineno-6-3" name="__codelineno-6-3"></a><a href="#__codelineno-6-3"><span class="linenos" data-linenos="3 "></span></a><span class="nf">TAX</span>
+</code></pre></div>
+<p>My first draft had a <code>CLC</code> between the <code>SBC</code> and the <code>ADC</code>:</p>
+<div class="language-asm highlight"><span class="filename">65C816 Assembly</span><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1"></a><a href="#__codelineno-7-1"><span class="linenos" data-linenos="1 "></span></a><span class="nf">SBC.b</span><span class="w"> </span><span class="no">$84</span>
+<a id="__codelineno-7-2" name="__codelineno-7-2"></a><a href="#__codelineno-7-2"><span class="linenos" data-linenos="2 "></span></a><span class="nf">CLC</span><span class="w">                     </span><span class="c1">; ← wrong</span>
+<a id="__codelineno-7-3" name="__codelineno-7-3"></a><a href="#__codelineno-7-3"><span class="linenos" data-linenos="3 "></span></a><span class="nf">db</span><span class="w"> </span><span class="no">$69</span><span class="p">,</span><span class="no">$5E</span><span class="p">,</span><span class="no">$0B</span>
+<a id="__codelineno-7-4" name="__codelineno-7-4"></a><a href="#__codelineno-7-4"><span class="linenos" data-linenos="4 "></span></a><span class="nf">TAX</span>
+</code></pre></div>
+<p><code>make diff</code> reported 185 bytes different, starting at <code>$C1:09BD</code>, the low byte of the <code>JMP</code> target for the empty-slot branch. <code>CLC</code> (<code>$18</code>) is one byte, so it pushed <code>CODE_JP_C10A87</code> (the empty-slot <code>RTS</code>) from <code>$0A87</code> to <code>$0A88</code>, the <code>JMP</code> target's low byte went from <code>$87</code> to <code>$88</code>, and everything after moved by one, into the neighboring routines too. The original has no <code>CLC</code> because the <code>SBC</code> leaves carry in the state the <code>ADC</code> relies on. Removing it gave <code>MATCH: 4194304 bytes identical.</code> A one-byte insertion is not an assembler error; it just assembles to the wrong bytes, which is why <code>make diff</code> must pass before any commit.</p>
+<p><strong>A dead <code>RTS</code>.</strong> <code>BattleMenu_RenderTechRow</code> ends with an unconditional <code>JMP CODE_JP_C10C00</code>, and the next byte, at <code>$C1:0BB5</code>, is <code>$60</code> (<code>RTS</code>). Nothing jumps to <code>$0BB5</code>, so it can never run. The diff compares the whole ROM, so it is emitted explicitly:</p>
+<div class="language-asm highlight"><span class="filename">65C816 Assembly</span><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1"></a><a href="#__codelineno-8-1"><span class="linenos" data-linenos="1 "></span></a><span class="w">    </span><span class="nf">JMP</span><span class="w"> </span><span class="no">CODE_JP_C10C00</span>
+<a id="__codelineno-8-2" name="__codelineno-8-2"></a><a href="#__codelineno-8-2"><span class="linenos" data-linenos="2 "></span></a><span class="w">    </span><span class="nf">db</span><span class="w"> </span><span class="no">$60</span><span class="w">                  </span><span class="c1">; dead RTS — unreachable, byte-exact pad</span>
+</code></pre></div>
+<p><strong><code>STA</code> to address zero.</strong> The null terminator after the <code>MVN</code> is written with:</p>
+<div class="language-asm highlight"><span class="filename">65C816 Assembly</span><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1"></a><a href="#__codelineno-9-1"><span class="linenos" data-linenos="1 "></span></a><span class="nf">STA.w</span><span class="w"> </span><span class="no">$0000</span><span class="p">,</span><span class="no">Y</span><span class="w">           </span><span class="c1">; null terminate the name buffer</span>
+</code></pre></div>
+<p>Without <code>.w</code>, <abbr title="The 65816 assembler used for this project — patches matched .asm source into a ROM copy for byte-exact verification.">asar</abbr> emits <abbr title="The first byte of a CPU instruction, identifying the operation (e.g. $60 = RTS, $78 = SEI).">opcode</abbr> <code>$97</code>, the 2-byte <code>STA [$00],Y</code> (direct-page indirect long), a very different instruction. <code>.w</code> forces absolute indexed, <abbr title="The first byte of a CPU instruction, identifying the operation (e.g. $60 = RTS, $78 = SEI).">opcode</abbr> <code>$99</code>, the 3-byte form in the ROM.</p>
+<p><strong>The <code>CODE_JP_</code> labels.</strong> <code>CODE_JP_C10A87</code>, <code>CODE_JP_C10BB6</code> and <code>CODE_JP_C10C00</code> are entry points that sit inside other routines but are jumped to from several places. <code>CODE_JP_C10A87</code> is the plain empty-slot <code>RTS</code> at the end of <code>BattleMenu_RenderItemRow</code>. <code>CODE_JP_C10BB6</code> and <code>CODE_JP_C10C00</code> blank the MP-cost digit slots and copy the formatted name into the tilemap planes; <code>BattleMenu_RenderTechRow</code> jumps to one or the other depending on whether the slot holds a real tech or a skip.</p>
+<h2 id="window-upkeep-the-battle-menu-comes-alive">Window upkeep: the battle menu comes alive</h2>
+<p>In battle, a "window" is a rectangle of tilemap: the command window at the bottom (Attack, Magic, Item and so on) and the tech window that opens over it, listing techniques with MP costs and a cursor. They are <abbr title="Work RAM — 128KB of SNES main RAM at $7E:0000–$7F:FFFF, holds all runtime game state.">WRAM</abbr> buffers copied to <abbr title="Video RAM — dedicated PPU memory for tile graphics and tilemaps; written via DMA during VBlank.">VRAM</abbr> once per frame, not <abbr title="Picture Processing Unit — the SNES graphics chip handling BGs, sprites, palettes, windows, and compositing.">PPU</abbr> hardware windows. These routines prepare the data; the copy happens in a separate <abbr title="Vertical blank — the ~1.2ms gap each frame when the PPU isn't drawing, safe for register writes.">VBlank</abbr> <abbr title="Direct Memory Access — hardware block copy bypassing the CPU; used for VRAM uploads, WRAM clears, OAM.">DMA</abbr>.</p>
+<p><strong><code>BattleMenu_UpdateWindows</code></strong> (<code>$C1:0C2D</code>, 28 bytes) runs every frame. It reads <code>$95D5</code> (the active PC slot), calls <code>JSL $CFFD9E</code> (<code>BattleFx_SetPtrA2FromTable</code>, a cross-bank setup), and dispatches on the submenu type <code>$95DB</code>: 0 → main command window, 1 → tech window, anything else → return. It reads like a modern switch statement.</p>
+<p><strong><code>BattleMenu_UpdateMainWindow</code></strong> (<code>$C1:0C49</code>, 58 bytes) handles type 0. It compares the active PC <code>$A6DD</code> with last frame's <code>$A6DF</code>. If they differ, it reloads the command window map (<code>BattleMenu_LoadCommandWindowMap</code>) and rebuilds the whole status bar (<code>BattleUI_BuildStatusBarFrame</code>, <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr> earlier today). If not, it refreshes the panel strips and redraws the cursor column when a flag is set. Either way it ends with <code>JSL $CFFD02</code> to queue the <code>$0CC0</code> region for <abbr title="Video RAM — dedicated PPU memory for tile graphics and tilemaps; written via DMA during VBlank.">VRAM</abbr> upload and <code>INC $99E2</code> to mark pending display work. It calls <code>BattleUI_BuildStatusBarFrame</code> (<code>$C10299</code>), <code>BattleUI_UpdateNextPcPanel</code> (<code>$C105A7</code>) and <code>BattleUI_ClearActivePanelColumn</code> (<code>$C10872</code>), so this layer sits <em>above</em> the status-bar layer and drives it as needed.</p>
+<p><strong><code>BattleMenu_UpdateTechWindow</code></strong> (<code>$C1:0C83</code>, 471 bytes, the biggest of the group) handles type 1:</p>
+<ol>
+<li><strong>Text.</strong> Calls <code>BattleMenu_RenderTechListRows</code> (<code>$C10A88</code>, <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr> earlier today) to fill a <code>$180</code>-byte buffer at <code>$99E3</code> with tech names and MP digits.</li>
+<li><strong>Copy.</strong> Copies that buffer into the tech window tilemap at <code>$A6E1</code>, stepping by 2 (tile, attribute).</li>
+<li><strong>Border.</strong> A 6×9 loop from the <code>$CCFA95</code> template to <code>$A70B,Y</code>: one border row per outer pass, 9 tiles per row. A 16-bit <code>ADC #$002E</code> moves to the next row (stride 46, written as <code>db $69,$2E,$00</code>).</li>
+<li><strong>MP digits.</strong> For each PC with techs to show (<code>$96F5/$96F6/$96F7 != 0</code>), converts current MP to digit tiles with <code>Battle_DivTen9499</code> and <code>BattleMsg_BlankLeadingZeros</code> and stores them at <code>$A751/$A7D1/$A851</code>. A PC with no techs gets <code>$FF</code> (blank).</li>
+<li><strong>Cursor target.</strong> Reads the current PC's scroll position and cursor row and goes through <code>$CCF38C</code> and <code>$9551</code> to find the battler slot the cursor points at. An empty slot (<code>$FF</code>) blanks the relevant cells. A real battler has seven bytes copied from its <abbr title="Work RAM — 128KB of SNES main RAM at $7E:0000–$7F:FFFF, holds all runtime game state.">WRAM</abbr> entry (<code>$1A80–$1A86</code>) to scratch at <code>$9EE3–$9EE9</code>, and its HP-range values turned into digits.</li>
+</ol>
+<p>It falls straight into <strong><code>BattleMenu_DrawTechCursorRow</code></strong> (<code>$C1:0E5A</code>, 96 bytes), which clears the old cursor by writing <code>$FF</code> over all six rows' cursor tiles (through <strong><code>BattleMenu_ClearTechCursorTiles</code></strong>, <code>$C1:0EBA</code>, a 39-byte leaf), then draws the new cursor, tiles <code>$60–$63</code>, at the current row, unless targeting is active (<code>$9609 != 0</code> hides it during multi-target selection). Then <code>JSL $CD0027</code> updates the info panel with the selected tech's name or description, and <code>JSL $CFFD36</code> queues the tech window for <abbr title="Video RAM — dedicated PPU memory for tile graphics and tilemaps; written via DMA during VBlank.">VRAM</abbr> upload. Render, then update, then the <abbr title="Vertical blank — the ~1.2ms gap each frame when the PPU isn't drawing, safe for register writes.">VBlank</abbr> <abbr title="Direct Memory Access — hardware block copy bypassing the CPU; used for VRAM uploads, WRAM clears, OAM.">DMA</abbr> through a cross-bank <code>JSL</code> to bank <code>$CF</code>: a clean vertical chain.</p>
+<p><strong><code>BattleMenu_UpdateTechMpAvail</code></strong> (<code>$C1:0EE1</code>, 349 bytes) decides whether each tech row is bright (affordable, attribute <code>$29</code>) or grey (too expensive, <code>$2D</code>). It loops three times, once per row:</p>
+<ul>
+<li>slot types <code>$FC</code> and <code>$FD</code> are special: check the party size instead of MP</li>
+<li>otherwise, resolve the battler slot and check each PC's current MP against the cost fields at <code>$1A83</code>, <code>$1A85</code> and <code>$1A86</code></li>
+<li>if everything is affordable, check that the slot is menu-ready (<strong><code>BattleSys_SlotMenuReadyPredicate</code></strong>, <code>$C1:103E</code>, 16 bytes) and not locked (<code>$A0D1</code>). If so, clear the grey flag in <code>$1A82</code> and write <code>$29</code> to 18 attribute positions in <code>$A6E2</code> and <code>$A722</code>; if not, set the flag and write <code>$2D</code></li>
+</ul>
+<p>The affordability test is a 16-bit compare by subtraction in M=1, with <code>$96/$97</code> holding one PC's MP as two bytes: <code>SEC / LDA.b $96 / SBC.w $1A83,X / LDA.b $97 / SBC #$00 / BCC _L1001</code>.</p>
+<p><strong>A shared exit, and label scope again.</strong> <code>UpdateMainWindow</code> and <code>DrawTechCursorRow</code> both <code>JMP</code> to one <code>RTS</code> byte at <code>$C1:103D</code>, and <code>UpdateTechMpAvail</code> falls through to it; it is labeled <code>CODE_JP_C1103D</code>. In <abbr title="The 65816 assembler used for this project — patches matched .asm source into a ROM copy for byte-exact verification.">asar</abbr> 1.91 every global label resets the local (<code>.dot</code>) scope, and <code>UpdateTechMpAvail</code> has several global sub-labels inside it (<code>CODE_JP_C10F28</code>, <code>CODE_C10F66_JMP</code>, <code>CODE_JP_C1100F</code>, <code>_L1001</code>), so its internal branches use a family of global-style <code>_ump_*</code> labels.</p>
+<p><code>BattleMenu_LoadCommandWindowMap</code> (<code>$C1:1C3A</code>, 16 bytes) rounds out the group.</p>
+<h2 id="the-day-in-numbers">The day in numbers</h2>
+<table>
+<thead>
+<tr>
+<th>Session</th>
+<th>Routine</th>
+<th>Address</th>
+<th>Bytes</th>
+<th>Running total quoted</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>34</td>
+<td><code>Battle_Mul8</code></td>
+<td><code>$C1:0089–$00A6</code></td>
+<td>30</td>
+<td></td>
+</tr>
+<tr>
+<td>34</td>
+<td><code>Battle_MulAccum</code></td>
+<td><code>$C1:00A7–$00D6</code></td>
+<td>48</td>
+<td></td>
+</tr>
+<tr>
+<td>34</td>
+<td><code>Battle_Divide</code></td>
+<td><code>$C1:00D7–$010C</code></td>
+<td>54</td>
+<td></td>
+</tr>
+<tr>
+<td>34</td>
+<td>Shift helpers</td>
+<td><code>$C1:010D–$011E</code></td>
+<td>18</td>
+<td>20,119 (102 functions)</td>
+</tr>
+<tr>
+<td>35</td>
+<td><code>BattleMsg_FormatNumberDigits</code></td>
+<td><code>$C1:011F</code></td>
+<td>85</td>
+<td></td>
+</tr>
+<tr>
+<td>35</td>
+<td><code>Battle_DivTen9499</code></td>
+<td><code>$C1:0174</code></td>
+<td>53</td>
+<td></td>
+</tr>
+<tr>
+<td>35</td>
+<td><code>BattleMsg_ReencodeTextBuffer</code></td>
+<td><code>$C1:01A9</code></td>
+<td>80</td>
+<td></td>
+</tr>
+<tr>
+<td>35</td>
+<td><code>Battle_SinLookup</code></td>
+<td><code>$C1:01F9</code></td>
+<td>41</td>
+<td></td>
+</tr>
+<tr>
+<td>35</td>
+<td><code>Calc_Delta16</code></td>
+<td><code>$C1:0222</code></td>
+<td>119</td>
+<td>20,497 (107)</td>
+</tr>
+<tr>
+<td>36</td>
+<td><code>BattleUI_BuildStatusBarFrame</code></td>
+<td><code>$C1:0299–$05A6</code></td>
+<td>782</td>
+<td></td>
+</tr>
+<tr>
+<td>36</td>
+<td><code>BattleMsg_BlankLeadingZeros</code></td>
+<td><code>$C1:104E–$106D</code></td>
+<td>32</td>
+<td></td>
+</tr>
+<tr>
+<td>37</td>
+<td><code>BattleUI_DrawSlotGaugeBar</code></td>
+<td><code>$C1:06F0</code></td>
+<td>149</td>
+<td></td>
+</tr>
+<tr>
+<td>37</td>
+<td><code>BattleSys_SlotPanelRefresh</code></td>
+<td><code>$C1:0785</code></td>
+<td>153</td>
+<td></td>
+</tr>
+<tr>
+<td>37</td>
+<td><code>BattleMenu_DrawWindowEdgeStrip</code></td>
+<td><code>$C1:0929</code></td>
+<td>52</td>
+<td></td>
+</tr>
+<tr>
+<td>37</td>
+<td><code>BattleUI_SetPanelAttrColumn</code></td>
+<td><code>$C1:08E8</code></td>
+<td>65</td>
+<td></td>
+</tr>
+<tr>
+<td>37</td>
+<td><code>BattleMenu_DrawReadyWindowEdges</code> (+ <code>BattleUI_ClearActivePanelColumn</code> sub-entry)</td>
+<td><code>$C1:081E</code></td>
+<td>202</td>
+<td>21,932 (114)</td>
+</tr>
+<tr>
+<td>38</td>
+<td><code>BattleUI_UpdateNextPcPanel</code> (+ <code>Battle_DrawHpBars</code> sub-entry)</td>
+<td><code>$C1:05A7–$06EF</code></td>
+<td>329</td>
+<td>22,261 (115)</td>
+</tr>
+<tr>
+<td>39</td>
+<td>Item/tech list rendering, 8 routines</td>
+<td><code>$C1:095D–$0C2C</code></td>
+<td>720</td>
+<td>22,981 (123)</td>
+</tr>
+<tr>
+<td>40</td>
+<td><code>BattleMenu_UpdateWindows</code></td>
+<td><code>$C1:0C2D</code></td>
+<td>28</td>
+<td></td>
+</tr>
+<tr>
+<td>40</td>
+<td><code>BattleMenu_UpdateMainWindow</code></td>
+<td><code>$C1:0C49</code></td>
+<td>58</td>
+<td></td>
+</tr>
+<tr>
+<td>40</td>
+<td><code>BattleMenu_UpdateTechWindow</code></td>
+<td><code>$C1:0C83</code></td>
+<td>471</td>
+<td></td>
+</tr>
+<tr>
+<td>40</td>
+<td><code>BattleMenu_DrawTechCursorRow</code></td>
+<td><code>$C1:0E5A</code></td>
+<td>96</td>
+<td></td>
+</tr>
+<tr>
+<td>40</td>
+<td><code>BattleMenu_ClearTechCursorTiles</code></td>
+<td><code>$C1:0EBA</code></td>
+<td>39</td>
+<td></td>
+</tr>
+<tr>
+<td>40</td>
+<td><code>BattleMenu_UpdateTechMpAvail</code></td>
+<td><code>$C1:0EE1</code></td>
+<td>349</td>
+<td></td>
+</tr>
+<tr>
+<td>40</td>
+<td><code>BattleSys_SlotMenuReadyPredicate</code></td>
+<td><code>$C1:103E</code></td>
+<td>16</td>
+<td></td>
+</tr>
+<tr>
+<td>40</td>
+<td><code>BattleMenu_LoadCommandWindowMap</code></td>
+<td><code>$C1:1C3A</code></td>
+<td>16</td>
+<td>24,054</td>
+</tr>
+<tr>
+<td></td>
+<td><strong>Total</strong></td>
+<td></td>
+<td><strong>4,085</strong></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>Session totals: 150, 378, 814, 621, 329, 720 and 1,073 bytes. <code>make diff</code> confirmed 4,194,304 identical bytes after each.</p>
+<p>Bank <code>$C1</code> by the end of each session: 150 bytes (0.2%), 528, 1,342 (2.10%), 1,963 (3.07%), 2,292 (3.59%; 17 <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr> regions, up from 16), 3,012 (4.71%) and 4,085 (6.39%) of 63,904. Share of all game code: 6.1% after session 37, 6.2% after 38, 6.4% after 39, 6.7% after 40. For comparison, all of bank <code>$C0</code> <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr> so far (19,498 bytes) is about 31.6% of its bank; at today's start, bank <code>$C1</code> looked like a multi-year project on its own.</p>
+<h2 id="next">Next</h2>
+<p>Bank <code>$C1</code> has three broad areas: math and number formatting (<code>$C1:0089–$C1:02xx</code>), BattleUI and BattleMenu (<code>$C1:02xx–$C1:1xxx</code>), and enemy logic, animation and phase control (<code>$C1:1xxx–$C1:FFFF</code>, including <code>EnemyAI_SpatialService</code> at <code>$C1:2986</code>, a fully documented, isolated routine in the reference). The next neighbor is <code>BattleMenu_RefreshIfDirtyL</code> at <code>$C1:10E3</code>, the target of the entry vector at <code>$C10012</code> (<code>BattleSys_EntryVec12</code> in the dscotton reference): the dirty-flag gate that decides whether <code>UpdateWindows</code> runs at all. After it, the cursor-movement and input layer that starts around <code>$C1:106E</code>.</p>
+  
+  <p class="wk-post-back"><a href="../../../../">← Back to devlog</a></p>
+</article>
+
+      </div>
+
+    </div>
+
+    <footer class="wk-footer">
+      <ul class="wk-eras" aria-label="Eras">
+        <li style="--c:var(--era-prehistory)">65,000,000 BC</li>
+        <li style="--c:var(--era-zeal)">12,000 BC</li>
+        <li style="--c:var(--era-medieval)">600 AD</li>
+        <li style="--c:var(--era-present)">1000 AD</li>
+        <li style="--c:var(--era-lavos)">1999 AD</li>
+        <li style="--c:var(--era-future)">2300 AD</li>
+        <li style="--c:var(--era-eot)">End of Time</li>
+      </ul>
+      <p class="wk-footer-motto">Every byte, every era</p>
+      <p>Made by people who love Chrono Trigger, so that it can be studied, preserved and understood,
+      one verified routine at a time.</p>
+      <p>A fan project. Not affiliated with or endorsed by Square Enix. No ROM data is shared here:
+      bring your own copy.</p>
+    </footer>
+  </main>
+
+</div>
+
+<!-- Address-map pop-up (a menu window) -->
+<div class="wk-modal" id="wk-modal" hidden>
+  <div class="wk-modal-backdrop" data-close></div>
+  <div class="wk-modal-win" role="dialog" aria-modal="true" aria-labelledby="wk-modal-title" tabindex="-1">
+    <button type="button" class="wk-modal-close" data-close aria-label="Close">&times;</button>
+    <div class="wk-modal-body" id="wk-modal-body"></div>
+  </div>
+</div>
+
+<!-- Back to top -->
+<button class="wk-top" id="wk-top" title="Back to top" aria-label="Scroll to top">↑</button>
+
+
+<script>
+(function () {
+'use strict';
+
+/* ── Theme ─────────────────────────────────────────────────── */
+var stored = 'dark';
+try { stored = localStorage.getItem('wk-theme') || 'dark'; } catch (e) {}
+applyTheme(stored);
+document.getElementById('wk-toggle').addEventListener('click', function () {
+  applyTheme(document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
+});
+function applyTheme(t) {
+  document.documentElement.setAttribute('data-theme', t);
+  try { localStorage.setItem('wk-theme', t); } catch (e) {}
+}
+
+/* ── Mobile nav ────────────────────────────────────────────── */
+var navToggle  = document.getElementById('wk-nav-toggle');
+var navEl      = document.getElementById('wk-nav');
+var navBackdrop = document.getElementById('wk-nav-backdrop');
+function openNav() {
+  navEl.classList.add('is-open');
+  navBackdrop.hidden = false;
+  navToggle.setAttribute('aria-expanded', 'true');
+}
+function closeNav() {
+  navEl.classList.remove('is-open');
+  navBackdrop.hidden = true;
+  navToggle.setAttribute('aria-expanded', 'false');
+}
+if (navToggle && navEl && navBackdrop) {
+  navToggle.addEventListener('click', function () {
+    if (navEl.classList.contains('is-open')) { closeNav(); } else { openNav(); }
+  });
+  navBackdrop.addEventListener('click', closeNav);
+  navEl.addEventListener('click', function (e) {
+    if (e.target.closest('a')) { closeNav(); }
+  });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') { closeNav(); }
+  });
+  window.addEventListener('resize', function () {
+    if (window.innerWidth > 720) { closeNav(); }
+  });
+}
+
+/* ── Search ─────────────────────────────────────────────────── */
+var input   = document.getElementById('wk-q');
+var results = document.getElementById('wk-results');
+var docs    = null;
+if (input) {
+  fetch("../../../../../search/search_index.json")
+    .then(function (r) { return r.json(); })
+    .then(function (d) { docs = d.docs; });
+
+  input.addEventListener('input', onSearch);
+
+  document.addEventListener('click', function (e) {
+    if (results && !results.contains(e.target) && e.target !== input) results.hidden = true;
+  });
+  input.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') { results.hidden = true; this.blur(); }
+    if (e.key === 'Enter' && results && !results.hidden) {
+      var first = results.querySelector('.wk-result');
+      if (first) { first.click(); }
+    }
+  });
+}
+
+/* Press / to focus search */
+document.addEventListener('keydown', function (e) {
+  if (e.key === '/' && document.activeElement !== input &&
+      document.activeElement.tagName !== 'INPUT' &&
+      document.activeElement.tagName !== 'TEXTAREA') {
+    e.preventDefault();
+    if (input) { input.focus(); input.select(); }
+  }
+});
+
+function onSearch() {
+  var q = this.value.trim().toLowerCase();
+  if (!docs || q.length < 2) { results.hidden = true; return; }
+  var hits = docs.filter(function (d) {
+    return (d.title + ' ' + d.text).toLowerCase().indexOf(q) !== -1;
+  }).slice(0, 8);
+  if (!hits.length) { results.hidden = true; return; }
+  var base = "../../../../..";
+  results.innerHTML = hits.map(function (d) {
+    var text  = d.text || '';
+    var i     = text.toLowerCase().indexOf(q);
+    var start = Math.max(0, i - 35);
+    var end   = Math.min(text.length, i + q.length + 70);
+    var snip  = (start > 0 ? '…' : '') + text.slice(start, end) + (end < text.length ? '…' : '');
+    var url   = base + '/' + d.location;
+    return '<a class="wk-result" href="' + esc(url) + '" role="option">'
+         + '<div class="wk-result-title">' + esc(d.title || d.location) + '</div>'
+         + '<div class="wk-result-snip">'  + esc(snip) + '</div></a>';
+  }).join('');
+  results.hidden = false;
+}
+
+function esc(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+/* ── Back to top ────────────────────────────────────────────── */
+var topBtn = document.getElementById('wk-top');
+if (topBtn) {
+  window.addEventListener('scroll', function () {
+    topBtn.classList.toggle('visible', window.scrollY > 400);
+  }, {passive: true});
+  topBtn.addEventListener('click', function () {
+    window.scrollTo({top: 0, behavior: 'smooth'});
+  });
+}
+
+/* ── Copy-to-clipboard ───────────────────────────────────────── */
+document.querySelectorAll('.highlight').forEach(function (block) {
+  var btn = document.createElement('button');
+  btn.className = 'wk-copy-btn';
+  btn.title     = 'Copy code';
+  btn.textContent = '⎘';
+  block.appendChild(btn);
+  btn.addEventListener('click', function () {
+    var pre = block.querySelector('pre');
+    if (!pre) return;
+    navigator.clipboard.writeText(pre.innerText).then(function () {
+      btn.textContent = '✓';
+      btn.classList.add('copied');
+      setTimeout(function () {
+        btn.textContent = '⎘';
+        btn.classList.remove('copied');
+      }, 1500);
+    });
+  });
+});
+
+/* ── TOC scroll spy ─────────────────────────────────────────── */
+var tocLinks = document.querySelectorAll('.wk-toc-link');
+if (tocLinks.length && 'IntersectionObserver' in window) {
+  var headings = Array.from(document.querySelectorAll('.wk-article h1, .wk-article h2, .wk-article h3'));
+  var active   = null;
+  var obs = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
+      if (e.isIntersecting) {
+        var id  = e.target.id;
+        var lnk = document.querySelector('.wk-toc-link[href="#' + id + '"]');
+        if (lnk && lnk !== active) {
+          if (active) active.classList.remove('is-current');
+          lnk.classList.add('is-current');
+          active = lnk;
+        }
+      }
+    });
+  }, {rootMargin: '-10% 0px -80% 0px'});
+  headings.forEach(function (h) { if (h.id) obs.observe(h); });
+}
+
+
+/* ── Status badges in "Status" table columns ────────────────── */
+var STATUS = { 'matched': 'matched', 'in progress': 'progress', 'partial': 'partial',
+               'identified': 'identified', 'unmapped': 'unmapped', 'unknown': 'unknown' };
+document.querySelectorAll('.wk-article-body table').forEach(function (tbl) {
+  var col = -1;
+  tbl.querySelectorAll('thead th').forEach(function (th, i) {
+    if (th.textContent.trim().toLowerCase() === 'status') col = i;
+  });
+  if (col < 0) return;
+  tbl.querySelectorAll('tbody tr').forEach(function (tr) {
+    var td = tr.children[col];
+    if (!td || td.querySelector('.wk-status')) return;
+    var whole = td.textContent.trim().toLowerCase();
+    var target = null, key = STATUS[whole];
+    if (key) { target = td; }
+    else if (td.firstElementChild && td.firstElementChild.tagName === 'STRONG' &&
+             td.firstChild === td.firstElementChild) {
+      key = STATUS[td.firstElementChild.textContent.trim().toLowerCase()];
+      if (key) target = td.firstElementChild;
+    }
+    if (!target) return;
+    var span = document.createElement('span');
+    span.className = 'wk-status wk-status-' + key;
+    if (target === td) { while (td.firstChild) span.appendChild(td.firstChild); td.appendChild(span); }
+    else { td.insertBefore(span, target); span.appendChild(target); }
+  });
+});
+
+/* ── Address map pop-up ─────────────────────────────────────── */
+var modal = document.getElementById('wk-modal');
+var mbody = document.getElementById('wk-modal-body');
+var mwin  = modal ? modal.querySelector('.wk-modal-win') : null;
+var lastFocus = null, closeTimer = null, current = null;
+var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+var LABEL = { matched: 'Matched', progress: 'In progress', identified: 'Identified',
+              unmapped: 'Unmapped', gap: 'Uncharted' };
+
+function md(s) {
+  return esc(s || '').replace(/`([^`]+)`/g, '<code>$1</code>')
+                     .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+}
+function hex4(n) { return ('000' + n.toString(16).toUpperCase()).slice(-4); }
+function num(n) { return n == null ? '?' : n.toLocaleString('en-US'); }
+function badge(st) {
+  var k = st === 'gap' ? 'unmapped' : st;
+  return '<span class="wk-status wk-status-' + k + '">' + (LABEL[st] || st) + '</span>';
+}
+
+function openModal(html, from) {
+  if (!modal) return;
+  clearTimeout(closeTimer);
+  mbody.innerHTML = html;
+  if (modal.hidden) {
+    lastFocus = from || document.activeElement;
+    modal.hidden = false;
+    document.documentElement.classList.add('wk-modal-lock');
+    void modal.offsetWidth;            /* commit start state, then animate */
+    modal.classList.add('is-open');
+  }
+  mbody.scrollTop = 0;
+  mwin.focus({ preventScroll: true });
+}
+function closeModal() {
+  if (!modal || modal.hidden) return;
+  modal.classList.remove('is-open');
+  document.documentElement.classList.remove('wk-modal-lock');
+  document.querySelectorAll('.wk-amap-slice.is-selected, .wk-heat-cell.is-selected, .wk-slice-cell.is-selected')
+    .forEach(function (el) { el.classList.remove('is-selected'); });
+  closeTimer = setTimeout(function () { modal.hidden = true; }, reduceMotion ? 0 : 200);
+  if (lastFocus && lastFocus.focus) lastFocus.focus({ preventScroll: true });
+  current = null;
+}
+if (modal) {
+  modal.addEventListener('click', function (e) {
+    if (e.target.closest('[data-close]')) { closeModal(); return; }
+    var nav = e.target.closest('[data-step]');
+    if (nav && current) { stepRegion(+nav.getAttribute('data-step')); return; }
+    var jump = e.target.closest('[data-jump]');
+    if (jump) { e.preventDefault(); jumpTo(jump.getAttribute('data-jump'), jump.getAttribute('data-row')); }
+  });
+  document.addEventListener('keydown', function (e) {
+    if (modal.hidden) return;
+    if (e.key === 'Escape') { e.preventDefault(); closeModal(); return; }
+    if (current && (e.key === 'ArrowRight' || e.key === 'ArrowLeft') &&
+        !/INPUT|TEXTAREA/.test(document.activeElement.tagName)) {
+      e.preventDefault(); stepRegion(e.key === 'ArrowRight' ? 1 : -1); return;
+    }
+    if (e.key === 'Tab') {               /* keep focus inside the window */
+      var f = Array.prototype.filter.call(
+        mwin.querySelectorAll('button, a[href], [tabindex="0"]'),
+        function (el) { return el.offsetParent !== null; });
+      if (!f.length) return;
+      var a = f[0], z = f[f.length - 1];
+      if (e.shiftKey && (document.activeElement === a || document.activeElement === mwin)) { e.preventDefault(); z.focus(); }
+      else if (!e.shiftKey && document.activeElement === z) { e.preventDefault(); a.focus(); }
+    }
+  });
+}
+
+var maps = {};
+document.querySelectorAll('.wk-amap').forEach(function (el) {
+  var data;
+  try { data = JSON.parse(el.querySelector('.wk-amap-data').textContent); } catch (e) { return; }
+  maps[data.bank] = { el: el, data: data };
+  el.addEventListener('click', function (e) {
+    var b = e.target.closest('.wk-amap-slice');
+    if (b) showRegion(data.bank, +b.getAttribute('data-i'), b);
+  });
+});
+
+function regionRange(bank, r) {
+  return '$' + bank + ':' + hex4(r.s) + (r.e != null ? '–$' + hex4(r.e) : '–?');
+}
+function showRegion(bank, i, from) {
+  var m = maps[bank]; if (!m) return;
+  var regs = m.data.regions, r = regs[i]; if (!r) return;
+  current = { bank: bank, i: i };
+  m.el.querySelectorAll('.wk-amap-slice.is-selected').forEach(function (el) { el.classList.remove('is-selected'); });
+  m.el.querySelectorAll('.wk-amap-slice[data-i="' + i + '"]').forEach(function (el) { el.classList.add('is-selected'); });
+
+  var h = '<p class="wk-modal-eyebrow">Bank $' + bank + ' · ' + regionRange(bank, r) + '</p>';
+  h += '<h3 id="wk-modal-title">' + (r.st === 'gap' ? 'Uncharted territory' : md(r.n)) + '</h3>';
+  h += '<div class="wk-modal-facts">' + badge(r.st) +
+       '<span>' + (r.b != null ? num(r.b) + ' bytes' : 'size unknown') + '</span>' +
+       (r.o ? '<span>file <code>' + esc(r.o) + '</code></span>' : '') + '</div>';
+  if (r.st === 'gap') {
+    var prev = regs[i - 1], next = regs[i + 1];
+    h += '<p>Nothing in this stretch of Bank $' + bank + ' has been charted in the bank map yet: ' +
+         '<strong>' + num(r.b) + ' bytes</strong> still waiting to be explored, labelled and matched.</p>';
+    if (prev || next) h += '<p class="wk-modal-dim">Between ' + (prev ? md(prev.n) : 'the bank start') +
+         ' and ' + (next ? md(next.n) : 'the end of the bank') + '.</p>';
+  } else {
+    if (r.d) h += '<p>' + md(r.d) + '</p>';
+    if (r.e == null) h += '<p class="wk-modal-dim">The end address of this region is not known yet.</p>';
+  }
+  if (r.k && r.k.length) {
+    var done = 0, doneB = 0, todoB = 0;
+    r.k.forEach(function (k) { if (k.st === 'matched') { done++; doneB += k.b || 0; } else { todoB += k.b || 0; } });
+    h += '<h4>Inside this region <span class="wk-modal-dim">· ' + done + ' of ' + r.k.length + ' matched' +
+         (doneB ? ', ' + num(doneB) + ' B verified' : '') + (todoB ? ', ' + num(todoB) + ' B to do' : '') + '</span></h4>';
+    h += '<ul class="wk-modal-list">' + r.k.map(function (k) {
+      return '<li class="is-' + k.st + '">' + badge(k.st) + ' <span class="wk-modal-name">' + md(k.n) + '</span>' +
+             '<span class="wk-modal-addr">' + esc(k.a) + (k.b ? ' · ' + num(k.b) + ' B' : '') + '</span>' +
+             (k.d ? '<span class="wk-modal-desc">' + md(k.d) + '</span>' : '') + '</li>';
+    }).join('') + '</ul>';
+  } else if (r.st === 'matched') {
+    h += '<p class="wk-modal-ok">Byte-exact: verified against the original ROM with <code>make diff</code>.</p>';
+  } else if (r.st !== 'gap') {
+    h += '<p class="wk-modal-todo">Still to do: this region is ' + LABEL[r.st].toLowerCase() + ' but not yet matched.</p>';
+  }
+  h += '<div class="wk-modal-actions">' +
+       '<button type="button" class="wk-btn" data-step="-1"' + (i === 0 ? ' disabled' : '') + ' aria-label="Previous region">◀ Prev</button>' +
+       (r.st !== 'gap' ? '<button type="button" class="wk-btn" data-jump="row" data-row="' + esc(r.n) + '">Show in table</button>' : '') +
+       '<button type="button" class="wk-btn" data-step="1"' + (i === regs.length - 1 ? ' disabled' : '') + ' aria-label="Next region">Next ▶</button>' +
+       '</div>';
+  openModal(h, from);
+}
+function stepRegion(d) {
+  if (!current) return;
+  var regs = maps[current.bank].data.regions, j = current.i + d;
+  if (j < 0 || j >= regs.length) return;
+  var btn = maps[current.bank].el.querySelector('.wk-amap-slice[data-i="' + j + '"]');
+  showRegion(current.bank, j, lastFocus);
+  if (btn) btn.scrollIntoView({ block: 'nearest' });
+}
+function jumpTo(kind, key) {
+  var target = null;
+  if (kind === 'row') {
+    var want = key.replace(/[`*]/g, '').trim();
+    document.querySelectorAll('.wk-article-body table tbody tr').forEach(function (tr) {
+      if (!target && tr.firstElementChild && tr.firstElementChild.textContent.trim() === want) target = tr;
+    });
+  } else {
+    target = document.getElementById(kind);
+  }
+  closeModal();
+  if (!target) return;
+  target.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'center' });
+  target.classList.remove('wk-flash'); void target.offsetWidth; target.classList.add('wk-flash');
+}
+
+/* Address Map page: a slice cell opens its pre-rendered panel in the pop-up */
+document.querySelectorAll('.wk-addrmap').forEach(function (map) {
+  map.addEventListener('click', function (e) {
+    var cell = e.target.closest('a.wk-slice-cell');
+    if (!cell) return;
+    var panel = document.getElementById(cell.getAttribute('href').slice(1));
+    if (!panel) return;
+    e.preventDefault();
+    map.querySelectorAll('.wk-slice-cell.is-selected').forEach(function (el) { el.classList.remove('is-selected'); });
+    cell.classList.add('is-selected');
+    current = null;
+    var clone = panel.cloneNode(true);
+    clone.removeAttribute('id');
+    var x = clone.querySelector('.wk-slice-close'); if (x) x.remove();
+    var h3 = clone.querySelector('h3'); if (h3) h3.id = 'wk-modal-title';
+    openModal(clone.innerHTML, cell);
+  });
+});
+
+/* Bank heat map (64 banks) */
+document.querySelectorAll('.wk-heat-wrap').forEach(function (wrap) {
+  var meta;
+  try { meta = JSON.parse(wrap.querySelector('.wk-heat-data').textContent); } catch (e) { return; }
+  wrap.addEventListener('click', function (e) {
+    var c = e.target.closest('.wk-heat-cell'); if (!c) return;
+    var bank = c.getAttribute('data-heat'), m = meta[bank]; if (!m) return;
+    wrap.querySelectorAll('.is-selected').forEach(function (el) { el.classList.remove('is-selected'); });
+    c.classList.add('is-selected');
+    current = null;
+    var pct = m.code != null ? (m.code / 65536 * 100) : null;
+    var h = '<p class="wk-modal-eyebrow">Bank $' + bank + ' · file $' +
+            ('0' + (parseInt(bank, 16) - 0xC0).toString(16).toUpperCase()).slice(-2) + '0000</p>';
+    h += '<h3 id="wk-modal-title">Bank $' + bank + '</h3>';
+    h += '<div class="wk-modal-facts">' +
+         (m.matched ? badge('progress') : (m.code ? badge('unmapped') : '<span class="wk-status wk-status-unknown">Data only</span>')) +
+         '<span>' + (m.code != null ? num(m.code) + ' code bytes (' + pct.toFixed(pct < 1 ? 1 : 0) + '%)' : 'not surveyed') + '</span></div>';
+    if (m.note) h += '<p>' + md(m.note) + '</p>';
+    if (m.matched) {
+      var mp = m.code ? Math.min(100, m.matched / m.code * 100) : 0;
+      h += '<div class="wk-modal-gauge" role="img" aria-label="' + mp.toFixed(1) + '% of code matched"><span style="width:' + mp.toFixed(2) + '%"></span></div>';
+      h += '<p><strong>' + num(m.matched) + ' bytes</strong> matched and verified' +
+           (m.code ? ' — ' + mp.toFixed(1) + '% of this bank\'s code. ' + num(Math.max(0, m.code - m.matched)) + ' code bytes to go.' : '.') + '</p>';
+    } else if (m.code) {
+      h += '<p class="wk-modal-todo">Not started: ' + num(m.code) + ' bytes of code waiting to be matched.</p>';
+    } else {
+      h += '<p class="wk-modal-dim">No executable code here: graphics, music or map data (incbin).</p>';
+    }
+    h += '<div class="wk-modal-actions">' +
+         (m.map ? '<button type="button" class="wk-btn" data-jump="wk-amap-' + bank + '">Open the $' + bank + ' address map ▶</button>' : '') +
+         '</div>';
+    openModal(h, c);
+  });
+});
+
+}());
+</script>
+</body>
+</html>

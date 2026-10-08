@@ -1,0 +1,842 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  
+  <meta name="description" content="Byte-exact matching decompilation of Chrono Trigger (SNES, US 1.0)">
+  <link rel="canonical" href="https://thisisakill.github.io/Kajar-site/">
+  
+  
+  <title>Home — Kajar</title>
+  
+  
+  <link rel="stylesheet" href="stylesheets/wiki.css">
+  
+  
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Press+Start+2P&family=Silkscreen&display=swap">
+  
+</head>
+<body>
+
+<!-- ── Header ──────────────────────────────────────────────── -->
+<header class="wk-header">
+  <button class="wk-nav-toggle" id="wk-nav-toggle" aria-label="Toggle navigation" aria-expanded="false" aria-controls="wk-nav">☰</button>
+  <a class="wk-wordmark" href="." aria-label="Kajar home">
+    <svg class="wk-wordmark-clock" viewBox="0 0 32 32" aria-hidden="true">
+      <circle cx="16" cy="16" r="13.5" fill="#0f1438" stroke="#ffd76e" stroke-width="2.5"/>
+      <g stroke="#cdd5ff" stroke-width="1.6" stroke-linecap="round">
+        <path d="M16 5.2v2.4M16 24.4v2.4M5.2 16h2.4M24.4 16h2.4"/>
+      </g>
+      <path d="M16 16l-5 -3.2" stroke="#ffd76e" stroke-width="2.4" stroke-linecap="round"/>
+      <path class="hand-m" d="M16 16V7.6" stroke="#ffffff" stroke-width="1.8" stroke-linecap="round"/>
+      <circle cx="16" cy="16" r="1.8" fill="#ffd76e"/>
+    </svg>
+    <span>Kajar</span>
+    <small class="wk-tagline">notes of ChronoRET, rebuilding Chrono Trigger one matched routine at a time</small>
+  </a>
+
+  <div class="wk-header-right">
+    
+    <div class="wk-searchbox">
+      <input class="wk-search-input" id="wk-q" type="search"
+             placeholder="Search…  [/]" autocomplete="off" aria-label="Search">
+      <div class="wk-search-results" id="wk-results" hidden role="listbox"></div>
+    </div>
+    <button class="wk-toggle" id="wk-toggle" title="Toggle theme" aria-label="Toggle dark/light">
+      <svg class="i-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.5" fill="currentColor"/><g stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 1.8v2.6M12 19.6v2.6M1.8 12h2.6M19.6 12h2.6M4.8 4.8l1.8 1.8M17.4 17.4l1.8 1.8M4.8 19.2l1.8-1.8M17.4 6.6l1.8-1.8"/></g></svg>
+      <svg class="i-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.5 14.6A8.6 8.6 0 0 1 9.4 3.5a8.6 8.6 0 1 0 11.1 11.1z" fill="currentColor"/></svg>
+    </button>
+  </div>
+</header>
+
+<!-- ── Layout ──────────────────────────────────────────────── -->
+<div class="wk-layout">
+
+  <div class="wk-nav-backdrop" id="wk-nav-backdrop" hidden></div>
+
+  <!-- Left sidebar -->
+  <nav class="wk-nav" id="wk-nav" aria-label="Site navigation">
+    <a href="." class="wk-portal-icon" aria-label="Home">
+      <span class="wk-emblem">
+        <span class="wk-emblem-art">
+          <img src="assets/ct-icon.png" alt="Crono" width="220" height="220">
+        </span>
+        <span class="wk-emblem-caption">Crono · 1000 AD</span>
+      </span>
+    </a>
+
+    
+      
+      <a class="wk-nav-link is-active" href=".">Home</a>
+      
+    
+      
+        <p class="wk-nav-heading">The Journey</p>
+        
+          
+          <a class="wk-nav-link" href="devlog/">Devlog</a>
+          
+        
+          
+          <a class="wk-nav-link" href="gallery/">Gallery</a>
+          
+        
+          
+          <a class="wk-nav-link" href="PROGRESS/">Progress</a>
+          
+        
+      
+    
+      
+        <p class="wk-nav-heading">Systems</p>
+        
+          
+          <a class="wk-nav-link" href="systems/">Overview</a>
+          
+        
+          
+          <a class="wk-nav-link" href="systems/boot/">Boot</a>
+          
+        
+          
+          <a class="wk-nav-link" href="systems/engine/">Engine core</a>
+          
+        
+          
+          <a class="wk-nav-link" href="systems/sprites/">Sprites & objects</a>
+          
+        
+          
+          <a class="wk-nav-link" href="systems/battle-engine/">Battle engine</a>
+          
+        
+          
+          <a class="wk-nav-link" href="systems/battle-menu/">Battle menu</a>
+          
+        
+          
+          <a class="wk-nav-link" href="systems/battle-targeting/">Battle targeting</a>
+          
+        
+          
+          <a class="wk-nav-link" href="systems/battle-status/">Status bar & text</a>
+          
+        
+      
+    
+      
+        <p class="wk-nav-heading">How It Works</p>
+        
+          
+          <a class="wk-nav-link" href="ARCHITECTURE/">Architecture</a>
+          
+        
+          
+          <a class="wk-nav-link" href="ADDRESS_MAP/">Address Map</a>
+          
+        
+          
+          <a class="wk-nav-link" href="BANK_MAP/">Bank Map</a>
+          
+        
+          
+          <a class="wk-nav-link" href="how-sprite-init-works/">Sprite Init Explainer</a>
+          
+        
+          
+          <a class="wk-nav-link" href="ROM_HASH/">Target ROM</a>
+          
+        
+      
+    
+      
+        <p class="wk-nav-heading">For Time Travelers</p>
+        
+          
+          <a class="wk-nav-link" href="CONTRIBUTING/">Contributing</a>
+          
+        
+          
+          <a class="wk-nav-link" href="ASAR_QUIRKS/">asar Quirks</a>
+          
+        
+          
+          <a class="wk-nav-link" href="glossary/">Glossary</a>
+          
+        
+          
+          <a class="wk-nav-link" href="CI_SETUP/">CI Setup</a>
+          
+        
+      
+    
+      
+      <a class="wk-nav-link" href="credits/">Credits</a>
+      
+    
+
+    <!-- Party Status: every value from docs/data/ (hooks/progress_data.py) -->
+    
+    <div class="wk-stats">
+      <p class="wk-nav-heading" title="Project progress">Party Status</p>
+      
+      <div class="wk-party">
+        <div class="wk-party-row" title="Bytes matched: the rebuilt ROM is byte-identical here">
+          <span class="wk-party-k">HP</span>
+          <span class="wk-party-v">29,032<small>/359,278</small></span>
+        </div>
+        <div class="wk-stat-track"><div class="wk-stat-fill" style="width:8.08%"></div></div>
+        <p class="wk-party-note">bytes matched · 8.08% of code</p>
+
+        <div class="wk-party-row" title="Matched functions that also meet the readability standard">
+          <span class="wk-party-k">MP</span>
+          <span class="wk-party-v">256<small>/256</small></span>
+        </div>
+        <div class="wk-stat-track"><div class="wk-stat-fill wk-stat-fill-mp" style="width:100.0%"></div></div>
+        <p class="wk-party-note">functions readable</p>
+
+        <div class="wk-party-row" title="Readable functions that passed an independent review">
+          <span class="wk-party-k">TP</span>
+          <span class="wk-party-v">23<small>/256</small></span>
+        </div>
+        <div class="wk-stat-track"><div class="wk-stat-fill wk-stat-fill-dim" style="width:9.0%"></div></div>
+        <p class="wk-party-note">functions verified</p>
+      </div>
+      
+      <p class="wk-stat-link"><a href="PROGRESS/">View full progress →</a></p>
+    </div>
+  </nav>
+
+  <!-- Main content -->
+  <main class="wk-main">
+    <div class="wk-article">
+
+      
+      
+      <div class="wk-toc" id="wk-toc">
+        <div class="wk-toc-header">
+          <b>Contents</b>
+          <button class="wk-toc-toggle"
+            onclick="var l=document.getElementById('wk-toc-list');l.hidden=!l.hidden;this.textContent=l.hidden?'[show]':'[hide]'">[hide]</button>
+        </div>
+        <ol class="wk-toc-list" id="wk-toc-list">
+          
+          <li>
+            <a href="#kajar" class="wk-toc-link">Kajar</a>
+            
+            <ol><li><a href="#project-at-a-glance" class="wk-toc-link">Project at a glance</a></li><li><a href="#start-here" class="wk-toc-link">Start here</a></li><li><a href="#reference" class="wk-toc-link">Reference</a></li><li><a href="#methodology" class="wk-toc-link">Methodology</a></li><li><a href="#legal" class="wk-toc-link">Legal</a></li></ol>
+            
+          </li>
+          
+        </ol>
+      </div>
+      
+      
+
+      <div class="wk-article-body">
+      
+      
+      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="October 8, 2026 05:23:14 UTC">October 8, 2026</span></p>
+      
+      <h1 id="kajar">Kajar</h1>
+<div class="wk-hero"><div class="wk-hero-art" aria-hidden="true"></div><div class="wk-hero-text"><p class="wk-hero-title">Chrono Trigger</p><p class="wk-hero-sub">A byte-exact decompilation of the 1995 classic, one matched routine at a time</p><blockquote class="wk-epigraph"><p>But… the future refused to change.</p><cite>Game Over screen</cite></blockquote></div></div>
+<div class="wk-stat-tiles"><div class="wk-stat-tile"><span class="wk-stat-tile-val">29,032</span><span class="wk-stat-tile-label">bytes matched</span></div><div class="wk-stat-tile"><span class="wk-stat-tile-val">8.08%</span><span class="wk-stat-tile-label">of all game code</span></div><div class="wk-stat-tile"><span class="wk-stat-tile-val">256</span><span class="wk-stat-tile-label">functions matched</span></div><div class="wk-stat-tile"><span class="wk-stat-tile-val">256</span><span class="wk-stat-tile-label">functions readable</span></div><div class="wk-stat-tile"><span class="wk-stat-tile-val">23</span><span class="wk-stat-tile-label">functions verified</span></div><div class="wk-stat-tile"><span class="wk-stat-tile-val">359,278</span><span class="wk-stat-tile-label">bytes of 65C816 code</span></div></div>
+<figure class="wk-spark"><svg class="wk-sparkline" viewBox="0 0 720 200" role="img" aria-label="Matched bytes by day, 10,013 on 2026-08-06 to 29,032 on 2026-10-08"><line x1="12" x2="708" y1="129.0" y2="129.0" class="wk-spark-grid"/><line x1="12" x2="708" y1="92.0" y2="92.0" class="wk-spark-grid"/><line x1="12" x2="708" y1="55.0" y2="55.0" class="wk-spark-grid"/><line x1="12" x2="708" y1="18.0" y2="18.0" class="wk-spark-grid"/><polygon points="12.0,166 12.0,115.0 81.6,101.9 151.2,95.9 220.8,95.1 290.4,83.0 360.0,65.1 429.6,44.2 499.2,36.7 568.8,33.5 638.4,29.2 708.0,18.0 708.0,166" class="wk-spark-area"/><polyline points="12.0,115.0 81.6,101.9 151.2,95.9 220.8,95.1 290.4,83.0 360.0,65.1 429.6,44.2 499.2,36.7 568.8,33.5 638.4,29.2 708.0,18.0" class="wk-spark-line"/><circle cx="12.0" cy="115.0" r="3.5" class="wk-spark-dot"><title>2026-08-06: 10,013 bytes matched, 60 matched</title></circle><circle cx="81.6" cy="101.9" r="3.5" class="wk-spark-dot"><title>2026-08-07: 12,583 bytes matched, 76 matched</title></circle><circle cx="151.2" cy="95.9" r="3.5" class="wk-spark-dot"><title>2026-08-09: 13,752 bytes matched, 85 matched</title></circle><circle cx="220.8" cy="95.1" r="3.5" class="wk-spark-dot"><title>2026-08-10: 13,914 bytes matched, 86 matched</title></circle><circle cx="290.4" cy="83.0" r="3.5" class="wk-spark-dot"><title>2026-08-11: 16,291 bytes matched, 94 matched</title></circle><circle cx="360.0" cy="65.1" r="3.5" class="wk-spark-dot"><title>2026-08-12: 19,800 bytes matched, 104 matched</title></circle><circle cx="429.6" cy="44.2" r="3.5" class="wk-spark-dot"><title>2026-08-14: 23,885 bytes matched, 164 matched</title></circle><circle cx="499.2" cy="36.7" r="3.5" class="wk-spark-dot"><title>2026-09-19: 25,363 bytes matched, 186 matched</title></circle><circle cx="568.8" cy="33.5" r="3.5" class="wk-spark-dot"><title>2026-09-22: 26,000 bytes matched, 206 matched</title></circle><circle cx="638.4" cy="29.2" r="3.5" class="wk-spark-dot"><title>2026-09-24: 26,828 bytes matched, 207 matched</title></circle><circle cx="708.0" cy="18.0" r="3.5" class="wk-spark-dot"><title>2026-10-08: 29,032 bytes matched, 256 matched, 256 readable, 23 verified</title></circle><text x="12" y="192" class="wk-spark-label">2026-08-06 · 10,013 B</text><text x="708" y="192" class="wk-spark-label" text-anchor="end">2026-10-08 · 29,032 B</text></svg><figcaption>Matched bytes by working day, from the code repo's history.</figcaption></figure>
+<p class="wk-page-meta">Every number above is generated; see <a href="PROGRESS/">Progress</a>.</p>
+
+<p>Welcome to <strong>ChronoRET</strong>, a <abbr title="The assembled output matches the original ROM byte-for-byte — not just equivalent behavior, literally identical bytes.">byte-exact</abbr> <abbr title="Writing assembly source that assembles byte-for-byte identically to the original ROM via asar.">matching</abbr> decompilation of <em>Chrono Trigger</em> (SNES, US 1.0).</p>
+<p>The goal is hand-labeled <abbr title="The 16-bit CPU inside the SNES, an extended 6502 capable of 8-bit emulation and full 16-bit native mode.">65816</abbr> assembly that assembles back to a ROM that is bit-for-bit identical to the original 1995 cartridge. Every <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr> function is verified with <code>make diff</code> before it is committed.</p>
+<div class="admonition note">
+<p class="admonition-title">This project is not affiliated with or endorsed by Square or Square Enix in any way.</p>
+</div>
+<hr />
+<h2 id="project-at-a-glance">Project at a glance</h2>
+<table>
+<thead>
+<tr>
+<th>Bank</th>
+<th>Region</th>
+<th>Status</th>
+<th>Bytes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>$00</code></td>
+<td>Boot vectors, wave tables, ROM header</td>
+<td>Partial</td>
+<td>256</td>
+</tr>
+<tr>
+<td><code>$C0</code></td>
+<td>Engine core — GameLoop, <abbr title="Vertical blank — the ~1.2ms gap each frame when the PPU isn't drawing, safe for register writes.">VBlank</abbr>, <abbr title="Object Attribute Memory — the PPU's 512+32-byte sprite table (up to 128 sprites: X/Y, tile, palette, size).">OAM</abbr>, sprite render</td>
+<td>Partial</td>
+<td>19,498</td>
+</tr>
+<tr>
+<td><code>$C1</code></td>
+<td>Battle engine — math utilities, status-bar UI, menu rendering</td>
+<td>Partial</td>
+<td>8,061</td>
+</tr>
+<tr>
+<td><code>$FD</code></td>
+<td>MainInit (CPU/<abbr title="Picture Processing Unit — the SNES graphics chip handling BGs, sprites, palettes, windows, and compositing.">PPU</abbr> init sequence)</td>
+<td>Partial</td>
+<td>215</td>
+</tr>
+<tr>
+<td>Everything else</td>
+<td>—</td>
+<td>Unmapped</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Total <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr>: ~28,030 bytes out of 4,194,304 (0.668%)</strong></p>
+<p><em>Run <code>python3 tools/progress.py --update-index</code> after updating <code>docs/PROGRESS.md</code> to regenerate this table.</em></p>
+<hr />
+<h2 id="start-here">Start here</h2>
+<div class="wk-quicklinks">
+
+<a class="wk-ql-box wk-ql-devlog" href="devlog/">
+  <span class="wk-ql-label">Devlog</span>
+  <span class="wk-ql-sub">One post per working day</span>
+</a>
+
+<a class="wk-ql-box wk-ql-progress" href="PROGRESS/">
+  <span class="wk-ql-label">Progress</span>
+  <span class="wk-ql-sub">Matched function table</span>
+</a>
+
+<a class="wk-ql-box wk-ql-arch" href="ARCHITECTURE/">
+  <span class="wk-ql-label">Architecture</span>
+  <span class="wk-ql-sub">Engine structure & patterns</span>
+</a>
+
+<a class="wk-ql-box wk-ql-contrib" href="CONTRIBUTING/">
+  <span class="wk-ql-label">Contributing</span>
+  <span class="wk-ql-sub">How to help</span>
+</a>
+
+</div>
+
+<hr />
+<h2 id="reference">Reference</h2>
+<h3 id="matched-regions">Matched regions</h3>
+<table>
+<thead>
+<tr>
+<th>Bank</th>
+<th>Region</th>
+<th>Bytes <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>$00</code></td>
+<td>Boot vectors, wave tables, ROM header</td>
+<td>256</td>
+</tr>
+<tr>
+<td><code>$C0</code></td>
+<td>Engine core — GameLoop, <abbr title="Vertical blank — the ~1.2ms gap each frame when the PPU isn't drawing, safe for register writes.">VBlank</abbr>, <abbr title="Object Attribute Memory — the PPU's 512+32-byte sprite table (up to 128 sprites: X/Y, tile, palette, size).">OAM</abbr>, sprite render, Sub_E12A cluster, slot allocators, sprite-slot init system ($CB0A–$E129), animation tick/queue ($C98A–$CB09)</td>
+<td>19,498</td>
+</tr>
+<tr>
+<td><code>$C1</code></td>
+<td>Battle engine — math utilities, number-display cluster, trig/geometry, status-bar UI (BuildStatusBarFrame cluster, UpdateNextPcPanel) + item/tech list rendering (RenderItemListRows, RenderItemRow, RenderTechListRows, BuildTechAvailFlags, RenderTechRow, BlankMpCostDigits) + window upkeep (UpdateWindows, UpdateMainWindow, UpdateTechWindow, DrawTechCursorRow, UpdateTechMpAvail, LoadCommandWindowMap) + menu dirty-flag gate (RefreshIfDirtyL, RefreshIfDirtyAndTick, DrawCursorSprites) + command-window input handling (ProcessInput, CycleActivePcPrev/Next, CursorUp/Down, ZeroResultEE, StopSfx) + confirm dispatch (ConfirmCommand, ChooseAttack, OpenTechList, OpenItemList) + target-list initializer (BuildTargetList) + ready-battler dequeue/remove pair (DequeueReadyBattler, RemoveBattlerFromReady) + target-select input (TargetSelectInput) + command-commit cluster (CommitAction, ConsumePartnerSlot, TargetNext/Prev) + tech-list input cluster (TechListInput, TechConfirm, TechListCancel, TechListPrev/Next) + item-list input cluster (ItemListInput, ItemConfirm, ItemListCancel, ItemCursorUp/Down, ItemListPageUp/Down, ItemListRefresh, ItemListScrollUp/Down) + cursor overlay (UpdateCursorOverlay) — the full command-menu subsystem, dirty-flag gate through commit, is now closed + ready-queue enqueue + target-mode layer (BattleTgt mode table, 18 handlers, area-query service, list helpers)</td>
+<td>8,061</td>
+</tr>
+<tr>
+<td><code>$FD</code></td>
+<td>MainInit (CPU/<abbr title="Picture Processing Unit — the SNES graphics chip handling BGs, sprites, palettes, windows, and compositing.">PPU</abbr> init sequence)</td>
+<td>215</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Overall: 28,030 bytes <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr> — ~7.8% of all game code (359,278 bytes), ~31.56% of Bank $C0 (61,779 bytes), ~12.61% of Bank $C1 (63,904 bytes).</strong>
+The 4 MB ROM is mostly graphics and music data; only ~359 KB is executable <abbr title="The 16-bit CPU inside the SNES, an extended 6502 capable of 8-bit emulation and full 16-bit native mode.">65816</abbr> code.</p>
+<p>See the full <a href="BANK_MAP/">Bank Map</a> for a region-by-region breakdown, and <a href="PROGRESS/">Progress</a> for the per-function table.</p>
+<h3 id="key-documents">Key documents</h3>
+<table>
+<thead>
+<tr>
+<th>Document</th>
+<th>What it covers</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="ARCHITECTURE/">Architecture</a></td>
+<td>Engine patterns, Y-dispatch table, <abbr title="Vertical blank — the ~1.2ms gap each frame when the PPU isn't drawing, safe for register writes.">VBlank</abbr> flow</td>
+</tr>
+<tr>
+<td><a href="glossary/">Glossary</a></td>
+<td><abbr title="The 16-bit CPU inside the SNES, an extended 6502 capable of 8-bit emulation and full 16-bit native mode.">65816</abbr> and SNES terms explained</td>
+</tr>
+<tr>
+<td><a href="ASAR_QUIRKS/"><abbr title="The 65816 assembler used for this project — patches matched .asm source into a ROM copy for byte-exact verification.">asar</abbr> Quirks</a></td>
+<td>Assembler gotchas that affect byte-exactness</td>
+</tr>
+<tr>
+<td><a href="CONTRIBUTING/">Contributing</a></td>
+<td>Toolchain setup, match workflow, commit rules</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="methodology">Methodology</h2>
+<p>Each function goes through four steps before it is marked <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr>:</p>
+<ol>
+<li><strong>Disassemble</strong> — <code>tools/disasm.py</code> traces execution from a known entry point, tracking M/<abbr title="Processor status bit controlling index register width: X=1 → 8-bit X/Y, X=0 → 16-bit. Changed via SEP/REP.">X flag</abbr> state to decode operand widths correctly.</li>
+<li><strong>Annotate</strong> — Labels, equates, and inline comments added by hand.</li>
+<li><strong>Assemble</strong> — <code>asar</code> rebuilds the function; known assembler quirks (<abbr title="Branch Long — 16-bit relative branch (signed offset from next PC); asar 1.91 quirk: BRL $XXXX stores $XXXX raw, not a target address.">BRL</abbr> offsets, STA addressing) are worked around explicitly.</li>
+<li><strong>Verify</strong> — <code>make diff</code> compares the assembled output byte-for-byte against the original ROM. Only a clean diff gets committed.</li>
+</ol>
+<hr />
+<h2 id="legal">Legal</h2>
+<p>Tools and source only — no ROM data, no extracted assets. To contribute or verify matches you need your own legally obtained copy of Chrono Trigger (SNES, US 1.0).</p>
+<p><strong>ROM SHA-256:</strong>
+<div class="language-text highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>06d1c2b06b716052c5596aaa0c2e5632a027fee1a9a28439e509f813c30829a9
+</code></pre></div></p>
+      
+      </div>
+
+    </div>
+
+    <footer class="wk-footer">
+      <ul class="wk-eras" aria-label="Eras">
+        <li style="--c:var(--era-prehistory)">65,000,000 BC</li>
+        <li style="--c:var(--era-zeal)">12,000 BC</li>
+        <li style="--c:var(--era-medieval)">600 AD</li>
+        <li style="--c:var(--era-present)">1000 AD</li>
+        <li style="--c:var(--era-lavos)">1999 AD</li>
+        <li style="--c:var(--era-future)">2300 AD</li>
+        <li style="--c:var(--era-eot)">End of Time</li>
+      </ul>
+      <p class="wk-footer-motto">Every byte, every era</p>
+      <p>Made by people who love Chrono Trigger, so that it can be studied, preserved and understood,
+      one verified routine at a time.</p>
+      <p>A fan project. Not affiliated with or endorsed by Square Enix. No ROM data is shared here:
+      bring your own copy.</p>
+    </footer>
+  </main>
+
+</div>
+
+<!-- Address-map pop-up (a menu window) -->
+<div class="wk-modal" id="wk-modal" hidden>
+  <div class="wk-modal-backdrop" data-close></div>
+  <div class="wk-modal-win" role="dialog" aria-modal="true" aria-labelledby="wk-modal-title" tabindex="-1">
+    <button type="button" class="wk-modal-close" data-close aria-label="Close">&times;</button>
+    <div class="wk-modal-body" id="wk-modal-body"></div>
+  </div>
+</div>
+
+<!-- Back to top -->
+<button class="wk-top" id="wk-top" title="Back to top" aria-label="Scroll to top">↑</button>
+
+
+<script>
+(function () {
+'use strict';
+
+/* ── Theme ─────────────────────────────────────────────────── */
+var stored = 'dark';
+try { stored = localStorage.getItem('wk-theme') || 'dark'; } catch (e) {}
+applyTheme(stored);
+document.getElementById('wk-toggle').addEventListener('click', function () {
+  applyTheme(document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
+});
+function applyTheme(t) {
+  document.documentElement.setAttribute('data-theme', t);
+  try { localStorage.setItem('wk-theme', t); } catch (e) {}
+}
+
+/* ── Mobile nav ────────────────────────────────────────────── */
+var navToggle  = document.getElementById('wk-nav-toggle');
+var navEl      = document.getElementById('wk-nav');
+var navBackdrop = document.getElementById('wk-nav-backdrop');
+function openNav() {
+  navEl.classList.add('is-open');
+  navBackdrop.hidden = false;
+  navToggle.setAttribute('aria-expanded', 'true');
+}
+function closeNav() {
+  navEl.classList.remove('is-open');
+  navBackdrop.hidden = true;
+  navToggle.setAttribute('aria-expanded', 'false');
+}
+if (navToggle && navEl && navBackdrop) {
+  navToggle.addEventListener('click', function () {
+    if (navEl.classList.contains('is-open')) { closeNav(); } else { openNav(); }
+  });
+  navBackdrop.addEventListener('click', closeNav);
+  navEl.addEventListener('click', function (e) {
+    if (e.target.closest('a')) { closeNav(); }
+  });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') { closeNav(); }
+  });
+  window.addEventListener('resize', function () {
+    if (window.innerWidth > 720) { closeNav(); }
+  });
+}
+
+/* ── Search ─────────────────────────────────────────────────── */
+var input   = document.getElementById('wk-q');
+var results = document.getElementById('wk-results');
+var docs    = null;
+if (input) {
+  fetch("search/search_index.json")
+    .then(function (r) { return r.json(); })
+    .then(function (d) { docs = d.docs; });
+
+  input.addEventListener('input', onSearch);
+
+  document.addEventListener('click', function (e) {
+    if (results && !results.contains(e.target) && e.target !== input) results.hidden = true;
+  });
+  input.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') { results.hidden = true; this.blur(); }
+    if (e.key === 'Enter' && results && !results.hidden) {
+      var first = results.querySelector('.wk-result');
+      if (first) { first.click(); }
+    }
+  });
+}
+
+/* Press / to focus search */
+document.addEventListener('keydown', function (e) {
+  if (e.key === '/' && document.activeElement !== input &&
+      document.activeElement.tagName !== 'INPUT' &&
+      document.activeElement.tagName !== 'TEXTAREA') {
+    e.preventDefault();
+    if (input) { input.focus(); input.select(); }
+  }
+});
+
+function onSearch() {
+  var q = this.value.trim().toLowerCase();
+  if (!docs || q.length < 2) { results.hidden = true; return; }
+  var hits = docs.filter(function (d) {
+    return (d.title + ' ' + d.text).toLowerCase().indexOf(q) !== -1;
+  }).slice(0, 8);
+  if (!hits.length) { results.hidden = true; return; }
+  var base = ".";
+  results.innerHTML = hits.map(function (d) {
+    var text  = d.text || '';
+    var i     = text.toLowerCase().indexOf(q);
+    var start = Math.max(0, i - 35);
+    var end   = Math.min(text.length, i + q.length + 70);
+    var snip  = (start > 0 ? '…' : '') + text.slice(start, end) + (end < text.length ? '…' : '');
+    var url   = base + '/' + d.location;
+    return '<a class="wk-result" href="' + esc(url) + '" role="option">'
+         + '<div class="wk-result-title">' + esc(d.title || d.location) + '</div>'
+         + '<div class="wk-result-snip">'  + esc(snip) + '</div></a>';
+  }).join('');
+  results.hidden = false;
+}
+
+function esc(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+/* ── Back to top ────────────────────────────────────────────── */
+var topBtn = document.getElementById('wk-top');
+if (topBtn) {
+  window.addEventListener('scroll', function () {
+    topBtn.classList.toggle('visible', window.scrollY > 400);
+  }, {passive: true});
+  topBtn.addEventListener('click', function () {
+    window.scrollTo({top: 0, behavior: 'smooth'});
+  });
+}
+
+/* ── Copy-to-clipboard ───────────────────────────────────────── */
+document.querySelectorAll('.highlight').forEach(function (block) {
+  var btn = document.createElement('button');
+  btn.className = 'wk-copy-btn';
+  btn.title     = 'Copy code';
+  btn.textContent = '⎘';
+  block.appendChild(btn);
+  btn.addEventListener('click', function () {
+    var pre = block.querySelector('pre');
+    if (!pre) return;
+    navigator.clipboard.writeText(pre.innerText).then(function () {
+      btn.textContent = '✓';
+      btn.classList.add('copied');
+      setTimeout(function () {
+        btn.textContent = '⎘';
+        btn.classList.remove('copied');
+      }, 1500);
+    });
+  });
+});
+
+/* ── TOC scroll spy ─────────────────────────────────────────── */
+var tocLinks = document.querySelectorAll('.wk-toc-link');
+if (tocLinks.length && 'IntersectionObserver' in window) {
+  var headings = Array.from(document.querySelectorAll('.wk-article h1, .wk-article h2, .wk-article h3'));
+  var active   = null;
+  var obs = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
+      if (e.isIntersecting) {
+        var id  = e.target.id;
+        var lnk = document.querySelector('.wk-toc-link[href="#' + id + '"]');
+        if (lnk && lnk !== active) {
+          if (active) active.classList.remove('is-current');
+          lnk.classList.add('is-current');
+          active = lnk;
+        }
+      }
+    });
+  }, {rootMargin: '-10% 0px -80% 0px'});
+  headings.forEach(function (h) { if (h.id) obs.observe(h); });
+}
+
+
+/* ── Status badges in "Status" table columns ────────────────── */
+var STATUS = { 'matched': 'matched', 'in progress': 'progress', 'partial': 'partial',
+               'identified': 'identified', 'unmapped': 'unmapped', 'unknown': 'unknown' };
+document.querySelectorAll('.wk-article-body table').forEach(function (tbl) {
+  var col = -1;
+  tbl.querySelectorAll('thead th').forEach(function (th, i) {
+    if (th.textContent.trim().toLowerCase() === 'status') col = i;
+  });
+  if (col < 0) return;
+  tbl.querySelectorAll('tbody tr').forEach(function (tr) {
+    var td = tr.children[col];
+    if (!td || td.querySelector('.wk-status')) return;
+    var whole = td.textContent.trim().toLowerCase();
+    var target = null, key = STATUS[whole];
+    if (key) { target = td; }
+    else if (td.firstElementChild && td.firstElementChild.tagName === 'STRONG' &&
+             td.firstChild === td.firstElementChild) {
+      key = STATUS[td.firstElementChild.textContent.trim().toLowerCase()];
+      if (key) target = td.firstElementChild;
+    }
+    if (!target) return;
+    var span = document.createElement('span');
+    span.className = 'wk-status wk-status-' + key;
+    if (target === td) { while (td.firstChild) span.appendChild(td.firstChild); td.appendChild(span); }
+    else { td.insertBefore(span, target); span.appendChild(target); }
+  });
+});
+
+/* ── Address map pop-up ─────────────────────────────────────── */
+var modal = document.getElementById('wk-modal');
+var mbody = document.getElementById('wk-modal-body');
+var mwin  = modal ? modal.querySelector('.wk-modal-win') : null;
+var lastFocus = null, closeTimer = null, current = null;
+var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+var LABEL = { matched: 'Matched', progress: 'In progress', identified: 'Identified',
+              unmapped: 'Unmapped', gap: 'Uncharted' };
+
+function md(s) {
+  return esc(s || '').replace(/`([^`]+)`/g, '<code>$1</code>')
+                     .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+}
+function hex4(n) { return ('000' + n.toString(16).toUpperCase()).slice(-4); }
+function num(n) { return n == null ? '?' : n.toLocaleString('en-US'); }
+function badge(st) {
+  var k = st === 'gap' ? 'unmapped' : st;
+  return '<span class="wk-status wk-status-' + k + '">' + (LABEL[st] || st) + '</span>';
+}
+
+function openModal(html, from) {
+  if (!modal) return;
+  clearTimeout(closeTimer);
+  mbody.innerHTML = html;
+  if (modal.hidden) {
+    lastFocus = from || document.activeElement;
+    modal.hidden = false;
+    document.documentElement.classList.add('wk-modal-lock');
+    void modal.offsetWidth;            /* commit start state, then animate */
+    modal.classList.add('is-open');
+  }
+  mbody.scrollTop = 0;
+  mwin.focus({ preventScroll: true });
+}
+function closeModal() {
+  if (!modal || modal.hidden) return;
+  modal.classList.remove('is-open');
+  document.documentElement.classList.remove('wk-modal-lock');
+  document.querySelectorAll('.wk-amap-slice.is-selected, .wk-heat-cell.is-selected, .wk-slice-cell.is-selected')
+    .forEach(function (el) { el.classList.remove('is-selected'); });
+  closeTimer = setTimeout(function () { modal.hidden = true; }, reduceMotion ? 0 : 200);
+  if (lastFocus && lastFocus.focus) lastFocus.focus({ preventScroll: true });
+  current = null;
+}
+if (modal) {
+  modal.addEventListener('click', function (e) {
+    if (e.target.closest('[data-close]')) { closeModal(); return; }
+    var nav = e.target.closest('[data-step]');
+    if (nav && current) { stepRegion(+nav.getAttribute('data-step')); return; }
+    var jump = e.target.closest('[data-jump]');
+    if (jump) { e.preventDefault(); jumpTo(jump.getAttribute('data-jump'), jump.getAttribute('data-row')); }
+  });
+  document.addEventListener('keydown', function (e) {
+    if (modal.hidden) return;
+    if (e.key === 'Escape') { e.preventDefault(); closeModal(); return; }
+    if (current && (e.key === 'ArrowRight' || e.key === 'ArrowLeft') &&
+        !/INPUT|TEXTAREA/.test(document.activeElement.tagName)) {
+      e.preventDefault(); stepRegion(e.key === 'ArrowRight' ? 1 : -1); return;
+    }
+    if (e.key === 'Tab') {               /* keep focus inside the window */
+      var f = Array.prototype.filter.call(
+        mwin.querySelectorAll('button, a[href], [tabindex="0"]'),
+        function (el) { return el.offsetParent !== null; });
+      if (!f.length) return;
+      var a = f[0], z = f[f.length - 1];
+      if (e.shiftKey && (document.activeElement === a || document.activeElement === mwin)) { e.preventDefault(); z.focus(); }
+      else if (!e.shiftKey && document.activeElement === z) { e.preventDefault(); a.focus(); }
+    }
+  });
+}
+
+var maps = {};
+document.querySelectorAll('.wk-amap').forEach(function (el) {
+  var data;
+  try { data = JSON.parse(el.querySelector('.wk-amap-data').textContent); } catch (e) { return; }
+  maps[data.bank] = { el: el, data: data };
+  el.addEventListener('click', function (e) {
+    var b = e.target.closest('.wk-amap-slice');
+    if (b) showRegion(data.bank, +b.getAttribute('data-i'), b);
+  });
+});
+
+function regionRange(bank, r) {
+  return '$' + bank + ':' + hex4(r.s) + (r.e != null ? '–$' + hex4(r.e) : '–?');
+}
+function showRegion(bank, i, from) {
+  var m = maps[bank]; if (!m) return;
+  var regs = m.data.regions, r = regs[i]; if (!r) return;
+  current = { bank: bank, i: i };
+  m.el.querySelectorAll('.wk-amap-slice.is-selected').forEach(function (el) { el.classList.remove('is-selected'); });
+  m.el.querySelectorAll('.wk-amap-slice[data-i="' + i + '"]').forEach(function (el) { el.classList.add('is-selected'); });
+
+  var h = '<p class="wk-modal-eyebrow">Bank $' + bank + ' · ' + regionRange(bank, r) + '</p>';
+  h += '<h3 id="wk-modal-title">' + (r.st === 'gap' ? 'Uncharted territory' : md(r.n)) + '</h3>';
+  h += '<div class="wk-modal-facts">' + badge(r.st) +
+       '<span>' + (r.b != null ? num(r.b) + ' bytes' : 'size unknown') + '</span>' +
+       (r.o ? '<span>file <code>' + esc(r.o) + '</code></span>' : '') + '</div>';
+  if (r.st === 'gap') {
+    var prev = regs[i - 1], next = regs[i + 1];
+    h += '<p>Nothing in this stretch of Bank $' + bank + ' has been charted in the bank map yet: ' +
+         '<strong>' + num(r.b) + ' bytes</strong> still waiting to be explored, labelled and matched.</p>';
+    if (prev || next) h += '<p class="wk-modal-dim">Between ' + (prev ? md(prev.n) : 'the bank start') +
+         ' and ' + (next ? md(next.n) : 'the end of the bank') + '.</p>';
+  } else {
+    if (r.d) h += '<p>' + md(r.d) + '</p>';
+    if (r.e == null) h += '<p class="wk-modal-dim">The end address of this region is not known yet.</p>';
+  }
+  if (r.k && r.k.length) {
+    var done = 0, doneB = 0, todoB = 0;
+    r.k.forEach(function (k) { if (k.st === 'matched') { done++; doneB += k.b || 0; } else { todoB += k.b || 0; } });
+    h += '<h4>Inside this region <span class="wk-modal-dim">· ' + done + ' of ' + r.k.length + ' matched' +
+         (doneB ? ', ' + num(doneB) + ' B verified' : '') + (todoB ? ', ' + num(todoB) + ' B to do' : '') + '</span></h4>';
+    h += '<ul class="wk-modal-list">' + r.k.map(function (k) {
+      return '<li class="is-' + k.st + '">' + badge(k.st) + ' <span class="wk-modal-name">' + md(k.n) + '</span>' +
+             '<span class="wk-modal-addr">' + esc(k.a) + (k.b ? ' · ' + num(k.b) + ' B' : '') + '</span>' +
+             (k.d ? '<span class="wk-modal-desc">' + md(k.d) + '</span>' : '') + '</li>';
+    }).join('') + '</ul>';
+  } else if (r.st === 'matched') {
+    h += '<p class="wk-modal-ok">Byte-exact: verified against the original ROM with <code>make diff</code>.</p>';
+  } else if (r.st !== 'gap') {
+    h += '<p class="wk-modal-todo">Still to do: this region is ' + LABEL[r.st].toLowerCase() + ' but not yet matched.</p>';
+  }
+  h += '<div class="wk-modal-actions">' +
+       '<button type="button" class="wk-btn" data-step="-1"' + (i === 0 ? ' disabled' : '') + ' aria-label="Previous region">◀ Prev</button>' +
+       (r.st !== 'gap' ? '<button type="button" class="wk-btn" data-jump="row" data-row="' + esc(r.n) + '">Show in table</button>' : '') +
+       '<button type="button" class="wk-btn" data-step="1"' + (i === regs.length - 1 ? ' disabled' : '') + ' aria-label="Next region">Next ▶</button>' +
+       '</div>';
+  openModal(h, from);
+}
+function stepRegion(d) {
+  if (!current) return;
+  var regs = maps[current.bank].data.regions, j = current.i + d;
+  if (j < 0 || j >= regs.length) return;
+  var btn = maps[current.bank].el.querySelector('.wk-amap-slice[data-i="' + j + '"]');
+  showRegion(current.bank, j, lastFocus);
+  if (btn) btn.scrollIntoView({ block: 'nearest' });
+}
+function jumpTo(kind, key) {
+  var target = null;
+  if (kind === 'row') {
+    var want = key.replace(/[`*]/g, '').trim();
+    document.querySelectorAll('.wk-article-body table tbody tr').forEach(function (tr) {
+      if (!target && tr.firstElementChild && tr.firstElementChild.textContent.trim() === want) target = tr;
+    });
+  } else {
+    target = document.getElementById(kind);
+  }
+  closeModal();
+  if (!target) return;
+  target.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'center' });
+  target.classList.remove('wk-flash'); void target.offsetWidth; target.classList.add('wk-flash');
+}
+
+/* Address Map page: a slice cell opens its pre-rendered panel in the pop-up */
+document.querySelectorAll('.wk-addrmap').forEach(function (map) {
+  map.addEventListener('click', function (e) {
+    var cell = e.target.closest('a.wk-slice-cell');
+    if (!cell) return;
+    var panel = document.getElementById(cell.getAttribute('href').slice(1));
+    if (!panel) return;
+    e.preventDefault();
+    map.querySelectorAll('.wk-slice-cell.is-selected').forEach(function (el) { el.classList.remove('is-selected'); });
+    cell.classList.add('is-selected');
+    current = null;
+    var clone = panel.cloneNode(true);
+    clone.removeAttribute('id');
+    var x = clone.querySelector('.wk-slice-close'); if (x) x.remove();
+    var h3 = clone.querySelector('h3'); if (h3) h3.id = 'wk-modal-title';
+    openModal(clone.innerHTML, cell);
+  });
+});
+
+/* Bank heat map (64 banks) */
+document.querySelectorAll('.wk-heat-wrap').forEach(function (wrap) {
+  var meta;
+  try { meta = JSON.parse(wrap.querySelector('.wk-heat-data').textContent); } catch (e) { return; }
+  wrap.addEventListener('click', function (e) {
+    var c = e.target.closest('.wk-heat-cell'); if (!c) return;
+    var bank = c.getAttribute('data-heat'), m = meta[bank]; if (!m) return;
+    wrap.querySelectorAll('.is-selected').forEach(function (el) { el.classList.remove('is-selected'); });
+    c.classList.add('is-selected');
+    current = null;
+    var pct = m.code != null ? (m.code / 65536 * 100) : null;
+    var h = '<p class="wk-modal-eyebrow">Bank $' + bank + ' · file $' +
+            ('0' + (parseInt(bank, 16) - 0xC0).toString(16).toUpperCase()).slice(-2) + '0000</p>';
+    h += '<h3 id="wk-modal-title">Bank $' + bank + '</h3>';
+    h += '<div class="wk-modal-facts">' +
+         (m.matched ? badge('progress') : (m.code ? badge('unmapped') : '<span class="wk-status wk-status-unknown">Data only</span>')) +
+         '<span>' + (m.code != null ? num(m.code) + ' code bytes (' + pct.toFixed(pct < 1 ? 1 : 0) + '%)' : 'not surveyed') + '</span></div>';
+    if (m.note) h += '<p>' + md(m.note) + '</p>';
+    if (m.matched) {
+      var mp = m.code ? Math.min(100, m.matched / m.code * 100) : 0;
+      h += '<div class="wk-modal-gauge" role="img" aria-label="' + mp.toFixed(1) + '% of code matched"><span style="width:' + mp.toFixed(2) + '%"></span></div>';
+      h += '<p><strong>' + num(m.matched) + ' bytes</strong> matched and verified' +
+           (m.code ? ' — ' + mp.toFixed(1) + '% of this bank\'s code. ' + num(Math.max(0, m.code - m.matched)) + ' code bytes to go.' : '.') + '</p>';
+    } else if (m.code) {
+      h += '<p class="wk-modal-todo">Not started: ' + num(m.code) + ' bytes of code waiting to be matched.</p>';
+    } else {
+      h += '<p class="wk-modal-dim">No executable code here: graphics, music or map data (incbin).</p>';
+    }
+    h += '<div class="wk-modal-actions">' +
+         (m.map ? '<button type="button" class="wk-btn" data-jump="wk-amap-' + bank + '">Open the $' + bank + ' address map ▶</button>' : '') +
+         '</div>';
+    openModal(h, c);
+  });
+});
+
+}());
+</script>
+</body>
+</html>

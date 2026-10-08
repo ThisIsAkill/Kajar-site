@@ -1,0 +1,1024 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  
+  <meta name="description" content="Byte-exact matching decompilation of Chrono Trigger (SNES, US 1.0)">
+  <link rel="canonical" href="https://thisisakill.github.io/Kajar-site/devlog/2026/08/07/7-august-2026-the-last-mode-handler-screen-transitions-and-the-sprite-init-pass/">
+  
+  
+  <title>7 August 2026: the last mode handler, screen transitions, and the sprite init pass — Kajar</title>
+  
+  
+  <link rel="stylesheet" href="../../../../../stylesheets/wiki.css">
+  
+  
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Press+Start+2P&family=Silkscreen&display=swap">
+  
+</head>
+<body>
+
+<!-- ── Header ──────────────────────────────────────────────── -->
+<header class="wk-header">
+  <button class="wk-nav-toggle" id="wk-nav-toggle" aria-label="Toggle navigation" aria-expanded="false" aria-controls="wk-nav">☰</button>
+  <a class="wk-wordmark" href="../../../../.." aria-label="Kajar home">
+    <svg class="wk-wordmark-clock" viewBox="0 0 32 32" aria-hidden="true">
+      <circle cx="16" cy="16" r="13.5" fill="#0f1438" stroke="#ffd76e" stroke-width="2.5"/>
+      <g stroke="#cdd5ff" stroke-width="1.6" stroke-linecap="round">
+        <path d="M16 5.2v2.4M16 24.4v2.4M5.2 16h2.4M24.4 16h2.4"/>
+      </g>
+      <path d="M16 16l-5 -3.2" stroke="#ffd76e" stroke-width="2.4" stroke-linecap="round"/>
+      <path class="hand-m" d="M16 16V7.6" stroke="#ffffff" stroke-width="1.8" stroke-linecap="round"/>
+      <circle cx="16" cy="16" r="1.8" fill="#ffd76e"/>
+    </svg>
+    <span>Kajar</span>
+    <small class="wk-tagline">notes of ChronoRET, rebuilding Chrono Trigger one matched routine at a time</small>
+  </a>
+
+  <div class="wk-header-right">
+    
+    <div class="wk-searchbox">
+      <input class="wk-search-input" id="wk-q" type="search"
+             placeholder="Search…  [/]" autocomplete="off" aria-label="Search">
+      <div class="wk-search-results" id="wk-results" hidden role="listbox"></div>
+    </div>
+    <button class="wk-toggle" id="wk-toggle" title="Toggle theme" aria-label="Toggle dark/light">
+      <svg class="i-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.5" fill="currentColor"/><g stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 1.8v2.6M12 19.6v2.6M1.8 12h2.6M19.6 12h2.6M4.8 4.8l1.8 1.8M17.4 17.4l1.8 1.8M4.8 19.2l1.8-1.8M17.4 6.6l1.8-1.8"/></g></svg>
+      <svg class="i-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.5 14.6A8.6 8.6 0 0 1 9.4 3.5a8.6 8.6 0 1 0 11.1 11.1z" fill="currentColor"/></svg>
+    </button>
+  </div>
+</header>
+
+<!-- ── Layout ──────────────────────────────────────────────── -->
+<div class="wk-layout">
+
+  <div class="wk-nav-backdrop" id="wk-nav-backdrop" hidden></div>
+
+  <!-- Left sidebar -->
+  <nav class="wk-nav" id="wk-nav" aria-label="Site navigation">
+    <a href="../../../../.." class="wk-portal-icon" aria-label="Home">
+      <span class="wk-emblem">
+        <span class="wk-emblem-art">
+          <img src="../../../../../assets/ct-icon.png" alt="Crono" width="220" height="220">
+        </span>
+        <span class="wk-emblem-caption">Crono · 1000 AD</span>
+      </span>
+    </a>
+
+    
+      
+      <a class="wk-nav-link" href="../../../../..">Home</a>
+      
+    
+      
+        <p class="wk-nav-heading">The Journey</p>
+        
+          
+          <a class="wk-nav-link is-active" href="../../../../">Devlog</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../../../../../gallery/">Gallery</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../../../../../PROGRESS/">Progress</a>
+          
+        
+      
+    
+      
+        <p class="wk-nav-heading">Systems</p>
+        
+          
+          <a class="wk-nav-link" href="../../../../../systems/">Overview</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../../../../../systems/boot/">Boot</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../../../../../systems/engine/">Engine core</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../../../../../systems/sprites/">Sprites & objects</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../../../../../systems/battle-engine/">Battle engine</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../../../../../systems/battle-menu/">Battle menu</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../../../../../systems/battle-targeting/">Battle targeting</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../../../../../systems/battle-status/">Status bar & text</a>
+          
+        
+      
+    
+      
+        <p class="wk-nav-heading">How It Works</p>
+        
+          
+          <a class="wk-nav-link" href="../../../../../ARCHITECTURE/">Architecture</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../../../../../ADDRESS_MAP/">Address Map</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../../../../../BANK_MAP/">Bank Map</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../../../../../how-sprite-init-works/">Sprite Init Explainer</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../../../../../ROM_HASH/">Target ROM</a>
+          
+        
+      
+    
+      
+        <p class="wk-nav-heading">For Time Travelers</p>
+        
+          
+          <a class="wk-nav-link" href="../../../../../CONTRIBUTING/">Contributing</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../../../../../ASAR_QUIRKS/">asar Quirks</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../../../../../glossary/">Glossary</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../../../../../CI_SETUP/">CI Setup</a>
+          
+        
+      
+    
+      
+      <a class="wk-nav-link" href="../../../../../credits/">Credits</a>
+      
+    
+
+    <!-- Party Status: every value from docs/data/ (hooks/progress_data.py) -->
+    
+    <div class="wk-stats">
+      <p class="wk-nav-heading" title="Project progress">Party Status</p>
+      
+      <div class="wk-party">
+        <div class="wk-party-row" title="Bytes matched: the rebuilt ROM is byte-identical here">
+          <span class="wk-party-k">HP</span>
+          <span class="wk-party-v">29,032<small>/359,278</small></span>
+        </div>
+        <div class="wk-stat-track"><div class="wk-stat-fill" style="width:8.08%"></div></div>
+        <p class="wk-party-note">bytes matched · 8.08% of code</p>
+
+        <div class="wk-party-row" title="Matched functions that also meet the readability standard">
+          <span class="wk-party-k">MP</span>
+          <span class="wk-party-v">256<small>/256</small></span>
+        </div>
+        <div class="wk-stat-track"><div class="wk-stat-fill wk-stat-fill-mp" style="width:100.0%"></div></div>
+        <p class="wk-party-note">functions readable</p>
+
+        <div class="wk-party-row" title="Readable functions that passed an independent review">
+          <span class="wk-party-k">TP</span>
+          <span class="wk-party-v">23<small>/256</small></span>
+        </div>
+        <div class="wk-stat-track"><div class="wk-stat-fill wk-stat-fill-dim" style="width:9.0%"></div></div>
+        <p class="wk-party-note">functions verified</p>
+      </div>
+      
+      <p class="wk-stat-link"><a href="../../../../../PROGRESS/">View full progress →</a></p>
+    </div>
+  </nav>
+
+  <!-- Main content -->
+  <main class="wk-main">
+    <div class="wk-article">
+
+      
+      
+      <div class="wk-toc" id="wk-toc">
+        <div class="wk-toc-header">
+          <b>Contents</b>
+          <button class="wk-toc-toggle"
+            onclick="var l=document.getElementById('wk-toc-list');l.hidden=!l.hidden;this.textContent=l.hidden?'[show]':'[hide]'">[hide]</button>
+        </div>
+        <ol class="wk-toc-list" id="wk-toc-list">
+          
+          <li>
+            <a href="#7-august-2026-the-last-mode-handler-screen-transitions-and-the-sprite-init-pass" class="wk-toc-link">7 August 2026: the last mode handler, screen transitions, and the sprite init pass</a>
+            
+            <ol><li><a href="#defaulthandler-closes-the-mode-dispatch" class="wk-toc-link">DefaultHandler closes the mode dispatch</a></li><li><a href="#the-screen-transition-manager" class="wk-toc-link">The screen-transition manager</a></li><li><a href="#two-names-that-were-backwards" class="wk-toc-link">Two names that were backwards</a></li><li><a href="#saving-and-restoring-the-scene" class="wk-toc-link">Saving and restoring the scene</a></li><li><a href="#the-entity-dispatchers" class="wk-toc-link">The entity dispatchers</a></li><li><a href="#sub_e12a-the-sprite-init-pass" class="wk-toc-link">Sub_E12A: the sprite init pass</a></li><li><a href="#the-day-in-numbers" class="wk-toc-link">The day in numbers</a></li><li><a href="#next" class="wk-toc-link">Next</a></li></ol>
+            
+          </li>
+          
+        </ol>
+      </div>
+      
+      
+
+      <div class="wk-article-body">
+      
+<article>
+  
+  <p class="wk-post-meta">
+    <time datetime="2026-08-07 00:00:00+00:00">2026-08-07</time>
+    
+  </p>
+  
+  
+  <h1 id="7-august-2026-the-last-mode-handler-screen-transitions-and-the-sprite-init-pass">7 August 2026: the last mode handler, screen transitions, and the sprite init pass</h1>
+<p>The <code>$0C76</code> mode dispatch is closed with the default handler. Then the whole screen-transition path, from fade-out through scene save and restore to fade-in, is <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr>, two early labels are corrected, and the 1,034-byte sprite init pass <code>Sub_E12A</code> goes in: 2,568 new bytes in 15 functions over sessions 21 to 25.</p>
+<!-- more -->
+
+<h2 id="defaulthandler-closes-the-mode-dispatch">DefaultHandler closes the mode dispatch</h2>
+<p><code>DefaultHandler</code> at <code>$C0:16DC–$18D8</code> (509 bytes) is the last arm of <code>Sub_0C76</code>'s per-frame dispatch. I already knew it used <abbr title="Direct Page mode — 2-byte instruction using an 8-bit offset added to the D register.">dp</abbr> <code>$5D/$5E</code> instead of <code>$5B/$5C</code> and wrote <abbr title="Video RAM — dedicated PPU memory for tile graphics and tilemaps; written via DMA during VBlank.">VRAM</abbr> slots <code>$09B2–$09B8</code> instead of <code>$09CA–$09F8</code>. Almost nothing else matches the named handlers either. Those follow a tight template (advance some <code>$7E:3000</code> entries, run N passes of 4-corner writes via <code>Sub_1B36</code>, <code>BRL</code> back to <code>$16DC</code>). DefaultHandler <em>is</em> <code>$16DC</code>, the landing zone, so there is no tail call.</p>
+<p>Three bit flags in <abbr title="Direct Page mode — 2-byte instruction using an 8-bit offset added to the D register.">dp</abbr> <code>$17</code> control three separate sections:</p>
+<ul>
+<li><strong>Bit 1 (<abbr title="Video RAM — dedicated PPU memory for tile graphics and tilemaps; written via DMA during VBlank.">VRAM</abbr> update).</strong> Clears the flag, calls <code>Sub_1BA7</code>, reads the layer entry at <code>$7E:3000,X</code> (index <abbr title="Direct Page mode — 2-byte instruction using an 8-bit offset added to the D register.">dp</abbr> <code>$5D</code>) and advances it only for the terminal mode bytes <code>$FE</code> or <code>$E0</code>. Then one 4-corner <abbr title="Video RAM — dedicated PPU memory for tile graphics and tilemaps; written via DMA during VBlank.">VRAM</abbr> pass to <code>$09B2/$09B4/$09B6/$09B8</code>, and bit 1 of <abbr title="Direct Page mode — 2-byte instruction using an 8-bit offset added to the D register.">dp</abbr> <code>$5F</code> set as a done flag. The 16-bit math is the same as in the named handlers, with other sources and destinations.</li>
+<li><strong>Bit 5 (display-mode transition).</strong> The surprise. Clears the bit, sets <abbr title="Direct Page mode — 2-byte instruction using an 8-bit offset added to the D register.">dp</abbr> <code>$38</code> = 1, and loops: <code>JSR $885A</code> / <code>JSR $00BF</code> / check <abbr title="Direct Page mode — 2-byte instruction using an 8-bit offset added to the D register.">dp</abbr> <code>$38</code>. After the loop (<abbr title="Direct Page mode — 2-byte instruction using an 8-bit offset added to the D register.">dp</abbr> <code>$38</code> = 0) it reads <abbr title="Direct Page mode — 2-byte instruction using an 8-bit offset added to the D register.">dp</abbr> <code>$45</code> and dispatches to one of four transition sub-modes (values 1–4). Each calls a mode-specific renderer with <abbr title="Direct Page — the 65816's relocatable 256-byte zero-page window; address = D register + 8-bit offset.">DP</abbr> set to <code>$1D00</code> for the call, adjusts <abbr title="Direct Page mode — 2-byte instruction using an 8-bit offset added to the D register.">dp</abbr> <code>$46</code>, clears <abbr title="Direct Page mode — 2-byte instruction using an 8-bit offset added to the D register.">dp</abbr> <code>$45</code> and tail-calls <code>Sub_EC60</code>. Mode 3 runs three renderer passes with <code>PHD/PLD</code> framing and swaps <abbr title="Direct Page mode — 2-byte instruction using an 8-bit offset added to the D register.">dp</abbr> <code>$7C/$82</code> between them. No named handler has anything like this.</li>
+<li><strong>Bit 0 (scene swap).</strong> Checked only when bit 5 is clear. Calls a probe at <code>$024C</code>. Carry clear starts a full scene swap: <code>JSL $C02C41</code>, <code>JSL $C10000</code> (bank <code>$C1</code> init), reinstall <abbr title="Non-Maskable Interrupt — fires at the start of VBlank each frame; the safe window for PPU updates.">NMI</abbr>/IRQ, reset <abbr title="Direct Page mode — 2-byte instruction using an 8-bit offset added to the D register.">dp</abbr> <code>$17/$18</code>, call three post-init helpers. Carry set takes a quick path: flip bits in <code>$17/$18</code> and <code>BRL</code> to the <code>$00EB</code> fragment (<code>JSR $881E</code> + <code>JSR $00DE</code> + <code>BRL $EC60</code>).</li>
+</ul>
+<p><strong><code>Sub_1BA7</code></strong> (<code>$C0:1BA7–$1BAA</code>, 4 bytes) sends an SPC audio command:</p>
+<div class="language-asm highlight"><span class="filename">65C816 Assembly</span><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1"></a><a href="#__codelineno-0-1"><span class="linenos" data-linenos="1 "></span></a><span class="nf">LDA</span><span class="w"> </span><span class="no">$FB</span><span class="w">        </span><span class="c1">; load dp:$FB as audio arg 0</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2"></a><a href="#__codelineno-0-2"><span class="linenos" data-linenos="2 "></span></a><span class="nf">BRA</span><span class="w"> </span><span class="no">Sub_1B90_body</span><span class="w">  </span><span class="c1">; join Sub_1B90 at STA $1E01</span>
+</code></pre></div>
+<p><code>Sub_1B90</code> uses <abbr title="Direct Page mode — 2-byte instruction using an 8-bit offset added to the D register.">dp</abbr> <code>$FC</code> for the same argument. <code>Sub_1BA7</code> loads <code>$FB</code> instead and jumps into <code>Sub_1B90</code> at its second instruction, skipping only <code>LDA $FC</code>. A new <code>Sub_1B90_body</code> label marks that spot; labels emit no bytes, so <code>Sub_1B90</code> is unchanged. <code>$FB</code> versus <code>$FC</code> presumably picks a different command from the SPC tables, which fits a different kind of layer transition.</p>
+<p><strong><code>$885A</code>, deferred.</strong> The bit-5 loop calls it every frame until <abbr title="Direct Page mode — 2-byte instruction using an 8-bit offset added to the D register.">dp</abbr> <code>$38</code> clears. The disassembler traced over 2,700 unique instructions from it before hitting the sweep limit, into a large tree across bank <code>$C0</code> (<code>$7612</code>, <code>$77E4</code>, <code>$79CF</code>, <code>$7BA9</code> and many more). It is a major frame-work routine and is in the <a href="../../../../../BANK_MAP/">bank map</a> as Identified/deferred. <code>Sub_EC60</code> stays the always-deferred post-<abbr title="Vertical blank — the ~1.2ms gap each frame when the PPU isn't drawing, safe for register writes.">VBlank</abbr> worker. DefaultHandler tail-calls it for sub-modes 1, 2 and 3 (raw <code>BRL</code> offsets <code>$D49B</code>, <code>$D472</code> and <code>$D3FE</code>), and mode 4 reaches it with two <code>JSR</code>s.</p>
+<table>
+<thead>
+<tr>
+<th>Handler</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ModeE6_Handler</td>
+<td>Matched</td>
+</tr>
+<tr>
+<td>ModeEC_Handler</td>
+<td>Matched</td>
+</tr>
+<tr>
+<td>ModeEE_Handler</td>
+<td>Matched</td>
+</tr>
+<tr>
+<td>ModeFA_Handler</td>
+<td>Matched</td>
+</tr>
+<tr>
+<td>ModeFC_Handler</td>
+<td>Matched</td>
+</tr>
+<tr>
+<td>DefaultHandler</td>
+<td>Matched</td>
+</tr>
+<tr>
+<td>Sub_1B36 (leaf callee)</td>
+<td>Matched</td>
+</tr>
+<tr>
+<td>Sub_1B90 (leaf callee)</td>
+<td>Matched</td>
+</tr>
+<tr>
+<td>Sub_1BA7 (leaf callee)</td>
+<td>Matched</td>
+</tr>
+<tr>
+<td>Sub_EC60 (black-box)</td>
+<td>Identified, always-deferred</td>
+</tr>
+<tr>
+<td>Sub_885A (black-box)</td>
+<td>Identified, deferred</td>
+</tr>
+</tbody>
+</table>
+<p>The mode-dispatch part of the <code>$0C76</code> cluster is complete. Two subsystems are now fully closed: the sprite renderer cluster (fourteen functions, sessions 7–17) and the <code>$0C76</code> mode dispatch (thirteen functions, sessions 18–21).</p>
+<h2 id="the-screen-transition-manager">The screen-transition manager</h2>
+<p>Past DefaultHandler's last byte (<code>$18D8</code>) sit routines that are not part of the <code>Sub_0C76</code> tree.</p>
+<p><strong><code>Sub_18D9</code></strong> (<code>$C0:18D9–$1984</code>, 172 bytes) is the outer gate for screen fades and mode transitions, called from the startup sequence at <code>$C0:00A1</code>. It reads two flags:</p>
+<ul>
+<li><code>$00F0</code> bit 0: whether the game is in BG mode 5 (the high-resolution mode Chrono Trigger uses for map transitions)</li>
+<li><code>$00F6</code> bits 0, 6 and 7: a second mode-control byte</li>
+</ul>
+<p>If <code>$00F0</code> bit 0 is set, it busy-waits: it steps the fade counter <abbr title="Direct Page mode — 2-byte instruction using an 8-bit offset added to the D register.">dp</abbr> <code>$19</code> down once per <abbr title="Vertical blank — the ~1.2ms gap each frame when the PPU isn't drawing, safe for register writes.">VBlank</abbr>, calling <code>JSL $FDC2C1</code> (the cross-bank fade update in bank <code>$FD</code>) and <code>JSR $EC60</code> each time, until the bit clears. A "busy" flag at <code>$0407</code> is written <code>$FF</code> at the top of every pass and reset to zero on exit. Then: if <code>$00F6</code> bit 0 is set it calls <code>Sub_1985</code>. If <code>$00F6</code> bit 6 is clear, it calls <code>Sub_1ADF</code> when <abbr title="Direct Page mode — 2-byte instruction using an 8-bit offset added to the D register.">dp</abbr> <code>$62</code> is non-zero. If bit 6 is set, it takes a long reinit path: the fade-down loop again, then <code>$0B4E</code>, <code>$011B</code>, <code>JSL $C28000</code>, <code>$0B4E</code>, <code>$0B64</code>, <code>$0B75</code>, <abbr title="Direct Page — the 65816's relocatable 256-byte zero-page window; address = D register + 8-bit offset.">DP</abbr>=<code>$0100</code>, <code>$01A5</code>, <code>$1A03</code>, <code>$B192</code>, <code>Sub_2824</code>, and <code>$0407</code> cleared. That is a full screen transition in this engine: fade out, tear down hardware state, reinit everything, run the post-transition fade.</p>
+<p><strong><code>Sub_1985</code></strong> (<code>$C0:1985–$19C6</code>, 66 bytes) is the narrower mode-5 probe, called from <code>Sub_18D9</code> at <code>$191D</code>. It checks:</p>
+<ol>
+<li><abbr title="Direct Page mode — 2-byte instruction using an 8-bit offset added to the D register.">dp</abbr> <code>$26</code>: if non-zero, XOR with <code>$03</code>, store and return (this flips between two palette modes)</li>
+<li><code>$7F0000</code>: if below <code>$49</code>, bail</li>
+<li><abbr title="Direct Page mode — 2-byte instruction using an 8-bit offset added to the D register.">dp</abbr> <code>$1F</code>, <abbr title="Direct Page mode — 2-byte instruction using an 8-bit offset added to the D register.">dp</abbr> <code>$62</code>, <abbr title="Direct Page mode — 2-byte instruction using an 8-bit offset added to the D register.">dp</abbr> <code>$10</code> in turn: any non-zero returns</li>
+</ol>
+<p>If every guard passes, it runs the same fade-to-black loop (<abbr title="Direct Page mode — 2-byte instruction using an 8-bit offset added to the D register.">dp</abbr> <code>$19</code> down, <code>JSL $FDC2C1</code>, <code>JSR $EC60</code>), then calls <code>$0B4E</code> and <code>$011B</code>. There is no <code>RTS</code>. It falls straight into <code>Sub_19C7</code>, the mode-5 hardware reinit, so calling <code>Sub_1985</code> when a reinit is needed runs <code>Sub_19C7</code> on the way out. The first estimate said 322 bytes because tracing without knowing <code>Sub_19C7</code> was already <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr> counts 66 + 60 bytes of <code>Sub_19C7</code> and more. Seeing <code>org $C019C7 / Sub_19C7:</code> in the source made the boundary obvious.</p>
+<p><strong><code>Sub_1ADF</code></strong> (<code>$C0:1ADF–$1B35</code>, 87 bytes) is a pure leaf that runs an on-screen menu cursor, depending on <abbr title="Direct Page mode — 2-byte instruction using an 8-bit offset added to the D register.">dp</abbr> <code>$62</code>:</p>
+<ul>
+<li><code>$62 = 1</code>: if <abbr title="Direct Page mode — 2-byte instruction using an 8-bit offset added to the D register.">dp</abbr> <code>$63</code> is not negative and not <code>$04</code>, copy it to <abbr title="Direct Page mode — 2-byte instruction using an 8-bit offset added to the D register.">dp</abbr> <code>$66</code> and set <abbr title="Direct Page mode — 2-byte instruction using an 8-bit offset added to the D register.">dp</abbr> <code>$63</code> = <code>$04</code>. Then, if <code>$00F6</code> bit 7 is set, zero <abbr title="Direct Page mode — 2-byte instruction using an 8-bit offset added to the D register.">dp</abbr> <code>$34</code> (a word write).</li>
+<li><code>$62 = 2</code>: read joypad <code>$00F7</code>. Bit 2 (up) increments <abbr title="Direct Page mode — 2-byte instruction using an 8-bit offset added to the D register.">dp</abbr> <code>$63</code>, clamped at <abbr title="Direct Page mode — 2-byte instruction using an 8-bit offset added to the D register.">dp</abbr> <code>$65</code>; bit 3 (down) decrements it, floored at <abbr title="Direct Page mode — 2-byte instruction using an 8-bit offset added to the D register.">dp</abbr> <code>$64</code>; bit 7 of <code>$00F8</code> (Start) sets <abbr title="Direct Page mode — 2-byte instruction using an 8-bit offset added to the D register.">dp</abbr> <code>$62</code> = <code>$03</code> and returns. Both clamps use <code>BCS</code>.</li>
+<li>anything else: the same "check <code>$63</code>, update <code>$66</code>, set <code>$63</code>=<code>$04</code>" block as <code>$62 = 1</code>.</li>
+</ul>
+<p><strong>The fade-loop label bug.</strong> The first <code>make diff</code> had two wrong bytes, at <code>0x001957</code> and <code>0x0019C0</code>: the <code>BRA</code> offsets in the fade loops of <code>Sub_18D9</code> and <code>Sub_1985</code>, <code>$EB</code> (−21) instead of <code>$E6</code> (−26). I had put <code>.fade_loop</code> after <code>LDA #$FF / STA $0407</code>, but the ROM re-runs those two instructions every pass. Moving the label back five bytes fixed both.</p>
+<h2 id="two-names-that-were-backwards">Two names that were backwards</h2>
+<p>Cross-checking against dscotton's disassembly turned up two early labels that were wrong.</p>
+<p><strong><code>EntryTable</code> → <code>ReentryVectors</code>.</strong> The table at <code>$C0:0000</code> was commented as "boot modes". Entry 0, <code>BRA GameLoop_Main</code>, is right. But entries 1–4 are three-byte <code>BRL</code> stubs to <code>ScrollStepAccum</code>, <code>AudioDrvSync</code>, <code>MusicCueDispatch</code> and <code>AudioFadeDispatch</code>. These are <abbr title="Jump to Subroutine Long — 24-bit cross-bank call, pushes a 24-bit return address.">JSL</abbr> re-entry points. A caller in another bank does <code>JSL $C0:0002</code> (or <code>$0005</code>, <code>$0008</code>, <code>$000B</code>), which pushes three bytes. The <code>BRL</code> jumps to the real target without pushing anything, and the target's <code>RTL</code> returns straight to the caller. The stubs give other banks fixed entry points. Callers turn up in bank <code>$CD</code> (<code>$CD:043E</code>, <code>$CD:0C8C</code>) and bank <code>$D1</code> (<code>$D1:F405</code>, <code>$D1:F4E2</code>), and every target ends in <code>RTL</code> (<code>$6B</code>).</p>
+<p><strong><code>FrameUpdate</code> → <code>LoadLocation</code>.</strong> The routine at <code>$C0:00F4</code> was commented "per-frame logic dispatch", because <code>GameLoop_Main</code> calls it. But <code>GameLoop_Main</code> is the outer loop that runs once per mode entry; the per-frame loop is <code>GameLoop_FrameBody</code> at <code>$C0:0097</code>. The routine's ten <code>JSR</code>s and two <code>JSL</code>s load a location.</p>
+<p>Both renames reached every call site and label stub. No bytes changed (<code>ReentryVectors</code> <code>$C0:0000–$000D</code>, 14 bytes; <code>LoadLocation</code> <code>$C0:00F4–$011A</code>, 39 bytes), and <code>make diff</code> was clean.</p>
+<h2 id="saving-and-restoring-the-scene">Saving and restoring the scene</h2>
+<p><code>Sub_18D9</code>'s reinit path left four callees. Estimates were <code>Sub_011B</code> ~138 bytes (calls <code>$0918</code>, also called from <code>Sub_0C76</code>), <code>Sub_01A5</code> unknown (calls <code>$0905</code>, also called from <code>Sub_0C76</code>), <code>Sub_1A03</code> ~160 bytes (calls <code>$597D</code>), <code>Sub_B192</code> ~32 bytes (<abbr title="Branch Long — 16-bit relative branch (signed offset from next PC); asar 1.91 quirk: BRL $XXXX stores $XXXX raw, not a target address.">BRL</abbr> to <code>$E935</code>). All four are <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr>, plus three smaller callees:</p>
+<ul>
+<li><strong><code>Sub_011B</code></strong> (<code>$C0:011B–$01A4</code>, 138 bytes) saves the scene context to <code>$7F:1Dxx</code>. It skips the save if <abbr title="Direct Page mode — 2-byte instruction using an 8-bit offset added to the D register.">dp</abbr> <code>$29</code> is zero. It calls <code>Sub_0918</code> to copy a 20,736-byte (<code>$14E0</code>) <abbr title="Work RAM — 128KB of SNES main RAM at $7E:0000–$7F:FFFF, holds all runtime game state.">WRAM</abbr> block from <code>$00:0920</code> to <code>$7F:2000</code> with <code>MVN</code>, then copies scene table pointers and scroll positions to <code>$7F:1D09</code>–<code>$1D24</code>.</li>
+<li><strong><code>Sub_01A5</code></strong> (<code>$C0:01A5–$024B</code>, 167 bytes) is the full location-engine init. It calls <code>Sub_0905</code> (the reverse copy), runs an audio tick (<code>SEP #$10</code> / <code>JSL $FDC2C1</code> / <code>REP #$10</code> / <code>JSL $FDC1EE</code>), sets <abbr title="Object Attribute Memory — the PPU's 512+32-byte sprite table (up to 128 sprites: X/Y, tile, palette, size).">OAM</abbr> base pointers (<code>$7D</code>=<code>$0900</code>, <code>$7F</code>=<code>$0770</code>, <code>$7B</code>=<code>$08A0</code>), calls eight scene-setup helpers, restores the scroll registers, calls <code>Sub_595C</code>, and calls <code>$E12A</code> depending on a flag.</li>
+<li><strong><code>Sub_0905</code></strong> and <strong><code>Sub_0918</code></strong> (<code>$C0:0905–$0917</code> and <code>$C0:0918–$092A</code>, 19 bytes each) are the <code>MVN</code> pair. In the <abbr title="The first byte of a CPU instruction, identifying the operation (e.g. $60 = RTS, $78 = SEI).">opcode</abbr> bytes the destination bank comes first: <code>Sub_0918</code> (save) is <code>$54 $7F $00</code>, from <code>$00</code> to <code>$7F</code>; <code>Sub_0905</code> (restore) is <code>$54 $00 $7F</code>. The disassembler also got the <code>LDX</code>/<code>LDY</code> sizes wrong here, assuming 8-bit X; the entry state is 16-bit X, so <code>LDX #$2000</code> is three bytes.</li>
+<li><strong><code>Sub_1A03</code></strong> (<code>$C0:1A03–$1AAB</code>, 169 bytes) restores the scene after a transition. It compares the current palette colors (<code>$7E:2980</code>–<code>$2982</code>) with the cached <abbr title="Direct Page mode — 2-byte instruction using an 8-bit offset added to the D register.">dp</abbr> <code>$94</code>–<code>$96</code>; if they match, it returns early. Otherwise it calls <code>Sub_597D</code> for each of seven active sprite slots, updates the cache, copies scene table pointers back from <code>$7F:1D09</code>/<code>$0F</code>/<code>$15</code>, and restores <abbr title="Direct Page mode — 2-byte instruction using an 8-bit offset added to the D register.">dp</abbr> <code>$AB/$AC/$AD</code> from <code>$7F:1D1B</code>/<code>$1C</code>/<code>$1D</code>. The addresses match <code>Sub_011B</code>'s exactly: the pair is closed.</li>
+<li><strong><code>Sub_B192</code></strong> (<code>$C0:B192–$B1AF</code>, 30 bytes) zeroes the <code>$1Bxx</code> table. It sets <abbr title="Direct Page — the 65816's relocatable 256-byte zero-page window; address = D register + 8-bit offset.">DP</abbr> to <code>$1B00</code>, loads a loop count from <code>$7F:2000</code>, zeroes 16-bit words at <code>$00,Y</code> (Y steps by 2, count down to zero), restores <abbr title="Direct Page — the 65816's relocatable 256-byte zero-page window; address = D register + 8-bit offset.">DP</abbr> and tail-calls <code>Sub_E935</code> with <code>BRL</code>. The operand is the raw offset <code>$3783</code>, applied from the address after the <code>BRL</code>. I couldn't make the hand arithmetic land on <code>$E935</code>, but <code>make diff</code> passes with that raw offset.</li>
+<li><strong><code>Sub_E935</code></strong> (<code>$C0:E935–$E951</code>, 29 bytes) sets <abbr title="Direct Page — the 65816's relocatable 256-byte zero-page window; address = D register + 8-bit offset.">DP</abbr> to <code>$0B00</code> and stores <code>$80</code> into <abbr title="Direct Page mode — 2-byte instruction using an 8-bit offset added to the D register.">dp</abbr> <code>$C0</code>–<code>$C7</code>, which is <abbr title="Work RAM — 128KB of SNES main RAM at $7E:0000–$7F:FFFF, holds all runtime game state.">WRAM</abbr> <code>$0BC0</code>–<code>$0BC7</code>. <code>$80</code> means "no sprite" in the sprite system. This links back to <code>Sub_E9E2</code>/<code>Sub_E9FF</code>/<code>Sub_EA1F</code>, which search <code>$0BC0</code> and mark slots with <code>$80</code>.</li>
+</ul>
+<p>The full transition, now <abbr title="The assembled output matches the original ROM byte-for-byte — not just equivalent behavior, literally identical bytes.">byte-exact</abbr> end to end:</p>
+<div class="language-text highlight"><span class="filename">Text Only</span><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1"></a><a href="#__codelineno-1-1"><span class="linenos" data-linenos="1 "></span></a>fade out (VBlank loop decrementing dp:$19)
+<a id="__codelineno-1-2" name="__codelineno-1-2"></a><a href="#__codelineno-1-2"><span class="linenos" data-linenos="2 "></span></a>  → InitHW     (SEI + forced blank)
+<a id="__codelineno-1-3" name="__codelineno-1-3"></a><a href="#__codelineno-1-3"><span class="linenos" data-linenos="3 "></span></a>  → Sub_011B   (save scene context: MVN + scroll positions → $7F:1Dxx)
+<a id="__codelineno-1-4" name="__codelineno-1-4"></a><a href="#__codelineno-1-4"><span class="linenos" data-linenos="4 "></span></a>  → JSL $C28000 (set BG mode)
+<a id="__codelineno-1-5" name="__codelineno-1-5"></a><a href="#__codelineno-1-5"><span class="linenos" data-linenos="5 "></span></a>  → InitHW + InstallNMI + InstallIRQ
+<a id="__codelineno-1-6" name="__codelineno-1-6"></a><a href="#__codelineno-1-6"><span class="linenos" data-linenos="6 "></span></a>  → Sub_01A5   (full location init: MVN restore + 8 scene helpers + scroll restore)
+<a id="__codelineno-1-7" name="__codelineno-1-7"></a><a href="#__codelineno-1-7"><span class="linenos" data-linenos="7 "></span></a>  → Sub_1A03   (restore sprite colors + scene tables from $7F:1Dxx)
+<a id="__codelineno-1-8" name="__codelineno-1-8"></a><a href="#__codelineno-1-8"><span class="linenos" data-linenos="8 "></span></a>  → Sub_B192   (clear $1Bxx table → Sub_E935 → mark $0BC0–$0BC7 = $80)
+<a id="__codelineno-1-9" name="__codelineno-1-9"></a><a href="#__codelineno-1-9"><span class="linenos" data-linenos="9 "></span></a>  → Sub_2824   (post-transition fade loop)
+</code></pre></div>
+<p><strong>The MVN idiom.</strong> The only <code>MVN</code> instructions in <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr> code are in <code>Sub_0905</code> (<code>54 00 7F</code>: <code>$7F:2000</code> → <code>$00:0920</code>) and <code>Sub_0918</code> (<code>54 7F 00</code>: <code>$00:0920</code> → <code>$7F:2000</code>), called from <code>Sub_01A5</code> and <code>Sub_011B</code>. The address pair appears nowhere else. The two routines are back to back; <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr> code resumes at <code>$0B4E</code> (<code>InitHW</code>), and <code>$092B–$0B4D</code> is uncharted. A small symmetric pair with one <code>MVN</code> each is a recognizable shape: if another turns up, it is probably a save/restore pair for a different workspace.</p>
+<h2 id="the-entity-dispatchers">The entity dispatchers</h2>
+<p>The scene path left three callees: <code>Sub_595C</code> (33 bytes), <code>Sub_597D</code> (92 bytes) and <code>Sub_E12A</code>. The first two have no external calls; they only dispatch through an indirect jump table at <code>$5D6E</code>.</p>
+<p><strong><code>Sub_595C</code></strong> (<code>$C0:595C–$597C</code>, 33 bytes), called from <code>Sub_01A5</code> once per scene load, walks the entity list:</p>
+<ol>
+<li>In 16-bit A, <code>STZ $6D</code> clears <abbr title="Direct Page mode — 2-byte instruction using an 8-bit offset added to the D register.">dp</abbr> <code>$6D</code> and <code>$6E</code> in one instruction: the sprite-slot counter and the sprite-update flag.</li>
+<li>Load a 16-bit base pointer from <code>$7F:2003</code> into X.</li>
+<li>Loop: load the entity type from <code>$7F:2001,X</code>; stop on zero. Otherwise save X to Y, compute type × 2, load the handler from <code>($5D6E + type×2)</code>, <code>JSR</code> to it, repeat.</li>
+</ol>
+<p>Before the <code>JSR</code> the entity pointer is in Y; after it, the loop reads <code>$7F:2001,X</code> with the current X. So each handler must return with X pointing at the next entity.</p>
+<p><strong><code>Sub_597D</code></strong> (<code>$C0:597D–$59D8</code>, 92 bytes), called from <code>Sub_1A03</code> once per active sprite slot (slot index in <abbr title="Direct Page mode — 2-byte instruction using an 8-bit offset added to the D register.">dp</abbr> <code>$6D</code>), does the same for one slot's sub-list, found at <code>$7F:2001 + slot×16</code> (four <code>ASL</code>s in 16-bit mode). After the terminator it:</p>
+<ul>
+<li>steps X past the terminator and stores the pointer at <code>$1180 + slot</code>, recording where the slot's list ends</li>
+<li>zeroes one 16-bit entry for the slot in each of eight arrays at <code>$7F:0580</code>, <code>$7F:0600</code>, <code>$7F:0680</code>, <code>$7F:0700</code>, <code>$7F:0780</code>, <code>$7F:0800</code>, <code>$7F:0880</code> and <code>$7F:0900</code> (stride <code>$0080</code>: eight parallel attribute tables)</li>
+<li>stores <code>$07</code> (three flags set) at <code>$1C00 + slot</code>, perhaps a "slot ready" or type-flags start state; not clear yet</li>
+</ul>
+<p><strong>The <code>$5D6E</code> table.</strong> Both functions use it. The first words are <code>$5F74</code>, <code>$5F6E</code>, <code>$5FB6</code>, <code>$607E</code>, ...: pointers to entity-type handlers in bank <code>$C0</code>, at least 30 before the first value that isn't obviously code. They are a future frontier. <code>make diff</code> was clean on the first pass; both <code>org</code> blocks went after <code>Sub_1A03</code>'s <code>RTS</code>, and the two <code>JSR $595C</code> and seven <code>JSR $597D</code> call sites now use the labels.</p>
+<h2 id="sub_e12a-the-sprite-init-pass">Sub_E12A: the sprite init pass</h2>
+<p>The first look at <code>Sub_E12A</code> reported "829+ instructions". That was the whole reachable subgraph. Its own body ends at the first <code>RTS</code>, at <code>$E533</code>: <strong>1,034 bytes</strong>, <code>$E12A–$E533</code>. Its only two external calls go to <code>$E534</code> and <code>$E687</code>, right after it:</p>
+<ul>
+<li><code>$E534</code> ends at <code>$E686</code> (341 bytes) and calls <code>$E739</code>, <code>$E7BC</code>, <code>$E83F</code> and <code>$E8C2</code>, each about 131 bytes, each a tight copy loop from a different <abbr title="A 64KB segment of the SNES address space; Chrono Trigger has 64 banks in HiROM mapping.">ROM bank</abbr> into <abbr title="Work RAM — 128KB of SNES main RAM at $7E:0000–$7F:FFFF, holds all runtime game state.">WRAM</abbr>.</li>
+<li><code>$E687</code> ends at <code>$E738</code> (178 bytes) and dispatches through internal jump targets.</li>
+</ul>
+<p>In all, about 2,370 bytes in seven routines from <code>$E12A</code> to <code>$E934</code> (1,034 own body + ~1,336 callee cluster). I deferred it, <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr> the entity dispatchers, and then came back to it the same evening as the head of its own arc.</p>
+<p>It runs once per sprite slot during scene load, called from <a href="../../../../../BANK_MAP/">Sub_01A5</a> when <abbr title="Direct Page mode — 2-byte instruction using an 8-bit offset added to the D register.">dp</abbr> <code>$AE</code> holds a valid slot. Four phases:</p>
+<ol>
+<li><strong>Pointers.</strong> Builds two indirect-long pointers from four descriptor arrays (<code>$1200</code>, <code>$1280</code>, <code>$1300</code>, <code>$1380</code>, indexed by slot): <code>[$CD]</code> into <code>$7F:XXXX</code>, the sprite-data table (palette source), and <code>[$D3]</code> into <code>bank($D5):XXXX</code>, the scene-data table (tile layout source). <code>$0D80+slot</code> gets <code>$3800</code> (the <abbr title="Work RAM — 128KB of SNES main RAM at $7E:0000–$7F:FFFF, holds all runtime game state.">WRAM</abbr> staging base), <abbr title="Direct Page mode — 2-byte instruction using an 8-bit offset added to the D register.">dp</abbr> <code>$D0</code> tracks the running <abbr title="Work RAM — 128KB of SNES main RAM at $7E:0000–$7F:FFFF, holds all runtime game state.">WRAM</abbr> write address, and <code>$0F01+slot</code> is cleared (a sprite-state flag). Early instructions set <code>$D2=$7F</code> and write <code>$2181</code> (<abbr title="PPU register $2181 — low byte of the WRAM write address for the WMDATA port (pair: WMADDL/WMADDH at $2181–$2182).">WMADDL</abbr>).</li>
+<li><strong>The 96-entry <abbr title="Work RAM — 128KB of SNES main RAM at $7E:0000–$7F:FFFF, holds all runtime game state.">WRAM</abbr> fill.</strong> After setting <code>$2183</code>=<code>$01</code> and <code>$2181</code>=<code>$3800</code>, it reads 96 16-bit words from <code>[$D3]+Y</code> (Y from 0, two bytes per pass). Bit 14 picks the path: clear → <code>JSR Sub_E687</code> (one <abbr title="PPU register $2180 — write a byte to the WRAM address set by WMADDL/H; auto-increments the address.">WMDATA</abbr> write), set → <code>JSR Sub_E534</code> (multi-tile fill). The inner loop at <code>$E173</code> does this test against <code>$4000</code>. The callee writes what it needs at the current address, and <code>$D0</code> advances by <code>$0020</code> on every pass except the first.</li>
+<li><strong><abbr title="Direct Memory Access — hardware block copy bypassing the CPU; used for VRAM uploads, WRAM clears, OAM.">DMA</abbr> to <abbr title="Video RAM — dedicated PPU memory for tile graphics and tilemaps; written via DMA during VBlank.">VRAM</abbr>.</strong> Channel 7: source <code>$7F:3800</code>, size <code>$0C00</code>, destination <abbr title="Video RAM — dedicated PPU memory for tile graphics and tilemaps; written via DMA during VBlank.">VRAM</abbr> word <code>$0400</code>, port <code>$2118</code> (VMDATA, <code>BBAD7=$18</code>), mode <code>DMAP7=$01</code> (CPU→<abbr title="Picture Processing Unit — the SNES graphics chip handling BGs, sprites, palettes, windows, and compositing.">PPU</abbr>, word increment), <code>VMAIN=$80</code>. It programs <code>$4370</code>–<code>$4375</code> and triggers <code>MDMAEN</code>, copying 3,072 bytes.</li>
+<li><strong><abbr title="Object Attribute Memory — the PPU's 512+32-byte sprite table (up to 128 sprites: X/Y, tile, palette, size).">OAM</abbr> staging.</strong> About 800 bytes. A lookup from <code>$1700+slot</code> gives an offset into <code>$7F:4BC0</code>, and the code fills 24 groups of 8 bytes (stride <code>$08</code>, bases <code>$4BC2</code>, <code>$4BCA</code>, <code>$4BD2</code>, …, <code>$4C7A</code>). Each group gets, from <code>[$D3]+$C0</code> on: <strong>+0</strong> a signed 8-bit value, <strong>+1</strong> its sign extension (<code>$FF</code> or <code>$00</code>, via <code>BPL</code> / <code>LDA #$FF</code> / <code>BRA</code> / <code>LDA #$00</code>, 24 times), <strong>+2</strong> a raw 8-bit value. Y walks <code>$C0</code> to <code>$EF</code>. Then two constant passes: tile indexes at <strong>+4</strong> (<code>$40, $42, …$4E</code> for groups 1–8, <code>$60, $62, …$6E</code> for 9–16, <code>$80, $82, …$8E</code> for 17–24, as 24 <code>LDA #$xx / STA.l $7F4BCn,X</code> pairs) and attribute <code>$22</code> at <strong>+5</strong> (one <code>LDA #$22</code> and 24 <code>STA</code>s). <code>$22</code> = <code>%00100010</code>: in the sprite renderer's attribute format, bit 5 is priority and bits 1–0 the palette, so priority 1 and palette 2.</li>
+</ol>
+<p>It is big because it is fully unrolled: the 24-group fill alone is 24 × ~14 bytes = ~336 bytes. It runs once per slot at scene load, and on a 2.68 MHz CPU the loop overhead over 24 iterations is not trivial, so speed won over size. <code>make diff</code> passed on the first assembly; the local labels (<code>.sp01</code>–<code>.sp24</code>, <code>.se01</code>–<code>.se24</code>, <code>.next_iter</code>, <code>.first_iter</code>, <code>.big_fill</code>, <code>.dma</code>) resolved cleanly.</p>
+<table>
+<thead>
+<tr>
+<th>Block</th>
+<th>Range</th>
+<th>Bytes</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Sub_E12A</code></td>
+<td><code>$E12A–$E533</code></td>
+<td>1034</td>
+<td><strong>Matched</strong></td>
+</tr>
+<tr>
+<td><code>Sub_E534</code></td>
+<td><code>$E534–$E686</code></td>
+<td>341</td>
+<td>Identified</td>
+</tr>
+<tr>
+<td><code>Sub_E687</code></td>
+<td><code>$E687–$E738</code></td>
+<td>178</td>
+<td>Identified</td>
+</tr>
+<tr>
+<td><code>Sub_E739</code></td>
+<td><code>$E739–$E7BB</code></td>
+<td>131</td>
+<td>Identified</td>
+</tr>
+<tr>
+<td><code>Sub_E7BC</code></td>
+<td><code>$E7BC–$E83E</code></td>
+<td>131</td>
+<td>Identified</td>
+</tr>
+<tr>
+<td><code>Sub_E83F</code></td>
+<td><code>$E83F–$E8C1</code></td>
+<td>131</td>
+<td>Identified</td>
+</tr>
+<tr>
+<td><code>Sub_E8C2</code></td>
+<td><code>$E8C2–$E934</code></td>
+<td>115</td>
+<td>Identified</td>
+</tr>
+</tbody>
+</table>
+<h2 id="the-day-in-numbers">The day in numbers</h2>
+<table>
+<thead>
+<tr>
+<th>Session</th>
+<th>Routine</th>
+<th>Address</th>
+<th>Bytes</th>
+<th>Running total quoted</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>21</td>
+<td><code>DefaultHandler</code></td>
+<td><code>$C0:16DC–$18D8</code></td>
+<td>509</td>
+<td></td>
+</tr>
+<tr>
+<td>21</td>
+<td><code>Sub_1BA7</code></td>
+<td><code>$C0:1BA7–$1BAA</code></td>
+<td>4</td>
+<td>10,697 (52 functions)</td>
+</tr>
+<tr>
+<td>22</td>
+<td><code>Sub_18D9</code></td>
+<td><code>$C0:18D9–$1984</code></td>
+<td>172</td>
+<td></td>
+</tr>
+<tr>
+<td>22</td>
+<td><code>Sub_1985</code></td>
+<td><code>$C0:1985–$19C6</code></td>
+<td>66</td>
+<td></td>
+</tr>
+<tr>
+<td>22</td>
+<td><code>Sub_1ADF</code></td>
+<td><code>$C0:1ADF–$1B35</code></td>
+<td>87</td>
+<td>11,022 (55)</td>
+</tr>
+<tr>
+<td>23</td>
+<td><code>Sub_011B</code></td>
+<td><code>$C0:011B–$01A4</code></td>
+<td>138</td>
+<td></td>
+</tr>
+<tr>
+<td>23</td>
+<td><code>Sub_01A5</code></td>
+<td><code>$C0:01A5–$024B</code></td>
+<td>167</td>
+<td></td>
+</tr>
+<tr>
+<td>23</td>
+<td><code>Sub_0905</code></td>
+<td><code>$C0:0905–$0917</code></td>
+<td>19</td>
+<td></td>
+</tr>
+<tr>
+<td>23</td>
+<td><code>Sub_0918</code></td>
+<td><code>$C0:0918–$092A</code></td>
+<td>19</td>
+<td></td>
+</tr>
+<tr>
+<td>23</td>
+<td><code>Sub_1A03</code></td>
+<td><code>$C0:1A03–$1AAB</code></td>
+<td>169</td>
+<td></td>
+</tr>
+<tr>
+<td>23</td>
+<td><code>Sub_B192</code></td>
+<td><code>$C0:B192–$B1AF</code></td>
+<td>30</td>
+<td></td>
+</tr>
+<tr>
+<td>23</td>
+<td><code>Sub_E935</code></td>
+<td><code>$C0:E935–$E951</code></td>
+<td>29</td>
+<td>11,593 (62)</td>
+</tr>
+<tr>
+<td>24</td>
+<td><code>Sub_595C</code></td>
+<td><code>$C0:595C–$597C</code></td>
+<td>33</td>
+<td></td>
+</tr>
+<tr>
+<td>24</td>
+<td><code>Sub_597D</code></td>
+<td><code>$C0:597D–$59D8</code></td>
+<td>92</td>
+<td>11,718 (64)</td>
+</tr>
+<tr>
+<td>25</td>
+<td><code>Sub_E12A</code></td>
+<td><code>$C0:E12A–$E533</code></td>
+<td>1,034</td>
+<td>12,752 (65)</td>
+</tr>
+<tr>
+<td></td>
+<td><strong>Total</strong></td>
+<td></td>
+<td><strong>2,568</strong></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>Session totals: 513, 325, 571, 125 and 1,034 bytes. Bank <code>$C0</code> ended the day at 12,281 bytes. (The quoted function count goes from 32 after session 19 to 52 after session 21; the notes don't say why.)</p>
+<h2 id="next">Next</h2>
+<p><code>Sub_E534</code> (341 bytes) and <code>Sub_E687</code> (178 bytes), then the four bank-copy routines, to close the <code>Sub_E12A</code> arc. The broader <code>$881E</code> callee tree is still waiting.</p>
+  
+  <p class="wk-post-back"><a href="../../../../">← Back to devlog</a></p>
+</article>
+
+      </div>
+
+    </div>
+
+    <footer class="wk-footer">
+      <ul class="wk-eras" aria-label="Eras">
+        <li style="--c:var(--era-prehistory)">65,000,000 BC</li>
+        <li style="--c:var(--era-zeal)">12,000 BC</li>
+        <li style="--c:var(--era-medieval)">600 AD</li>
+        <li style="--c:var(--era-present)">1000 AD</li>
+        <li style="--c:var(--era-lavos)">1999 AD</li>
+        <li style="--c:var(--era-future)">2300 AD</li>
+        <li style="--c:var(--era-eot)">End of Time</li>
+      </ul>
+      <p class="wk-footer-motto">Every byte, every era</p>
+      <p>Made by people who love Chrono Trigger, so that it can be studied, preserved and understood,
+      one verified routine at a time.</p>
+      <p>A fan project. Not affiliated with or endorsed by Square Enix. No ROM data is shared here:
+      bring your own copy.</p>
+    </footer>
+  </main>
+
+</div>
+
+<!-- Address-map pop-up (a menu window) -->
+<div class="wk-modal" id="wk-modal" hidden>
+  <div class="wk-modal-backdrop" data-close></div>
+  <div class="wk-modal-win" role="dialog" aria-modal="true" aria-labelledby="wk-modal-title" tabindex="-1">
+    <button type="button" class="wk-modal-close" data-close aria-label="Close">&times;</button>
+    <div class="wk-modal-body" id="wk-modal-body"></div>
+  </div>
+</div>
+
+<!-- Back to top -->
+<button class="wk-top" id="wk-top" title="Back to top" aria-label="Scroll to top">↑</button>
+
+
+<script>
+(function () {
+'use strict';
+
+/* ── Theme ─────────────────────────────────────────────────── */
+var stored = 'dark';
+try { stored = localStorage.getItem('wk-theme') || 'dark'; } catch (e) {}
+applyTheme(stored);
+document.getElementById('wk-toggle').addEventListener('click', function () {
+  applyTheme(document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
+});
+function applyTheme(t) {
+  document.documentElement.setAttribute('data-theme', t);
+  try { localStorage.setItem('wk-theme', t); } catch (e) {}
+}
+
+/* ── Mobile nav ────────────────────────────────────────────── */
+var navToggle  = document.getElementById('wk-nav-toggle');
+var navEl      = document.getElementById('wk-nav');
+var navBackdrop = document.getElementById('wk-nav-backdrop');
+function openNav() {
+  navEl.classList.add('is-open');
+  navBackdrop.hidden = false;
+  navToggle.setAttribute('aria-expanded', 'true');
+}
+function closeNav() {
+  navEl.classList.remove('is-open');
+  navBackdrop.hidden = true;
+  navToggle.setAttribute('aria-expanded', 'false');
+}
+if (navToggle && navEl && navBackdrop) {
+  navToggle.addEventListener('click', function () {
+    if (navEl.classList.contains('is-open')) { closeNav(); } else { openNav(); }
+  });
+  navBackdrop.addEventListener('click', closeNav);
+  navEl.addEventListener('click', function (e) {
+    if (e.target.closest('a')) { closeNav(); }
+  });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') { closeNav(); }
+  });
+  window.addEventListener('resize', function () {
+    if (window.innerWidth > 720) { closeNav(); }
+  });
+}
+
+/* ── Search ─────────────────────────────────────────────────── */
+var input   = document.getElementById('wk-q');
+var results = document.getElementById('wk-results');
+var docs    = null;
+if (input) {
+  fetch("../../../../../search/search_index.json")
+    .then(function (r) { return r.json(); })
+    .then(function (d) { docs = d.docs; });
+
+  input.addEventListener('input', onSearch);
+
+  document.addEventListener('click', function (e) {
+    if (results && !results.contains(e.target) && e.target !== input) results.hidden = true;
+  });
+  input.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') { results.hidden = true; this.blur(); }
+    if (e.key === 'Enter' && results && !results.hidden) {
+      var first = results.querySelector('.wk-result');
+      if (first) { first.click(); }
+    }
+  });
+}
+
+/* Press / to focus search */
+document.addEventListener('keydown', function (e) {
+  if (e.key === '/' && document.activeElement !== input &&
+      document.activeElement.tagName !== 'INPUT' &&
+      document.activeElement.tagName !== 'TEXTAREA') {
+    e.preventDefault();
+    if (input) { input.focus(); input.select(); }
+  }
+});
+
+function onSearch() {
+  var q = this.value.trim().toLowerCase();
+  if (!docs || q.length < 2) { results.hidden = true; return; }
+  var hits = docs.filter(function (d) {
+    return (d.title + ' ' + d.text).toLowerCase().indexOf(q) !== -1;
+  }).slice(0, 8);
+  if (!hits.length) { results.hidden = true; return; }
+  var base = "../../../../..";
+  results.innerHTML = hits.map(function (d) {
+    var text  = d.text || '';
+    var i     = text.toLowerCase().indexOf(q);
+    var start = Math.max(0, i - 35);
+    var end   = Math.min(text.length, i + q.length + 70);
+    var snip  = (start > 0 ? '…' : '') + text.slice(start, end) + (end < text.length ? '…' : '');
+    var url   = base + '/' + d.location;
+    return '<a class="wk-result" href="' + esc(url) + '" role="option">'
+         + '<div class="wk-result-title">' + esc(d.title || d.location) + '</div>'
+         + '<div class="wk-result-snip">'  + esc(snip) + '</div></a>';
+  }).join('');
+  results.hidden = false;
+}
+
+function esc(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+/* ── Back to top ────────────────────────────────────────────── */
+var topBtn = document.getElementById('wk-top');
+if (topBtn) {
+  window.addEventListener('scroll', function () {
+    topBtn.classList.toggle('visible', window.scrollY > 400);
+  }, {passive: true});
+  topBtn.addEventListener('click', function () {
+    window.scrollTo({top: 0, behavior: 'smooth'});
+  });
+}
+
+/* ── Copy-to-clipboard ───────────────────────────────────────── */
+document.querySelectorAll('.highlight').forEach(function (block) {
+  var btn = document.createElement('button');
+  btn.className = 'wk-copy-btn';
+  btn.title     = 'Copy code';
+  btn.textContent = '⎘';
+  block.appendChild(btn);
+  btn.addEventListener('click', function () {
+    var pre = block.querySelector('pre');
+    if (!pre) return;
+    navigator.clipboard.writeText(pre.innerText).then(function () {
+      btn.textContent = '✓';
+      btn.classList.add('copied');
+      setTimeout(function () {
+        btn.textContent = '⎘';
+        btn.classList.remove('copied');
+      }, 1500);
+    });
+  });
+});
+
+/* ── TOC scroll spy ─────────────────────────────────────────── */
+var tocLinks = document.querySelectorAll('.wk-toc-link');
+if (tocLinks.length && 'IntersectionObserver' in window) {
+  var headings = Array.from(document.querySelectorAll('.wk-article h1, .wk-article h2, .wk-article h3'));
+  var active   = null;
+  var obs = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
+      if (e.isIntersecting) {
+        var id  = e.target.id;
+        var lnk = document.querySelector('.wk-toc-link[href="#' + id + '"]');
+        if (lnk && lnk !== active) {
+          if (active) active.classList.remove('is-current');
+          lnk.classList.add('is-current');
+          active = lnk;
+        }
+      }
+    });
+  }, {rootMargin: '-10% 0px -80% 0px'});
+  headings.forEach(function (h) { if (h.id) obs.observe(h); });
+}
+
+
+/* ── Status badges in "Status" table columns ────────────────── */
+var STATUS = { 'matched': 'matched', 'in progress': 'progress', 'partial': 'partial',
+               'identified': 'identified', 'unmapped': 'unmapped', 'unknown': 'unknown' };
+document.querySelectorAll('.wk-article-body table').forEach(function (tbl) {
+  var col = -1;
+  tbl.querySelectorAll('thead th').forEach(function (th, i) {
+    if (th.textContent.trim().toLowerCase() === 'status') col = i;
+  });
+  if (col < 0) return;
+  tbl.querySelectorAll('tbody tr').forEach(function (tr) {
+    var td = tr.children[col];
+    if (!td || td.querySelector('.wk-status')) return;
+    var whole = td.textContent.trim().toLowerCase();
+    var target = null, key = STATUS[whole];
+    if (key) { target = td; }
+    else if (td.firstElementChild && td.firstElementChild.tagName === 'STRONG' &&
+             td.firstChild === td.firstElementChild) {
+      key = STATUS[td.firstElementChild.textContent.trim().toLowerCase()];
+      if (key) target = td.firstElementChild;
+    }
+    if (!target) return;
+    var span = document.createElement('span');
+    span.className = 'wk-status wk-status-' + key;
+    if (target === td) { while (td.firstChild) span.appendChild(td.firstChild); td.appendChild(span); }
+    else { td.insertBefore(span, target); span.appendChild(target); }
+  });
+});
+
+/* ── Address map pop-up ─────────────────────────────────────── */
+var modal = document.getElementById('wk-modal');
+var mbody = document.getElementById('wk-modal-body');
+var mwin  = modal ? modal.querySelector('.wk-modal-win') : null;
+var lastFocus = null, closeTimer = null, current = null;
+var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+var LABEL = { matched: 'Matched', progress: 'In progress', identified: 'Identified',
+              unmapped: 'Unmapped', gap: 'Uncharted' };
+
+function md(s) {
+  return esc(s || '').replace(/`([^`]+)`/g, '<code>$1</code>')
+                     .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+}
+function hex4(n) { return ('000' + n.toString(16).toUpperCase()).slice(-4); }
+function num(n) { return n == null ? '?' : n.toLocaleString('en-US'); }
+function badge(st) {
+  var k = st === 'gap' ? 'unmapped' : st;
+  return '<span class="wk-status wk-status-' + k + '">' + (LABEL[st] || st) + '</span>';
+}
+
+function openModal(html, from) {
+  if (!modal) return;
+  clearTimeout(closeTimer);
+  mbody.innerHTML = html;
+  if (modal.hidden) {
+    lastFocus = from || document.activeElement;
+    modal.hidden = false;
+    document.documentElement.classList.add('wk-modal-lock');
+    void modal.offsetWidth;            /* commit start state, then animate */
+    modal.classList.add('is-open');
+  }
+  mbody.scrollTop = 0;
+  mwin.focus({ preventScroll: true });
+}
+function closeModal() {
+  if (!modal || modal.hidden) return;
+  modal.classList.remove('is-open');
+  document.documentElement.classList.remove('wk-modal-lock');
+  document.querySelectorAll('.wk-amap-slice.is-selected, .wk-heat-cell.is-selected, .wk-slice-cell.is-selected')
+    .forEach(function (el) { el.classList.remove('is-selected'); });
+  closeTimer = setTimeout(function () { modal.hidden = true; }, reduceMotion ? 0 : 200);
+  if (lastFocus && lastFocus.focus) lastFocus.focus({ preventScroll: true });
+  current = null;
+}
+if (modal) {
+  modal.addEventListener('click', function (e) {
+    if (e.target.closest('[data-close]')) { closeModal(); return; }
+    var nav = e.target.closest('[data-step]');
+    if (nav && current) { stepRegion(+nav.getAttribute('data-step')); return; }
+    var jump = e.target.closest('[data-jump]');
+    if (jump) { e.preventDefault(); jumpTo(jump.getAttribute('data-jump'), jump.getAttribute('data-row')); }
+  });
+  document.addEventListener('keydown', function (e) {
+    if (modal.hidden) return;
+    if (e.key === 'Escape') { e.preventDefault(); closeModal(); return; }
+    if (current && (e.key === 'ArrowRight' || e.key === 'ArrowLeft') &&
+        !/INPUT|TEXTAREA/.test(document.activeElement.tagName)) {
+      e.preventDefault(); stepRegion(e.key === 'ArrowRight' ? 1 : -1); return;
+    }
+    if (e.key === 'Tab') {               /* keep focus inside the window */
+      var f = Array.prototype.filter.call(
+        mwin.querySelectorAll('button, a[href], [tabindex="0"]'),
+        function (el) { return el.offsetParent !== null; });
+      if (!f.length) return;
+      var a = f[0], z = f[f.length - 1];
+      if (e.shiftKey && (document.activeElement === a || document.activeElement === mwin)) { e.preventDefault(); z.focus(); }
+      else if (!e.shiftKey && document.activeElement === z) { e.preventDefault(); a.focus(); }
+    }
+  });
+}
+
+var maps = {};
+document.querySelectorAll('.wk-amap').forEach(function (el) {
+  var data;
+  try { data = JSON.parse(el.querySelector('.wk-amap-data').textContent); } catch (e) { return; }
+  maps[data.bank] = { el: el, data: data };
+  el.addEventListener('click', function (e) {
+    var b = e.target.closest('.wk-amap-slice');
+    if (b) showRegion(data.bank, +b.getAttribute('data-i'), b);
+  });
+});
+
+function regionRange(bank, r) {
+  return '$' + bank + ':' + hex4(r.s) + (r.e != null ? '–$' + hex4(r.e) : '–?');
+}
+function showRegion(bank, i, from) {
+  var m = maps[bank]; if (!m) return;
+  var regs = m.data.regions, r = regs[i]; if (!r) return;
+  current = { bank: bank, i: i };
+  m.el.querySelectorAll('.wk-amap-slice.is-selected').forEach(function (el) { el.classList.remove('is-selected'); });
+  m.el.querySelectorAll('.wk-amap-slice[data-i="' + i + '"]').forEach(function (el) { el.classList.add('is-selected'); });
+
+  var h = '<p class="wk-modal-eyebrow">Bank $' + bank + ' · ' + regionRange(bank, r) + '</p>';
+  h += '<h3 id="wk-modal-title">' + (r.st === 'gap' ? 'Uncharted territory' : md(r.n)) + '</h3>';
+  h += '<div class="wk-modal-facts">' + badge(r.st) +
+       '<span>' + (r.b != null ? num(r.b) + ' bytes' : 'size unknown') + '</span>' +
+       (r.o ? '<span>file <code>' + esc(r.o) + '</code></span>' : '') + '</div>';
+  if (r.st === 'gap') {
+    var prev = regs[i - 1], next = regs[i + 1];
+    h += '<p>Nothing in this stretch of Bank $' + bank + ' has been charted in the bank map yet: ' +
+         '<strong>' + num(r.b) + ' bytes</strong> still waiting to be explored, labelled and matched.</p>';
+    if (prev || next) h += '<p class="wk-modal-dim">Between ' + (prev ? md(prev.n) : 'the bank start') +
+         ' and ' + (next ? md(next.n) : 'the end of the bank') + '.</p>';
+  } else {
+    if (r.d) h += '<p>' + md(r.d) + '</p>';
+    if (r.e == null) h += '<p class="wk-modal-dim">The end address of this region is not known yet.</p>';
+  }
+  if (r.k && r.k.length) {
+    var done = 0, doneB = 0, todoB = 0;
+    r.k.forEach(function (k) { if (k.st === 'matched') { done++; doneB += k.b || 0; } else { todoB += k.b || 0; } });
+    h += '<h4>Inside this region <span class="wk-modal-dim">· ' + done + ' of ' + r.k.length + ' matched' +
+         (doneB ? ', ' + num(doneB) + ' B verified' : '') + (todoB ? ', ' + num(todoB) + ' B to do' : '') + '</span></h4>';
+    h += '<ul class="wk-modal-list">' + r.k.map(function (k) {
+      return '<li class="is-' + k.st + '">' + badge(k.st) + ' <span class="wk-modal-name">' + md(k.n) + '</span>' +
+             '<span class="wk-modal-addr">' + esc(k.a) + (k.b ? ' · ' + num(k.b) + ' B' : '') + '</span>' +
+             (k.d ? '<span class="wk-modal-desc">' + md(k.d) + '</span>' : '') + '</li>';
+    }).join('') + '</ul>';
+  } else if (r.st === 'matched') {
+    h += '<p class="wk-modal-ok">Byte-exact: verified against the original ROM with <code>make diff</code>.</p>';
+  } else if (r.st !== 'gap') {
+    h += '<p class="wk-modal-todo">Still to do: this region is ' + LABEL[r.st].toLowerCase() + ' but not yet matched.</p>';
+  }
+  h += '<div class="wk-modal-actions">' +
+       '<button type="button" class="wk-btn" data-step="-1"' + (i === 0 ? ' disabled' : '') + ' aria-label="Previous region">◀ Prev</button>' +
+       (r.st !== 'gap' ? '<button type="button" class="wk-btn" data-jump="row" data-row="' + esc(r.n) + '">Show in table</button>' : '') +
+       '<button type="button" class="wk-btn" data-step="1"' + (i === regs.length - 1 ? ' disabled' : '') + ' aria-label="Next region">Next ▶</button>' +
+       '</div>';
+  openModal(h, from);
+}
+function stepRegion(d) {
+  if (!current) return;
+  var regs = maps[current.bank].data.regions, j = current.i + d;
+  if (j < 0 || j >= regs.length) return;
+  var btn = maps[current.bank].el.querySelector('.wk-amap-slice[data-i="' + j + '"]');
+  showRegion(current.bank, j, lastFocus);
+  if (btn) btn.scrollIntoView({ block: 'nearest' });
+}
+function jumpTo(kind, key) {
+  var target = null;
+  if (kind === 'row') {
+    var want = key.replace(/[`*]/g, '').trim();
+    document.querySelectorAll('.wk-article-body table tbody tr').forEach(function (tr) {
+      if (!target && tr.firstElementChild && tr.firstElementChild.textContent.trim() === want) target = tr;
+    });
+  } else {
+    target = document.getElementById(kind);
+  }
+  closeModal();
+  if (!target) return;
+  target.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'center' });
+  target.classList.remove('wk-flash'); void target.offsetWidth; target.classList.add('wk-flash');
+}
+
+/* Address Map page: a slice cell opens its pre-rendered panel in the pop-up */
+document.querySelectorAll('.wk-addrmap').forEach(function (map) {
+  map.addEventListener('click', function (e) {
+    var cell = e.target.closest('a.wk-slice-cell');
+    if (!cell) return;
+    var panel = document.getElementById(cell.getAttribute('href').slice(1));
+    if (!panel) return;
+    e.preventDefault();
+    map.querySelectorAll('.wk-slice-cell.is-selected').forEach(function (el) { el.classList.remove('is-selected'); });
+    cell.classList.add('is-selected');
+    current = null;
+    var clone = panel.cloneNode(true);
+    clone.removeAttribute('id');
+    var x = clone.querySelector('.wk-slice-close'); if (x) x.remove();
+    var h3 = clone.querySelector('h3'); if (h3) h3.id = 'wk-modal-title';
+    openModal(clone.innerHTML, cell);
+  });
+});
+
+/* Bank heat map (64 banks) */
+document.querySelectorAll('.wk-heat-wrap').forEach(function (wrap) {
+  var meta;
+  try { meta = JSON.parse(wrap.querySelector('.wk-heat-data').textContent); } catch (e) { return; }
+  wrap.addEventListener('click', function (e) {
+    var c = e.target.closest('.wk-heat-cell'); if (!c) return;
+    var bank = c.getAttribute('data-heat'), m = meta[bank]; if (!m) return;
+    wrap.querySelectorAll('.is-selected').forEach(function (el) { el.classList.remove('is-selected'); });
+    c.classList.add('is-selected');
+    current = null;
+    var pct = m.code != null ? (m.code / 65536 * 100) : null;
+    var h = '<p class="wk-modal-eyebrow">Bank $' + bank + ' · file $' +
+            ('0' + (parseInt(bank, 16) - 0xC0).toString(16).toUpperCase()).slice(-2) + '0000</p>';
+    h += '<h3 id="wk-modal-title">Bank $' + bank + '</h3>';
+    h += '<div class="wk-modal-facts">' +
+         (m.matched ? badge('progress') : (m.code ? badge('unmapped') : '<span class="wk-status wk-status-unknown">Data only</span>')) +
+         '<span>' + (m.code != null ? num(m.code) + ' code bytes (' + pct.toFixed(pct < 1 ? 1 : 0) + '%)' : 'not surveyed') + '</span></div>';
+    if (m.note) h += '<p>' + md(m.note) + '</p>';
+    if (m.matched) {
+      var mp = m.code ? Math.min(100, m.matched / m.code * 100) : 0;
+      h += '<div class="wk-modal-gauge" role="img" aria-label="' + mp.toFixed(1) + '% of code matched"><span style="width:' + mp.toFixed(2) + '%"></span></div>';
+      h += '<p><strong>' + num(m.matched) + ' bytes</strong> matched and verified' +
+           (m.code ? ' — ' + mp.toFixed(1) + '% of this bank\'s code. ' + num(Math.max(0, m.code - m.matched)) + ' code bytes to go.' : '.') + '</p>';
+    } else if (m.code) {
+      h += '<p class="wk-modal-todo">Not started: ' + num(m.code) + ' bytes of code waiting to be matched.</p>';
+    } else {
+      h += '<p class="wk-modal-dim">No executable code here: graphics, music or map data (incbin).</p>';
+    }
+    h += '<div class="wk-modal-actions">' +
+         (m.map ? '<button type="button" class="wk-btn" data-jump="wk-amap-' + bank + '">Open the $' + bank + ' address map ▶</button>' : '') +
+         '</div>';
+    openModal(h, c);
+  });
+});
+
+}());
+</script>
+</body>
+</html>

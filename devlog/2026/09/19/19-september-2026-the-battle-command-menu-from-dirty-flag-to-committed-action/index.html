@@ -1,0 +1,944 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  
+  <meta name="description" content="Byte-exact matching decompilation of Chrono Trigger (SNES, US 1.0)">
+  <link rel="canonical" href="https://thisisakill.github.io/Kajar-site/devlog/2026/09/19/19-september-2026-the-battle-command-menu-from-dirty-flag-to-committed-action/">
+  
+  
+  <title>19 September 2026: the battle command menu, from dirty flag to committed action — Kajar</title>
+  
+  
+  <link rel="stylesheet" href="../../../../../stylesheets/wiki.css">
+  
+  
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Press+Start+2P&family=Silkscreen&display=swap">
+  
+</head>
+<body>
+
+<!-- ── Header ──────────────────────────────────────────────── -->
+<header class="wk-header">
+  <button class="wk-nav-toggle" id="wk-nav-toggle" aria-label="Toggle navigation" aria-expanded="false" aria-controls="wk-nav">☰</button>
+  <a class="wk-wordmark" href="../../../../.." aria-label="Kajar home">
+    <svg class="wk-wordmark-clock" viewBox="0 0 32 32" aria-hidden="true">
+      <circle cx="16" cy="16" r="13.5" fill="#0f1438" stroke="#ffd76e" stroke-width="2.5"/>
+      <g stroke="#cdd5ff" stroke-width="1.6" stroke-linecap="round">
+        <path d="M16 5.2v2.4M16 24.4v2.4M5.2 16h2.4M24.4 16h2.4"/>
+      </g>
+      <path d="M16 16l-5 -3.2" stroke="#ffd76e" stroke-width="2.4" stroke-linecap="round"/>
+      <path class="hand-m" d="M16 16V7.6" stroke="#ffffff" stroke-width="1.8" stroke-linecap="round"/>
+      <circle cx="16" cy="16" r="1.8" fill="#ffd76e"/>
+    </svg>
+    <span>Kajar</span>
+    <small class="wk-tagline">notes of ChronoRET, rebuilding Chrono Trigger one matched routine at a time</small>
+  </a>
+
+  <div class="wk-header-right">
+    
+    <div class="wk-searchbox">
+      <input class="wk-search-input" id="wk-q" type="search"
+             placeholder="Search…  [/]" autocomplete="off" aria-label="Search">
+      <div class="wk-search-results" id="wk-results" hidden role="listbox"></div>
+    </div>
+    <button class="wk-toggle" id="wk-toggle" title="Toggle theme" aria-label="Toggle dark/light">
+      <svg class="i-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.5" fill="currentColor"/><g stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 1.8v2.6M12 19.6v2.6M1.8 12h2.6M19.6 12h2.6M4.8 4.8l1.8 1.8M17.4 17.4l1.8 1.8M4.8 19.2l1.8-1.8M17.4 6.6l1.8-1.8"/></g></svg>
+      <svg class="i-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.5 14.6A8.6 8.6 0 0 1 9.4 3.5a8.6 8.6 0 1 0 11.1 11.1z" fill="currentColor"/></svg>
+    </button>
+  </div>
+</header>
+
+<!-- ── Layout ──────────────────────────────────────────────── -->
+<div class="wk-layout">
+
+  <div class="wk-nav-backdrop" id="wk-nav-backdrop" hidden></div>
+
+  <!-- Left sidebar -->
+  <nav class="wk-nav" id="wk-nav" aria-label="Site navigation">
+    <a href="../../../../.." class="wk-portal-icon" aria-label="Home">
+      <span class="wk-emblem">
+        <span class="wk-emblem-art">
+          <img src="../../../../../assets/ct-icon.png" alt="Crono" width="220" height="220">
+        </span>
+        <span class="wk-emblem-caption">Crono · 1000 AD</span>
+      </span>
+    </a>
+
+    
+      
+      <a class="wk-nav-link" href="../../../../..">Home</a>
+      
+    
+      
+        <p class="wk-nav-heading">The Journey</p>
+        
+          
+          <a class="wk-nav-link is-active" href="../../../../">Devlog</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../../../../../gallery/">Gallery</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../../../../../PROGRESS/">Progress</a>
+          
+        
+      
+    
+      
+        <p class="wk-nav-heading">Systems</p>
+        
+          
+          <a class="wk-nav-link" href="../../../../../systems/">Overview</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../../../../../systems/boot/">Boot</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../../../../../systems/engine/">Engine core</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../../../../../systems/sprites/">Sprites & objects</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../../../../../systems/battle-engine/">Battle engine</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../../../../../systems/battle-menu/">Battle menu</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../../../../../systems/battle-targeting/">Battle targeting</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../../../../../systems/battle-status/">Status bar & text</a>
+          
+        
+      
+    
+      
+        <p class="wk-nav-heading">How It Works</p>
+        
+          
+          <a class="wk-nav-link" href="../../../../../ARCHITECTURE/">Architecture</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../../../../../ADDRESS_MAP/">Address Map</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../../../../../BANK_MAP/">Bank Map</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../../../../../how-sprite-init-works/">Sprite Init Explainer</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../../../../../ROM_HASH/">Target ROM</a>
+          
+        
+      
+    
+      
+        <p class="wk-nav-heading">For Time Travelers</p>
+        
+          
+          <a class="wk-nav-link" href="../../../../../CONTRIBUTING/">Contributing</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../../../../../ASAR_QUIRKS/">asar Quirks</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../../../../../glossary/">Glossary</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../../../../../CI_SETUP/">CI Setup</a>
+          
+        
+      
+    
+      
+      <a class="wk-nav-link" href="../../../../../credits/">Credits</a>
+      
+    
+
+    <!-- Party Status: every value from docs/data/ (hooks/progress_data.py) -->
+    
+    <div class="wk-stats">
+      <p class="wk-nav-heading" title="Project progress">Party Status</p>
+      
+      <div class="wk-party">
+        <div class="wk-party-row" title="Bytes matched: the rebuilt ROM is byte-identical here">
+          <span class="wk-party-k">HP</span>
+          <span class="wk-party-v">29,032<small>/359,278</small></span>
+        </div>
+        <div class="wk-stat-track"><div class="wk-stat-fill" style="width:8.08%"></div></div>
+        <p class="wk-party-note">bytes matched · 8.08% of code</p>
+
+        <div class="wk-party-row" title="Matched functions that also meet the readability standard">
+          <span class="wk-party-k">MP</span>
+          <span class="wk-party-v">256<small>/256</small></span>
+        </div>
+        <div class="wk-stat-track"><div class="wk-stat-fill wk-stat-fill-mp" style="width:100.0%"></div></div>
+        <p class="wk-party-note">functions readable</p>
+
+        <div class="wk-party-row" title="Readable functions that passed an independent review">
+          <span class="wk-party-k">TP</span>
+          <span class="wk-party-v">23<small>/256</small></span>
+        </div>
+        <div class="wk-stat-track"><div class="wk-stat-fill wk-stat-fill-dim" style="width:9.0%"></div></div>
+        <p class="wk-party-note">functions verified</p>
+      </div>
+      
+      <p class="wk-stat-link"><a href="../../../../../PROGRESS/">View full progress →</a></p>
+    </div>
+  </nav>
+
+  <!-- Main content -->
+  <main class="wk-main">
+    <div class="wk-article">
+
+      
+      
+      <div class="wk-toc" id="wk-toc">
+        <div class="wk-toc-header">
+          <b>Contents</b>
+          <button class="wk-toc-toggle"
+            onclick="var l=document.getElementById('wk-toc-list');l.hidden=!l.hidden;this.textContent=l.hidden?'[show]':'[hide]'">[hide]</button>
+        </div>
+        <ol class="wk-toc-list" id="wk-toc-list">
+          
+          <li>
+            <a href="#19-september-2026-the-battle-command-menu-from-dirty-flag-to-committed-action" class="wk-toc-link">19 September 2026: the battle command menu, from dirty flag to committed action</a>
+            
+            <ol><li><a href="#the-dirty-flag-gate" class="wk-toc-link">The dirty-flag gate</a></li><li><a href="#reading-the-controller" class="wk-toc-link">Reading the controller</a></li><li><a href="#pressing-confirm" class="wk-toc-link">Pressing confirm</a></li><li><a href="#building-the-target-list" class="wk-toc-link">Building the target list</a></li><li><a href="#the-ready-queue" class="wk-toc-link">The ready queue</a></li><li><a href="#target-select-input" class="wk-toc-link">Target-select input</a></li><li><a href="#committing-the-action" class="wk-toc-link">Committing the action</a></li><li><a href="#fixing-the-progress-bookkeeping" class="wk-toc-link">Fixing the progress bookkeeping</a></li><li><a href="#the-day-in-numbers" class="wk-toc-link">The day in numbers</a></li><li><a href="#next" class="wk-toc-link">Next</a></li></ol>
+            
+          </li>
+          
+        </ol>
+      </div>
+      
+      
+
+      <div class="wk-article-body">
+      
+<article>
+  
+  <p class="wk-post-meta">
+    <time datetime="2026-09-19 00:00:00+00:00">2026-09-19</time>
+    
+  </p>
+  
+  
+  <h1 id="19-september-2026-the-battle-command-menu-from-dirty-flag-to-committed-action">19 September 2026: the battle command menu, from dirty flag to committed action</h1>
+<p>The biggest single day so far: 1,478 bytes in 22 routines, all in bank <code>$C1</code>'s battle command menu. It now runs as <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr> code from the gate that decides whether to redraw the menu, through controller input and confirm, to the 8-byte action record the battle engine executes. This is the first stretch of session 41, worked in eight increments.</p>
+<!-- more -->
+
+<h2 id="the-dirty-flag-gate">The dirty-flag gate</h2>
+<p>The battle menu doesn't redraw every frame. It waits until something changes, then does one full pass. Two sibling routines gate that pass, both on the <abbr title="Work RAM — 128KB of SNES main RAM at $7E:0000–$7F:FFFF, holds all runtime game state.">WRAM</abbr> flag <code>$993A</code>:</p>
+<div class="language-text highlight"><span class="filename">Text Only</span><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1"></a><a href="#__codelineno-0-1"><span class="linenos" data-linenos="1 "></span></a>LDA $993A
+<a id="__codelineno-0-2" name="__codelineno-0-2"></a><a href="#__codelineno-0-2"><span class="linenos" data-linenos="2 "></span></a>BEQ &lt;exit&gt;
+<a id="__codelineno-0-3" name="__codelineno-0-3"></a><a href="#__codelineno-0-3"><span class="linenos" data-linenos="3 "></span></a>STZ $993A
+<a id="__codelineno-0-4" name="__codelineno-0-4"></a><a href="#__codelineno-0-4"><span class="linenos" data-linenos="4 "></span></a>STZ $E5
+<a id="__codelineno-0-5" name="__codelineno-0-5"></a><a href="#__codelineno-0-5"><span class="linenos" data-linenos="5 "></span></a>JSR BattleMenu_DequeueReadyBattler
+<a id="__codelineno-0-6" name="__codelineno-0-6"></a><a href="#__codelineno-0-6"><span class="linenos" data-linenos="6 "></span></a>JSR BattleMenu_UpdateWindows
+<a id="__codelineno-0-7" name="__codelineno-0-7"></a><a href="#__codelineno-0-7"><span class="linenos" data-linenos="7 "></span></a>JSR BattleMenu_ProcessInput
+<a id="__codelineno-0-8" name="__codelineno-0-8"></a><a href="#__codelineno-0-8"><span class="linenos" data-linenos="8 "></span></a>JSR BattleMenu_UpdateCursorOverlay
+</code></pre></div>
+<p>If the flag is clear they return at once. If it is set they clear it and run the rebuild: pull the next ATB-ready battler into the queue, refresh the window contents (<abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr> on 14 August), process controller input, redraw the cursor overlay.</p>
+<p>They differ in how they are reached:</p>
+<ul>
+<li><strong><code>BattleMenu_RefreshIfDirtyL</code></strong> (<code>$C1:10E3</code>, 23 bytes) is in the bank's cross-bank entry-vector table. Other banks reach it with <code>JSL $C10012</code>, which <code>JMP</code>s within the bank to <code>$C110E3</code> without touching the stack, so the routine must return with <code>RTL</code> to match the long call.</li>
+<li><strong><code>BattleMenu_RefreshIfDirtyAndTick</code></strong> (<code>$C1:10FA</code>, 27 bytes) is a plain <code>JSR</code> target, called from several places in the battle-phase state machine. It adds a cross-bank tick (<code>JSL $CD0009</code>) before an ordinary <code>RTS</code>.</li>
+</ul>
+<p>Same logic, two calling conventions. Two near-identical routines are not necessarily duplicated code; they can serve call sites with different stack contracts.</p>
+<p>Three of those callees weren't <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr> yet (<code>BattleMenu_DequeueReadyBattler</code> at <code>$C1:1B67</code>, <code>BattleMenu_ProcessInput</code> at <code>$C1:1153</code> and <code>BattleMenu_UpdateCursorOverlay</code> at <code>$C1:17DD</code>), so they went in as label stubs: an <code>org</code> line with a bare label and no bytes, the trick used earlier in bank <code>$C0</code> for forward references. <abbr title="The 65816 assembler used for this project — patches matched .asm source into a ROM copy for byte-exact verification.">asar</abbr> resolves the <code>JSR</code>s, and a later increment fills in the body at the same <code>org</code>.</p>
+<p><strong><code>BattleMenu_DrawCursorSprites</code></strong> (<code>$C1:1115</code>, 62 bytes) sits between the gate routines and <code>ProcessInput</code>. It builds the four <abbr title="Object Attribute Memory — the PPU's 512+32-byte sprite table (up to 128 sprites: X/Y, tile, palette, size).">OAM</abbr> entries of the cursor that points at the selected command. The shape is a fixed 4-tile template in ROM (<code>$CCF604</code>–<code>$CCF607</code>); the position comes from per-slot coordinates at <code>$1D0C</code>/<code>$1D23</code>, indexed by the active PC. The attribute byte's palette bits are replaced from <code>$9F46</code> each time, almost certainly what makes the cursor flash or change color. What drives that byte isn't traced yet.</p>
+<h2 id="reading-the-controller">Reading the controller</h2>
+<p><code>BattleMenu_ProcessInput</code> (<code>$C1:1153</code>, 142 bytes) reads two <abbr title="Work RAM — 128KB of SNES main RAM at $7E:0000–$7F:FFFF, holds all runtime game state.">WRAM</abbr> bytes, <code>$EE</code> and <code>$EF</code>. They are pad-edge bytes: a bit is set only on the frame a button goes from released to pressed, not while it is held. <code>$EE</code> holds buttons (confirm is <code>$80</code>), <code>$EF</code> the D-pad (<code>$02</code> left, <code>$08</code> up, <code>$04</code> down, <code>$01</code> right). The routine:</p>
+<ul>
+<li>no active PC (<code>$95D5</code> negative): return</li>
+<li>target-select mode (<code>$9609 != 0</code>, you're aiming at a target): hand over to <code>BattleMenu_TargetSelectInput</code></li>
+<li>submenu type <code>$95DB</code> is the tech or item list: hand over to that list's input handler</li>
+<li>otherwise, the main command menu: check left, up, down, right, confirm, in that order</li>
+</ul>
+<p>Each branch ends in a <code>JMP</code>, not a fall-through, so only one fires per frame. If two D-pad bits were somehow set on the same frame, only the first checked (left) would act. The hardware makes that close to impossible, but the dispatch is exclusive, not layered.</p>
+<p><strong>Four small leaves:</strong></p>
+<ul>
+<li><strong><code>BattleMenu_CycleActivePcPrev</code></strong> (<code>$C1:11E1</code>, 55 bytes) and <strong><code>BattleMenu_CycleActivePcNext</code></strong> (<code>$C1:1218</code>, 56 bytes), for left and right, decrement or increment the active-PC index <code>$A6DD</code>, wrapping across the party (0..2). They skip any slot whose <code>$A6D9</code> entry is negative (fainted or unavailable) by repeating until they land on a valid one. Both carry the cursor row (<code>$95DC</code>) from the old slot to the new one, so switching characters keeps your place in the menu.</li>
+<li><strong><code>BattleMenu_CursorUp</code></strong> (<code>$C1:1250</code>, 20 bytes) and <strong><code>BattleMenu_CursorDown</code></strong> (<code>$C1:1264</code>, 23 bytes) move <code>$95DC</code> for the active PC, wrapping over the three rows, and set a redraw flag (<code>$A43F</code>) so the cursor sprite moves next frame.</li>
+</ul>
+<p><strong>A branch that probably never runs.</strong> Both cycle routines branch on <code>$A0D4</code> right after finding the new slot. Clear (normal): copy the cursor row across. Set: read a per-PC default row from <code>$9916</code> and write it to the <em>old</em> slot's <code>$95DC</code> (through Y instead of X), which looks backwards. The reference disassembly flags this path as unreachable in the shipped game, and the odd target fits: leftover logic from an earlier version. It is reproduced byte for byte. The goal is a ROM that reassembles identically, oddities included.</p>
+<p><strong>Two borrowed leaves.</strong> <strong><code>Battle_ZeroResultEE</code></strong> (<code>$C1:179C</code>, 5 bytes) is <code>STZ $EE</code>, <code>STZ $EF</code>, <code>RTS</code>: the shared exit for nearly every routine here, clearing both pad-edge bytes once the input is used. <strong><code>Battle_StopSfx</code></strong> (<code>$C1:1B55</code>, 18 bytes) plays (or, by its name, cancels) a sound on cursor moves and confirms by writing <code>$1E00</code>–<code>$1E02</code> and calling <code>JSL $C70004</code>, exactly like <code>Sub_1B90</code> in bank <code>$C0</code>. The audio-command protocol is the same across the engine.</p>
+<p>The same increment closed a tooling gap: <code>tools/progress.py --update-index</code> now syncs <code>mkdocs.yml</code>'s stats block and <code>index.md</code>'s <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr>-regions table from <code>PROGRESS.md</code>, instead of both being hand-edited every session (which had already drifted more than once).</p>
+<h2 id="pressing-confirm">Pressing confirm</h2>
+<p><strong><code>BattleMenu_ConfirmCommand</code></strong> (<code>$C1:127B</code>, 33 bytes) reloads the active-PC pointer, reads that PC's cursor row (0, 1 or 2: Attack, Tech, Item) and tail-jumps to the <abbr title="Writing assembly source that assembles byte-for-byte identically to the original ROM via asar.">matching</abbr> handler. On the way it writes <code>$FF</code> to <code>$A0D7</code>. Nothing here reads it back, but the reference shows it compared inside <code>BattleUI_BuildStatusBarFrame</code>, so it is probably a marker that forces a status-bar refresh next time.</p>
+<ul>
+<li><strong><code>BattleMenu_ChooseAttack</code></strong> (<code>$C1:129C</code>, 32 bytes, row 0) sets the target mode <code>$960D</code> to <code>$07</code>, calls the target-list builder, and increments <code>$9609</code>, the flag <code>ProcessInput</code> checks first. Confirming Attack doesn't open a submenu. It changes what the <em>next</em> frame's input handler means.</li>
+<li><strong><code>BattleMenu_OpenTechList</code></strong> (<code>$C1:12BC</code>, 49 bytes, row 1) and <strong><code>BattleMenu_OpenItemList</code></strong> (<code>$C1:12ED</code>, 51 bytes, row 2) render their lists (with the routines <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr> on 14 August), set the submenu type <code>$95DB</code> and return. The item version also copies a fixed <code>$180</code>-byte graphic into the command-window tilemap. The reference calls it <code>ItemBoxBattles</code>, in bank <code>$D1</code> next to the <code>TechBoxBattles</code> graphic that <code>BattleMenu_LoadCommandWindowMap</code> uses. Presumably the item list needs a different border. Both gate on a flag at <code>$A0A7</code> that reads like "list locked"; what would lock it (a status effect? a command restriction?) isn't clear, so it is a loose end.</li>
+</ul>
+<h2 id="building-the-target-list">Building the target list</h2>
+<p><strong><code>BattleMenu_BuildTargetList</code></strong> (<code>$C1:1F79</code>, 100 bytes) is what <code>ChooseAttack</code> calls. According to the reference, the tech-confirm and item-confirm paths call it too, so it is a shared dependency for three submenus.</p>
+<p>It resets a handful of target-selection variables and fills two 11-entry lists, candidates and selection, with <code>$FF</code>. Eleven fits the layout: 3 party members plus up to 8 enemies. If target-select isn't already active in a "return here on cancel" state, it saves the current submenu type to <code>$A86B</code> before clearing it, so cancelling brings you back to the menu you were in (main, tech or item) instead of the top.</p>
+<p>Then it clamps the target mode <code>$960D</code> into range, doubles it into a word index and jumps through a table: <code>JSR ($1FF8,X)</code>. Each entry is a handler that knows how to collect targets for one mode (Attack, an area tech, a party-wide heal...). That table and its dozen-plus handlers (<code>BattleTgt_CollectValidTargets</code>, <code>BattleTgt_ListEnemiesSingle</code> and others in the reference) are a separate subsystem. <code>BuildTargetList</code> refers to the table by raw address and stops there, the same deferral used for bank <code>$C0</code>'s <code>$5D6E</code> entity table.</p>
+<p><strong>The bug.</strong> An early draft put <code>LDA #$FF</code> inside the clearing loop:</p>
+<div class="language-text highlight"><span class="filename">Text Only</span><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1"></a><a href="#__codelineno-1-1"><span class="linenos" data-linenos="1 "></span></a>; wrong
+<a id="__codelineno-1-2" name="__codelineno-1-2"></a><a href="#__codelineno-1-2"><span class="linenos" data-linenos="2 "></span></a>.clear_loop:
+<a id="__codelineno-1-3" name="__codelineno-1-3"></a><a href="#__codelineno-1-3"><span class="linenos" data-linenos="3 "></span></a>    LDA #$FF
+<a id="__codelineno-1-4" name="__codelineno-1-4"></a><a href="#__codelineno-1-4"><span class="linenos" data-linenos="4 "></span></a>    STA $99C0,X
+<a id="__codelineno-1-5" name="__codelineno-1-5"></a><a href="#__codelineno-1-5"><span class="linenos" data-linenos="5 "></span></a>    STA $A62D,X
+<a id="__codelineno-1-6" name="__codelineno-1-6"></a><a href="#__codelineno-1-6"><span class="linenos" data-linenos="6 "></span></a>    DEX
+<a id="__codelineno-1-7" name="__codelineno-1-7"></a><a href="#__codelineno-1-7"><span class="linenos" data-linenos="7 "></span></a>    BPL .clear_loop
+</code></pre></div>
+<p>The ROM loads it once, before:</p>
+<div class="language-text highlight"><span class="filename">Text Only</span><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1"></a><a href="#__codelineno-2-1"><span class="linenos" data-linenos="1 "></span></a>; correct
+<a id="__codelineno-2-2" name="__codelineno-2-2"></a><a href="#__codelineno-2-2"><span class="linenos" data-linenos="2 "></span></a>LDA #$FF
+<a id="__codelineno-2-3" name="__codelineno-2-3"></a><a href="#__codelineno-2-3"><span class="linenos" data-linenos="3 "></span></a>.clear_loop:
+<a id="__codelineno-2-4" name="__codelineno-2-4"></a><a href="#__codelineno-2-4"><span class="linenos" data-linenos="4 "></span></a>    STA $99C0,X
+<a id="__codelineno-2-5" name="__codelineno-2-5"></a><a href="#__codelineno-2-5"><span class="linenos" data-linenos="5 "></span></a>    STA $A62D,X
+<a id="__codelineno-2-6" name="__codelineno-2-6"></a><a href="#__codelineno-2-6"><span class="linenos" data-linenos="6 "></span></a>    DEX
+<a id="__codelineno-2-7" name="__codelineno-2-7"></a><a href="#__codelineno-2-7"><span class="linenos" data-linenos="7 "></span></a>    BPL .clear_loop
+</code></pre></div>
+<p>Both behave the same, but moving the load changes where the loop starts, so the <code>BPL</code> offset changes. <code>make diff</code> flagged one byte at <code>$C1:1F9C</code>, the offset byte. Byte-exact <abbr title="Writing assembly source that assembles byte-for-byte identically to the original ROM via asar.">matching</abbr> checks the encoding, not just the logic: a change any reviewer would call "obviously equivalent" still fails, at once.</p>
+<h2 id="the-ready-queue">The ready queue</h2>
+<p>ATB means battlers act when their gauge fills, not in strict turns, so several can become ready in the same frame or while the menu is busy. <strong><code>BattleMenu_DequeueReadyBattler</code></strong> (<code>$C1:1B67</code>, 67 bytes) handles that with a 3-slot FIFO at <abbr title="Work RAM — 128KB of SNES main RAM at $7E:0000–$7F:FFFF, holds all runtime game state.">WRAM</abbr> <code>$95D6</code>-<code>$95D9</code> and a count at <code>$95DA</code>. Dequeuing:</p>
+<ul>
+<li>restores the battler's saved cursor row (if you left it on "Item", it's still on "Item")</li>
+<li>marks the slot present in the active roster</li>
+<li>shifts the remaining entries down one</li>
+<li>if nobody is the active menu PC, makes this battler the active one</li>
+</ul>
+<p>One line looks odd out of context: <code>STA $A6D9,X</code> with A and X both holding the slot's own index. Elsewhere today <code>$A6D9,X</code> is a presence check (<code>BMI</code> after loading it means "slot empty"). Writing the slot's index there is the "occupied" marker, not a translation table.</p>
+<p>The shift reads <code>$95D8</code> twice, writing it to <code>$95D7</code> and then <code>$95D9</code>, instead of reading <code>$95D9</code> for the second write. Since the count never exceeds 3, it probably never matters, and it is reproduced as is. This closed the last stub callee of the dirty-flag gate.</p>
+<p><strong><code>BattleMenu_RemoveBattlerFromReady</code></strong> (<code>$C1:1BAA</code>, 144 bytes), next door, is the inverse. A battler may be waiting in the queue or already promoted to the active menu character, and it tells them apart by <code>$A6D9,X</code> (negative: not promoted). From the queue it scans for the entry and shifts the rest down, starting <em>anywhere</em>, not just at the head. For the active PC it also has to leave the menu in a sane state:</p>
+<ul>
+<li>cancel target selection (<code>$9609</code> and a couple of related flags)</li>
+<li>reset the submenu type to the main menu (<code>$95DB</code>)</li>
+<li>clear the battler's roster slot</li>
+<li>search the roster for another battler to promote, or explicitly set "no active PC" if there is none, so <code>$A6DD</code>/<code>$95D5</code> never point at stale data</li>
+</ul>
+<p><strong>The same bug, again.</strong> An early draft put a one-time load (<code>LDA $80</code>, the slot to search for) inside the scan loop. <code>make diff</code> flagged one byte on the loop's closing branch, as with <code>BuildTargetList</code>. A lone one-byte diff on a branch operand near loop code is now my first guess.</p>
+<h2 id="target-select-input">Target-select input</h2>
+<p><strong><code>BattleMenu_TargetSelectInput</code></strong> (<code>$C1:1561</code>, 185 bytes) reads the controller while you point at an enemy or ally. Unlike the main menu, it calls <code>BattleMenu_BuildTargetList</code> on <em>every</em> call, because valid targets can change mid-selection (an enemy can die from a status tick). If the rebuild finds no target, or you cancel, it leaves target-select and restores the previous menu (main, tech or item), repainting its window as needed. Otherwise it polls the pad: confirm tail-jumps to <code>BattleMenu_CommitAction</code>; the D-pad cycles forward or backward through targets, unless the mode targets everyone, which disables cycling.</p>
+<p><strong>Eighteen bytes that never run.</strong> In the middle of the cancel path is something shaped like a second copy of the item-window graphic loader: same source table, same destination. But its loop branch points forward, into the confirm/cycle section, not back to itself. If it ran it would copy one byte and leave, nowhere near the 384 bytes the working copy loop elsewhere in the routine moves. And nothing reaches it: every path before it ends in an unconditional branch past it. These are bytes the CPU can never execute under any input or game state. The single orphaned <code>RTS</code> on 14 August was the only dead code seen before; this is the first dead multi-instruction block. The likely story is a branch target changed during development and the old live code left behind. Either way, it is reproduced exactly.</p>
+<h2 id="committing-the-action">Committing the action</h2>
+<p>Every confirm press ends in <strong><code>BattleMenu_CommitAction</code></strong> (<code>$C1:161A</code>, 308 bytes), the largest routine in the command-menu cluster. It builds a uniform 8-byte record, "character X does Y to target Z", whether Y is an attack, a tech or an item. It dispatches on <code>$95DB</code> to fill in the parts that differ, then joins shared code that writes the record and hands off. Attack is almost trivial: a type flag and a marker for "no tech or item id". Item decrements the item's stock and clears some UI scroll state. Tech is the interesting one, because dual and triple techs involve more than one character.</p>
+<p><strong><code>BattleMenu_ConsumePartnerSlot</code></strong> (<code>$C1:174E</code>, 30 bytes) takes a combo partner out of the turn pool so it doesn't also act on its own later: it clears the slot's presence in the active roster (decrementing the active-PC count if it was on screen) and clears a flag bit on that battler's sprite data (called the "queued" bit at the time). <code>CommitAction</code> calls it once for a dual tech's partner (low nibble of <code>$9EE7</code>) and again for a second partner only if the high nibble says triple tech. The combo bookkeeping was built to scale from two to three, not bolted on.</p>
+<p>Then the same cleanup seen in <code>RemoveBattlerFromReady</code>: clear the confirming character's slot, then find another active menu character or mark "no active PC".</p>
+<p><strong><code>BattleMenu_TargetNext</code></strong> (<code>$C1:176C</code>, 26 bytes) and <strong><code>BattleMenu_TargetPrev</code></strong> (<code>$C1:1786</code>, 22 bytes) move the target cursor through valid targets, skipping invalid slots, with the same wrap-and-retry shape as <code>CycleActivePcPrev</code>/<code>Next</code>. <code>TargetPrev</code> has no <code>RTS</code> of its own: it sits right before <code>Battle_ZeroResultEE</code> and runs into it.</p>
+<p>With <code>CommitAction</code>, everything from the dirty-flag gate to a confirmed target is one unbroken span of <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr> code. Working a cluster in order pays off: callees stop being stubs one by one until the whole subsystem is visible.</p>
+<h2 id="fixing-the-progress-bookkeeping">Fixing the progress bookkeeping</h2>
+<p>Before any code, the standing staleness audit (checking that <code>PROGRESS.md</code>'s headline, its per-bank headings and the generated homepage snippet agree) found two real bugs. The bank <code>$C0</code> heading had read 384 bytes low since session 33, when that session's total went in without updating it. And <code>tools/progress.py</code> choked on comma-formatted byte counts, so bank <code>$C1</code> had been missing from the generated summary since it opened. Both are fixed: the heading corrected, and the parser strips commas before converting.</p>
+<p>Right after the first routines, the same class of bug came back: the bank <code>$C1</code> table got its new rows, but the heading's byte count didn't move until the audit ran again. Twice in one sitting means a process gap, not a slip; the fix belongs in tooling, which is what the <code>--update-index</code> change above does.</p>
+<h2 id="the-day-in-numbers">The day in numbers</h2>
+<table>
+<thead>
+<tr>
+<th>Increment</th>
+<th>Routine</th>
+<th>Address</th>
+<th>Bytes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td><code>BattleMenu_RefreshIfDirtyL</code></td>
+<td><code>$C1:10E3</code></td>
+<td>23</td>
+</tr>
+<tr>
+<td>1</td>
+<td><code>BattleMenu_RefreshIfDirtyAndTick</code></td>
+<td><code>$C1:10FA</code></td>
+<td>27</td>
+</tr>
+<tr>
+<td>1</td>
+<td><code>BattleMenu_DrawCursorSprites</code></td>
+<td><code>$C1:1115</code></td>
+<td>62</td>
+</tr>
+<tr>
+<td>2</td>
+<td><code>BattleMenu_ProcessInput</code></td>
+<td><code>$C1:1153</code></td>
+<td>142</td>
+</tr>
+<tr>
+<td>2</td>
+<td><code>BattleMenu_CycleActivePcPrev</code></td>
+<td><code>$C1:11E1</code></td>
+<td>55</td>
+</tr>
+<tr>
+<td>2</td>
+<td><code>BattleMenu_CycleActivePcNext</code></td>
+<td><code>$C1:1218</code></td>
+<td>56</td>
+</tr>
+<tr>
+<td>2</td>
+<td><code>BattleMenu_CursorUp</code></td>
+<td><code>$C1:1250</code></td>
+<td>20</td>
+</tr>
+<tr>
+<td>2</td>
+<td><code>BattleMenu_CursorDown</code></td>
+<td><code>$C1:1264</code></td>
+<td>23</td>
+</tr>
+<tr>
+<td>2</td>
+<td><code>Battle_ZeroResultEE</code></td>
+<td><code>$C1:179C</code></td>
+<td>5</td>
+</tr>
+<tr>
+<td>2</td>
+<td><code>Battle_StopSfx</code></td>
+<td><code>$C1:1B55</code></td>
+<td>18</td>
+</tr>
+<tr>
+<td>3</td>
+<td><code>BattleMenu_ConfirmCommand</code></td>
+<td><code>$C1:127B</code></td>
+<td>33</td>
+</tr>
+<tr>
+<td>3</td>
+<td><code>BattleMenu_ChooseAttack</code></td>
+<td><code>$C1:129C</code></td>
+<td>32</td>
+</tr>
+<tr>
+<td>3</td>
+<td><code>BattleMenu_OpenTechList</code></td>
+<td><code>$C1:12BC</code></td>
+<td>49</td>
+</tr>
+<tr>
+<td>3</td>
+<td><code>BattleMenu_OpenItemList</code></td>
+<td><code>$C1:12ED</code></td>
+<td>51</td>
+</tr>
+<tr>
+<td>4</td>
+<td><code>BattleMenu_BuildTargetList</code></td>
+<td><code>$C1:1F79</code></td>
+<td>100</td>
+</tr>
+<tr>
+<td>5</td>
+<td><code>BattleMenu_DequeueReadyBattler</code></td>
+<td><code>$C1:1B67</code></td>
+<td>67</td>
+</tr>
+<tr>
+<td>6</td>
+<td><code>BattleMenu_RemoveBattlerFromReady</code></td>
+<td><code>$C1:1BAA</code></td>
+<td>144</td>
+</tr>
+<tr>
+<td>7</td>
+<td><code>BattleMenu_TargetSelectInput</code></td>
+<td><code>$C1:1561</code></td>
+<td>185</td>
+</tr>
+<tr>
+<td>8</td>
+<td><code>BattleMenu_CommitAction</code></td>
+<td><code>$C1:161A</code></td>
+<td>308</td>
+</tr>
+<tr>
+<td>8</td>
+<td><code>BattleMenu_ConsumePartnerSlot</code></td>
+<td><code>$C1:174E</code></td>
+<td>30</td>
+</tr>
+<tr>
+<td>8</td>
+<td><code>BattleMenu_TargetNext</code></td>
+<td><code>$C1:176C</code></td>
+<td>26</td>
+</tr>
+<tr>
+<td>8</td>
+<td><code>BattleMenu_TargetPrev</code></td>
+<td><code>$C1:1786</code></td>
+<td>22</td>
+</tr>
+<tr>
+<td></td>
+<td><strong>Total</strong></td>
+<td></td>
+<td><strong>1,478</strong></td>
+</tr>
+</tbody>
+</table>
+<p>Increment totals: 112, 319, 165, 100, 67, 144, 185 and 386 bytes. <code>make diff</code> confirmed 4,194,304 identical bytes after each one, dead bytes included.</p>
+<p>Bank <code>$C1</code> after each increment: 4,197 (6.57%), 4,516 (7.07%), 4,681 (7.33%), 4,781 (7.48%), 4,848 (7.59%), 4,992 (7.81%), 5,177 (8.10%) and 5,563 (8.71%, up from 4,085 and 6.39% at the start of the day) of 63,904. Project-wide: 24,166 (6.73% of all game code), 24,485 (6.82%), 24,650 (6.86%), 24,750 (6.89%), 24,817 (6.91%), 24,961 (6.95%), 25,146 (7.00%) and 25,532 (7.11%).</p>
+<p>The notes written during the day also quote "763 bytes across 8 routines" after the ready-queue pair and "1,478 bytes across 14 routines" at the end. The tables add up to 907 bytes and 17 routines after the ready-queue pair, and 1,478 bytes and 22 routines for the day; the table above follows the tables.</p>
+<h2 id="next">Next</h2>
+<p>Two submenu-input stubs remain: <code>BattleMenu_TechListInput</code> and <code>BattleMenu_ItemListInput</code>, which mirror each other and <code>TargetSelectInput</code>. Behind them, per the reference, sit routines like <code>BattleMenu_TechConfirm</code> and an item-confirm equivalent. Also still open: <code>BattleMenu_UpdateCursorOverlay</code> (<code>$C1:17DD</code>), the 117-byte periodic/idle-check service at <code>$C1:106E</code>, and the target-mode handler table at <code>$C1:1FF8</code>, a dozen-plus <code>BattleTgt_*</code> handlers referenced only by address so far, which deserves a session of its own.</p>
+  
+  <p class="wk-post-back"><a href="../../../../">← Back to devlog</a></p>
+</article>
+
+      </div>
+
+    </div>
+
+    <footer class="wk-footer">
+      <ul class="wk-eras" aria-label="Eras">
+        <li style="--c:var(--era-prehistory)">65,000,000 BC</li>
+        <li style="--c:var(--era-zeal)">12,000 BC</li>
+        <li style="--c:var(--era-medieval)">600 AD</li>
+        <li style="--c:var(--era-present)">1000 AD</li>
+        <li style="--c:var(--era-lavos)">1999 AD</li>
+        <li style="--c:var(--era-future)">2300 AD</li>
+        <li style="--c:var(--era-eot)">End of Time</li>
+      </ul>
+      <p class="wk-footer-motto">Every byte, every era</p>
+      <p>Made by people who love Chrono Trigger, so that it can be studied, preserved and understood,
+      one verified routine at a time.</p>
+      <p>A fan project. Not affiliated with or endorsed by Square Enix. No ROM data is shared here:
+      bring your own copy.</p>
+    </footer>
+  </main>
+
+</div>
+
+<!-- Address-map pop-up (a menu window) -->
+<div class="wk-modal" id="wk-modal" hidden>
+  <div class="wk-modal-backdrop" data-close></div>
+  <div class="wk-modal-win" role="dialog" aria-modal="true" aria-labelledby="wk-modal-title" tabindex="-1">
+    <button type="button" class="wk-modal-close" data-close aria-label="Close">&times;</button>
+    <div class="wk-modal-body" id="wk-modal-body"></div>
+  </div>
+</div>
+
+<!-- Back to top -->
+<button class="wk-top" id="wk-top" title="Back to top" aria-label="Scroll to top">↑</button>
+
+
+<script>
+(function () {
+'use strict';
+
+/* ── Theme ─────────────────────────────────────────────────── */
+var stored = 'dark';
+try { stored = localStorage.getItem('wk-theme') || 'dark'; } catch (e) {}
+applyTheme(stored);
+document.getElementById('wk-toggle').addEventListener('click', function () {
+  applyTheme(document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
+});
+function applyTheme(t) {
+  document.documentElement.setAttribute('data-theme', t);
+  try { localStorage.setItem('wk-theme', t); } catch (e) {}
+}
+
+/* ── Mobile nav ────────────────────────────────────────────── */
+var navToggle  = document.getElementById('wk-nav-toggle');
+var navEl      = document.getElementById('wk-nav');
+var navBackdrop = document.getElementById('wk-nav-backdrop');
+function openNav() {
+  navEl.classList.add('is-open');
+  navBackdrop.hidden = false;
+  navToggle.setAttribute('aria-expanded', 'true');
+}
+function closeNav() {
+  navEl.classList.remove('is-open');
+  navBackdrop.hidden = true;
+  navToggle.setAttribute('aria-expanded', 'false');
+}
+if (navToggle && navEl && navBackdrop) {
+  navToggle.addEventListener('click', function () {
+    if (navEl.classList.contains('is-open')) { closeNav(); } else { openNav(); }
+  });
+  navBackdrop.addEventListener('click', closeNav);
+  navEl.addEventListener('click', function (e) {
+    if (e.target.closest('a')) { closeNav(); }
+  });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') { closeNav(); }
+  });
+  window.addEventListener('resize', function () {
+    if (window.innerWidth > 720) { closeNav(); }
+  });
+}
+
+/* ── Search ─────────────────────────────────────────────────── */
+var input   = document.getElementById('wk-q');
+var results = document.getElementById('wk-results');
+var docs    = null;
+if (input) {
+  fetch("../../../../../search/search_index.json")
+    .then(function (r) { return r.json(); })
+    .then(function (d) { docs = d.docs; });
+
+  input.addEventListener('input', onSearch);
+
+  document.addEventListener('click', function (e) {
+    if (results && !results.contains(e.target) && e.target !== input) results.hidden = true;
+  });
+  input.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') { results.hidden = true; this.blur(); }
+    if (e.key === 'Enter' && results && !results.hidden) {
+      var first = results.querySelector('.wk-result');
+      if (first) { first.click(); }
+    }
+  });
+}
+
+/* Press / to focus search */
+document.addEventListener('keydown', function (e) {
+  if (e.key === '/' && document.activeElement !== input &&
+      document.activeElement.tagName !== 'INPUT' &&
+      document.activeElement.tagName !== 'TEXTAREA') {
+    e.preventDefault();
+    if (input) { input.focus(); input.select(); }
+  }
+});
+
+function onSearch() {
+  var q = this.value.trim().toLowerCase();
+  if (!docs || q.length < 2) { results.hidden = true; return; }
+  var hits = docs.filter(function (d) {
+    return (d.title + ' ' + d.text).toLowerCase().indexOf(q) !== -1;
+  }).slice(0, 8);
+  if (!hits.length) { results.hidden = true; return; }
+  var base = "../../../../..";
+  results.innerHTML = hits.map(function (d) {
+    var text  = d.text || '';
+    var i     = text.toLowerCase().indexOf(q);
+    var start = Math.max(0, i - 35);
+    var end   = Math.min(text.length, i + q.length + 70);
+    var snip  = (start > 0 ? '…' : '') + text.slice(start, end) + (end < text.length ? '…' : '');
+    var url   = base + '/' + d.location;
+    return '<a class="wk-result" href="' + esc(url) + '" role="option">'
+         + '<div class="wk-result-title">' + esc(d.title || d.location) + '</div>'
+         + '<div class="wk-result-snip">'  + esc(snip) + '</div></a>';
+  }).join('');
+  results.hidden = false;
+}
+
+function esc(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+/* ── Back to top ────────────────────────────────────────────── */
+var topBtn = document.getElementById('wk-top');
+if (topBtn) {
+  window.addEventListener('scroll', function () {
+    topBtn.classList.toggle('visible', window.scrollY > 400);
+  }, {passive: true});
+  topBtn.addEventListener('click', function () {
+    window.scrollTo({top: 0, behavior: 'smooth'});
+  });
+}
+
+/* ── Copy-to-clipboard ───────────────────────────────────────── */
+document.querySelectorAll('.highlight').forEach(function (block) {
+  var btn = document.createElement('button');
+  btn.className = 'wk-copy-btn';
+  btn.title     = 'Copy code';
+  btn.textContent = '⎘';
+  block.appendChild(btn);
+  btn.addEventListener('click', function () {
+    var pre = block.querySelector('pre');
+    if (!pre) return;
+    navigator.clipboard.writeText(pre.innerText).then(function () {
+      btn.textContent = '✓';
+      btn.classList.add('copied');
+      setTimeout(function () {
+        btn.textContent = '⎘';
+        btn.classList.remove('copied');
+      }, 1500);
+    });
+  });
+});
+
+/* ── TOC scroll spy ─────────────────────────────────────────── */
+var tocLinks = document.querySelectorAll('.wk-toc-link');
+if (tocLinks.length && 'IntersectionObserver' in window) {
+  var headings = Array.from(document.querySelectorAll('.wk-article h1, .wk-article h2, .wk-article h3'));
+  var active   = null;
+  var obs = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
+      if (e.isIntersecting) {
+        var id  = e.target.id;
+        var lnk = document.querySelector('.wk-toc-link[href="#' + id + '"]');
+        if (lnk && lnk !== active) {
+          if (active) active.classList.remove('is-current');
+          lnk.classList.add('is-current');
+          active = lnk;
+        }
+      }
+    });
+  }, {rootMargin: '-10% 0px -80% 0px'});
+  headings.forEach(function (h) { if (h.id) obs.observe(h); });
+}
+
+
+/* ── Status badges in "Status" table columns ────────────────── */
+var STATUS = { 'matched': 'matched', 'in progress': 'progress', 'partial': 'partial',
+               'identified': 'identified', 'unmapped': 'unmapped', 'unknown': 'unknown' };
+document.querySelectorAll('.wk-article-body table').forEach(function (tbl) {
+  var col = -1;
+  tbl.querySelectorAll('thead th').forEach(function (th, i) {
+    if (th.textContent.trim().toLowerCase() === 'status') col = i;
+  });
+  if (col < 0) return;
+  tbl.querySelectorAll('tbody tr').forEach(function (tr) {
+    var td = tr.children[col];
+    if (!td || td.querySelector('.wk-status')) return;
+    var whole = td.textContent.trim().toLowerCase();
+    var target = null, key = STATUS[whole];
+    if (key) { target = td; }
+    else if (td.firstElementChild && td.firstElementChild.tagName === 'STRONG' &&
+             td.firstChild === td.firstElementChild) {
+      key = STATUS[td.firstElementChild.textContent.trim().toLowerCase()];
+      if (key) target = td.firstElementChild;
+    }
+    if (!target) return;
+    var span = document.createElement('span');
+    span.className = 'wk-status wk-status-' + key;
+    if (target === td) { while (td.firstChild) span.appendChild(td.firstChild); td.appendChild(span); }
+    else { td.insertBefore(span, target); span.appendChild(target); }
+  });
+});
+
+/* ── Address map pop-up ─────────────────────────────────────── */
+var modal = document.getElementById('wk-modal');
+var mbody = document.getElementById('wk-modal-body');
+var mwin  = modal ? modal.querySelector('.wk-modal-win') : null;
+var lastFocus = null, closeTimer = null, current = null;
+var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+var LABEL = { matched: 'Matched', progress: 'In progress', identified: 'Identified',
+              unmapped: 'Unmapped', gap: 'Uncharted' };
+
+function md(s) {
+  return esc(s || '').replace(/`([^`]+)`/g, '<code>$1</code>')
+                     .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+}
+function hex4(n) { return ('000' + n.toString(16).toUpperCase()).slice(-4); }
+function num(n) { return n == null ? '?' : n.toLocaleString('en-US'); }
+function badge(st) {
+  var k = st === 'gap' ? 'unmapped' : st;
+  return '<span class="wk-status wk-status-' + k + '">' + (LABEL[st] || st) + '</span>';
+}
+
+function openModal(html, from) {
+  if (!modal) return;
+  clearTimeout(closeTimer);
+  mbody.innerHTML = html;
+  if (modal.hidden) {
+    lastFocus = from || document.activeElement;
+    modal.hidden = false;
+    document.documentElement.classList.add('wk-modal-lock');
+    void modal.offsetWidth;            /* commit start state, then animate */
+    modal.classList.add('is-open');
+  }
+  mbody.scrollTop = 0;
+  mwin.focus({ preventScroll: true });
+}
+function closeModal() {
+  if (!modal || modal.hidden) return;
+  modal.classList.remove('is-open');
+  document.documentElement.classList.remove('wk-modal-lock');
+  document.querySelectorAll('.wk-amap-slice.is-selected, .wk-heat-cell.is-selected, .wk-slice-cell.is-selected')
+    .forEach(function (el) { el.classList.remove('is-selected'); });
+  closeTimer = setTimeout(function () { modal.hidden = true; }, reduceMotion ? 0 : 200);
+  if (lastFocus && lastFocus.focus) lastFocus.focus({ preventScroll: true });
+  current = null;
+}
+if (modal) {
+  modal.addEventListener('click', function (e) {
+    if (e.target.closest('[data-close]')) { closeModal(); return; }
+    var nav = e.target.closest('[data-step]');
+    if (nav && current) { stepRegion(+nav.getAttribute('data-step')); return; }
+    var jump = e.target.closest('[data-jump]');
+    if (jump) { e.preventDefault(); jumpTo(jump.getAttribute('data-jump'), jump.getAttribute('data-row')); }
+  });
+  document.addEventListener('keydown', function (e) {
+    if (modal.hidden) return;
+    if (e.key === 'Escape') { e.preventDefault(); closeModal(); return; }
+    if (current && (e.key === 'ArrowRight' || e.key === 'ArrowLeft') &&
+        !/INPUT|TEXTAREA/.test(document.activeElement.tagName)) {
+      e.preventDefault(); stepRegion(e.key === 'ArrowRight' ? 1 : -1); return;
+    }
+    if (e.key === 'Tab') {               /* keep focus inside the window */
+      var f = Array.prototype.filter.call(
+        mwin.querySelectorAll('button, a[href], [tabindex="0"]'),
+        function (el) { return el.offsetParent !== null; });
+      if (!f.length) return;
+      var a = f[0], z = f[f.length - 1];
+      if (e.shiftKey && (document.activeElement === a || document.activeElement === mwin)) { e.preventDefault(); z.focus(); }
+      else if (!e.shiftKey && document.activeElement === z) { e.preventDefault(); a.focus(); }
+    }
+  });
+}
+
+var maps = {};
+document.querySelectorAll('.wk-amap').forEach(function (el) {
+  var data;
+  try { data = JSON.parse(el.querySelector('.wk-amap-data').textContent); } catch (e) { return; }
+  maps[data.bank] = { el: el, data: data };
+  el.addEventListener('click', function (e) {
+    var b = e.target.closest('.wk-amap-slice');
+    if (b) showRegion(data.bank, +b.getAttribute('data-i'), b);
+  });
+});
+
+function regionRange(bank, r) {
+  return '$' + bank + ':' + hex4(r.s) + (r.e != null ? '–$' + hex4(r.e) : '–?');
+}
+function showRegion(bank, i, from) {
+  var m = maps[bank]; if (!m) return;
+  var regs = m.data.regions, r = regs[i]; if (!r) return;
+  current = { bank: bank, i: i };
+  m.el.querySelectorAll('.wk-amap-slice.is-selected').forEach(function (el) { el.classList.remove('is-selected'); });
+  m.el.querySelectorAll('.wk-amap-slice[data-i="' + i + '"]').forEach(function (el) { el.classList.add('is-selected'); });
+
+  var h = '<p class="wk-modal-eyebrow">Bank $' + bank + ' · ' + regionRange(bank, r) + '</p>';
+  h += '<h3 id="wk-modal-title">' + (r.st === 'gap' ? 'Uncharted territory' : md(r.n)) + '</h3>';
+  h += '<div class="wk-modal-facts">' + badge(r.st) +
+       '<span>' + (r.b != null ? num(r.b) + ' bytes' : 'size unknown') + '</span>' +
+       (r.o ? '<span>file <code>' + esc(r.o) + '</code></span>' : '') + '</div>';
+  if (r.st === 'gap') {
+    var prev = regs[i - 1], next = regs[i + 1];
+    h += '<p>Nothing in this stretch of Bank $' + bank + ' has been charted in the bank map yet: ' +
+         '<strong>' + num(r.b) + ' bytes</strong> still waiting to be explored, labelled and matched.</p>';
+    if (prev || next) h += '<p class="wk-modal-dim">Between ' + (prev ? md(prev.n) : 'the bank start') +
+         ' and ' + (next ? md(next.n) : 'the end of the bank') + '.</p>';
+  } else {
+    if (r.d) h += '<p>' + md(r.d) + '</p>';
+    if (r.e == null) h += '<p class="wk-modal-dim">The end address of this region is not known yet.</p>';
+  }
+  if (r.k && r.k.length) {
+    var done = 0, doneB = 0, todoB = 0;
+    r.k.forEach(function (k) { if (k.st === 'matched') { done++; doneB += k.b || 0; } else { todoB += k.b || 0; } });
+    h += '<h4>Inside this region <span class="wk-modal-dim">· ' + done + ' of ' + r.k.length + ' matched' +
+         (doneB ? ', ' + num(doneB) + ' B verified' : '') + (todoB ? ', ' + num(todoB) + ' B to do' : '') + '</span></h4>';
+    h += '<ul class="wk-modal-list">' + r.k.map(function (k) {
+      return '<li class="is-' + k.st + '">' + badge(k.st) + ' <span class="wk-modal-name">' + md(k.n) + '</span>' +
+             '<span class="wk-modal-addr">' + esc(k.a) + (k.b ? ' · ' + num(k.b) + ' B' : '') + '</span>' +
+             (k.d ? '<span class="wk-modal-desc">' + md(k.d) + '</span>' : '') + '</li>';
+    }).join('') + '</ul>';
+  } else if (r.st === 'matched') {
+    h += '<p class="wk-modal-ok">Byte-exact: verified against the original ROM with <code>make diff</code>.</p>';
+  } else if (r.st !== 'gap') {
+    h += '<p class="wk-modal-todo">Still to do: this region is ' + LABEL[r.st].toLowerCase() + ' but not yet matched.</p>';
+  }
+  h += '<div class="wk-modal-actions">' +
+       '<button type="button" class="wk-btn" data-step="-1"' + (i === 0 ? ' disabled' : '') + ' aria-label="Previous region">◀ Prev</button>' +
+       (r.st !== 'gap' ? '<button type="button" class="wk-btn" data-jump="row" data-row="' + esc(r.n) + '">Show in table</button>' : '') +
+       '<button type="button" class="wk-btn" data-step="1"' + (i === regs.length - 1 ? ' disabled' : '') + ' aria-label="Next region">Next ▶</button>' +
+       '</div>';
+  openModal(h, from);
+}
+function stepRegion(d) {
+  if (!current) return;
+  var regs = maps[current.bank].data.regions, j = current.i + d;
+  if (j < 0 || j >= regs.length) return;
+  var btn = maps[current.bank].el.querySelector('.wk-amap-slice[data-i="' + j + '"]');
+  showRegion(current.bank, j, lastFocus);
+  if (btn) btn.scrollIntoView({ block: 'nearest' });
+}
+function jumpTo(kind, key) {
+  var target = null;
+  if (kind === 'row') {
+    var want = key.replace(/[`*]/g, '').trim();
+    document.querySelectorAll('.wk-article-body table tbody tr').forEach(function (tr) {
+      if (!target && tr.firstElementChild && tr.firstElementChild.textContent.trim() === want) target = tr;
+    });
+  } else {
+    target = document.getElementById(kind);
+  }
+  closeModal();
+  if (!target) return;
+  target.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'center' });
+  target.classList.remove('wk-flash'); void target.offsetWidth; target.classList.add('wk-flash');
+}
+
+/* Address Map page: a slice cell opens its pre-rendered panel in the pop-up */
+document.querySelectorAll('.wk-addrmap').forEach(function (map) {
+  map.addEventListener('click', function (e) {
+    var cell = e.target.closest('a.wk-slice-cell');
+    if (!cell) return;
+    var panel = document.getElementById(cell.getAttribute('href').slice(1));
+    if (!panel) return;
+    e.preventDefault();
+    map.querySelectorAll('.wk-slice-cell.is-selected').forEach(function (el) { el.classList.remove('is-selected'); });
+    cell.classList.add('is-selected');
+    current = null;
+    var clone = panel.cloneNode(true);
+    clone.removeAttribute('id');
+    var x = clone.querySelector('.wk-slice-close'); if (x) x.remove();
+    var h3 = clone.querySelector('h3'); if (h3) h3.id = 'wk-modal-title';
+    openModal(clone.innerHTML, cell);
+  });
+});
+
+/* Bank heat map (64 banks) */
+document.querySelectorAll('.wk-heat-wrap').forEach(function (wrap) {
+  var meta;
+  try { meta = JSON.parse(wrap.querySelector('.wk-heat-data').textContent); } catch (e) { return; }
+  wrap.addEventListener('click', function (e) {
+    var c = e.target.closest('.wk-heat-cell'); if (!c) return;
+    var bank = c.getAttribute('data-heat'), m = meta[bank]; if (!m) return;
+    wrap.querySelectorAll('.is-selected').forEach(function (el) { el.classList.remove('is-selected'); });
+    c.classList.add('is-selected');
+    current = null;
+    var pct = m.code != null ? (m.code / 65536 * 100) : null;
+    var h = '<p class="wk-modal-eyebrow">Bank $' + bank + ' · file $' +
+            ('0' + (parseInt(bank, 16) - 0xC0).toString(16).toUpperCase()).slice(-2) + '0000</p>';
+    h += '<h3 id="wk-modal-title">Bank $' + bank + '</h3>';
+    h += '<div class="wk-modal-facts">' +
+         (m.matched ? badge('progress') : (m.code ? badge('unmapped') : '<span class="wk-status wk-status-unknown">Data only</span>')) +
+         '<span>' + (m.code != null ? num(m.code) + ' code bytes (' + pct.toFixed(pct < 1 ? 1 : 0) + '%)' : 'not surveyed') + '</span></div>';
+    if (m.note) h += '<p>' + md(m.note) + '</p>';
+    if (m.matched) {
+      var mp = m.code ? Math.min(100, m.matched / m.code * 100) : 0;
+      h += '<div class="wk-modal-gauge" role="img" aria-label="' + mp.toFixed(1) + '% of code matched"><span style="width:' + mp.toFixed(2) + '%"></span></div>';
+      h += '<p><strong>' + num(m.matched) + ' bytes</strong> matched and verified' +
+           (m.code ? ' — ' + mp.toFixed(1) + '% of this bank\'s code. ' + num(Math.max(0, m.code - m.matched)) + ' code bytes to go.' : '.') + '</p>';
+    } else if (m.code) {
+      h += '<p class="wk-modal-todo">Not started: ' + num(m.code) + ' bytes of code waiting to be matched.</p>';
+    } else {
+      h += '<p class="wk-modal-dim">No executable code here: graphics, music or map data (incbin).</p>';
+    }
+    h += '<div class="wk-modal-actions">' +
+         (m.map ? '<button type="button" class="wk-btn" data-jump="wk-amap-' + bank + '">Open the $' + bank + ' address map ▶</button>' : '') +
+         '</div>';
+    openModal(h, c);
+  });
+});
+
+}());
+</script>
+</body>
+</html>
