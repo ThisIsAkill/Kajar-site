@@ -184,21 +184,21 @@
       <div class="wk-party">
         <div class="wk-party-row" title="Bytes matched: the rebuilt ROM is byte-identical here">
           <span class="wk-party-k">HP</span>
-          <span class="wk-party-v">44,805<small>/359,278</small></span>
+          <span class="wk-party-v">51,397<small>/359,278</small></span>
         </div>
-        <div class="wk-stat-track"><div class="wk-stat-fill" style="width:12.47%"></div></div>
-        <p class="wk-party-note">bytes matched · 12.47% of code</p>
+        <div class="wk-stat-track"><div class="wk-stat-fill" style="width:14.31%"></div></div>
+        <p class="wk-party-note">bytes matched · 14.31% of code</p>
 
         <div class="wk-party-row" title="Matched functions that also meet the readability standard">
           <span class="wk-party-k">MP</span>
-          <span class="wk-party-v">419<small>/419</small></span>
+          <span class="wk-party-v">530<small>/530</small></span>
         </div>
         <div class="wk-stat-track"><div class="wk-stat-fill wk-stat-fill-mp" style="width:100.0%"></div></div>
         <p class="wk-party-note">functions readable</p>
 
         <div class="wk-party-row" title="Readable functions that passed an independent review">
           <span class="wk-party-k">TP</span>
-          <span class="wk-party-v">419<small>/419</small></span>
+          <span class="wk-party-v">530<small>/530</small></span>
         </div>
         <div class="wk-stat-track"><div class="wk-stat-fill wk-stat-fill-dim" style="width:100.0%"></div></div>
         <p class="wk-party-note">functions verified</p>
@@ -376,7 +376,13 @@
 <li><strong>What's in front of the leader</strong> (<code>$C0</code>, 1,370 bytes). The checks for the object and the tile in front of the party leader, the eight D-pad handlers, and the limits that stop the leader at the edge of a map. The reach test is off by at most one unit, because a missing <code>SEC</code> and a missing <code>INC</code> partly cancel out.</li>
 <li><strong>Bank <code>$C2</code> boot</strong> (1,229 bytes). The bank's entry points, its interrupt handlers, and the new-game setup that fills in each character's starting record.</li>
 </ul>
-<p><code>main</code> now stands at 44,805 bytes, 12.47% of the game's code, every byte of it independently verified.</p>
+<p>Then three more:</p>
+<ul>
+<li><strong>Map scrolling</strong> (<code>$C0</code>, 2,425 bytes). Each of the three background layers keeps its own scroll accumulators in 1/16 pixel; every frame they move one pixel at a time and, when a layer crosses a tile edge, a new row or column of the map is built. Layer 2 has a half-speed mode.</li>
+<li><strong>Battle action scripts</strong> (<code>$C1</code>, 2,231 bytes). Each action runs up to 13 script threads, one <abbr title="The first byte of a CPU instruction, identifying the operation (e.g. $60 = RTS, $78 = SEI).">opcode</abbr> at a time. A breadth-first path search finds the way to the target across a grid of occupied cells, giving up after 30 steps.</li>
+<li><strong>The <code>$C2</code> scene engine</strong> (1,936 bytes). A task system of 64 slots run every frame, a linked list of 64 sprites, the text window, the joypad reader with its soft reset on L+R+Select+Start, and the play-time clock.</li>
+</ul>
+<p><code>main</code> now stands at 51,397 bytes, 14.31% of the game's code, every byte of it independently verified.</p>
 <h2 id="next">Next</h2>
 <p>Keep the pipeline full: bank <code>$C1</code> from <code>$C1:49FF</code>, the remaining map steps of the <code>$C0</code> main loop, and the per-frame steps of the <code>$C2</code> scene.</p>
   

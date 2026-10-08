@@ -82,7 +82,23 @@ $C0:5B71,$C0:5B78,8,Map_LeaderPastRowMin,$C0,Engine,verified,59e99458658a,Map_Un
 $C0:5B79,$C0:5B85,13,Map_LeaderPastColMax,$C0,Engine,verified,cf5293197ab6,Map_Unk9175's test for a rightward step: C=1 when the leader's Obj_TileX >= Map_Unk1D1B.
 $C0:5B86,$C0:5B8C,7,Map_LeaderPastColMin,$C0,Engine,verified,6425a3892d59,Map_Unk9175's test for a leftward step: C=1 when the leader's Obj_TileX <= Map_Unk1D1A.
 $C0:75A0,$C0:75E8,73,Map_ClearBufC800,$C0,Engine,verified,2728cb0be397,"(was Map_Unk75A0.) Zeroes the 2 KB WRAM buffer Map_BufC800 ($7E:C800–$7E:CFFF) that Field_BuildC800Mode1/2/4 fill: the first MVN copies the 32 zero bytes at GfxRom_D2 to its start, and each later MVN "
-$C0:881E,$C0:8859,60,Field_FrameUpdate,$C0,Engine,verified,41629553031e,"Field work done every frame, before input-driven checks such as Field_ActionButton: resets Field_UnkEB (the action-button target) to none, then with DP=$1D00 runs Map_ResetUnk1D2E, clears Map_Unk1D2C/"
+$C0:8243,$C0:8262,32,Map_BuildRowYInc1,$C0,Engine,verified,f34cad52ae85,"Layer-1 row for a rising Y scroll: WMADD = Map_BufC800, Map_BuildCol = Map_TileOriginX - 1, Map_BuildLen = Map_EdgeRowLen, Map_BuildRow = Map_Unk1D10; runs Map_WriteRow1 and sets bit 0 in Map_BuiltRow"
+$C0:8263,$C0:8284,34,Map_BuildRowYInc2,$C0,Engine,verified,2886bc6e442e,"Layer-2 row for a rising Y scroll: WMADD = Map_BufD000, Map_BuildCol = Map_TileOriginX - 1, Map_BuildLen = Map_EdgeRowLen, Map_BuildRow = Map_Unk1D10; runs Map_WriteRow2 and sets bit 1 in Map_BuiltRow"
+$C0:8285,$C0:82A4,32,Map_BuildRowYInc2Half,$C0,Engine,verified,5a394232a07a,"Layer-2 row for a rising Y scroll: WMADD = Map_BufD000, Map_BuildCol = Map_Unk1D12 - 1, Map_BuildLen = Map_EdgeRowLen, Map_BuildRow = Map_Unk1D18; runs Map_WriteRow2 and sets bit 1 in Map_BuiltRowYInc"
+$C0:82A5,$C0:82C4,32,Map_BuildRowYInc3,$C0,Engine,verified,e64bf21d5dda,"Layer-3 row for a rising Y scroll: WMADD = Map_BufD800, Map_BuildCol = Map_TileOriginX - 1, Map_BuildLen = Map_EdgeRowLen, Map_BuildRow = Map_Unk1D10; runs Map_WriteRow3 and sets bit 2 in Map_BuiltRow"
+$C0:82C5,$C0:82E4,32,Map_BuildRowYDec1,$C0,Engine,verified,baf59cfbb716,"Layer-1 row for a falling Y scroll: WMADD = Map_BufC800, Map_BuildCol = Map_TileOriginX - 1, Map_BuildLen = Map_EdgeRowLen, Map_BuildRow = Map_TileOriginY; runs Map_WriteRow1 and sets bit 0 in Map_Bui"
+$C0:82E5,$C0:8304,32,Map_BuildRowYDec2,$C0,Engine,verified,76e164bb09d1,"Layer-2 row for a falling Y scroll: WMADD = Map_BufD000, Map_BuildCol = Map_TileOriginX - 1, Map_BuildLen = Map_EdgeRowLen, Map_BuildRow = Map_TileOriginY; runs Map_WriteRow2 and sets bit 1 in Map_Bui"
+$C0:8305,$C0:8324,32,Map_BuildRowYDec2Half,$C0,Engine,verified,6bd1c211a6ac,"Layer-2 row for a falling Y scroll: WMADD = Map_BufD000, Map_BuildCol = Map_Unk1D12 - 1, Map_BuildLen = Map_EdgeRowLen, Map_BuildRow = Map_Unk1D16; runs Map_WriteRow2 and sets bit 1 in Map_BuiltRowYDe"
+$C0:8325,$C0:8344,32,Map_BuildRowYDec3,$C0,Engine,verified,eaa0c173b6b3,"Layer-3 row for a falling Y scroll: WMADD = Map_BufD800, Map_BuildCol = Map_TileOriginX - 1, Map_BuildLen = Map_EdgeRowLen, Map_BuildRow = Map_TileOriginY; runs Map_WriteRow3 and sets bit 2 in Map_Bui"
+$C0:8345,$C0:8364,32,Map_BuildColXInc1,$C0,Engine,verified,b1af691d5c86,"Layer-1 column for a rising X scroll: WMADD = Map_BufC800 + Map_BufColOfs, Map_BuildCol = Map_Unk1D0C, Map_BuildLen = Map_EdgeColLen, Map_BuildRow = Map_TileOriginY - 1; runs Map_WriteCol1 and sets bi"
+$C0:8365,$C0:8384,32,Map_BuildColXInc2,$C0,Engine,verified,4a185a57417f,"Layer-2 column for a rising X scroll: WMADD = Map_BufD000 + Map_BufColOfs, Map_BuildCol = Map_Unk1D0C, Map_BuildLen = Map_EdgeColLen, Map_BuildRow = Map_TileOriginY - 1; runs Map_WriteCol2 and sets bi"
+$C0:8385,$C0:83A4,32,Map_BuildColXInc2Half,$C0,Engine,verified,6ca2a19e4b88,"Layer-2 column for a rising X scroll: WMADD = Map_BufD000 + Map_BufColOfs, Map_BuildCol = Map_Unk1D14, Map_BuildLen = Map_EdgeColLen, Map_BuildRow = Map_Unk1D16 - 1; runs Map_WriteCol2 and sets bit 1 "
+$C0:83A5,$C0:83C4,32,Map_BuildColXInc3,$C0,Engine,verified,bdd51a808f62,"Layer-3 column for a rising X scroll: WMADD = Map_BufD800 + Map_BufColOfs, Map_BuildCol = Map_Unk1D0C, Map_BuildLen = Map_EdgeColLen, Map_BuildRow = Map_TileOriginY - 1; runs Map_WriteCol3 and sets bi"
+$C0:83C5,$C0:83E4,32,Map_BuildColXDec1,$C0,Engine,verified,1db8ddfbfb3b,"Layer-1 column for a falling X scroll: WMADD = Map_BufC800 + Map_BufColOfs, Map_BuildCol = Map_TileOriginX, Map_BuildLen = Map_EdgeColLen, Map_BuildRow = Map_TileOriginY - 1; runs Map_WriteCol1 and se"
+$C0:83E5,$C0:8404,32,Map_BuildColXDec2,$C0,Engine,verified,e09b996b35ec,"Layer-2 column for a falling X scroll: WMADD = Map_BufD000 + Map_BufColOfs, Map_BuildCol = Map_TileOriginX, Map_BuildLen = Map_EdgeColLen, Map_BuildRow = Map_TileOriginY - 1; runs Map_WriteCol2 and se"
+$C0:8405,$C0:8424,32,Map_BuildColXDec2Half,$C0,Engine,verified,86f6f2620399,"Layer-2 column for a falling X scroll: WMADD = Map_BufD000 + Map_BufColOfs, Map_BuildCol = Map_Unk1D12, Map_BuildLen = Map_EdgeColLen, Map_BuildRow = Map_Unk1D16 - 1; runs Map_WriteCol2 and sets bit 1"
+$C0:8425,$C0:8444,32,Map_BuildColXDec3,$C0,Engine,verified,95b91c3f2717,"Layer-3 column for a falling X scroll: WMADD = Map_BufD800 + Map_BufColOfs, Map_BuildCol = Map_TileOriginX, Map_BuildLen = Map_EdgeColLen, Map_BuildRow = Map_TileOriginY - 1; runs Map_WriteCol3 and se"
+$C0:881E,$C0:8859,60,Field_FrameUpdate,$C0,Engine,verified,b4d6301c56c9,"Field work done every frame, before input-driven checks such as Field_ActionButton: resets Field_UnkEB (the action-button target) to none, then with DP=$1D00 runs Map_ResetUnk1D2E, clears Map_Unk1D2C/"
 $C0:885A,$C0:88E4,139,Field_Unk885A,$C0,Engine,verified,e57d3e91ea71,"A two-step job driven by Field_Unk38, run frame after frame by DefaultHandler's map-redraw path until it clears Field_Unk38: - Field_Unk38 = 1: zero Map_Unk1D2E/1D30/1D32/1D33."
 $C0:88E5,$C0:88ED,9,Map_ResetUnk1D2E,$C0,Engine,verified,8480009531b9,Copies Map_Unk1D2A to Map_Unk1D2E and Map_Unk1D2B to Map_Unk1D30 at the start of every Field_FrameUpdate (so those two hold per-frame values derived from a standing pair; meaning unknown).
 $C0:88EE,$C0:8901,20,Field_DpadDispatch,$C0,Engine,verified,24e4fd8879de,"Unless Field_Unk38 is busy, runs the Field_DpadHandlerTable entry picked by Pad_Unk00F9 bits 0-3 (16 entries; the D-pad bits, if Pad_Unk00F9 is laid out like Pad_Pressed's high byte), with 8-bit X/Y."
@@ -97,6 +113,32 @@ $C0:89D2,$C0:8A06,53,Field_DpadDownLeft,$C0,Engine,verified,026d25177df3,"Down+L
 $C0:8A07,$C0:8A3B,53,Field_DpadUpRight,$C0,Engine,verified,60f41876ecc0,"Up+Right: X step +$10 (sum up), Y step -$10 (sum down); $20 each instead while Pad_Unk00F8 bit 1 (Pad_Unk00F8Bit1) is set."
 $C0:8A3C,$C0:8A6C,49,Field_DpadUpLeft,$C0,Engine,verified,8a718bf06a16,"Up+Left: both steps -$10, both sums down by $10; $20 each instead while Pad_Unk00F8 bit 1 (Pad_Unk00F8Bit1) is set."
 $C0:9175,$C0:91AB,55,Map_Unk9175,$C0,Engine,verified,f5a5f8cfebf5,"Field_FrameUpdate's step after the D-pad: zeroes Map_Unk1D32/1D33, then copies Map_Unk1D2E (signed X step) into Map_Unk1D32 unless the leader is already at the limit in that direction (Map_LeaderPastC"
+$C0:91AC,$C0:93E0,565,Map_Unk91AC,$C0,Engine,verified,3b930c3021f6,"Adds up this frame's scroll amounts for three sets of layer scroll words and splits them into whole pixels for Map_Unk93E1, which runs next."
+$C0:93E1,$C0:944A,106,Map_Unk93E1,$C0,Engine,verified,ebfb866dcebe,"Applies the pixels Map_Unk91AC split out this frame to the three sets of scroll words, then has the new tilemap edges built: - zeroes Map_EdgeRowYInc/YDec and Map_EdgeColXInc/XDec; - layer 1: Map_Scro"
+$C0:944B,$C0:947C,50,Map_Scroll1XInc,$C0,Engine,verified,e3600a5261b3,"Layer 1, X rising: once per pixel in Map_Move1XPos, Map_Unk1D87 + 1 and the fine counter Map_Unk1D93 + 1 (0-$0F, wrapping)."
+$C0:947D,$C0:94AC,48,Map_Scroll1XDec,$C0,Engine,verified,05a1709ec87c,"Layer 1, X falling: as Map_Scroll1XInc with Map_Move1XNeg, stepping Map_Unk1D87 and Map_Unk1D93 down; the crossings are 0 to $0F and $08 to $07, and lower the low bytes of Map_Unk1D0C and Map_TileOrig"
+$C0:94AD,$C0:94DE,50,Map_Scroll1YInc,$C0,Engine,verified,fb4dac52a39e,"Layer 1, Y rising: as Map_Scroll1XInc with Map_Move1YPos, Map_Unk1D89 and the fine counter Map_Unk1D96; the crossings raise the low bytes of Map_TileOriginY and Map_Unk1D10 and store Map_Layer1 in Map"
+$C0:94DF,$C0:950E,48,Map_Scroll1YDec,$C0,Engine,verified,d6c34df7736b,"Layer 1, Y falling: as Map_Scroll1XDec with Map_Move1YNeg, Map_Unk1D89 and Map_Unk1D96; the crossings lower the low bytes of Map_TileOriginY and Map_Unk1D10 (in this order, unlike the X version) and s"
+$C0:950F,$C0:9544,54,Map_Scroll2XInc,$C0,Engine,verified,ab71337204a0,"Layer 2, X rising: once per pixel in Map_Move2XPos, Map_Unk1D8B + 1 and the fine counter Map_Unk1D94 + 1 (0-$0F, wrapping)."
+$C0:9545,$C0:9578,52,Map_Scroll2XDec,$C0,Engine,verified,7cf72069c252,"Layer 2, X falling: as Map_Scroll2XInc with Map_Move2XNeg, stepping down (crossings 0 to $0F and $08 to $07; Map_EdgeColXDec)."
+$C0:9579,$C0:95AE,54,Map_Scroll2YInc,$C0,Engine,verified,9b82e4555310,"Layer 2, Y rising: as Map_Scroll2XInc with Map_Move2YPos, Map_Unk1D8D and Map_Unk1D97 (Map_EdgeRowYInc)."
+$C0:95AF,$C0:95E2,52,Map_Scroll2YDec,$C0,Engine,verified,e1cf0db31db8,"Layer 2, Y falling: as Map_Scroll2XDec with Map_Move2YNeg, Map_Unk1D8D and Map_Unk1D97 (Map_EdgeRowYDec)."
+$C0:95E3,$C0:9618,54,Map_Scroll2XIncHalf,$C0,Engine,verified,d87b46a8228d,"Layer 2 at half rate, X rising (Map_Unk0BC9 bit 7): once per step in Map_Move2XPos the fine counter Map_Unk1D94 + 1, here 0-$1F (wrapping), and Map_Unk1D8B + 1 only when the new count is even, so the "
+$C0:9619,$C0:964C,52,Map_Scroll2XDecHalf,$C0,Engine,verified,5de6c963dc3a,"Layer 2 at half rate, X falling: as Map_Scroll2XIncHalf with Map_Move2XNeg, counting down (crossings 0 to $1F and $10 to $0F, which lower Map_Unk1D14 and Map_Unk1D12 and set Map_Layer2 in Map_EdgeColX"
+$C0:964D,$C0:9682,54,Map_Scroll2YIncHalf,$C0,Engine,verified,ee3ad424b67c,"Layer 2 at half rate, Y rising: as Map_Scroll2XIncHalf with Map_Move2YPos, Map_Unk1D97 and Map_Unk1D8D; the crossings raise Map_Unk1D16 and Map_Unk1D18 (Map_EdgeRowYInc)."
+$C0:9683,$C0:96B6,52,Map_Scroll2YDecHalf,$C0,Engine,verified,fb9b143f61a8,"Layer 2 at half rate, Y falling: as Map_Scroll2XDecHalf with Map_Move2YNeg, Map_Unk1D97 and Map_Unk1D8D; the crossings lower Map_Unk1D16 and Map_Unk1D18 (Map_EdgeRowYDec)."
+$C0:96B7,$C0:96EC,54,Map_Scroll3XInc,$C0,Engine,verified,3ea4abd68423,"Layer 3, X rising: as Map_Scroll2XInc with Map_Move3XPos, Map_Unk1D8F, Map_Unk1D95 and the Map_Layer3 bit."
+$C0:96ED,$C0:9720,52,Map_Scroll3XDec,$C0,Engine,verified,2e5494f64d54,"Layer 3, X falling: as Map_Scroll2XDec with Map_Move3XNeg, Map_Unk1D8F, Map_Unk1D95 and the Map_Layer3 bit."
+$C0:9721,$C0:975E,62,Map_Scroll3YInc,$C0,Engine,verified,fcd381349291,"Layer 3, Y rising: as Map_Scroll2YInc with Map_Move3YPos, Map_Unk1D91, Map_Unk1D98 and the Map_Layer3 bit; also adds 4 to Map_Unk1DFB per pixel (four INCs; what reads it is not traced)."
+$C0:975F,$C0:979A,60,Map_Scroll3YDec,$C0,Engine,verified,9a2bbb8015b0,"Layer 3, Y falling: as Map_Scroll2YDec with Map_Move3YNeg, Map_Unk1D91, Map_Unk1D98 and the Map_Layer3 bit; also subtracts 4 from Map_Unk1DFB per pixel."
+$C0:979B,$C0:97CB,49,Map_EdgeColsXInc,$C0,Engine,verified,49c96d5509a2,"For each layer bit set in Map_EdgeColXInc (1, 2, 3 in that order) runs that layer's column builder (Map_BuildColXInc1/2/3) and then adds 1 to the layer's column bias (Map_BgColBias, Map_BgColBias2, Ma"
+$C0:97CC,$C0:97FC,49,Map_EdgeColsXIncHalf,$C0,Engine,verified,4775861d64e6,"As Map_EdgeColsXInc, with Map_BuildColXInc2Half as layer 2's builder (used while Map_Unk0BC9 bit 7 is set)."
+$C0:97FD,$C0:982D,49,Map_EdgeColsXDec,$C0,Engine,verified,46aa0408ea7c,"As Map_EdgeColsXInc for Map_EdgeColXDec: builders Map_BuildColXDec1/ 2/3, and the column biases go down by 1 (wrapping at 64)."
+$C0:982E,$C0:985E,49,Map_EdgeColsXDecHalf,$C0,Engine,verified,bced012b4c07,"As Map_EdgeColsXDec, with Map_BuildColXDec2Half for layer 2."
+$C0:985F,$C0:988F,49,Map_EdgeRowsYInc,$C0,Engine,verified,5fb5b14f17fd,"As Map_EdgeColsXInc for rows: for each layer bit in Map_EdgeRowYInc runs Map_BuildRowYInc1/2/3 and adds 1 to the layer's row bias (Map_BgRowBias, Map_BgRowBias2, Map_BgRowBias3), wrapping at 32."
+$C0:9890,$C0:98C0,49,Map_EdgeRowsYIncHalf,$C0,Engine,verified,c75bc0451b69,"As Map_EdgeRowsYInc, with Map_BuildRowYInc2Half for layer 2."
+$C0:98C1,$C0:98F1,49,Map_EdgeRowsYDec,$C0,Engine,verified,3b84242b4c63,"As Map_EdgeRowsYInc for Map_EdgeRowYDec: builders Map_BuildRowYDec1/ 2/3, and the row biases go down by 1 (wrapping at 32)."
+$C0:98F2,$C0:9922,49,Map_EdgeRowsYDecHalf,$C0,Engine,verified,03df95527a61,"As Map_EdgeRowsYDec, with Map_BuildRowYDec2Half for layer 2."
 $C0:99DE,$C0:9A1E,65,Map_Unk99DE,$C0,Engine,verified,d998510b2f98,Field_FrameUpdate's step after Map_Unk9175: may drop the frame's steps in Map_Unk1D2E (X) and Map_Unk1D30 (Y).
 $C0:9A1F,$C0:9A3C,30,Map_StepStopDown,$C0,Engine,verified,9cb56fccdfe5,"Map_Unk99DE's test for a downward step, A = n (step / 16)."
 $C0:9A3D,$C0:9A5F,35,Map_StepStopUp,$C0,Engine,verified,f80d17f05281,"Map_Unk99DE's test for an upward step, A = n."
@@ -389,21 +431,90 @@ $C1:475B,$C1:4832,216,BattleAct_LoadKind3,$C1,Battle engine,verified,624c1ab1262
 $C1:4833,$C1:48EB,185,BattleAct_LoadCommon,$C1,Battle engine,verified,6d88546ce9da,
 $C1:48EC,$C1:4942,87,BattleAct_IndexObjLists,$C1,Battle engine,verified,0f4f6c8e8d21,
 $C1:4943,$C1:49FE,188,BattleAct_UnpackFrames,$C1,Battle engine,verified,aa85f71dd6b9,
+$C1:49FF,$C1:4A70,114,BattleAct_CheckReach,$C1,Battle engine,verified,9b4bbb9e91e4,"For a PC caster: sets !Battle_ActNear to 1, then to 0 when the main target (entry 3 of !Battle_ActBattlers) is not within 40 pixels (BattlePos_WithinDist40XY), and turns the caster towards the target "
+$C1:4A71,$C1:4BBD,333,BattleAct_FindPath,$C1,Battle engine,verified,a37e2f7ec312,"Breadth-first search on !Battle_PathMap from the cell of the start point ($80, $81) to the cell of the goal point ($82, $83); the cell of a point is (y & $F0) | (x >> 4)."
+$C1:4BBE,$C1:4C9D,224,BattleAct_RunThreads,$C1,Battle engine,verified,b52ff73bcbc8,"Runs one step of each live thread, in the order 0-4 then 8-15: thread n runs when its !Battle_ActThreadOn byte is non-zero, thread 4 only when !Battle_ActTargetMask is non-zero too, and threads 8-15 o"
+$C1:4C9E,$C1:4CEF,82,BattleAct_RunThread,$C1,Battle engine,verified,487d99d227d8,Runs one thread for this frame.
+$C1:4CF0,$C1:4CF6,7,BattleAct_OpEndThread,$C1,Battle engine,verified,edce4eb63b27,Opcode $00: switches the thread off (!Battle_ActThreadOn = 0).
+$C1:4CF7,$C1:4D03,13,BattleAct_OpEndScript,$C1,Battle engine,verified,603d1c6f8926,"Opcode $01, and the handler of every unused opcode in the table: counts !Battle_ActScriptDone up, which ends the action (service 4 waits for it)."
+$C1:4D04,$C1:4D07,4,BattleAct_OpLoopAnim,$C1,Battle engine,verified,b8facb7d4c73,
+$C1:4D08,$C1:4E21,282,BattleAct_StartAnim,$C1,Battle engine,verified,420a370574ba,
+$C1:4E22,$C1:4EA1,128,BattleAct_OpPlayAnim,$C1,Battle engine,verified,82c64f838b90,"Opcode $03 <n>: plays animation n once and waits for it to end, then advances 2."
+$C1:4EA2,$C1:4F19,120,BattleAct_OpShowAnimFrame,$C1,Battle engine,verified,3cc03f579139,"Opcodes $04-$06 <n> (one handler; the opcode is not looked at): starts animation n with the actor's stop byte set to 1, so that BattleAct_StepBattlerAnims shows its entry 0 and switches it off (presum"
+$C1:4F1A,$C1:4F53,58,BattleAct_OpResetSpeed,$C1,Battle engine,verified,2062c43a8341,"Opcode $07: sets the actor's move delay and speed (!Battle_ActorMoveDelay / !Battle_ActorMoveSpeed) back to the battler's defaults (!Battler_DefMoveDelay / !Battler_DefMoveSpeed, set at battle start b"
+$C1:4F54,$C1:4FBE,107,BattleAct_OpSetSpeed,$C1,Battle engine,verified,ca42f1182d15,
+$C1:4FBF,$C1:4FD0,18,BattleAct_OpMoveTo,$C1,Battle engine,verified,2a056f3ac10b,
+$C1:4FD1,$C1:4FE2,18,BattleAct_OpMoveToUnkPoint,$C1,Battle engine,verified,a2807f1e4e41,
+$C1:4FE3,$C1:4FEC,10,BattleAct_OpMoveToCalc,$C1,Battle engine,verified,6a10ea2d3914,
+$C1:4FED,$C1:5134,328,BattleAct_MoveToPoint,$C1,Battle engine,verified,66c934f037ca,
+$C1:5135,$C1:51ED,185,BattleAct_StartBattlerMove,$C1,Battle engine,verified,278664d51c5a,
+$C1:65BA,$C1:6670,183,BattleAct_CalcMoveStep,$C1,Battle engine,verified,e905d1e222ad,"Unit step of a straight move from !Battle_GeoOriginX/Y to !Battle_GeoPointX/Y, as signed 8.8 pixels: the axis with the larger distance (x on a tie) moves 1.0 ($0100) per step, the other (smaller * 256"
+$C1:75BB,$C1:75CB,17,BattleAct_AdvanceScript,$C1,Battle engine,verified,ed3894dbf886,"Moves the thread's script pointer !Battle_ActScriptPtr on by A bytes: a 16-bit add to the offset, with the carry going into the bank byte (added 16-bit, so DP $E9 takes part too)."
 $C2:0000,$C2:0002,3,BankC2_Entry0000,$C2,Engine,verified,8f79873f075c,"vectors, five JMPs reached from other banks by JML/JSL: $0000 BankC2_Entry0000 → BankC2_SceneBoot (JML from GameLoop_Main for Loc_Id $01F0-$81EF; it never returns) $0003 BankC2_Entry0003 and $0006 Ban"
 $C2:0003,$C2:0005,3,BankC2_Entry0003,$C2,Engine,verified,3820532e261c,
 $C2:0006,$C2:0008,3,BankC2_Entry0006,$C2,Engine,verified,5c579e7a1967,
 $C2:0009,$C2:000B,3,BankC2_Entry0009,$C2,Engine,verified,63f34dceaf41,
 $C2:000C,$C2:000E,3,BankC2_Entry000C,$C2,Engine,verified,3cd62bfe166d,
-$C2:000F,$C2:0042,52,BankC2_SceneBoot,$C2,Engine,verified,682c28b9d14c,Starts the bank's scene mode (inferred name: GameLoop_Main sends Loc_Id $01F0-$81EF here; what those locations show is not traced).
+$C2:000F,$C2:0042,52,BankC2_SceneBoot,$C2,Engine,verified,f4efc736e660,Starts the bank's scene mode (inferred name: GameLoop_Main sends Loc_Id $01F0-$81EF here; what those locations show is not traced).
 $C2:0043,$C2:010F,205,BankC2_InitHwRegs,$C2,Engine,verified,d96e085a8e79,"Writes the PPU registers from OBSEL to SETINI (all but INIDISP and the data ports OAMDATA, VMDATAL/H and CGDATA) and the CPU registers WRIO-VTIMEH with fixed values, through DP=$2100 and then DP=$4200"
 $C2:0110,$C2:012E,31,C2Scene_InstallInterrupts,$C2,Engine,verified,f13b4cbdf31e,"Writes JML C2Scene_NmiHandler and JML C2Scene_IrqHandler into the WRAM trampolines that the native NMI and IRQ stubs in bank $00 jump through, as InstallNMI/InstallIRQ ($C0:0B64/$0B75) do for the fiel"
 $C2:012F,$C2:015D,47,C2Scene_ClearDp,$C2,Engine,verified,0d6b367fd6c2,"Zeroes the direct page $00-$EF (an STZ of the first word, then an overlapping MVN), then sets the PPU shadows that C2Scene_NmiHandler copies out to their starting values: forced blank, mode 1 with BG3"
-$C2:015E,$C2:0344,487,C2Scene_NmiHandler,$C2,Engine,verified,e5ca264eebdd,"The scene mode's NMI (reached through !NmiTrampoline, installed by C2Scene_InstallInterrupts)."
+$C2:015E,$C2:0344,487,C2Scene_NmiHandler,$C2,Engine,verified,762c159a3bbf,"The scene mode's NMI (reached through !NmiTrampoline, installed by C2Scene_InstallInterrupts)."
 $C2:0345,$C2:0345,1,C2Scene_IrqHandler,$C2,Engine,verified,83e137cdf0d9,(installed by C2Scene_InstallInterrupts; nothing here enables IRQs).
 $C2:0346,$C2:034C,7,C2Scene_WaitFrame,$C2,Engine,verified,3a0410c96062,Waits until the next NMI: spins until C2Scene_FrameCounter changes.
+$C2:034D,$C2:03EE,162,C2Scene_HideAllSprites,$C2,Engine,verified,0253a668e8b4,"Parks all 128 sprites of the OAM shadow below the screen: Y = Oam_HiddenY in every low-table entry, and the high table zeroed (small size, X bit 8 clear)."
+$C2:03EF,$C2:0404,22,C2Scene_VramQInit,$C2,Engine,verified,aaf3b93eabf7,"Empties and unlocks the VRAM upload queue: clears C2Scene_VramQLock and C2Scene_VramQEnd, points C2Scene_VramQBufPtr at C2Scene_VramQBuf ($7E:F000) and zeroes all 16 C2Scene_VramQ entries (dp $60-$DF)"
 $C2:0405,$C2:0453,79,C2Scene_VramQFlush,$C2,Engine,verified,c82ffcb74e7f,"Runs the queued VRAM uploads: for each 8-byte C2Scene_VramQ entry up to C2Scene_VramQEnd, one DMA on channel 0 (word writes to VMDATAL/H) from .Bank:.Src, .Size bytes, to VRAM word .Dest with VMAIN = "
+$C2:0454,$C2:046D,26,C2Scene_WaitFrames,$C2,Engine,verified,e8ad439edc74,Waits X frames (C2Scene_WaitFrame each time).
+$C2:046E,$C2:0470,3,C2Scene_WaitOneFrame,$C2,Engine,verified,20930155839b,A JMP to C2Scene_WaitFrame: waits for the next NMI without sending a pending sound command.
+$C2:0471,$C2:0489,25,C2Scene_TaskClearAll,$C2,Engine,verified,27ae59bd54a3,"Frees all 64 task records (zeroes each .Handler) and points C2Scene_TaskCur at the first record, so that tasks spawned before any task runs copy their parameters from record 0."
+$C2:048A,$C2:0493,10,C2Scene_TaskSpawn,$C2,Engine,verified,a32619435854,
+$C2:0494,$C2:04CC,57,C2Scene_TaskSpawn_Search,$C2,Engine,verified,5225bf840030,
+$C2:04CD,$C2:04D8,12,C2Scene_TaskSpawnLow,$C2,Engine,verified,6a8c354d177e,C2Scene_TaskSpawn over records 0-3 only: the same search and setup (it branches into C2Scene_TaskSpawn_Search).
+$C2:04D9,$C2:04FA,34,C2Scene_TaskSpawnScript,$C2,Engine,verified,311a8138d75e,
+$C2:04FB,$C2:051C,34,C2Scene_TaskSpawnScriptLow,$C2,Engine,verified,58557068a39e,C2Scene_TaskSpawnScript in records 0-3 (C2Scene_TaskSpawnLow).
+$C2:051D,$C2:0552,54,C2Scene_TaskRunAll,$C2,Engine,verified,8469509ac0d7,"Runs every live task once (from the NMI, each frame): for each record of C2Scene_TaskRecords with a non-zero .Handler, sets C2Scene_TaskCur to it and calls the handler (C2Scene_TaskCallHandler) with X"
+$C2:0553,$C2:0555,3,C2Scene_TaskCallHandler,$C2,Engine,verified,40d7bad46760,"JMP (C2Scene_TaskHandler): a JSR here calls the task's handler, which returns to C2Scene_TaskRunAll."
+$C2:0B53,$C2:0BF5,163,C2Scene_SprAdd,$C2,Engine,verified,2707be8b2be7,"Takes the first node off the free list and fills it from the running task (C2Scene_TaskCur): .X = .SprX, .Y = .SprY, .Tile = .SprTile, .Attr = .SprAttr, .Frame = C2Scene_SprFramePtr."
+$C2:0BF6,$C2:0C4C,87,C2Scene_SprInitLinks,$C2,Engine,verified,c5855593b677,
+$C2:0C4D,$C2:0CE9,157,C2Scene_SprResetLists,$C2,Engine,verified,d3fd77aa427c,
+$C2:0CEA,$C2:0D07,30,C2Scene_SprDrawList,$C2,Engine,verified,87499f6a8a78,
+$C2:0D08,$C2:0E0C,261,C2Scene_SprDrawNode,$C2,Engine,verified,bfda25262cf6,
+$C2:0E0D,$C2:0E1C,16,C2Scene_OamHiBitsTable,$C2,Engine,verified,1741301fa17f,"The OAM high-table bits of one sprite, indexed by (slot AND 3) * 4 + size * 2 + X bit 8: the 2-bit value size:Xbit8 shifted to the slot's place in its byte (C2Scene_SprDrawNode)."
+$C2:1DB5,$C2:1DD3,31,C2Scene_ClearPalette,$C2,Engine,verified,e600d79a86ed,"Zeroes C2Scene_PaletteBuf (512 B, $0920-$0B1F: every color black) and the 16 bytes after it, C2Scene_Unk0B20 ($0B20-$0B2F), a word at a time."
 $C2:225A,$C2:225D,4,Trig_Cos1024,$C2,Engine,verified,7080f9fc7e20,"Signed sine or cosine of a 16-bit angle with 1024 steps per turn, read from !Rom_SineTable: A = sin(angle) × 255 (−255..+255; the table holds |sin| as one byte per step, negated for the second half tu"
 $C2:225E,$C2:2272,21,Trig_Sin1024,$C2,Engine,verified,f2df418408aa,
+$C2:232D,$C2:2335,9,C2Scene_ClearUnk1B30,$C2,Engine,verified,a0a52cbf84c0,"Zeroes the two bytes right after the task records, C2Scene_Unk1B30 and C2Scene_Unk1B31 (their use is not traced)."
+$C2:23A8,$C2:23CE,39,C2Scene_Main,$C2,Engine,verified,792aacd9401d,"C2Scene_MainLoop at $C2:23CF) The scene mode's main program, entered once from BankC2_SceneBoot."
+$C2:23CF,$C2:23DA,12,C2Scene_MainLoop,$C2,Engine,verified,c318a513a179,
+$C2:23DB,$C2:23EE,20,C2Scene_ModeTable,$C2,Engine,verified,66dfcc1b4965,C2Scene_MainLoop's handler for each C2Scene_Mode value 0-9.
+$C2:23EF,$C2:2401,19,C2Scene_ModeIdle,$C2,Engine,verified,1d838647aa12,"C2Scene_Mode 0, 1 and 7: if a sound command is pending (C2Scene_SoundCmdState), sends it with Audio_DriverCommand as C2Scene_WaitFrames does; then back to C2Scene_MainLoop."
+$C2:26A8,$C2:26D3,44,C2Scene_ClearVram,$C2,Engine,verified,325d7f351c03,"Zeroes all of VRAM with one DMA on channel 7: word writes to VMDATAL/H from the fixed source C2Scene_ZeroWord, VRAM address 0, a byte count of 0 (= 65536 bytes)."
+$C2:26D4,$C2:26D5,2,C2Scene_ZeroWord,$C2,Engine,verified,74f2b3e91aa1,The fixed DMA source of C2Scene_ClearVram.
+$C2:26D6,$C2:26EF,26,C2Scene_SaveFlagTail,$C2,Engine,verified,d6c92edf10d7,Copies the last 16 bytes of Menu_FlagBlock7F ($7F:01F0-$01FF) to C2Scene_FlagTailCopy and its first byte (Eng_Unk7F0000) to C2Scene_Flag0Copy.
+$C2:26F0,$C2:2702,19,C2Scene_RestoreFlagTail,$C2,Engine,verified,ed14471e3a93,"Copies C2Scene_FlagTailCopy (16 bytes) back to $7F:01F0-$01FF, the end of Menu_FlagBlock7F (C2Scene_Flag0Copy is not written back)."
+$C2:2703,$C2:271F,29,C2Scene_SetStartPos,$C2,Engine,verified,fbdcd397ac8f,"C2Scene_StartX/Y = the field's entry tile (Loc_EntryX/Y, in the field's direct page at $0100) times 8: probably the start position in pixels (inferred only from the scaling)."
+$C2:2720,$C2:274C,45,C2Scene_SetStartScroll,$C2,Engine,verified,ecc38b1d4a6e,"Puts the entry tile (Loc_EntryX/Y) in the middle of the screen: C2Scene_BgTileX (both words) = Loc_EntryX - 16, plus 192 if that is negative; C2Scene_BgTileY (both words) = Loc_EntryY - 14, plus 128 i"
+$C2:57DF,$C2:5822,68,TextWin_Init,$C2,Engine,verified,755fe9a050b7,"Starts string TextWin_StrIndex: TextWin_TextPtr = the 16-bit entry TextWin_StrIndex of the table at TextWin_StrTable, in the table's bank; state 0 (TextWin_State), status TextWin_StatusStart, TextWin_"
+$C2:5823,$C2:5841,31,TextWin_Step,$C2,Engine,verified,9e8279594b18,"One step of the text box: TextWin_CheckStatus decides from TextWin_Status whether to go on (C=0); if so, the handler of TextWin_State in TextWin_StateTable runs."
+$C2:5842,$C2:5849,8,TextWin_StateTable,$C2,Engine,verified,5cf3e69044c4,TextWin_Step's handler for each TextWin_State (unmatched).
+$C2:584A,$C2:5850,7,TextWin_CheckStatus,$C2,Engine,verified,03a2124da37c,"Jumps to TextWin_Status's handler in TextWin_StatusTable, which returns C=1 to skip this step's state handler (status 0, TextWin_StatusIdle) or C=0 to run it."
+$C2:5851,$C2:5892,66,TextWin_StatusTable,$C2,Engine,verified,cdd63861d029,TextWin_CheckStatus's handler for each TextWin_Status value $00-$20.
+$C2:5893,$C2:5894,2,TextWin_StatusIdle,$C2,Engine,verified,cb8191ca96ea,Status 0: nothing to do; C=1 so TextWin_Step skips the state handler.
+$C2:5895,$C2:5896,2,TextWin_StatusRun,$C2,Engine,verified,90c17750f3f5,"sub-entries TextWin_StatusPenLeft $C2:5897 and TextWin_StatusPenIndent $C2:589B) TextWin_StatusRun: C=0, run the state handler."
+$C2:5897,$C2:589A,4,TextWin_StatusPenLeft,$C2,Engine,verified,cccda450c1f7,
+$C2:589B,$C2:58B1,23,TextWin_StatusPenIndent,$C2,Engine,verified,47b764f0d2e2,
+$C2:8000,$C2:8001,2,BankC2_Entry8000,$C2,Engine,verified,f9cf58c7e936,"BankC2_Entry8004, $8000–$8005) Three BRAs, the bank's second set of fixed entry points, each reached by JSL from other banks: $8000 BankC2_Entry8000 → BankC2_MenuEntry (A = an argument chosen by the c"
+$C2:8002,$C2:8003,2,BankC2_Entry8002,$C2,Engine,verified,1883bd9c0530,
+$C2:8004,$C2:8005,2,BankC2_Entry8004,$C2,Engine,verified,53cd6a095362,
+$C2:8006,$C2:8009,4,BankC2_ReadPadLong,$C2,Engine,verified,bc4fbbd176f9,Menu_ReadPad as a long call (the BankC2_Entry8002 vector).
+$C2:800A,$C2:800D,4,BankC2_CommandLong,$C2,Engine,verified,9ac6093468a6,Menu_Unk8C36 as a long call (the BankC2_Entry8004 vector).
+$C2:84D2,$C2:84EB,26,Menu_ReadPad,$C2,Engine,verified,827b81326a97,"The pad reader behind BankC2_Entry8002, run once a frame by the scene NMI and by other banks: reads joypad 1 (Menu_PollPad), maps it through the button configuration (Menu_MapButtons) and advances the"
+$C2:84EC,$C2:8544,89,Menu_PollPad,$C2,Engine,verified,dc59c9d20eb3,"Waits for the auto-joypad read to finish and rebuilds the pad words from JOY1 (layout as Pad_Pressed: low byte A X L R B Y Select Start, high byte Up Down Left Right in bits 3-0): - Menu_PadPrevHeld ="
+$C2:8545,$C2:8554,16,Menu_MapButtons,$C2,Engine,verified,c146b464f515,"Menu_MapButtonsOne at $C2:8555) Turns the three pad words into the game's button bytes through the configured button map (Menu_ButtonMap, 8 JOY1-layout masks): bit n of the result is set when every bu"
+$C2:8555,$C2:85AD,89,Menu_MapButtonsOne,$C2,Engine,verified,0ecb234d4603,
+$C2:85AE,$C2:85CF,34,Menu_TickPlayTime,$C2,Engine,verified,d89f04199be2,"Adds one frame to the play-time clock unless Menu_PlayTimePaused is set: Menu_PlayTime byte 0 counts up, and each byte that reaches its limit in Menu_PlayTimeLimits goes back to 0 and carries into the"
+$C2:85D0,$C2:85D5,6,Menu_PlayTimeLimits,$C2,Engine,verified,e66d8d45ad06,"The count at which each Menu_PlayTime byte wraps, lowest first: frames (60), seconds (60), minutes in two digits (10, then 6) and hours in two digits (10, 10)."
 $C2:940D,$C2:950F,259,Menu_InitPpuAndRam,$C2,Engine,verified,78d1a70fa43b,"Puts the PPU and CPU registers into the menu's starting state, then clears all of VRAM and most of bank $7E with DMA."
 $C2:9510,$C2:9511,2,Menu_DmaZeroWord,$C2,Engine,verified,0b8bae3fc865,Menu_InitPpuAndRam's VRAM clear and of Menu_DmaClearWram.
 $C2:9512,$C2:9541,48,Menu_DmaClearWram,$C2,Engine,verified,060735f6467b,"Zeroes Y bytes of bank $7E from address X with DMA channel 0 (fixed source Menu_DmaZeroWord, one register: WMDATA)."
