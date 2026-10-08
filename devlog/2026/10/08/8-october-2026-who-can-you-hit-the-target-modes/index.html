@@ -184,21 +184,21 @@
       <div class="wk-party">
         <div class="wk-party-row" title="Bytes matched: the rebuilt ROM is byte-identical here">
           <span class="wk-party-k">HP</span>
-          <span class="wk-party-v">71,206<small>/359,278</small></span>
+          <span class="wk-party-v">78,643<small>/359,278</small></span>
         </div>
-        <div class="wk-stat-track"><div class="wk-stat-fill" style="width:19.82%"></div></div>
-        <p class="wk-party-note">bytes matched · 19.82% of code</p>
+        <div class="wk-stat-track"><div class="wk-stat-fill" style="width:21.89%"></div></div>
+        <p class="wk-party-note">bytes matched · 21.89% of code</p>
 
         <div class="wk-party-row" title="Matched functions that also meet the readability standard">
           <span class="wk-party-k">MP</span>
-          <span class="wk-party-v">799<small>/799</small></span>
+          <span class="wk-party-v">922<small>/922</small></span>
         </div>
         <div class="wk-stat-track"><div class="wk-stat-fill wk-stat-fill-mp" style="width:100.0%"></div></div>
         <p class="wk-party-note">functions readable</p>
 
         <div class="wk-party-row" title="Readable functions that passed an independent review">
           <span class="wk-party-k">TP</span>
-          <span class="wk-party-v">799<small>/799</small></span>
+          <span class="wk-party-v">922<small>/922</small></span>
         </div>
         <div class="wk-stat-track"><div class="wk-stat-fill wk-stat-fill-dim" style="width:100.0%"></div></div>
         <p class="wk-party-note">functions verified</p>
@@ -395,8 +395,15 @@
 <li><strong>Arc moves and moves along a heading</strong> (<code>$C1</code>, 2,485 bytes). Review found that on thread 4 one of them sets every actor's angle and facing but never their "moving" flag, so none of them moves; the header now says so.</li>
 </ul>
 <p><code>main</code> now stands at 71,206 bytes, 19.82% of the game's code, every byte of it independently verified.</p>
+<p>In the evening, after a pause for the usage limit:</p>
+<ul>
+<li><strong>Battle action <abbr title="First bytes of CPU instructions, identifying operations (e.g. $60 = RTS, $78 = SEI).">opcodes</abbr> $C0-$DA and the <abbr title="The first byte of a CPU instruction, identifying the operation (e.g. $60 = RTS, $78 = SEI).">opcode</abbr> table</strong> (<code>$C1</code>, 2,704 bytes). Circular and elliptical moves, pointing at a calculated target, counters and attribute bits, and the full 224-entry <abbr title="The first byte of a CPU instruction, identifying the operation (e.g. $60 = RTS, $78 = SEI).">opcode</abbr> table with its four loaders. Review caught that the step <abbr title="The first byte of a CPU instruction, identifying the operation (e.g. $60 = RTS, $78 = SEI).">opcode</abbr>, which adds in 8 bits until it hits its target, can miss forever: a step of 0, or an even step across an odd gap, never lands on it. The header now says exactly when.</li>
+<li><strong>The rest of the <code>$C0</code> location load</strong> (2,127 bytes). Tileset, metatile and palette steps, the event data and object init, and the scene reload with its palette and upload helpers.</li>
+<li><strong>All of the <code>$C2</code> scene script <abbr title="First bytes of CPU instructions, identifying operations (e.g. $60 = RTS, $78 = SEI).">opcodes</abbr></strong> (2,606 bytes). The last 29 <abbr title="First bytes of CPU instructions, identifying operations (e.g. $60 = RTS, $78 = SEI).">opcodes</abbr>, the tile upload task, palette fades, screen fades and mosaic. One <abbr title="The first byte of a CPU instruction, identifying the operation (e.g. $60 = RTS, $78 = SEI).">opcode</abbr> that compares a task's age turned out not to stop "for good": the 16-bit frame counter keeps counting while it waits, so it resumes once that counter wraps round to 0.</li>
+</ul>
+<p><code>main</code> now stands at 78,643 bytes, 21.89% of the game's code, all 922 <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr> routines independently verified.</p>
 <h2 id="next">Next</h2>
-<p>Keep the pipeline full: bank <code>$C1</code> from <abbr title="The first byte of a CPU instruction, identifying the operation (e.g. $60 = RTS, $78 = SEI).">opcode</abbr> handler <code>$C1:6CF3</code>, the rest of the <code>$C0</code> location load, and the remaining <code>$C2</code> scene script <abbr title="First bytes of CPU instructions, identifying operations (e.g. $60 = RTS, $78 = SEI).">opcodes</abbr>.</p>
+<p>Keep the pipeline full: the <code>$C1</code> calculation handlers from <code>$C1:75CC</code>, the <code>$C0</code> scene reload callees and audio setup, and the <code>$C2</code> scene modes and text decoder.</p>
   
   <p class="wk-post-back"><a href="../../../../">← Back to devlog</a></p>
 </article>
