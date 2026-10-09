@@ -216,21 +216,21 @@
       <div class="wk-party">
         <div class="wk-party-row" title="Bytes matched: the rebuilt ROM is byte-identical here">
           <span class="wk-party-k">HP</span>
-          <span class="wk-party-v">166,187<small>/358,356</small></span>
+          <span class="wk-party-v">170,895<small>/358,356</small></span>
         </div>
-        <div class="wk-stat-track"><div class="wk-stat-fill" style="width:46.37%"></div></div>
-        <p class="wk-party-note">code bytes matched · 46.37% of code · 10,444 B data</p>
+        <div class="wk-stat-track"><div class="wk-stat-fill" style="width:47.69%"></div></div>
+        <p class="wk-party-note">code bytes matched · 47.69% of code · 10,748 B data</p>
 
         <div class="wk-party-row" title="Matched functions that also meet the readability standard">
           <span class="wk-party-k">MP</span>
-          <span class="wk-party-v">2290<small>/2290</small></span>
+          <span class="wk-party-v">2403<small>/2403</small></span>
         </div>
         <div class="wk-stat-track"><div class="wk-stat-fill wk-stat-fill-mp" style="width:100.0%"></div></div>
         <p class="wk-party-note">functions readable</p>
 
         <div class="wk-party-row" title="Readable functions that passed an independent review">
           <span class="wk-party-k">TP</span>
-          <span class="wk-party-v">2290<small>/2290</small></span>
+          <span class="wk-party-v">2403<small>/2403</small></span>
         </div>
         <div class="wk-stat-track"><div class="wk-stat-fill wk-stat-fill-dim" style="width:100.0%"></div></div>
         <p class="wk-party-note">functions verified</p>
@@ -257,7 +257,7 @@
           <li>
             <a href="#9-october-2026-event-commands-battle-effects-the-dial-and-the-menu-threads" class="wk-toc-link">9 October 2026: event commands, battle effects, the dial and the menu threads</a>
             
-            <ol><li><a href="#event-commands-part-two" class="wk-toc-link">Event commands, part two</a></li><li><a href="#targets-and-effects" class="wk-toc-link">Targets and effects</a></li><li><a href="#housekeeping" class="wk-toc-link">Housekeeping</a></li><li><a href="#the-map-view-and-the-dial" class="wk-toc-link">The map view and the dial</a></li><li><a href="#the-effect-arithmetic" class="wk-toc-link">The effect arithmetic</a></li><li><a href="#the-last-event-commands" class="wk-toc-link">The last event commands</a></li><li><a href="#the-menus-threads-and-the-scene-effects" class="wk-toc-link">The menu's threads and the scene effects</a></li><li><a href="#hit-modifiers-experience-and-tech-points" class="wk-toc-link">Hit modifiers, experience and tech points</a></li><li><a href="#bank-c0-is-complete" class="wk-toc-link">Bank $C0 is complete</a></li><li><a href="#counting-code-and-data-separately" class="wk-toc-link">Counting code and data separately</a></li><li><a href="#catching-one-kind-of-mistake-for-good" class="wk-toc-link">Catching one kind of mistake for good</a></li><li><a href="#enemy-behaviour-scripts" class="wk-toc-link">Enemy behaviour scripts</a></li><li><a href="#the-message-windows-frame-and-the-palette-animator" class="wk-toc-link">The message window's frame and the palette animator</a></li><li><a href="#next" class="wk-toc-link">Next</a></li></ol>
+            <ol><li><a href="#event-commands-part-two" class="wk-toc-link">Event commands, part two</a></li><li><a href="#targets-and-effects" class="wk-toc-link">Targets and effects</a></li><li><a href="#housekeeping" class="wk-toc-link">Housekeeping</a></li><li><a href="#the-map-view-and-the-dial" class="wk-toc-link">The map view and the dial</a></li><li><a href="#the-effect-arithmetic" class="wk-toc-link">The effect arithmetic</a></li><li><a href="#the-last-event-commands" class="wk-toc-link">The last event commands</a></li><li><a href="#the-menus-threads-and-the-scene-effects" class="wk-toc-link">The menu's threads and the scene effects</a></li><li><a href="#hit-modifiers-experience-and-tech-points" class="wk-toc-link">Hit modifiers, experience and tech points</a></li><li><a href="#bank-c0-is-complete" class="wk-toc-link">Bank $C0 is complete</a></li><li><a href="#counting-code-and-data-separately" class="wk-toc-link">Counting code and data separately</a></li><li><a href="#catching-one-kind-of-mistake-for-good" class="wk-toc-link">Catching one kind of mistake for good</a></li><li><a href="#enemy-behaviour-scripts" class="wk-toc-link">Enemy behaviour scripts</a></li><li><a href="#the-message-windows-frame-and-the-palette-animator" class="wk-toc-link">The message window's frame and the palette animator</a></li><li><a href="#the-menus-commands-and-the-main-menu" class="wk-toc-link">The menu's commands and the main menu</a></li><li><a href="#next" class="wk-toc-link">Next</a></li></ol>
             
           </li>
           
@@ -344,8 +344,12 @@
 <h2 id="the-message-windows-frame-and-the-palette-animator">The message window's frame and the palette animator</h2>
 <p>In <code>$FD</code> (5,805 bytes), the routines that build the field's per-line display tables are <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr>. They draw a band across the screen that opens line by line from the middle of a fixed position, near the top or the bottom depending on where the speaker stands, and it turned out to be the message window: the field's message code opens it by up to four lines a frame, to 40, and closes it again. The other half is the palette animator that runs every frame, copying, rotating, pulsing and fading colours, with a quirk where a pulse goes black for one frame where full brightness was meant.</p>
 <p><code>main</code> now stands at 166,187 of 358,356 code bytes, 46.37%, plus 10,444 bytes of data, all 2,290 <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr> routines independently verified.</p>
+<h2 id="the-menus-commands-and-the-main-menu">The menu's commands and the main menu</h2>
+<p>The last batch of the day (<code>$C2</code>, about 5,000 bytes) fills in most of what the menu does before any screen opens: the command dispatcher the field and battle code call to change the party, refill records, check the save slots at boot and equip items; every setup routine the menu runs when it starts (graphics, <abbr title="Object Attribute Memory — the PPU's 512+32-byte sprite table (up to 128 sprites: X/Y, tile, palette, size).">OAM</abbr>, the item tables, the window graphics and palette); the recalculation of a character's stats from their equipment; the save-slot summaries and labels; the menu's animated character sprites; and the main menu itself. The handlers of the other menu modes are next.</p>
+<p>Two quirks worth knowing: the routine that multiplies by 64 only keeps A intact when called with a 16-bit accumulator, and one save-slot summary writes three flag bytes over the start of data it has just copied.</p>
+<p><code>main</code> now stands at 170,895 of 358,356 code bytes, 47.69%, plus 10,748 bytes of data, all 2,403 <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr> routines independently verified.</p>
 <h2 id="next">Next</h2>
-<p>A large <code>$C2</code> batch (the menu's command dispatcher, setup, stat recalculation, save-slot summaries, sprites and the main menu) is in its final review. Matching continues with the enemy scripts' target handlers in <code>$C1</code> and the rest of the palette animator in <code>$FD</code>, while a survey maps the banks no one has started yet.</p>
+<p>Matching continues with the menu's mode handlers in <code>$C2</code>, the enemy scripts' target handlers in <code>$C1</code> and the rest of the palette animator in <code>$FD</code>, while a survey maps the banks no one has started yet.</p>
   
   <p class="wk-post-back"><a href="../../../../">← Back to devlog</a></p>
 </article>

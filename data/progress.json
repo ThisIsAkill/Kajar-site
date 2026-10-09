@@ -1,26 +1,26 @@
 {
   "schema": 3,
-  "emitted_bytes": 176631,
+  "emitted_bytes": 181643,
   "code_bytes": 358356,
   "surveyed_code_bytes": 358356,
   "totals": {
     "matched": {
-      "functions": 2290,
-      "bytes": 176631,
-      "code_bytes": 166187,
-      "data_bytes": 10444
+      "functions": 2403,
+      "bytes": 181643,
+      "code_bytes": 170895,
+      "data_bytes": 10748
     },
     "readable": {
-      "functions": 2290,
-      "bytes": 176631,
-      "code_bytes": 166187,
-      "data_bytes": 10444
+      "functions": 2403,
+      "bytes": 181643,
+      "code_bytes": 170895,
+      "data_bytes": 10748
     },
     "verified": {
-      "functions": 2290,
-      "bytes": 176631,
-      "code_bytes": 166187,
-      "data_bytes": 10444
+      "functions": 2403,
+      "bytes": 181643,
+      "code_bytes": 170895,
+      "data_bytes": 10748
     }
   },
   "banks": [
@@ -79,24 +79,24 @@
       "code_bytes": null,
       "surveyed_code_bytes": null,
       "survey_low": false,
-      "emitted_bytes": 36278,
+      "emitted_bytes": 41290,
       "matched": {
-        "functions": 769,
-        "bytes": 36278,
-        "code_bytes": 33184,
-        "data_bytes": 3094
+        "functions": 882,
+        "bytes": 41290,
+        "code_bytes": 37892,
+        "data_bytes": 3398
       },
       "readable": {
-        "functions": 769,
-        "bytes": 36278,
-        "code_bytes": 33184,
-        "data_bytes": 3094
+        "functions": 882,
+        "bytes": 41290,
+        "code_bytes": 37892,
+        "data_bytes": 3398
       },
       "verified": {
-        "functions": 769,
-        "bytes": 36278,
-        "code_bytes": 33184,
-        "data_bytes": 3094
+        "functions": 882,
+        "bytes": 41290,
+        "code_bytes": 37892,
+        "data_bytes": 3398
       }
     },
     {
@@ -2637,7 +2637,7 @@
       "bank": "$C2",
       "start": "$C2:8000",
       "end": "$C2:8FFF",
-      "emitted_bytes": 2985,
+      "emitted_bytes": 3629,
       "functions": [
         "BankC2_Entry8000",
         "BankC2_Entry8002",
@@ -2684,6 +2684,7 @@
         "Menu_MapButtonsOne",
         "Menu_TickPlayTime",
         "Menu_PlayTimeLimits",
+        "Menu_NmiUpload",
         "Menu_FlushVramQueue",
         "Menu_UploadPalette",
         "Menu_BuildGradient",
@@ -2719,66 +2720,183 @@
         "Menu_CursorPosAB",
         "Menu_StartListArrows",
         "Menu_Times4",
-        "Menu_ListArrowsThread"
+        "Menu_ListArrowsThread",
+        "Menu_RunCommand",
+        "Menu_RunCommand_Return",
+        "Menu_CommandTable",
+        "Menu_CmdFindInParty",
+        "Menu_CmdAddToParty",
+        "Menu_CmdJoin",
+        "Menu_CmdPartyToReserve",
+        "Menu_CmdPushReserve",
+        "Menu_CmdFindListed",
+        "Menu_CmdFindListed_Limit",
+        "Menu_CmdAddToReserve",
+        "Menu_CmdUnlist",
+        "Menu_CmdRefillWord3",
+        "Menu_RecRefillWord3",
+        "Menu_CmdRefillByte7",
+        "Menu_CmdSetSram7FE2",
+        "Menu_CmdBootCheckSaves",
+        "Menu_CmdEquip",
+        "Menu_EquipNoneIds",
+        "Menu_CmdEquipItem",
+        "Menu_CmdItemCount"
       ]
     },
     {
       "bank": "$C2",
       "start": "$C2:9000",
       "end": "$C2:9FFF",
-      "emitted_bytes": 510,
+      "emitted_bytes": 2810,
       "functions": [
+        "Menu_CharRecalc",
+        "Menu_CharCalcStats",
+        "Menu_AttackFormulas",
+        "Menu_AttackFormulaA",
+        "Menu_AttackFormulaB",
+        "Menu_AttackFormulaC",
+        "Menu_EquipSlotStats",
+        "Menu_EquipStatTable",
+        "Menu_EquipStatWeapon",
+        "Menu_EquipStatCat1",
+        "Menu_EquipStatCat2",
+        "Menu_EquipStatCat3",
+        "Menu_AddItemBoosts",
+        "Menu_UnpackConfig",
+        "Menu_PackConfig",
+        "Menu_CanEquip",
+        "Menu_PageScroll",
         "Menu_InitPpuAndRam",
         "Menu_DmaZeroWord",
         "Menu_DmaClearWram",
         "Menu_DmaCopyFFToWram",
         "Menu_InitNewGameData",
-        "Menu_ClearConfigAndFlags"
+        "Menu_ClearConfigAndFlags",
+        "Menu_Expand3bppTiles",
+        "Menu_TilesOrPlane3",
+        "Menu_TilesOrPlanes23",
+        "Menu_TileOrPlane2",
+        "Menu_LoadGraphics",
+        "Menu_ClearOam",
+        "Menu_BuildItemTables",
+        "Menu_CleanInventory",
+        "Menu_RefreshAllChars",
+        "Menu_Mode00List",
+        "Menu_MainMenuInit",
+        "Menu_MainMenuLoop",
+        "Menu_ReturnToMainMenu",
+        "Menu_MainMenuMaps",
+        "Menu_MainMenuPreview",
+        "Menu_MainPreviewTable",
+        "Menu_MainMenuRedraw",
+        "Menu_MainRedrawTable",
+        "Menu_MainMenuIcons",
+        "Menu_MainIconSprites",
+        "Menu_Mode01List"
       ]
     },
     {
       "bank": "$C2",
       "start": "$C2:A000",
       "end": "$C2:AFFF",
-      "emitted_bytes": 0,
-      "functions": []
+      "emitted_bytes": 12,
+      "functions": [
+        "Menu_Mode02List"
+      ]
     },
     {
       "bank": "$C2",
       "start": "$C2:B000",
       "end": "$C2:BFFF",
-      "emitted_bytes": 0,
-      "functions": []
+      "emitted_bytes": 18,
+      "functions": [
+        "Menu_Mode03List",
+        "Menu_Mode04List"
+      ]
     },
     {
       "bank": "$C2",
       "start": "$C2:C000",
       "end": "$C2:CFFF",
-      "emitted_bytes": 0,
-      "functions": []
+      "emitted_bytes": 83,
+      "functions": [
+        "Menu_LoadWindowGfx",
+        "Menu_WindowVramRec",
+        "Menu_Mode05List",
+        "Menu_Mode07List",
+        "Menu_Mode06List"
+      ]
     },
     {
       "bank": "$C2",
       "start": "$C2:D000",
       "end": "$C2:DFFF",
-      "emitted_bytes": 0,
-      "functions": []
+      "emitted_bytes": 496,
+      "functions": [
+        "Menu_LoadSlotSummaries",
+        "Menu_SlotLabelVramRec",
+        "Menu_ReadSlotSummary",
+        "Menu_SlotLocName",
+        "Menu_DrawEmptySlot",
+        "Menu_DrawSlotText",
+        "Menu_DrawSlotLabel",
+        "Menu_ShiftLabelRight",
+        "Menu_SlotLabelShifts",
+        "Menu_Mode0BList",
+        "Menu_Mode0CList"
+      ]
     },
     {
       "bank": "$C2",
       "start": "$C2:E000",
       "end": "$C2:EFFF",
-      "emitted_bytes": 15,
+      "emitted_bytes": 171,
       "functions": [
-        "Menu_CursorRecOffset"
+        "Menu_Mode0DList",
+        "Menu_Mode0EList",
+        "Menu_MainCursorThread",
+        "Menu_ResetMainCursor",
+        "Menu_DrawMainCursor",
+        "Menu_CursorRecOffset",
+        "Menu_LoadWindowPal"
       ]
     },
     {
       "bank": "$C2",
       "start": "$C2:F000",
       "end": "$C2:FFFF",
-      "emitted_bytes": 0,
-      "functions": []
+      "emitted_bytes": 1303,
+      "functions": [
+        "Menu_InitSprites",
+        "Menu_SprLoad",
+        "Menu_SprInitAttrs",
+        "Menu_SprDefTables",
+        "Menu_SprTileCounts",
+        "Menu_SprResetChars",
+        "Menu_SprHideAll",
+        "Menu_LoadCharPalettes",
+        "Menu_WeaponRecSrc",
+        "Menu_Times64",
+        "Menu_StartSprThread",
+        "Menu_SprThread",
+        "Menu_SprNextFrame",
+        "Menu_SprAnimate",
+        "Menu_SprDir0",
+        "Menu_SprDir1",
+        "Menu_SprDir2",
+        "Menu_SprDir3",
+        "Menu_SprDirTable",
+        "Menu_SprAnimEnd",
+        "Menu_SprFrameBytes",
+        "Menu_SprUploadTiles",
+        "Menu_DrawText",
+        "Menu_VramRecsFont",
+        "Menu_VramRecFontB",
+        "Menu_VramRecObj",
+        "Menu_VramRecsWin",
+        "Menu_Mode0FList"
+      ]
     },
     {
       "bank": "$CC",
