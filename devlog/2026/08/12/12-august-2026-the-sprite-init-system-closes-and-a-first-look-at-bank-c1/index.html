@@ -107,7 +107,15 @@
           
         
           
+          <a class="wk-nav-link" href="../../../../../systems/frame-cycle/">Frame cycle & NMI</a>
+          
+        
+          
           <a class="wk-nav-link" href="../../../../../systems/engine/">Engine core</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../../../../../systems/field-events/">Field event scripts</a>
           
         
           
@@ -115,7 +123,19 @@
           
         
           
+          <a class="wk-nav-link" href="../../../../../systems/scene-engine/">Scene engine</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../../../../../systems/text-windows/">Text windows</a>
+          
+        
+          
           <a class="wk-nav-link" href="../../../../../systems/battle-engine/">Battle engine</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../../../../../systems/battle-actions/">Battle actions</a>
           
         
           
@@ -266,7 +286,7 @@
 <li>They end with <code>SEP #$30</code> (A and X/Y both 8-bit before the <code>INC</code>/<code>RTS</code>). Pass 2+ uses <code>SEP #$10</code>: X/Y go 8-bit but A stays 16-bit for the <abbr title="Object Attribute Memory — the PPU's 512+32-byte sprite table (up to 128 sprites: X/Y, tile, palette, size).">OAM</abbr> staging that follows.</li>
 </ul>
 <p>Pass 1 exits <code>INC $1B00,X; SEC; RTS</code>: <code>SEC</code> means "not done, call me again".</p>
-<p><strong>Pass 2+: <code>Sub_D7E5</code> and <code>Sub_DA69</code>.</strong> These also write the full <abbr title="Object Attribute Memory — the PPU's 512+32-byte sprite table (up to 128 sprites: X/Y, tile, palette, size).">OAM</abbr> <abbr title="Bank $7F WRAM area ($7F:4F00+X, $7F:4BC0+X) where sprite OAM data is pre-assembled each frame before Sub_B309 copies it into OAM buffer slots.">staging buffer</abbr>: 12 Y entries with sign extension, the X entries, then attribute bytes. The sign-extension pattern:</p>
+<p><strong>Pass 2+: <code>Sub_D7E5</code> and <code>Sub_DA69</code>.</strong> These also write the full <abbr title="Object Attribute Memory — the PPU's 512+32-byte sprite table (up to 128 sprites: X/Y, tile, palette, size).">OAM</abbr> <abbr title="Older devlog name for an object's sprite tile records in bank $7F (SprTile at $7F:4BC0, 8 bytes per sprite tile), which Spr_AppendToOam copies into the OAM shadow.">staging buffer</abbr>: 12 Y entries with sign extension, the X entries, then attribute bytes. The sign-extension pattern:</p>
 <div class="language-asm highlight"><span class="filename">65C816 Assembly</span><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1"></a><a href="#__codelineno-0-1"><span class="linenos" data-linenos="1 "></span></a><span class="nf">LDA</span><span class="w"> </span><span class="p">[</span><span class="no">$D3</span><span class="p">],</span><span class="no">Y</span>
 <a id="__codelineno-0-2" name="__codelineno-0-2"></a><a href="#__codelineno-0-2"><span class="linenos" data-linenos="2 "></span></a><span class="nf">STA</span><span class="w"> </span><span class="no">$7F4BC2</span><span class="p">,</span><span class="no">X</span>
 <a id="__codelineno-0-3" name="__codelineno-0-3"></a><a href="#__codelineno-0-3"><span class="linenos" data-linenos="3 "></span></a><span class="nf">BPL</span><span class="w"> </span><span class="no">.pos</span>
@@ -277,7 +297,7 @@
 <a id="__codelineno-0-8" name="__codelineno-0-8"></a><a href="#__codelineno-0-8"><span class="linenos" data-linenos="8 "></span></a><span class="nl">.done:</span>
 <a id="__codelineno-0-9" name="__codelineno-0-9"></a><a href="#__codelineno-0-9"><span class="linenos" data-linenos="9 "></span></a><span class="nf">STA</span><span class="w"> </span><span class="no">$7F4BC3</span><span class="p">,</span><span class="no">X</span><span class="w">   </span><span class="c1">; sign-extension byte</span>
 </code></pre></div>
-<p>That pair of stores repeats 6 times, then come the X positions. Here the <code>$68</code> difference shows: <code>Sub_D7E5</code> (not <code>$68</code>) writes 8 X positions, then a <code>CLC; ADC #$10</code> gap, then 4 more; <code>Sub_DA69</code> (<code>$68</code>) writes 4, the gap, then 8. Different slot geometry for different sprite widths. The <code>ADC #$10</code> is <code>69 10</code> (2 bytes) because A is 8-bit after <code>SEP #$20</code>, and <abbr title="The 65816 assembler used for this project — patches matched .asm source into a ROM copy for byte-exact verification.">asar</abbr>'s REP/SEP tracking got it right.</p>
+<p>That pair of stores repeats 6 times, then come the X positions. Here the <code>$68</code> difference shows: <code>Sub_D7E5</code> (not <code>$68</code>) writes 8 X positions, then a <code>CLC; ADC #$10</code> gap, then 4 more; <code>Sub_DA69</code> (<code>$68</code>) writes 4, the gap, then 8. Different slot geometry for different sprite widths. The <code>ADC #$10</code> is <code>69 10</code> (2 bytes) because A is 8-bit after <code>SEP #$20</code>, and <abbr title="The 65816 assembler used for this project (version 1.91) — patches matched .asm source into a ROM copy for byte-exact verification.">asar</abbr>'s REP/SEP tracking got it right.</p>
 <p>Pass 2+ exits <code>INC $1B00,X; SEP #$10; CLC; RTS</code>: <code>CLC</code> means "done". <code>make diff</code>: 4,194,304 bytes identical, once the <code>SEP</code> encoding and the <code>LDX $6D</code> asymmetry were right.</p>
 <div class="language-text highlight"><span class="filename">Text Only</span><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1"></a><a href="#__codelineno-1-1"><span class="linenos" data-linenos=" 1 "></span></a>Sprite-Slot Init Cluster: $CB3A–$DD27, 4,232 bytes, 12 routines — COMPLETE
 <a id="__codelineno-1-2" name="__codelineno-1-2"></a><a href="#__codelineno-1-2"><span class="linenos" data-linenos=" 2 "></span></a>  Sub_CB3A   $CB3A–$CBDB    162 B   Animation-frame gate
@@ -345,7 +365,7 @@
 </tbody>
 </table>
 <p>First it validates the entity and bails if the sprite state flag has bit 7 set, if <code>$1A81,X</code> is zero or negative, or if <code>$0F00,X</code> is zero. All four early exits branch <em>backward</em> to one shared <code>RTS</code> at <code>$CB11</code> instead of using a second <code>RTS</code> later. You only notice from the raw offsets, which are all negative and all hit the same byte.</p>
-<p><code>Sub_D124</code> and <code>Sub_DD28</code> run later in the frame, after the tiles are uploaded, and refresh the <abbr title="Object Attribute Memory — the PPU's 512+32-byte sprite table (up to 128 sprites: X/Y, tile, palette, size).">OAM</abbr> <abbr title="Bank $7F WRAM area ($7F:4F00+X, $7F:4BC0+X) where sprite OAM data is pre-assembled each frame before Sub_B309 copies it into OAM buffer slots.">staging buffer</abbr> from precomputed animation data:</p>
+<p><code>Sub_D124</code> and <code>Sub_DD28</code> run later in the frame, after the tiles are uploaded, and refresh the <abbr title="Object Attribute Memory — the PPU's 512+32-byte sprite table (up to 128 sprites: X/Y, tile, palette, size).">OAM</abbr> <abbr title="Older devlog name for an object's sprite tile records in bank $7F (SprTile at $7F:4BC0, 8 bytes per sprite tile), which Spr_AppendToOam copies into the OAM shadow.">staging buffer</abbr> from precomputed animation data:</p>
 <ul>
 <li><strong><code>Sub_D124</code></strong> multiplies the frame number by <code>$50</code> (80), reads 8 tile-index/attribute pairs from <code>Y=$40</code>, and writes 8 <abbr title="Object Attribute Memory — the PPU's 512+32-byte sprite table (up to 128 sprites: X/Y, tile, palette, size).">OAM</abbr> groups at <code>$7F:4BC2–$7F:4BFC</code> (stride <code>$08</code>). It reads the <abbr title="Object Attribute Memory — the PPU's 512+32-byte sprite table (up to 128 sprites: X/Y, tile, palette, size).">OAM</abbr> buffer index from <abbr title="Work RAM — 128KB of SNES main RAM at $7E:0000–$7F:FFFF, holds all runtime game state.">WRAM</abbr> at <code>$001700,X</code> (a long access to bank <code>$00</code>, not the ROM table at <code>$C01700</code>).</li>
 <li><strong><code>Sub_DD28</code></strong> does the same for 12 groups (<code>$7F:4BC2–$7F:4C1C</code>), frame × <code>$78</code> (120), starting at <code>Y=$60</code>. If <code>$0D00,X == $68</code> it takes an alternate layout with the X gap after the 4th slot instead of the 8th. Both paths read the index from the ROM table at <code>$C01700,X</code> (absolute mode).</li>

@@ -107,7 +107,15 @@
           
         
           
+          <a class="wk-nav-link" href="frame-cycle/">Frame cycle & NMI</a>
+          
+        
+          
           <a class="wk-nav-link" href="engine/">Engine core</a>
+          
+        
+          
+          <a class="wk-nav-link" href="field-events/">Field event scripts</a>
           
         
           
@@ -115,7 +123,19 @@
           
         
           
+          <a class="wk-nav-link" href="scene-engine/">Scene engine</a>
+          
+        
+          
+          <a class="wk-nav-link" href="text-windows/">Text windows</a>
+          
+        
+          
           <a class="wk-nav-link" href="battle-engine/">Battle engine</a>
+          
+        
+          
+          <a class="wk-nav-link" href="battle-actions/">Battle actions</a>
           
         
           
@@ -243,15 +263,78 @@
       <div class="wk-article-body">
       
       
-      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="October 8, 2026 23:48:07 UTC">October 8, 2026</span></p>
+      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="October 9, 2026 00:05:30 UTC">October 9, 2026</span></p>
       
       <h1 id="systems">Systems</h1>
-<p>One page per game system: a short summary written by hand, then the routines that belong to it,
-generated from <code>functions.csv</code> in the code repo. A routine's system is the <code>subsystem</code> column
-there; "Engine (unnamed)" holds <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr> engine routines that still carry placeholder labels.</p>
-<p>To add a system: give its routines a <code>subsystem</code> in the code repo, add a page here (copy any
-existing one and change its <code>wk:system</code> marker), add it to the nav in <code>mkdocs.yml</code>, and run
-<code>tools/sync_progress.py</code>.</p>
+<p>One page per game system: a summary written by hand from the <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr> code's headers, then, on
+the pages that have one, the routines that belong to it, generated from <code>functions.csv</code> in the
+code repo. A routine's group is the <code>subsystem</code> column there, taken from its name's prefix;
+"Engine (unnamed)" holds <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr> engine routines that still carry <code>Sub_</code> labels. The table below
+counts every group.</p>
+<table>
+<thead>
+<tr>
+<th>Page</th>
+<th>Covers</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="boot/">Boot</a></td>
+<td>Vectors, reset, <code>MainInit</code>, the cold init</td>
+</tr>
+<tr>
+<td><a href="frame-cycle/">Frame cycle and <abbr title="Non-Maskable Interrupt — fires at the start of VBlank each frame; the safe window for PPU updates.">NMI</abbr></a></td>
+<td>One field frame, the frame wait, <code>NmiHandler</code>, the other modes' frames</td>
+</tr>
+<tr>
+<td><a href="engine/">Engine core</a></td>
+<td>The field: game loop, location loading, the map, scene changes, objects</td>
+</tr>
+<tr>
+<td><a href="field-events/">Field event scripts</a></td>
+<td>The objects' byte-code scripts and their <abbr title="First bytes of CPU instructions, identifying operations (e.g. $60 = RTS, $78 = SEI).">opcodes</abbr></td>
+</tr>
+<tr>
+<td><a href="sprites/">Sprites &amp; objects</a></td>
+<td>Animation, frame builds, the <abbr title="Object Attribute Memory — the PPU's 512+32-byte sprite table (up to 128 sprites: X/Y, tile, palette, size).">OAM</abbr> shadow</td>
+</tr>
+<tr>
+<td><a href="scene-engine/">Scene engine</a></td>
+<td>Bank <code>$C2</code>'s scene mode: tasks, scripts, sprite list, scene loading</td>
+</tr>
+<tr>
+<td><a href="text-windows/">Text windows</a></td>
+<td>Bank <code>$C2</code>'s text decoder</td>
+</tr>
+<tr>
+<td><a href="battle-engine/">Battle engine</a></td>
+<td><code>BattleSys_Main</code>, turn lists, enemy behaviour scripts, PC commands, hit records, bank <code>$FD</code> helpers</td>
+</tr>
+<tr>
+<td><a href="battle-actions/">Battle actions</a></td>
+<td>Service 4, the action scripts and the enemy movers</td>
+</tr>
+<tr>
+<td><a href="battle-menu/">Battle menu</a></td>
+<td>The command menu, its lists and input</td>
+</tr>
+<tr>
+<td><a href="battle-targeting/">Battle targeting</a></td>
+<td>Target modes and area shapes</td>
+</tr>
+<tr>
+<td><a href="battle-status/">Status bar &amp; text</a></td>
+<td>The battle status bar and number formatting</td>
+</tr>
+</tbody>
+</table>
+<p>Field event scripts, frame cycle, scene engine, text windows and battle actions are parts of the
+larger "Engine" and "Battle engine" groups, so their routines are listed on the
+<a href="engine/">Engine core</a> and <a href="battle-engine/">Battle engine</a> pages.</p>
+<p>To add a system: give its routines a <code>subsystem</code> in the code repo (a name prefix in
+<code>tools/progress.py</code>), add a page here (copy any existing one and change its <code>wk:system</code> marker),
+add it to the nav in <code>mkdocs.yml</code>, and run <code>tools/sync_progress.py</code>.</p>
 <table><thead><tr><th>System</th><th>Banks</th><th>Matched fns</th><th>Matched bytes</th><th>Readable</th><th>Verified</th></tr></thead><tbody><tr><td><a href="engine/">Engine</a></td><td>$C0, $C1, $C2, $FD, $FF</td><td>1,108</td><td>70,533</td><td>1,108</td><td>1,108</td></tr><tr><td><a href="battle-engine/">Battle engine</a></td><td>$C1, $CC, $CF, $FD</td><td>344</td><td>29,666</td><td>344</td><td>344</td></tr><tr><td><a href="sprites/">Sprites &amp; objects</a></td><td>$C0</td><td>53</td><td>9,130</td><td>53</td><td>53</td></tr><tr><td><a href="battle-engine/">Battle system</a></td><td>$C1</td><td>77</td><td>9,058</td><td>77</td><td>77</td></tr><tr><td><a href="battle-menu/">Battle menu</a></td><td>$C1</td><td>63</td><td>5,046</td><td>63</td><td>63</td></tr><tr><td><a href="battle-targeting/">Battle targeting</a></td><td>$C1</td><td>34</td><td>2,144</td><td>34</td><td>34</td></tr><tr><td><a href="battle-status/">Battle status bar</a></td><td>$C1</td><td>9</td><td>1,443</td><td>9</td><td>9</td></tr><tr><td><a href="engine/">Engine (unnamed)</a></td><td>$C0</td><td>2</td><td>506</td><td>2</td><td>2</td></tr><tr><td><a href="battle-status/">Battle text &amp; numbers</a></td><td>$C1, $CF</td><td>5</td><td>365</td><td>5</td><td>5</td></tr><tr><td><a href="boot/">Boot</a></td><td>$C0, $FD</td><td>5</td><td>247</td><td>5</td><td>5</td></tr><tr><td>ROM header</td><td>$C0</td><td>15</td><td>80</td><td>15</td><td>15</td></tr></tbody></table>
 <p class="wk-page-meta">Generated from <code>functions.csv</code>. Do not edit.</p>
       

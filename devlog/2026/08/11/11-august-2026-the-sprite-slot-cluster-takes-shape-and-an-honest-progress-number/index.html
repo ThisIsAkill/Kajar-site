@@ -107,7 +107,15 @@
           
         
           
+          <a class="wk-nav-link" href="../../../../../systems/frame-cycle/">Frame cycle & NMI</a>
+          
+        
+          
           <a class="wk-nav-link" href="../../../../../systems/engine/">Engine core</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../../../../../systems/field-events/">Field event scripts</a>
           
         
           
@@ -115,7 +123,19 @@
           
         
           
+          <a class="wk-nav-link" href="../../../../../systems/scene-engine/">Scene engine</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../../../../../systems/text-windows/">Text windows</a>
+          
+        
+          
           <a class="wk-nav-link" href="../../../../../systems/battle-engine/">Battle engine</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../../../../../systems/battle-actions/">Battle actions</a>
           
         
           
@@ -265,7 +285,7 @@
 <li><strong>whether the animation gate runs</strong>: <code>Sub_CBDC</code> calls <code>Sub_CB3A</code>; <code>Sub_CDC8</code> doesn't</li>
 <li><strong>tile count and stride</strong>: 16 tiles × <code>$28</code>, 16 tiles × <code>$50</code>, or 32 tiles × <code>$50</code></li>
 <li><strong>the starting Y offset in the tile data</strong>: <code>$00</code> for the first pass, <code>$20</code> for the second</li>
-<li><strong>which <abbr title="Object Attribute Memory — the PPU's 512+32-byte sprite table (up to 128 sprites: X/Y, tile, palette, size).">OAM</abbr> <abbr title="Bank $7F WRAM area ($7F:4F00+X, $7F:4BC0+X) where sprite OAM data is pre-assembled each frame before Sub_B309 copies it into OAM buffer slots.">staging buffer</abbr></strong>: <code>$7F:4802+slot</code> or <code>$7F:4BC2+slot</code></li>
+<li><strong>which <abbr title="Object Attribute Memory — the PPU's 512+32-byte sprite table (up to 128 sprites: X/Y, tile, palette, size).">OAM</abbr> <abbr title="Older devlog name for an object's sprite tile records in bank $7F (SprTile at $7F:4BC0, 8 bytes per sprite tile), which Spr_AppendToOam copies into the OAM shadow.">staging buffer</abbr></strong>: <code>$7F:4802+slot</code> or <code>$7F:4BC2+slot</code></li>
 <li><strong>what goes into <code>$1B00,X</code></strong>: <code>INC</code>, <code>INC</code> twice, or set to <code>$80</code></li>
 <li><strong>the return carry</strong>: <code>SEC</code> on first-pass success, <code>CLC</code> on <abbr title="Object Attribute Memory — the PPU's 512+32-byte sprite table (up to 128 sprites: X/Y, tile, palette, size).">OAM</abbr>-only or second-pass</li>
 </ul>
@@ -281,7 +301,7 @@
 <li><strong><code>$1780,X == $03</code></strong>: a full 32-tile dual-slot init inline (<code>$CF21–$D123</code>). It allocates two slots with <code>Sub_E97A</code>, runs 32 passes (multiplier <code>$50</code>), writes eight <abbr title="Object Attribute Memory — the PPU's 512+32-byte sprite table (up to 128 sprites: X/Y, tile, palette, size).">OAM</abbr> entries starting at tile-data offset Y=<code>$40</code>, increments <code>$1B00,X</code> twice (at <code>$D11A</code> and <code>$D11D</code>) and returns <code>CLC</code>. The double increment records that both halves loaded in one call.</li>
 <li><strong>otherwise</strong>, check <code>$1B00,X &amp; $7F</code>. Zero (first pass): <code>BRL $0369</code> to <code>Sub_D28A</code>. Non-zero (second pass or later): <code>BRL $03EF</code> to <code>Sub_D30D</code>.</li>
 </ul>
-<p>Both <code>BRL</code>s are tail calls; the target's <code>RTS</code> returns to <code>Sub_CEF5</code>'s caller. They need raw offsets because <abbr title="The 65816 assembler used for this project — patches matched .asm source into a ROM copy for byte-exact verification.">asar</abbr>'s <code>BRL</code> takes a literal displacement when the target is in another <code>org</code> block; see <a href="../../../../../ASAR_QUIRKS/"><abbr title="The 65816 assembler used for this project — patches matched .asm source into a ROM copy for byte-exact verification.">asar</abbr> Quirks</a>.</p>
+<p>Both <code>BRL</code>s are tail calls; the target's <code>RTS</code> returns to <code>Sub_CEF5</code>'s caller. They need raw offsets because <abbr title="The 65816 assembler used for this project (version 1.91) — patches matched .asm source into a ROM copy for byte-exact verification.">asar</abbr>'s <code>BRL</code> takes a literal displacement when the target is in another <code>org</code> block; see <a href="../../../../../ASAR_QUIRKS/"><abbr title="The 65816 assembler used for this project (version 1.91) — patches matched .asm source into a ROM copy for byte-exact verification.">asar</abbr> Quirks</a>.</p>
 <h2 id="sub_d28a-and-sub_d30d-a-load-split-across-two-frames">Sub_D28A and Sub_D30D: a load split across two frames</h2>
 <p><code>Sub_D28A</code> (<code>$D28A–$D30C</code>, 131 bytes) is the first-pass dual-slot routine. It calls <code>Sub_CB3A</code>, compares the frame byte with <code>$0F01,X</code>, allocates two slots with <code>Sub_E97A</code>, and runs a 16-pass tile loop from Y=0 with multiplier <code>$50</code> to <abbr title="Video RAM — dedicated PPU memory for tile graphics and tilemaps; written via DMA during VBlank.">VRAM</abbr> base <code>$0D80,X</code>. On success it increments <code>$1B00,X</code> and returns <strong><code>SEC</code></strong>.</p>
 <p><code>Sub_D30D</code> (<code>$D30D–$D4F6</code>, 490 bytes; scoping had guessed ~569) is the second pass. No gate, no allocation: it reuses what <code>Sub_D28A</code> set up on the previous frame. It uses <code>VRAM base + $0200</code> for the second slot, starts the tile loop at Y=<code>$20</code> (the second half of the 32-tile frame), and writes eight <abbr title="Object Attribute Memory — the PPU's 512+32-byte sprite table (up to 128 sprites: X/Y, tile, palette, size).">OAM</abbr> entries from tile-data offset Y=<code>$40</code>. Then it increments <code>$1B00,X</code> and returns <strong><code>CLC</code></strong>.</p>

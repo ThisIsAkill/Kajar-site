@@ -107,7 +107,15 @@
           
         
           
+          <a class="wk-nav-link" href="../../../../../systems/frame-cycle/">Frame cycle & NMI</a>
+          
+        
+          
           <a class="wk-nav-link" href="../../../../../systems/engine/">Engine core</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../../../../../systems/field-events/">Field event scripts</a>
           
         
           
@@ -115,7 +123,19 @@
           
         
           
+          <a class="wk-nav-link" href="../../../../../systems/scene-engine/">Scene engine</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../../../../../systems/text-windows/">Text windows</a>
+          
+        
+          
           <a class="wk-nav-link" href="../../../../../systems/battle-engine/">Battle engine</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../../../../../systems/battle-actions/">Battle actions</a>
           
         
           
@@ -353,7 +373,7 @@
 <p><strong><code>FrameUpdate</code> → <code>LoadLocation</code>.</strong> The routine at <code>$C0:00F4</code> was commented "per-frame logic dispatch", because <code>GameLoop_Main</code> calls it. But <code>GameLoop_Main</code> is the outer loop that runs once per mode entry; the per-frame loop is <code>GameLoop_FrameBody</code> at <code>$C0:0097</code>. The routine's ten <code>JSR</code>s and two <code>JSL</code>s load a location.</p>
 <p>Both renames reached every call site and label stub. No bytes changed (<code>ReentryVectors</code> <code>$C0:0000–$000D</code>, 14 bytes; <code>LoadLocation</code> <code>$C0:00F4–$011A</code>, 39 bytes), and <code>make diff</code> was clean.</p>
 <h2 id="saving-and-restoring-the-scene">Saving and restoring the scene</h2>
-<p><code>Sub_18D9</code>'s reinit path left four callees. Estimates were <code>Sub_011B</code> ~138 bytes (calls <code>$0918</code>, also called from <code>Sub_0C76</code>), <code>Sub_01A5</code> unknown (calls <code>$0905</code>, also called from <code>Sub_0C76</code>), <code>Sub_1A03</code> ~160 bytes (calls <code>$597D</code>), <code>Sub_B192</code> ~32 bytes (<abbr title="Branch Long — 16-bit relative branch (signed offset from next PC); asar 1.91 quirk: BRL $XXXX stores $XXXX raw, not a target address.">BRL</abbr> to <code>$E935</code>). All four are <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr>, plus three smaller callees:</p>
+<p><code>Sub_18D9</code>'s reinit path left four callees. Estimates were <code>Sub_011B</code> ~138 bytes (calls <code>$0918</code>, also called from <code>Sub_0C76</code>), <code>Sub_01A5</code> unknown (calls <code>$0905</code>, also called from <code>Sub_0C76</code>), <code>Sub_1A03</code> ~160 bytes (calls <code>$597D</code>), <code>Sub_B192</code> ~32 bytes (<abbr title="Branch Long — 16-bit relative branch (signed offset from the next instruction); asar 1.91 computes it from a label, but stores a numeric operand ($XXXX) as the raw offset.">BRL</abbr> to <code>$E935</code>). All four are <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr>, plus three smaller callees:</p>
 <ul>
 <li><strong><code>Sub_011B</code></strong> (<code>$C0:011B–$01A4</code>, 138 bytes) saves the scene context to <code>$7F:1Dxx</code>. It skips the save if <abbr title="Direct Page mode — 2-byte instruction using an 8-bit offset added to the D register.">dp</abbr> <code>$29</code> is zero. It calls <code>Sub_0918</code> to copy a 20,736-byte (<code>$14E0</code>) <abbr title="Work RAM — 128KB of SNES main RAM at $7E:0000–$7F:FFFF, holds all runtime game state.">WRAM</abbr> block from <code>$00:0920</code> to <code>$7F:2000</code> with <code>MVN</code>, then copies scene table pointers and scroll positions to <code>$7F:1D09</code>–<code>$1D24</code>.</li>
 <li><strong><code>Sub_01A5</code></strong> (<code>$C0:01A5–$024B</code>, 167 bytes) is the full location-engine init. It calls <code>Sub_0905</code> (the reverse copy), runs an audio tick (<code>SEP #$10</code> / <code>JSL $FDC2C1</code> / <code>REP #$10</code> / <code>JSL $FDC1EE</code>), sets <abbr title="Object Attribute Memory — the PPU's 512+32-byte sprite table (up to 128 sprites: X/Y, tile, palette, size).">OAM</abbr> base pointers (<code>$7D</code>=<code>$0900</code>, <code>$7F</code>=<code>$0770</code>, <code>$7B</code>=<code>$08A0</code>), calls eight scene-setup helpers, restores the scroll registers, calls <code>Sub_595C</code>, and calls <code>$E12A</code> depending on a flag.</li>

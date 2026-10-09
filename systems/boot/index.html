@@ -107,7 +107,15 @@
           
         
           
+          <a class="wk-nav-link" href="../frame-cycle/">Frame cycle & NMI</a>
+          
+        
+          
           <a class="wk-nav-link" href="../engine/">Engine core</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../field-events/">Field event scripts</a>
           
         
           
@@ -115,7 +123,19 @@
           
         
           
+          <a class="wk-nav-link" href="../scene-engine/">Scene engine</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../text-windows/">Text windows</a>
+          
+        
+          
           <a class="wk-nav-link" href="../battle-engine/">Battle engine</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../battle-actions/">Battle actions</a>
           
         
           
@@ -233,6 +253,8 @@
           <li>
             <a href="#boot" class="wk-toc-link">Boot</a>
             
+            <ol><li><a href="#vectors" class="wk-toc-link">Vectors</a></li><li><a href="#maininit" class="wk-toc-link">MainInit</a></li><li><a href="#gameloops-cold-init" class="wk-toc-link">GameLoop's cold init</a></li></ol>
+            
           </li>
           
         </ol>
@@ -243,14 +265,93 @@
       <div class="wk-article-body">
       
       
-      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="October 8, 2026 23:48:07 UTC">October 8, 2026</span></p>
+      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="October 9, 2026 00:05:30 UTC">October 9, 2026</span></p>
       
       <h1 id="boot">Boot</h1>
-<p>Power-on and reset. The 65C816 starts in emulation mode at the reset vector in bank $00, which
-switches to native mode and jumps to <code>MainInit</code> in bank $FD; <code>MainInit</code> sets up the CPU and the
-<abbr title="Picture Processing Unit — the SNES graphics chip handling BGs, sprites, palettes, windows, and compositing.">PPU</abbr> and hands over to <code>GameLoop</code>. The <abbr title="Non-Maskable Interrupt — fires at the start of VBlank each frame; the safe window for PPU updates.">NMI</abbr> and IRQ vectors point at small stubs that jump to
-handlers installed in RAM.</p>
-<p>See also: <a href="../../ROM_MAP/">ROM Map</a>, <a href="../../ARCHITECTURE/">Architecture</a>.</p>
+<p>Power-on and reset, from the vectors at the top of bank <code>$C0</code> (seen by the CPU as bank <code>$00</code>) to
+the start of the game loop. All of it is <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr>: the reset code, the interrupt stubs and
+vectors, the ROM header, <code>MainInit</code> in bank <code>$FD</code>, and the cold init at the start of <code>GameLoop</code>.</p>
+<p>See also: <a href="../frame-cycle/">Frame cycle and <abbr title="Non-Maskable Interrupt — fires at the start of VBlank each frame; the safe window for PPU updates.">NMI</abbr></a>, <a href="../../ROM_MAP/">ROM Map</a>,
+<a href="../../ARCHITECTURE/">Architecture</a>.</p>
+<h2 id="vectors">Vectors</h2>
+<p>The vector table <code>RomVectors</code> (<code>$00:FFE0</code>–<code>$FFFF</code>) uses only four entries; every other slot is
+<code>$FFFF</code>:</p>
+<table>
+<thead>
+<tr>
+<th>Vector</th>
+<th>Address</th>
+<th>Target</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Native BRK</td>
+<td><code>$FFE6</code></td>
+<td><code>BRK_Handler</code> (<code>$00:FF18</code>)</td>
+</tr>
+<tr>
+<td>Native <abbr title="Non-Maskable Interrupt — fires at the start of VBlank each frame; the safe window for PPU updates.">NMI</abbr></td>
+<td><code>$FFEA</code></td>
+<td><code>NMI_Stub</code> (<code>$00:FF10</code>)</td>
+</tr>
+<tr>
+<td>Native IRQ</td>
+<td><code>$FFEE</code></td>
+<td><code>IRQ_Stub</code> (<code>$00:FF14</code>)</td>
+</tr>
+<tr>
+<td>Emulation COP</td>
+<td><code>$FFF4</code></td>
+<td><code>BRK_Handler</code></td>
+</tr>
+<tr>
+<td>Emulation RESET</td>
+<td><code>$FFFC</code></td>
+<td><code>Reset</code> (<code>$00:FF00</code>)</td>
+</tr>
+</tbody>
+</table>
+<p>The emulation-mode <abbr title="Non-Maskable Interrupt — fires at the start of VBlank each frame; the safe window for PPU updates.">NMI</abbr> is unused: the <abbr title="Non-Maskable Interrupt — fires at the start of VBlank each frame; the safe window for PPU updates.">NMI</abbr> is off after reset during the three instructions
+<code>Reset</code> runs in emulation mode.</p>
+<ul>
+<li><code>Reset</code> (<code>$00:FF00</code>): <code>SEI</code>, <code>CLC</code>, <code>XCE</code> (native mode), <code>JML MainInit</code>. The <code>SEI</code> is for the soft
+  resets, which arrive in native mode: <code>Menu_PollPad</code> (<code>$C2:8523</code>) jumps here when L+R+Select+Start
+  are held, and two unmatched sites in banks <code>$C3</code> and <code>$CF</code> do too.</li>
+<li><code>NMI_Stub</code> / <code>IRQ_Stub</code>: the native vectors can only point into bank <code>$00</code>, so these jump on
+  through 4-byte trampolines in <abbr title="Work RAM — 128KB of SNES main RAM at $7E:0000–$7F:FFFF, holds all runtime game state.">WRAM</abbr> (<code>$7E:0500</code>, <code>$7E:0504</code>) that the game rewrites as it changes
+  mode.</li>
+<li><code>BRK_Handler</code>: a crash trap; it reads a fixed address forever and never returns (the read is
+  what a bus trace or debugger would see, inferred).</li>
+</ul>
+<p>The cartridge header (<code>$00:FFB0</code>–<code>$FFDF</code>, <code>RomExtHeader</code> to <code>RomChecksum</code>) reads: maker "C3",
+game code "ACTE", title "CHRONO TRIGGER", <abbr title="SNES ROM mapping where each bank is a full 64KB of ROM — bank $C0 = first 64KB of the ROM file.">HiROM</abbr> + FastROM (<code>$31</code>), ROM + RAM + battery, 4 MB of
+ROM, 8 KB of save RAM, North America, version 1.0.</p>
+<h2 id="maininit">MainInit</h2>
+<p><code>MainInit</code> (<code>$FD:C000</code>, 215 bytes) puts the CPU and <abbr title="Picture Processing Unit — the SNES graphics chip handling BGs, sprites, palettes, windows, and compositing.">PPU</abbr> into a known state in five steps. Every
+register write goes through a relocated direct page, so each store is two bytes:</p>
+<ol>
+<li>CPU mode, stack (S = <code>$06FF</code>), DB = <code>$00</code>, <abbr title="Direct Page — the 65816's relocatable 256-byte zero-page window; address = D register + 8-bit offset.">DP</abbr> = <code>$4200</code> (<code>$FD:C000</code>–<code>$C013</code>);</li>
+<li>the CPU I/O registers through <abbr title="Direct Page — the 65816's relocatable 256-byte zero-page window; address = D register + 8-bit offset.">DP</abbr> = <code>$4200</code> (<code>$FD:C014</code>–<code>$C035</code>);</li>
+<li><abbr title="Direct Page — the 65816's relocatable 256-byte zero-page window; address = D register + 8-bit offset.">DP</abbr> = <code>$2100</code>, the screen into forced blank (<code>$FD:C036</code>–<code>$C041</code>);</li>
+<li>the <abbr title="Picture Processing Unit — the SNES graphics chip handling BGs, sprites, palettes, windows, and compositing.">PPU</abbr> registers through <abbr title="Direct Page — the 65816's relocatable 256-byte zero-page window; address = D register + 8-bit offset.">DP</abbr> = <code>$2100</code> (<code>$FD:C042</code>–<code>$C0D2</code>); most are zeroed;</li>
+<li><code>JML GameLoop</code> (<code>$FD:C0D3</code>).</li>
+</ol>
+<p>It leaves with interrupts, <abbr title="Non-Maskable Interrupt — fires at the start of VBlank each frame; the safe window for PPU updates.">NMI</abbr>, <abbr title="Direct Memory Access — hardware block copy bypassing the CPU; used for VRAM uploads, WRAM clears, OAM.">DMA</abbr> and HDMA off. It is also reached by <code>JML $FDC000</code> at
+<code>$C0:418D</code> (unmatched), after <code>InitHW</code>. <code>Ppu_SetBgLayout</code> (<code>$FD:C0D7</code>), right after it, sets a fixed
+background layout the same way.</p>
+<h2 id="gameloops-cold-init">GameLoop's cold init</h2>
+<p><code>GameLoop</code> (<code>$C0:000E</code>) installs the interrupt trampolines (<code>InstallNMI</code>: <code>JML NmiHandler</code> into
+<code>$7E:0500</code>; <code>InstallIRQ</code>: <code>JML IrqHandler</code> into <code>$7E:0504</code>), sets <abbr title="Direct Page — the 65816's relocatable 256-byte zero-page window; address = D register + 8-bit offset.">DP</abbr> = <code>$0100</code>, runs <code>InitHW</code>
+(interrupts off, forced blank, <abbr title="Non-Maskable Interrupt — fires at the start of VBlank each frame; the safe window for PPU updates.">NMI</abbr>, <abbr title="Direct Memory Access — hardware block copy bypassing the CPU; used for VRAM uploads, WRAM clears, OAM.">DMA</abbr> and HDMA off, DB = <code>$00</code>), and clears <abbr title="Work RAM — 128KB of SNES main RAM at $7E:0000–$7F:FFFF, holds all runtime game state.">WRAM</abbr> with
+<code>ClearRAMDMA</code> in three blocks (<code>$7E:0000</code>–<code>04FF</code>, <code>$7E:0700</code>–<code>FFFF</code>, <code>$7F:5080</code>–<code>A0FF</code>), leaving
+the trampolines and the stack alone. <code>ClearRAMDMA</code> (<code>$C0:2DF1</code>) fills with <abbr title="Direct Memory Access — hardware block copy bypassing the CPU; used for VRAM uploads, WRAM clears, OAM.">DMA</abbr> channel 7 from the <abbr title="Picture Processing Unit — the SNES graphics chip handling BGs, sprites, palettes, windows, and compositing.">PPU</abbr>'s
+Mode 7 multiply result (<code>MPYL</code>), which reads 0 because both operands are 0. Then it starts the sound driver
+(<code>JSL Audio_DriverInit</code>, bank <code>$C7</code>) and sends bank <code>$C2</code> its start-up command
+(<code>JSL BankC2_Entry8004</code>), and falls into <code>GameLoop_Main</code>.</p>
+<p><code>GameLoop</code> is reached a second time by <code>BRL</code> from <code>Scene_Unk0283</code> (probably the game-over path).
+The review of <code>MainInit</code> noted that its name is probably wrong, since it starts with an init
+sequence rather than a loop.</p>
 <div class="wk-stat-tiles"><div class="wk-stat-tile"><span class="wk-stat-tile-val">5</span><span class="wk-stat-tile-label">functions matched</span></div><div class="wk-stat-tile"><span class="wk-stat-tile-val">247</span><span class="wk-stat-tile-label">bytes matched</span></div><div class="wk-stat-tile"><span class="wk-stat-tile-val">5</span><span class="wk-stat-tile-label">readable</span></div><div class="wk-stat-tile"><span class="wk-stat-tile-val">5</span><span class="wk-stat-tile-label">verified</span></div></div>
 <h2 id="functions">Functions</h2>
 <table class="wk-fntable"><thead><tr><th>Address</th><th>Function</th><th>Size</th><th>Status</th><th>Notes</th></tr></thead><tbody><tr><td><code>$C0:FF00</code></td><td><code>Reset</code></td><td>16</td><td><span class="wk-status wk-status-verified">verified</span></td><td>The CPU comes out of reset in emulation mode with I already set.</td></tr><tr><td><code>$C0:FF10</code></td><td><code>NMI_<wbr>Stub</code></td><td>4</td><td><span class="wk-status wk-status-verified">verified</span></td><td>Native-mode interrupt stubs ($FF10–$FF17)</td></tr><tr><td><code>$C0:FF14</code></td><td><code>IRQ_<wbr>Stub</code></td><td>4</td><td><span class="wk-status wk-status-verified">verified</span></td><td></td></tr><tr><td><code>$C0:FF18</code></td><td><code>BRK_<wbr>Handler</code></td><td>8</td><td><span class="wk-status wk-status-verified">verified</span></td><td>A crash trap: it reads a fixed, recognizable address forever and never returns.</td></tr><tr><td><code>$FD:C000</code></td><td><code>MainInit</code></td><td>215</td><td><span class="wk-status wk-status-verified">verified</span></td><td>Called via: JML from Reset ($00:FF03), which also carries the soft resets, and JML $FDC000 at $C0:418D (unmatched; after JSR InitHW and S=$06FF).</td></tr></tbody></table>

@@ -107,7 +107,15 @@
           
         
           
+          <a class="wk-nav-link" href="../systems/frame-cycle/">Frame cycle & NMI</a>
+          
+        
+          
           <a class="wk-nav-link" href="../systems/engine/">Engine core</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../systems/field-events/">Field event scripts</a>
           
         
           
@@ -115,7 +123,19 @@
           
         
           
+          <a class="wk-nav-link" href="../systems/scene-engine/">Scene engine</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../systems/text-windows/">Text windows</a>
+          
+        
+          
           <a class="wk-nav-link" href="../systems/battle-engine/">Battle engine</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../systems/battle-actions/">Battle actions</a>
           
         
           
@@ -233,7 +253,7 @@
           <li>
             <a href="#engine-architecture" class="wk-toc-link">Engine Architecture</a>
             
-            <ol><li><a href="#boot-sequence" class="wk-toc-link">Boot sequence</a></li><li><a href="#game-loop" class="wk-toc-link">Game loop</a></li><li><a href="#vblank-handler" class="wk-toc-link">VBlank handler</a></li><li><a href="#per-frame-reset" class="wk-toc-link">Per-frame reset</a></li><li><a href="#ram-resident-handlers" class="wk-toc-link">RAM-resident handlers</a></li><li><a href="#key-data-structures" class="wk-toc-link">Key data structures</a></li><li><a href="#sprite-renderinit-cluster" class="wk-toc-link">Sprite render/init cluster</a></li><li><a href="#sprite-system-overview" class="wk-toc-link">Sprite System Overview</a></li><li><a href="#mode-handler-cluster-c00d7816db-doorswitch-tile-opening-dispatch" class="wk-toc-link">Mode handler cluster ($C0:0D78–$16DB) — door/switch tile-opening dispatch</a></li><li><a href="#defaulthandler-c016dc18d8" class="wk-toc-link">DefaultHandler ($C0:16DC–$18D8)</a></li><li><a href="#unmatched-next-targets" class="wk-toc-link">Unmatched (next targets)</a></li></ol>
+            <ol><li><a href="#the-banks-and-how-they-call-each-other" class="wk-toc-link">The banks and how they call each other</a></li><li><a href="#boot-sequence" class="wk-toc-link">Boot sequence</a></li><li><a href="#the-field-frame" class="wk-toc-link">The field frame</a></li><li><a href="#bank-c2-round-trips" class="wk-toc-link">Bank $C2 round trips</a></li><li><a href="#the-battle" class="wk-toc-link">The battle</a></li><li><a href="#ram-resident-interrupt-handlers" class="wk-toc-link">RAM-resident interrupt handlers</a></li><li><a href="#key-field-structures" class="wk-toc-link">Key field structures</a></li></ol>
             
           </li>
           
@@ -245,613 +265,258 @@
       <div class="wk-article-body">
       
       
-      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="October 8, 2026 23:48:07 UTC">October 8, 2026</span></p>
+      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="October 9, 2026 00:11:08 UTC">October 9, 2026</span></p>
       
       <h1 id="engine-architecture">Engine Architecture</h1>
-<p>A high-level map of the Chrono Trigger SNES engine as recovered from <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr> code.
-Everything here is verified — it comes from <abbr title="The assembled output matches the original ROM byte-for-byte — not just equivalent behavior, literally identical bytes.">byte-exact</abbr> <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr> routines, not guesswork.</p>
-<h2 id="boot-sequence">Boot sequence</h2>
-<div class="language-text highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>Power-on / RESET vector ($00:FF00)
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>  └─ Reset (7 bytes)
-<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>       SEI / CLC / XCE        native mode on
-<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>       JML MainInit            jump to bank $FD
-<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>
-<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>$FD:C000 — MainInit (215 bytes)
-<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>  ├─ CPU: SEI, native mode, DP=0, DB=0, SP=$01FF
-<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>  ├─ PPU: forced blank, zero all PPU registers
-<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>  ├─ APU: boot SPC700 with silent init payload
-<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>  ├─ WRAM: DMA zero-fill all 128KB via ClearRAMDMA stub address
-<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>  └─ JML GameLoop              jump to bank $C0
-</code></pre></div>
-<h2 id="game-loop">Game loop</h2>
-<div class="language-text highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>$C0:000E — GameLoop (one-shot startup)
-<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>  ├─ JSR ClearRAMDMA ($C0:2DF1)   zero-fill WRAM via DMA
-<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>  ├─ JSR InstallNMI ($C0:0B64)    write JML $C0:EA63 → $7E:0500
-<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>  ├─ JSR InstallIRQ ($C0:0B75)    write JML $C0:ECCC → $7E:0504
-<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>  └─ falls into GameLoop_Main
-<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>
-<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>$C0:005D — GameLoop_Main (per-mode outer loop)
-<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>  ├─ JSR FrameStateInit ($C0:0B86) reset per-frame state
-<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>  ├─ LDA/STA mode dispatch on $0100
-<a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>  ├─ enters GameLoop_FrameBody
-<a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a>  └─ loops back
-<a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a>
-<a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a>$C0:0097 — GameLoop_FrameBody (tight per-frame inner loop)
-<a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a>  ├─ JSR $C0:881E    (unknown — possibly DMA trigger)
-<a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a>  ├─ JSR Sub_0C76    (door/switch tile-opening dispatch + scene transition gate)
-<a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a>  ├─ JSR Sub_18D9    (screen-transition gate: fade, reinit, scene context save/restore)
-<a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a>  ├─ JSR $C0:1AAC    (unknown)
-<a id="__codelineno-1-18" name="__codelineno-1-18" href="#__codelineno-1-18"></a>  ├─ JSL $C0:1F87    (cross-bank — possibly audio)
-<a id="__codelineno-1-19" name="__codelineno-1-19" href="#__codelineno-1-19"></a>  ├─ JSL $C0:21E1
-<a id="__codelineno-1-20" name="__codelineno-1-20" href="#__codelineno-1-20"></a>  ├─ JSL $C0:274D
-<a id="__codelineno-1-21" name="__codelineno-1-21" href="#__codelineno-1-21"></a>  └─ BRL → VBlankHandler / loops
-</code></pre></div>
-<h2 id="vblank-handler"><abbr title="Vertical blank — the ~1.2ms gap each frame when the PPU isn't drawing, safe for register writes.">VBlank</abbr> handler</h2>
-<div class="language-text highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>$C0:00BF — VBlankHandler (per-NMI, each frame)
-<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>  ├─ JSR $C0:881E    (shared with frame loop)
-<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>  ├─ audio/DMA work
-<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>  └─ BRL PostVBlank  (tail call — no RTS; returns to VBlankHandler's caller)
-<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>
-<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>$C0:00DE — VBlankHandlerShort (minimal path, no audio)
-<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>  └─ RTS
-<a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>
-<a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a>$C0:B271 — PostVBlank (152 bytes, matched)
-<a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a>  ├─ Reset OAM hardware DMA channel registers
-<a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a>  ├─ Walk sprite descriptor table ($7E:0E00, 63 entries × 2 bytes)
-<a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a>  │    for each active entry: JSR Sub_B309 (build OAM buffer slot)
-<a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a>  │    follow chain links until chain byte &lt; 0 (end marker)
-<a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a>  ├─ Fill unused OAM slots with Y=$E0 (off-screen)
-<a id="__codelineno-2-15" name="__codelineno-2-15" href="#__codelineno-2-15"></a>  └─ RTS
-<a id="__codelineno-2-16" name="__codelineno-2-16" href="#__codelineno-2-16"></a>
-<a id="__codelineno-2-17" name="__codelineno-2-17" href="#__codelineno-2-17"></a>$C0:B309 — Sub_B309 (1016 bytes, matched)
-<a id="__codelineno-2-18" name="__codelineno-2-18" href="#__codelineno-2-18"></a>  ├─ JSR Sub_B701 → BCC skip  (gate: skip if sprite not ready)
-<a id="__codelineno-2-19" name="__codelineno-2-19" href="#__codelineno-2-19"></a>  ├─ LDX $6D / LDA $1201,X / AND #$03 → sprite type dispatch (0/1/2/3+)
-<a id="__codelineno-2-20" name="__codelineno-2-20" href="#__codelineno-2-20"></a>  │
-<a id="__codelineno-2-21" name="__codelineno-2-21" href="#__codelineno-2-21"></a>  ├─ Each type path:
-<a id="__codelineno-2-22" name="__codelineno-2-22" href="#__codelineno-2-22"></a>  │    PHD / REP #$20 / LDA #$2100 / TCD / SEP #$20   (DP=$2100 trick)
-<a id="__codelineno-2-23" name="__codelineno-2-23" href="#__codelineno-2-23"></a>  │    LDA $0F80,X / AND #$0C → OAM range dispatch (bits 2-3)
-<a id="__codelineno-2-24" name="__codelineno-2-24" href="#__codelineno-2-24"></a>  │
-<a id="__codelineno-2-25" name="__codelineno-2-25" href="#__codelineno-2-25"></a>  ├─ Range dispatch (per type, 3 sub-paths):
-<a id="__codelineno-2-26" name="__codelineno-2-26" href="#__codelineno-2-26"></a>  │    Range 1 (bits 2-3 = 00): OAM write-head at $0181, WRAM dest at $01DB
-<a id="__codelineno-2-27" name="__codelineno-2-27" href="#__codelineno-2-27"></a>  │    Range 2 (bit 2 set):     OAM write-head at $0185, WRAM dest at $01DD
-<a id="__codelineno-2-28" name="__codelineno-2-28" href="#__codelineno-2-28"></a>  │    Range 3 (bit 3 only):    OAM write-head at $0189, WRAM dest at $01DF
-<a id="__codelineno-2-29" name="__codelineno-2-29" href="#__codelineno-2-29"></a>  │
-<a id="__codelineno-2-30" name="__codelineno-2-30" href="#__codelineno-2-30"></a>  ├─ OAM write per type (from bank $7F staging buffer → OAM slot):
-<a id="__codelineno-2-31" name="__codelineno-2-31" href="#__codelineno-2-31"></a>  │    type 0: 1 byte  (LDA.l $7F4F00,X → STX $0181 range → STA.w $0000,X)
-<a id="__codelineno-2-32" name="__codelineno-2-32" href="#__codelineno-2-32"></a>  │    type 1: 2 bytes (LDA.l $7F4F01,X / PHA / LDA.l $7F4F00,X → write pair)
-<a id="__codelineno-2-33" name="__codelineno-2-33" href="#__codelineno-2-33"></a>  │    type 2: 3 bytes (LDA.l $7F4B40,X / PHA / $7F4F01,X / PHA / $7F4F00,X)
-<a id="__codelineno-2-34" name="__codelineno-2-34" href="#__codelineno-2-34"></a>  │    type 3+: 6 bytes (5×PHA + 1 in A, from $7F4F81/$7F4F80/$7F4B41/$7F4B40/$7F4F01/$7F4F00)
-<a id="__codelineno-2-35" name="__codelineno-2-35" href="#__codelineno-2-35"></a>  │
-<a id="__codelineno-2-36" name="__codelineno-2-36" href="#__codelineno-2-36"></a>  ├─ WRAM dest advance (per type):
-<a id="__codelineno-2-37" name="__codelineno-2-37" href="#__codelineno-2-37"></a>  │    LDX $01DB / STX $81 (→ WMADDL=$2181 via DP=$2100 trick)
-<a id="__codelineno-2-38" name="__codelineno-2-38" href="#__codelineno-2-38"></a>  │    REP #$20 / LDA $01DB / CLC / ADC #$0010 (or $20/$30/$60) / STA $01DB
-<a id="__codelineno-2-39" name="__codelineno-2-39" href="#__codelineno-2-39"></a>  │
-<a id="__codelineno-2-40" name="__codelineno-2-40" href="#__codelineno-2-40"></a>  ├─ Shared gfx+palette loop (per type, all 3 ranges converge here):
-<a id="__codelineno-2-41" name="__codelineno-2-41" href="#__codelineno-2-41"></a>  │    LDA $1700,X → TAX  (sprite gfx index, 16-bit)
-<a id="__codelineno-2-42" name="__codelineno-2-42" href="#__codelineno-2-42"></a>  │    LDA #$04 (or $08/$0C/$18) → STA $01C9  (palette loop counter)
-<a id="__codelineno-2-43" name="__codelineno-2-43" href="#__codelineno-2-43"></a>  │    loop: LDA.l $7F4BC0,X / STA $80 (WMDATA via DP trick) ×4 per iter
-<a id="__codelineno-2-44" name="__codelineno-2-44" href="#__codelineno-2-44"></a>  │           REP #$20 / TXA / CLC / ADC #$0008 / TAX / SEP #$20
-<a id="__codelineno-2-45" name="__codelineno-2-45" href="#__codelineno-2-45"></a>  │           DEC $01C9 / BNE loop
-<a id="__codelineno-2-46" name="__codelineno-2-46" href="#__codelineno-2-46"></a>  │
-<a id="__codelineno-2-47" name="__codelineno-2-47" href="#__codelineno-2-47"></a>  └─ PLD / RTS
-<a id="__codelineno-2-48" name="__codelineno-2-48" href="#__codelineno-2-48"></a>
-<a id="__codelineno-2-49" name="__codelineno-2-49" href="#__codelineno-2-49"></a>$C0:B701 — Sub_B701 (135 bytes, matched)
-<a id="__codelineno-2-50" name="__codelineno-2-50" href="#__codelineno-2-50"></a>  (see below)
-</code></pre></div>
-<h2 id="per-frame-reset">Per-frame reset</h2>
-<div class="language-text highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>$C0:0B86 — FrameStateInit (240 bytes, matched)
-<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>  ├─ Save sprite registers ($00/$02/$04) → ($0A/$0C/$0E)
-<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>  ├─ STZ ~25 per-frame flags ($10, $11, $17, $18, $38, etc.)
-<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>  ├─ Set defaults: sprite Y=$E0, OAM write-head limits
-<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>  │    $7D=$0900 / $7F=$0770 / $7B=$08A0
-<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>  ├─ Set palette defaults: $B1/$B4/$B7/$BA=$E4
-<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>  ├─ REP #$20 → 16-bit A section:
-<a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>  │    STZ $2B / STZ $0150 / STZ $58
-<a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a>  │    LDA.l $E4FFE0/$E2/$E4/$E6 → STA $AF/$B2/$B5/$B8  (ROM seeds)
-<a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a>  │    STA.l $7E:2000 = 0
-<a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a>  ├─ SEP #$20 → 8-bit A:
-<a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a>  │    STA #$80 → $97/$99/$9B/$8D/$8E/$8F/$91/$90/$92/$93
-<a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a>  │    LDA.l $7E:2980/$81/$82 → $94/$95/$96  (WRAM color vars)
-<a id="__codelineno-3-14" name="__codelineno-3-14" href="#__codelineno-3-14"></a>  │    STA $EB=$AE=$80 / $55=$01 / $FC=$53 / $FB=$65 / $FA=$45
-<a id="__codelineno-3-15" name="__codelineno-3-15" href="#__codelineno-3-15"></a>  │    STA.l $7E:2989 = 0
-<a id="__codelineno-3-16" name="__codelineno-3-16" href="#__codelineno-3-16"></a>  │    STA $0BD9/$0BDA/$0BDB/$0BE9 = 0
-<a id="__codelineno-3-17" name="__codelineno-3-17" href="#__codelineno-3-17"></a>  │    LDA $0400 → STA $F8    (scene entry point)
-<a id="__codelineno-3-18" name="__codelineno-3-18" href="#__codelineno-3-18"></a>  └─ RTS
-</code></pre></div>
-<h2 id="ram-resident-handlers">RAM-resident handlers</h2>
-<p><abbr title="Non-Maskable Interrupt — fires at the start of VBlank each frame; the safe window for PPU updates.">NMI</abbr> and IRQ handlers live in <abbr title="Work RAM — 128KB of SNES main RAM at $7E:0000–$7F:FFFF, holds all runtime game state.">WRAM</abbr>, installed at boot:</p>
+<p>A high-level map of the Chrono Trigger SNES engine as recovered from <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr> code. Everything here
+comes from <abbr title="The assembled output matches the original ROM byte-for-byte — not just equivalent behavior, literally identical bytes.">byte-exact</abbr> <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr> routines and their reviewed headers; where a header only infers a
+meaning ("probably", "not traced"), so does this page. The <a href="../systems/">Systems</a> pages go
+into each part in more detail.</p>
+<h2 id="the-banks-and-how-they-call-each-other">The banks and how they call each other</h2>
+<p>The code that is <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr> so far lives in a handful of banks, each with its own job and its own
+direct-page layout:</p>
 <table>
 <thead>
 <tr>
-<th><abbr title="Work RAM — 128KB of SNES main RAM at $7E:0000–$7F:FFFF, holds all runtime game state.">WRAM</abbr> addr</th>
+<th>Bank</th>
+<th>Role</th>
+<th>Direct page</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>$00</code> (= top of <code>$C0</code>)</td>
+<td>Reset, interrupt stubs, ROM header and vectors</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>$FD</code></td>
+<td><code>MainInit</code>, battle helpers called with <code>JSL</code>, field HDMA and animation set-up</td>
+<td><code>$4200</code>/<code>$2100</code> in <code>MainInit</code>; the caller's elsewhere</td>
+</tr>
+<tr>
+<td><code>$C0</code></td>
+<td>The field engine: game loop, <abbr title="Non-Maskable Interrupt — fires at the start of VBlank each frame; the safe window for PPU updates.">NMI</abbr>, maps, objects, event scripts, sprites</td>
+<td><code>$0100</code> (field page), <code>$1D00</code> for the map code</td>
+</tr>
+<tr>
+<td><code>$C2</code></td>
+<td>The scene mode (<code>Loc_Id</code> <code>$01F0</code> and up), the menu's entry points and the text window decoder</td>
+<td><code>$0000</code> (<code>$0200</code> for the text decoder)</td>
+</tr>
+<tr>
+<td><code>$C1</code></td>
+<td>The battle engine</td>
+<td><code>$0000</code>, with DB = <code>$7E</code></td>
+</tr>
+</tbody>
+</table>
+<p>Other banks enter <code>$C0</code>, <code>$C1</code> and <code>$C2</code> only through small fixed vector tables:</p>
+<ul>
+<li><code>ReentryVectors</code> at <code>$C0:0000</code>: entry 0 is a warm restart (<code>GameLoop_Main</code>), entries 1–4 are
+  <code>JSL</code> targets that tail into the routine they name.</li>
+<li><code>BankC2_Entry0000</code>–<code>000C</code> at <code>$C2:0000</code> (the scene mode and the text window calls) and
+  <code>BankC2_Entry8000</code>/<code>8002</code>/<code>8004</code> at <code>$C2:8000</code> (the menu entry, the joypad reader and a
+  command dispatcher).</li>
+<li><code>$C1:0000</code> and on: the battle entry (<code>JSL $C10000</code> from the field), the exit vector, and a
+  same-bank service dispatcher at <code>$C1:0045</code> with a 10-entry table at <code>$C1:0051</code>. The vectors
+  themselves are not <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr> yet; <code>BankC1_BattleStartVec</code> (<code>$C1:8000</code>) and <code>BankC1_Entry8003</code>
+  (<code>$C1:8003</code>) are.</li>
+</ul>
+<h2 id="boot-sequence">Boot sequence</h2>
+<div class="language-text highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>RESET vector → Reset ($00:FF00)
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>  SEI / CLC / XCE                 native mode
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>  JML MainInit                    (soft resets come here too)
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>MainInit ($FD:C000, 215 bytes)
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>  1. CPU mode, stack S=$06FF, DB=$00, DP=$4200
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>  2. CPU I/O registers through DP=$4200
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>  3. DP=$2100, forced blank
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>  4. PPU registers through DP=$2100
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>  5. JML GameLoop ($C0:000E)
+<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>
+<a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>GameLoop ($C0:000E) — cold init
+<a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>  InstallNMI / InstallIRQ         JML NmiHandler / IrqHandler into $7E:0500 / $0504
+<a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a>  DP=$0100, InitHW                interrupts off, forced blank
+<a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a>  ClearRAMDMA ×3                  $7E:0000–04FF, $7E:0700–FFFF, $7F:5080–A0FF
+<a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a>  JSL Audio_DriverInit            sound driver (bank $C7)
+<a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a>  JSL BankC2_Entry8004            bank $C2's command dispatcher, A = BankC2_BootArg
+<a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a>  falls into GameLoop_Main
+</code></pre></div>
+<p><code>GameLoop_Main</code> (<code>$C0:005D</code>) is also the warm-restart entry: it runs <code>InitHW</code>, reinstalls the
+interrupt trampolines and dispatches on <code>Loc_Id</code>:</p>
+<table>
+<thead>
+<tr>
+<th><code>Loc_Id</code></th>
+<th>Goes to</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>$0000</code>–<code>$01EF</code></td>
+<td><code>GameLoop_LoadField</code>: a field location</td>
+</tr>
+<tr>
+<td><code>$01F0</code>–<code>$81EF</code></td>
+<td><code>JML BankC2_Entry0000</code>: the bank-$C2 scene mode</td>
+</tr>
+<tr>
+<td><code>$81F0</code>–<code>$81FE</code></td>
+<td><code>Sys_HaltWithColor</code>: stops the game on one colour</td>
+</tr>
+<tr>
+<td><code>$81FF</code>–<code>$FFFF</code></td>
+<td><code>GameLoop_LoadField</code></td>
+</tr>
+</tbody>
+</table>
+<p>Both tests are <code>CPX</code> then <code>BMI</code>, so they branch on bit 15 of the difference, not on a signed
+compare; what would set bit 15 of <code>Loc_Id</code> is not traced. The independent review of <code>MainInit</code>
+noted that <code>GameLoop</code> is probably misnamed, since it starts with an init sequence.</p>
+<h2 id="the-field-frame">The field frame</h2>
+<p><code>GameLoop_LoadField</code> (<code>$C0:007D</code>) sets <abbr title="Direct Page — the 65816's relocatable 256-byte zero-page window; address = D register + 8-bit offset.">DP</abbr>=<code>$0100</code> and loads the location once:
+<code>Field_InitLoadState</code> (reset the field page), <code>LoadLocation</code> (ten load steps and two bank-$FD
+vectors), <code>Obj_ResetStates</code>, <code>Scene_PostLoadInit</code> (the objects and their init scripts),
+<code>TileAnimList_Clear</code> and <code>Scene_SettleFrames</code> (the fade-in). Then it falls into the per-frame loop:</p>
+<div class="language-text highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>GameLoop_FrameBody ($C0:0097) — never returns
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>  latch newly pressed buttons
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>  Field_PauseAndMenuInput     Start pauses; menu button → bank $C2 menu round trip
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>  Field_SceneChangeTick       fades; warps, bank-$C2 calls, tile animations, battles
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>  Field_FrameUpdate           D-pad, the leader's collision (probably), layer scroll
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>  Field_ActionButton          action button: an object or treasure in front of the leader
+<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>  JSL Field_Unk1F87           (not matched)
+<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>  Field_EventHookDispatch     one of 16 window-effect hooks
+<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>  Field_ServiceUnk54          staff credits lines, map redraw requests
+<a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>  Field_EndOfFrame            object scripts, HDMA, motion, frame builds, OAM shadow
+<a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a>  Field_WaitFrame             wait for the NMI to finish the frame's uploads
+<a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a>  BRA GameLoop_FrameBody
+</code></pre></div>
+<p><code>Field_EndOfFrame</code> (<code>$C0:00BF</code>) is not an interrupt handler: it is the end of the frame's game
+logic. It runs the object script scheduler (<code>Vblank_Unk59D9</code>, <code>Vblank_ReadScanlineCounters</code>),
+<code>EngFD_UnkC2C1</code> (HDMA), <code>FdVec_FFF7</code>, the object pass <code>Vblank_UnkA810</code> (movement, view culling,
+animation), <code>Field_ProcessAnimQueue</code> (frame builds while there is time left), and tail-jumps to
+<code>Oam_BuildShadow</code>, which rebuilds the <abbr title="Object Attribute Memory — the PPU's 512+32-byte sprite table (up to 128 sprites: X/Y, tile, palette, size).">OAM</abbr> shadow for the next frame.</p>
+<h3 id="the-nmi-handshake">The <abbr title="Non-Maskable Interrupt — fires at the start of VBlank each frame; the safe window for PPU updates.">NMI</abbr> handshake</h3>
+<p><code>Field_WaitFrame</code> (<code>$C0:EC60</code>) increments <code>Nmi_FramePending</code> and spins until it is 0 again.
+<code>NmiHandler</code> (<code>$C0:EA63</code>, entered through the <code>$7E:0500</code> trampoline) does the frame's uploads only
+when <code>Nmi_FramePending</code> is set; on a lag frame it skips straight to the register writes. Usually
+it runs the common uploads (<code>Pal_UploadCgram</code>, <code>Oam_UploadShadow</code>, <code>VramQ_Flush</code> and the map edge
+uploads), after any extra upload that was requested (a <code>Field_Unk47</code> upload, or a staff credits
+line and the <code>Field_Unk36</code> upload); a map redraw step (<code>Field_MapRedrawDone</code>) is uploaded instead of
+them.
+Every <abbr title="Non-Maskable Interrupt — fires at the start of VBlank each frame; the safe window for PPU updates.">NMI</abbr> then calls the joypad reader (<code>JSL BankC2_Entry8002</code>), writes the window and colour
+shadows, <code>HDMAEN</code> and <code>INIDISP</code>, and returns with <code>RTI</code>. See
+<a href="../systems/frame-cycle/">Frame cycle and <abbr title="Non-Maskable Interrupt — fires at the start of VBlank each frame; the safe window for PPU updates.">NMI</abbr></a>.</p>
+<h3 id="scene-changes">Scene changes</h3>
+<p><code>Field_SceneChangeTick</code> (<code>$C0:0C76</code>) steps the fades in <code>Field_FadeFlags</code>, then acts on
+<code>Field_SceneFlags</code>:</p>
+<table>
+<thead>
+<tr>
+<th>Request</th>
+<th>What happens</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>bit 7</td>
+<td>Fade out, then warp: copy <code>Loc_Dest*</code> into <code>Loc_Id</code>/<code>Loc_Entry*</code>, reset the stack and restart through <code>ReentryVectors</code></td>
+</tr>
+<tr>
+<td>bit 6</td>
+<td>Fade out, save the field (<code>Field_SaveState</code>), call <code>BankC2_Entry8000</code> with an argument from <code>Field_BankC2Arg</code>, restore and fade in</td>
+</tr>
+<tr>
+<td>bit 4</td>
+<td>Run the tile-animation handler for the map tile's state byte (<code>ModeE6_Handler</code> … <code>ModeFC_Handler</code>)</td>
+</tr>
+<tr>
+<td>otherwise</td>
+<td><code>DefaultHandler</code></td>
+</tr>
+</tbody>
+</table>
+<p><code>DefaultHandler</code> (<code>$C0:16DC</code>) handles three more requests in order: bit 1 steps one map tile and
+queues its <abbr title="Video RAM — dedicated PPU memory for tile graphics and tilemaps; written via DMA during VBlank.">VRAM</abbr> addresses; bit 5 redraws map layers (running <code>Field_Unk885A</code> frame after frame
+first); bit 0 is the battle: unless <code>Scene_Unk024C</code> returns carry it calls <code>JSL EngCall_BattleMain</code>,
+reinstalls the interrupt handlers and rebuilds the field (<code>Scene_Unk0283</code>).</p>
+<p>The five tile-animation handlers share one shape: advance the state byte of each affected map tile
+in <code>Map_TileProps</code> by one, play <code>Audio_SfxTileAnimA</code>, compute the <abbr title="Video RAM — dedicated PPU memory for tile graphics and tilemaps; written via DMA during VBlank.">VRAM</abbr> word address of each map
+tile's four 8×8 tiles in the 64×32 BG tilemap (<code>Bg_TilemapIndex64x32</code>) into
+<code>TileAnim_VramAddrs</code>, set the <abbr title="Video RAM — dedicated PPU memory for tile graphics and tilemaps; written via DMA during VBlank.">VRAM</abbr> queue flag and continue in <code>DefaultHandler</code>. They differ in the
+block they animate: <code>$E6</code> a 1×2 column, <code>$EC</code>/<code>$EE</code> a 2×2 block, <code>$FA</code>/<code>$FC</code> a 2-wide, 3-tall
+block (the second of each pair mirrored).</p>
+<h2 id="bank-c2-round-trips">Bank $C2 round trips</h2>
+<p>The field hands control to bank <code>$C2</code> in two ways:</p>
+<ul>
+<li><strong>The menu and the bank-$C2 calls.</strong> <code>Field_SaveState</code> copies the field's save block
+  (<code>$7E:0920</code>, <code>$14E0</code> bytes) to <code>$7F:2000</code> and records the party's positions; the field then calls
+  <code>BankC2_Entry8000</code> with an argument (1 from the menu button, "very likely the main menu" in its
+  header; 5 from <code>Field_RunBankC2Mode5</code>, meaning unverified). Afterwards <code>Field_RestoreState</code>
+  rebuilds the field, and <code>Party_ReinitIfChanged</code> runs the init function of each character
+  object again if the party is no longer the one taken at load.</li>
+<li><strong>The scene mode.</strong> For <code>Loc_Id</code> <code>$01F0</code>–<code>$81EF</code>, <code>GameLoop_Main</code> jumps to
+  <code>BankC2_SceneBoot</code>, which installs its own <abbr title="Non-Maskable Interrupt — fires at the start of VBlank each frame; the safe window for PPU updates.">NMI</abbr> and runs <code>C2Scene_Main</code>. It leaves the scene
+  by jumping to <code>ReentryVectors</code> (<code>C2Scene_Mode2</code>), which restarts the field's game loop. See <a href="../systems/scene-engine/">Scene engine</a>.</li>
+</ul>
+<h2 id="the-battle">The battle</h2>
+<p><code>JSL $C10000</code> (from <code>DefaultHandler</code>, at <code>$C0:18A7</code>) reaches the battle entry, which per
+<code>BattleSys_PumpFrames</code>' header goes <code>JMP $001B</code> → <code>JML $CF:FB65</code> (clears battle RAM) →
+<code>$C1:8000</code> → <code>BattleSys_Main</code>. <code>BattleSys_Main</code> (<code>$C1:8006</code>) never returns: it sets the battle
+up, then loops pass after pass over the 13 turn lists until a victory, defeat or other end, and
+leaves through <code>BattleSys_ExitVec</code> (<code>$C1:0006</code> → <code>$001F</code> → <code>JML $CF:FBE5</code>). Back on the field,
+<code>Scene_Unk0283</code> reads <code>FieldBtl_Result</code> and either rebuilds the location in place from the
+field/battle hand-off block (<code>$7E:29B0</code>–<code>$2C7B</code>), reloads it, or restarts the game.</p>
+<p>Inside bank <code>$C1</code>, the service dispatcher at <code>$C1:0045</code> is reached only by same-bank <code>JSR</code>. The
+services <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr> so far: 1 <code>BattleMenu_EnqueueReadyBattler</code>, 2 <code>BattleMenu_RemoveBattlerFromReady</code>,
+3 <code>BattleSys_UpkeepTwoFrames</code>, 4 <code>BattleSys_RunAction</code>, 5 <code>BattlePos_Query</code>,
+7 <code>BattleTgt_RunAreaQuery</code>, 8 <code>BattleSys_VictoryPose</code>, 9 <code>BattleSys_DefeatPose</code>; service 0 ends in
+<code>Battle_StartPose</code>, and service 6 is not analysed. See <a href="../systems/battle-engine/">Battle engine</a>.</p>
+<h2 id="ram-resident-interrupt-handlers">RAM-resident interrupt handlers</h2>
+<p>The native <abbr title="Non-Maskable Interrupt — fires at the start of VBlank each frame; the safe window for PPU updates.">NMI</abbr> and IRQ vectors can only point into bank <code>$00</code>, so they land on 4-byte stubs that
+jump on through trampolines in <abbr title="Work RAM — 128KB of SNES main RAM at $7E:0000–$7F:FFFF, holds all runtime game state.">WRAM</abbr>:</p>
+<table>
+<thead>
+<tr>
+<th><abbr title="Work RAM — 128KB of SNES main RAM at $7E:0000–$7F:FFFF, holds all runtime game state.">WRAM</abbr></th>
+<th>Stub</th>
 <th>Installed by</th>
 <th>Target</th>
-<th>Purpose</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td><code>$7E:0500</code></td>
-<td><code>InstallNMI</code></td>
-<td><abbr title="Jump Long — unconditional 24-bit goto, no return address pushed.">JML</abbr> $C0:EA63</td>
-<td>Real <abbr title="Non-Maskable Interrupt — fires at the start of VBlank each frame; the safe window for PPU updates.">NMI</abbr> handler (unmatched)</td>
+<td><code>NMI_Stub</code> (<code>$00:FF10</code>)</td>
+<td><code>InstallNMI</code> (field), <code>C2Scene_InstallInterrupts</code> (scene mode)</td>
+<td><code>NmiHandler</code> (<code>$C0:EA63</code>), <code>C2Scene_NmiHandler</code> (<code>$C2:015E</code>)</td>
 </tr>
 <tr>
 <td><code>$7E:0504</code></td>
-<td><code>InstallIRQ</code></td>
-<td><abbr title="Jump Long — unconditional 24-bit goto, no return address pushed.">JML</abbr> $C0:ECCC</td>
-<td>Real IRQ handler (unmatched)</td>
+<td><code>IRQ_Stub</code> (<code>$00:FF14</code>)</td>
+<td><code>InstallIRQ</code>, <code>C2Scene_InstallInterrupts</code></td>
+<td><code>IrqHandler</code> (<code>$C0:ECCC</code>, not <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr>), <code>C2Scene_IrqHandler</code> (<code>$C2:0345</code>)</td>
 </tr>
 </tbody>
 </table>
-<p>This pattern allows the game to swap handlers at runtime without patching ROM.</p>
-<h2 id="key-data-structures">Key data structures</h2>
-<p><strong>Sprite descriptor table</strong> (<code>$7E:0E00</code>, 63 entries × 2 bytes):
-- Byte 0: sprite type index (negative = inactive slot)
-- Byte 1: chain link (index of next sprite in chain, negative = end)
-- PostVBlank walks this table each frame to build the <abbr title="Object Attribute Memory — the PPU's 512+32-byte sprite table (up to 128 sprites: X/Y, tile, palette, size).">OAM</abbr> buffer</p>
-<p><strong><abbr title="Object Attribute Memory — the PPU's 512+32-byte sprite table (up to 128 sprites: X/Y, tile, palette, size).">OAM</abbr> buffer ranges</strong> (in <abbr title="Work RAM — 128KB of SNES main RAM at $7E:0000–$7F:FFFF, holds all runtime game state.">WRAM</abbr>):
-- Range 1: <code>$7B</code>–<code>$08A0</code> (pointer stored at <code>$7B</code>)
-- Range 2: <code>$7D</code>–<code>$0900</code> (pointer stored at <code>$7D</code>)
-- Range 3: <code>$7F</code>–<code>$0770</code> (pointer stored at <code>$7F</code>)
-- Filled with <code>Y=$E0</code> for unused slots to hide off-screen</p>
-<p><strong>Per-frame <abbr title="Direct Page mode — 2-byte instruction using an 8-bit offset added to the D register.">dp</abbr> variables</strong> (<abbr title="Direct Page — the 65816's relocatable 256-byte zero-page window; address = D register + 8-bit offset.">DP</abbr>=$0100 in game loop):</p>
-<table>
-<thead>
-<tr>
-<th><abbr title="Direct Page mode — 2-byte instruction using an 8-bit offset added to the D register.">dp</abbr></th>
-<th><abbr title="Work RAM — 128KB of SNES main RAM at $7E:0000–$7F:FFFF, holds all runtime game state.">WRAM</abbr></th>
-<th>Width</th>
-<th>Contents</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>$00</td>
-<td>$0100</td>
-<td>16-bit</td>
-<td>Active sprite X position</td>
-</tr>
-<tr>
-<td>$02</td>
-<td>$0102</td>
-<td>16-bit</td>
-<td>Active sprite Y position</td>
-</tr>
-<tr>
-<td>$04</td>
-<td>$0104</td>
-<td>8-bit</td>
-<td>Active sprite attribute</td>
-</tr>
-<tr>
-<td>$0A</td>
-<td>$010A</td>
-<td>16-bit</td>
-<td>Saved previous-frame sprite X</td>
-</tr>
-<tr>
-<td>$0C</td>
-<td>$010C</td>
-<td>16-bit</td>
-<td>Saved previous-frame sprite Y</td>
-</tr>
-<tr>
-<td>$0E</td>
-<td>$010E</td>
-<td>8-bit</td>
-<td>Saved previous-frame attribute</td>
-</tr>
-<tr>
-<td>$17</td>
-<td>$0117</td>
-<td>8-bit</td>
-<td>Per-frame flag (branch key in $C0:0C76)</td>
-</tr>
-<tr>
-<td>$18</td>
-<td>$0118</td>
-<td>8-bit</td>
-<td>Per-frame flags (bits 2/8 tested for <abbr title="Jump to Subroutine — same-bank call, pushes a 16-bit return address onto the stack.">JSR</abbr> targets)</td>
-</tr>
-<tr>
-<td>$19</td>
-<td>$0119</td>
-<td>8-bit</td>
-<td>Scene transition counter</td>
-</tr>
-<tr>
-<td>$6D</td>
-<td>$016D</td>
-<td>16-bit</td>
-<td>Current sprite descriptor index (PostVBlank loop var)</td>
-</tr>
-<tr>
-<td>$97</td>
-<td>$0197</td>
-<td>8-bit</td>
-<td>Palette seed index (default $80)</td>
-</tr>
-<tr>
-<td>$F8</td>
-<td>$01F8</td>
-<td>8-bit</td>
-<td>Scene entry point (from $0400)</td>
-</tr>
-</tbody>
-</table>
-<h2 id="sprite-renderinit-cluster">Sprite render/init cluster</h2>
-<p>Calls from <code>Sub_B309</code> → <code>Sub_B701</code> → per-type init and render routines:</p>
-<div class="language-text highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>Sub_B701 type 0:
-<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>  positive state → JSR Sub_B8CA (init helper 1) → JSR Sub_E9E2 (init helper 2)
-<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>  negative state → JSR Sub_B788 (renderer)
-<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>
-<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>Sub_B701 type 1:
-<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>  positive high-state → JSR Sub_BCDC (high-state init) → JSR Sub_E9FF (init pass 2)
-<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>  negative low-state  → JSR Sub_BA65 (low-state init)
-<a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>
-<a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a>Sub_B701 types 2/3+:
-<a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a>  low-state (neg) → JSR Sub_BFF2 (12-tile low-state init; BMI-split pos path; BCS/BPL type-3+ path)
-<a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a>  high-state (pos) → JSR Sub_C2BF (12-tile high-state init; BPL/CMP/BCS pos path, no BMI-split; raw→staging copies)
-<a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a>
-<a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a>Sub_B701 type 3+:
-<a id="__codelineno-4-14" name="__codelineno-4-14" href="#__codelineno-4-14"></a>  BRL Sub_C73A (renderer, 6-tile)
-<a id="__codelineno-4-15" name="__codelineno-4-15" href="#__codelineno-4-15"></a>  Sub_C73A calls Sub_C6E7 ×6 (X-pos helper, 4 tiles each)
-</code></pre></div>
-<h3 id="y-dispatch-3-way-patterns-not-uniform-across-routines">Y-dispatch 3-way patterns — NOT uniform across routines</h3>
-<p>All <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr> routines with Y-clamp logic share the same logical structure — dispatch on <code>$C6</code>
-first, then on the sign of <code>$C5</code> — but use <strong>different branch mnemonics and clamp conditions</strong>
-in each path. Do not assume a pattern from one routine applies to another. Verify each branch
-byte explicitly.</p>
-<table>
-<thead>
-<tr>
-<th>Routine</th>
-<th>C6=0 dispatch (on C5)</th>
-<th>C6≠0 clamp logic</th>
-<th>C6=0 neg clamp</th>
-<th>C6=0 pos clamp</th>
-<th>Tiles</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>Sub_B788</code></td>
-<td><code>BPL</code> → positive</td>
-<td>BCS→clamp, BMI→clamp</td>
-<td>BPL+4/BCS+2</td>
-<td>BPL+4/BCS+2</td>
-<td>8</td>
-</tr>
-<tr>
-<td><code>Sub_B8CA</code></td>
-<td><code>BPL</code> → positive</td>
-<td>BCC→clamp, CMP/BCS→store</td>
-<td>BCC+6/BCC+2</td>
-<td>BPL+6/BCS+2</td>
-<td>8</td>
-</tr>
-<tr>
-<td><code>Sub_C73A</code></td>
-<td><code>BMI</code> → no-clamp</td>
-<td>BCS→clamp, BPL→store</td>
-<td>BPL+2/BCS+2</td>
-<td>BPL+2/BCS+2</td>
-<td>24</td>
-</tr>
-<tr>
-<td><code>Sub_BA65</code></td>
-<td><code>BPL</code> → positive</td>
-<td>BCC→$E0, CMP/BCS→store</td>
-<td>CMP/BCC→store</td>
-<td>BMI-split: BPL/CMP/BCS</td>
-<td>8</td>
-</tr>
-<tr>
-<td><code>Sub_BCDC</code></td>
-<td><code>BMI</code> → negative</td>
-<td>BCC→clamp, CMP/BCS→store</td>
-<td>CMP/BCC→store</td>
-<td>BPL/CMP/BCS (no BMI-split)</td>
-<td>8</td>
-</tr>
-<tr>
-<td><code>Sub_BFF2</code></td>
-<td><code>BMI</code> → negative</td>
-<td><strong>BCS/BPL</strong> clamp (new variant)</td>
-<td>direct add, no clamp</td>
-<td><strong>BMI-split: BPL/CMP/BCS</strong></td>
-<td>12</td>
-</tr>
-<tr>
-<td><code>Sub_C2BF</code></td>
-<td><code>BMI</code> → negative</td>
-<td><strong>BCS/BPL</strong> clamp (same as BFF2)</td>
-<td>raw copy + direct add</td>
-<td>raw copy + BPL/CMP/BCS (no BMI-split)</td>
-<td>12</td>
-</tr>
-</tbody>
-</table>
-<p>The <code>BPL</code>/<code>BMI</code> switch on C5 is especially counterintuitive: <code>Sub_B788</code>, <code>Sub_B8CA</code>, and
-<code>Sub_BA65</code> use <code>BPL</code> to reach the <em>positive</em> (C5&lt;$80) path, while <code>Sub_C73A</code>, <code>Sub_BCDC</code>,
-and <code>Sub_BFF2</code> use <code>BMI</code> to reach the <em>negative</em> (C5≥$80) path. Same logical signal, opposite dispatch direction.</p>
-<p><code>Sub_BFF2</code> and <code>Sub_C2BF</code> together confirm two patterns:</p>
-<ol>
-<li><strong>BMI-split tracks the low-state family — now confirmed across both type pairs.</strong>
-   <code>Sub_BFF2</code>'s positive path (low-state, types 2/3+) uses the BMI-split (BPL → skip,
-   CMP #$E0, BCS → skip, else LDA #$E0) — same as <code>Sub_BA65</code> (low-state, type 1).
-   <code>Sub_C2BF</code>'s positive path (high-state, types 2/3+) uses NO BMI-split, reading raw
-   table ($4804,X → $4BC4,X) before applying BPL/CMP/BCS — same as <code>Sub_BCDC</code>
-   (high-state, type 1). The correlation holds across TWO type pairs:</li>
-<li><strong>High-state</strong> (Sub_BCDC type 1, Sub_C2BF types 2/3+): no BMI-split, raw table copy in Y path</li>
-<li>
-<p><strong>Low-state</strong> (Sub_BA65 type 1, Sub_BFF2 types 2/3+): BMI-split, reads staging Y directly</p>
-</li>
-<li>
-<p><strong>BCS/BPL clamp ordering is shared between low-state and high-state C6≠0 paths.</strong>
-   <code>Sub_C2BF</code>'s C6≠0 path uses <code>BCS → #$E0 / BPL → keep</code> (carry first, sign second),
-   identical to <code>Sub_BFF2</code>'s C6≠0 path. This ordering is distinct from the earlier
-   routines (Sub_BCDC, Sub_B8CA) which used <code>BCC→clamp / CMP #$E0 / BCS→store</code>.
-   There are now three distinct carry/sign clamp orderings across the <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr> set.</p>
-</li>
-</ol>
-<h3 id="disasmpy-m-flag-linear-decoder-trap-at-loop-exit-branches">disasm.py — M-flag linear-decoder trap at loop-exit branches</h3>
-<p><strong>Symptom</strong>: the decoder generates wrong M-state (and thus wrong instruction widths) for code
-immediately after a conditional branch that exits a loop containing <code>REP #$20</code>.</p>
-<p><strong>Root cause</strong>: when a <code>BEQ</code>/<code>BPL</code>/etc. exits a loop, the decoder queues the branch target
-(correct state) but continues linearly through the loop-continuation code. If that code contains
-<code>REP #$20</code>, the decoder's running M-flag becomes 0. When the linear scan then reaches the branch
-target address, it visits it with M=0 instead of M=1, and the queued correct-state entry is
-skipped (already-visited check).</p>
-<p><strong>Affected code</strong>: any loop where <code>SEP #$20</code> is in the body but <code>REP #$20</code> appears in the
-loop-continuation tail before the back-branch. Hit in <code>Sub_C73A</code> (sessions 11) and
-<code>Sub_B8CA</code> (session 12).</p>
-<p><strong>Fix</strong> (<code>tools/disasm.py</code>, branch handling): instead of falling through linearly after a
-conditional branch, terminate the linear scan and queue the fall-through as a separate work item.
-Both the branch-taken and fall-through paths then start from the correct M-state captured at the
-branch point, with neither able to contaminate the other.</p>
-<p><strong>Implication for manual decoding</strong>: if using an un-patched disasm.py output near a loop exit,
-manually re-derive M-state from the actual execution entry rather than trusting the disassembler's
-annotation. The error is always at the branch target of a <code>BEQ</code>/<code>BPL</code> that exits a loop, and
-the symptom is an immediate-mode instruction being decoded at double width.</p>
-<h3 id="staging-buffer-layout-7f4bxx">Staging buffer layout (<code>$7F:4BXX</code>)</h3>
-<p>8-byte stride per tile. For <code>gfx_index</code>-relative addressing (X = gfx_index):</p>
-<table>
-<thead>
-<tr>
-<th>X offset</th>
-<th>Width</th>
-<th>Written by</th>
-<th>Contents</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>+$00</code> (<code>$4BC0,X</code>)</td>
-<td>8-bit</td>
-<td>Sub_B788, Sub_B8CA, Sub_C6E7</td>
-<td>Tile X low byte</td>
-</tr>
-<tr>
-<td><code>+$01</code> (<code>$4BC1,X</code>)</td>
-<td>8-bit</td>
-<td>Sub_B788, Sub_B8CA, Sub_C73A</td>
-<td>Tile Y position (clamped)</td>
-</tr>
-<tr>
-<td><code>+$02</code> (<code>$4BC2,X</code>)</td>
-<td>16-bit</td>
-<td>Sub_B788, Sub_B8CA</td>
-<td>Raw X offset (copy from $4802,X)</td>
-</tr>
-<tr>
-<td><code>+$04</code> (<code>$4BC4,X</code>)</td>
-<td>8-bit</td>
-<td>Sub_B8CA</td>
-<td>Raw Y source (copy from $4804,X)</td>
-</tr>
-<tr>
-<td><code>+$06</code> (<code>$4BC6,X</code>)</td>
-<td>16-bit</td>
-<td>Sub_B8CA</td>
-<td>Extra 16-bit field (copy from $4806,X)</td>
-</tr>
-</tbody>
-</table>
-<h2 id="sprite-system-overview">Sprite System Overview</h2>
-<p>The sprite subsystem is a fully <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr>, self-contained cluster spanning fourteen routines across two address ranges in bank $C0 ($B271–$C989 and $E9E2–$EA41). Every callee within the cluster is now <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr>; the cluster has no external call targets except <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr> helpers.</p>
-<p><strong>Entry point and frame trigger.</strong> Every frame, VBlankHandler tail-calls PostVBlank ($C0:B271). PostVBlank resets the <abbr title="Object Attribute Memory — the PPU's 512+32-byte sprite table (up to 128 sprites: X/Y, tile, palette, size).">OAM</abbr> <abbr title="Direct Memory Access — hardware block copy bypassing the CPU; used for VRAM uploads, WRAM clears, OAM.">DMA</abbr> channel registers, then walks the sprite descriptor table at $7E:0E00 (63 entries, 2 bytes each). For each active entry it calls Sub_B309 ($C0:B309), following chain-link bytes to handle multi-sprite objects, then fills any remaining <abbr title="Object Attribute Memory — the PPU's 512+32-byte sprite table (up to 128 sprites: X/Y, tile, palette, size).">OAM</abbr> slots with Y=$E0 to park them off-screen.</p>
-<p><strong>Render dispatch (Sub_B309).</strong> Sub_B309 is the main per-sprite entry. It first calls Sub_B701 as a gate: if the gate sets carry, the sprite is not ready and Sub_B309 returns immediately. If the gate clears carry, Sub_B309 reads the sprite type from $7E:1201,X (bits 0–1: type 0/1/2/3+), then reads range selection bits (bits 2–3 of $7F:0F80,X) to pick one of three <abbr title="Object Attribute Memory — the PPU's 512+32-byte sprite table (up to 128 sprites: X/Y, tile, palette, size).">OAM</abbr> write-heads ($0181/$0185/$0189) and <abbr title="Work RAM — 128KB of SNES main RAM at $7E:0000–$7F:FFFF, holds all runtime game state.">WRAM</abbr> destinations ($01DB/$01DD/$01DF). It uses the <abbr title="Direct Page — the 65816's relocatable 256-byte zero-page window; address = D register + 8-bit offset.">DP</abbr>=$2100 trick (PHD/LDA #$2100/TCD) to alias <abbr title="Picture Processing Unit — the SNES graphics chip handling BGs, sprites, palettes, windows, and compositing.">PPU</abbr> registers into the direct page. After writing the <abbr title="Object Attribute Memory — the PPU's 512+32-byte sprite table (up to 128 sprites: X/Y, tile, palette, size).">OAM</abbr> position bytes from the $7F:4F00 <abbr title="Bank $7F WRAM area ($7F:4F00+X, $7F:4BC0+X) where sprite OAM data is pre-assembled each frame before Sub_B309 copies it into OAM buffer slots.">staging buffer</abbr>, it iterates the palette copy loop (4/8/12/24 iterations depending on type), reading from $7F:4BC0 into <abbr title="PPU register $2180 — write a byte to the WRAM address set by WMADDL/H; auto-increments the address.">WMDATA</abbr> ($2180 via <abbr title="Direct Page — the 65816's relocatable 256-byte zero-page window; address = D register + 8-bit offset.">DP</abbr> trick).</p>
-<p><strong>State gate (Sub_B701).</strong> Sub_B701 dispatches on sprite type and reads the state byte at $7E:1B00,X. State zero means inactive (carry set, skip). A positive state below the per-type threshold means partially initialised (carry set, skip). A positive state at or above the threshold triggers the high-state init path. A negative state (bit 7 set, bits 0–6 non-zero) triggers the low-state init path. A state of exactly $80 means fully initialised and triggers rendering.</p>
-<p><strong>Init helpers — high state and low state.</strong> The distinction is the most important structural insight in the cluster. High-state init reads raw animation data from ROM/<abbr title="Work RAM — 128KB of SNES main RAM at $7E:0000–$7F:FFFF, holds all runtime game state.">WRAM</abbr> tables and copies it into the $7F:4B00 <abbr title="Bank $7F WRAM area ($7F:4F00+X, $7F:4BC0+X) where sprite OAM data is pre-assembled each frame before Sub_B309 copies it into OAM buffer slots.">staging buffer</abbr> before applying Y clamping. Low-state init reads Y data directly from the <abbr title="Bank $7F WRAM area ($7F:4F00+X, $7F:4BC0+X) where sprite OAM data is pre-assembled each frame before Sub_B309 copies it into OAM buffer slots.">staging buffer</abbr> that the previous high-state pass already populated. This produces different clamp code in each family.</p>
-<p>For types 0: Sub_B8CA handles init (high-state only; type 0 has no separate low-state init path — Sub_B788 is its renderer). For type 1: Sub_BCDC is high-state init (raw table → staging, BPL/CMP/BCS positive path, no BMI-split); Sub_BA65 is low-state init (reads staging, BMI-split on positive path). For types 2/3+: Sub_C2BF is high-state init (same BPL/CMP/BCS pattern as BCDC, no BMI-split); Sub_BFF2 is low-state init (BMI-split, identical pattern to BA65). The BMI-split thus tracks exactly with the low-state family across both type pairs, and its absence tracks with the high-state family.</p>
-<p><strong>Pass 2 init (mark-and-exit).</strong> After each init helper runs, Sub_B701 calls a pass-2 helper to record the sprite's slot in the $7E:0BC0 entity table. Sub_E9E2 handles type 0 (4-entry search, marks 1 byte). Sub_E9FF handles type 1 (3-entry search, marks 2 bytes: $0BC0,X and $0BC1,X). Sub_EA1F handles types 2/3+ (2-entry search, marks 3 bytes: $0BC0,X, $0BC1,X, $0BC2,X). The pattern is consistent: the number of <abbr title="Object Attribute Memory — the PPU's 512+32-byte sprite table (up to 128 sprites: X/Y, tile, palette, size).">OAM</abbr> slots a type uses equals the number of table bytes marked.</p>
-<p><strong>Renderers.</strong> Sub_B788 is the type 0 renderer (8-bit sprites, single <abbr title="Object Attribute Memory — the PPU's 512+32-byte sprite table (up to 128 sprites: X/Y, tile, palette, size).">OAM</abbr> entry). Sub_C73A is the type 3+ renderer (6-tile sprites, 24 <abbr title="Object Attribute Memory — the PPU's 512+32-byte sprite table (up to 128 sprites: X/Y, tile, palette, size).">OAM</abbr> entries); it calls Sub_C6E7 six times, once per tile group, to pack X-position overflow bits into the <abbr title="Object Attribute Memory — the PPU's 512+32-byte sprite table (up to 128 sprites: X/Y, tile, palette, size).">OAM</abbr> attribute byte. Types 1 and 2 do not have separate renderer routines in the <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr> cluster; their render path is served by Sub_B309's direct <abbr title="Object Attribute Memory — the PPU's 512+32-byte sprite table (up to 128 sprites: X/Y, tile, palette, size).">OAM</abbr> write.</p>
-<p><strong>Y-clamp ordering summary.</strong> Three distinct branch orderings appear. Type 3+ (Sub_C73A) uses BCS/BPL: carry first, sign second, because large tile X coordinates enter the clamp path with carry already set. High-state init routines (Sub_BCDC, Sub_C2BF) use BPL/CMP/BCS on the positive path: sign first, then compare against $E0, then carry — no BMI-split because the raw table value is always bounded. Low-state init routines (Sub_BA65, Sub_BFF2) add a BMI-split on the positive path: BPL skips the clamp check entirely for small positive Y values, because the <abbr title="Bank $7F WRAM area ($7F:4F00+X, $7F:4BC0+X) where sprite OAM data is pre-assembled each frame before Sub_B309 copies it into OAM buffer slots.">staging buffer</abbr> can hold values that the high-state pass already bounded, but a second clamp pass may still encounter borderline cases where an intermediate BMI branch saves work.</p>
-<h2 id="mode-handler-cluster-c00d7816db-doorswitch-tile-opening-dispatch">Mode handler cluster ($C0:0D78–$16DB) — door/switch tile-opening dispatch</h2>
-<p>Five mode-specific scroll-map update handlers live in a contiguous block starting at $C0:0D78 and ending at $C0:16DB (just before the default handler at $16DC). These handlers implement the tile-opening animation for doors and interactive switches on the map: each frame, Sub_0C76 dispatches to the appropriate handler based on the current animation mode, the handler advances the <code>$7E:3000</code> layer-state table, computes <abbr title="Video RAM — dedicated PPU memory for tile graphics and tilemaps; written via DMA during VBlank.">VRAM</abbr> tilemap write indices corner-by-corner, and triggers an SPC audio cue. All five handlers share a two-phase structure:</p>
-<p><strong>Phase 1 — Mode-table prologue.</strong> Increments selected entries in the <code>$7E:3000</code> layer-state table using <code>LDA.l $7E3000,X</code> / <code>INC A</code> / <code>STA.l $7E3000,X</code>. The number of entries updated scales with the handler: E6=2, EC=4, EE=4, FA=6, FC=6. All but E6 include at least one <code>REP #$20; TXA; SEC; SBC #$0100; TAX; SEP #$20</code> block to index $100 rows back in the table. The prologue ends with <code>JSR Sub_1B90</code> (SPC audio command $19) and a write to <abbr title="Direct Page mode — 2-byte instruction using an 8-bit offset added to the D register.">dp</abbr>:$60.</p>
-<p><strong>Phase 2 — <abbr title="Video RAM — dedicated PPU memory for tile graphics and tilemaps; written via DMA during VBlank.">VRAM</abbr> index computation.</strong> A <code>REP #$20</code> block loads the scroll bases from <code>$1D0A</code>/<code>$1D0E</code> into <abbr title="Direct Page mode — 2-byte instruction using an 8-bit offset added to the D register.">dp</abbr>:$DB/$DD. Then N passes × 4 corner iterations call <code>JSR Sub_1B36</code> to compute a tilemap word index (col×32 + row with $0400 wrap) for each of the four corners of a 2×2 tile block, offset by <code>ADC $1D7C</code>, and store the result into a <code>$09CA</code>–<code>$09F8</code> <abbr title="Video RAM — dedicated PPU memory for tile graphics and tilemaps; written via DMA during VBlank.">VRAM</abbr> slot.</p>
-<p><strong>Pass structure per corner block (62 bytes, invariant across all handlers):</strong>
-<div class="language-text highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>; Corner 1: (row, col) — X=col_idx, Y=row_idx already set
-<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>JSR Sub_1B36  →  CLC / ADC $1D7C  →  STA $09CA
-<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>; Corner 2: (row+1, col)
-<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>TYA / PHA / INC / AND #$003F / TAY / TXA / JSR Sub_1B36  →  CLC / ADC $1D7C  →  STA $09CC
-<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>; Corner 3: (row, col+1)  — restores pushed row
-<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>PLY / TXA / INC / AND #$001F / TAX / JSR Sub_1B36  →  CLC / ADC $1D7C  →  STA $09CE
-<a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a>; Corner 4: (row+1, col+1) — uses current Y/X from corner 3
-<a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a>TYA / INC / AND #$003F / TAY / TXA / JSR Sub_1B36  →  CLC / ADC $1D7C  →  STA $09D0
-</code></pre></div></p>
-<p><strong>Row/col base selection per handler:</strong></p>
-<table>
-<thead>
-<tr>
-<th>Handler</th>
-<th>Row bases</th>
-<th>Col bases</th>
-<th>Passes</th>
-<th><abbr title="Video RAM — dedicated PPU memory for tile graphics and tilemaps; written via DMA during VBlank.">VRAM</abbr> slots</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>ModeE6_Handler</td>
-<td>$5B</td>
-<td>$5C, $5C−1</td>
-<td>2</td>
-<td>$09CA–$09D0, $09D2–$09D8</td>
-</tr>
-<tr>
-<td>ModeEC_Handler</td>
-<td>$5B, $5B+1</td>
-<td>$5C, $5C−1</td>
-<td>4</td>
-<td>$09CA–$09E8</td>
-</tr>
-<tr>
-<td>ModeEE_Handler</td>
-<td>$5B−1, $5B</td>
-<td>$5C, $5C−1</td>
-<td>4</td>
-<td>$09CA–$09E8</td>
-</tr>
-<tr>
-<td>ModeFA_Handler</td>
-<td>$5B, $5B+1</td>
-<td>$5C, $5C−1, $5C−2</td>
-<td>6</td>
-<td>$09CA–$09F8</td>
-</tr>
-<tr>
-<td>ModeFC_Handler</td>
-<td>$5B−1, $5B</td>
-<td>$5C, $5C−1, $5C−2</td>
-<td>6</td>
-<td>$09CA–$09F8</td>
-</tr>
-</tbody>
-</table>
-<p><strong>Pass 1 LDX anomaly.</strong> The compiler emits <code>LDX $5B; TXA</code> (3 bytes) instead of <code>LDA $5B</code> (2 bytes) for the row setup of every handler's first pass. All subsequent passes use <code>LDA $5B</code> normally. In Mode-EC and Mode-FA (positive row handlers), pass 1 has no additional modifier. In Mode-EE and Mode-FC (negative row handlers), pass 1 adds <code>DEC A</code> between <code>TXA</code> and <code>ASL</code>.</p>
-<p><strong>Tail.</strong> All handlers except ModeFC end with <code>SEP #$20; LDA #$10; TSB $5F; BRL &lt;raw_offset&gt;</code> to reach the default handler at $16DC. ModeFC sits immediately before $16DC and falls through without a <abbr title="Branch Long — 16-bit relative branch (signed offset from next PC); asar 1.91 quirk: BRL $XXXX stores $XXXX raw, not a target address.">BRL</abbr> (tail is only <code>SEP #$20; LDA #$10; TSB $5F</code>).</p>
-<p><strong><abbr title="Direct Page mode — 2-byte instruction using an 8-bit offset added to the D register.">dp</abbr>:$60 value</strong> encodes the scroll update width: $00 = 2-entry (E6), $01 = 4-entry (EC/EE), $02 = 6-entry (FA/FC). This value is consumed by the default handler or the SPC audio subsystem.</p>
-<h2 id="defaulthandler-c016dc18d8">DefaultHandler ($C0:16DC–$18D8)</h2>
-<p>The DefaultHandler is the sixth arm of Sub_0C76's per-frame dispatch. It occupies 509 bytes immediately after ModeFC_Handler and is architecturally distinct from the five named mode handlers in several concrete ways.</p>
-<p><strong>Different layer-state variables.</strong> The named handlers (E6/EC/EE/FA/FC) read their layer-state index from <abbr title="Direct Page mode — 2-byte instruction using an 8-bit offset added to the D register.">dp</abbr>:$5B/$5C. DefaultHandler reads from <abbr title="Direct Page mode — 2-byte instruction using an 8-bit offset added to the D register.">dp</abbr>:$5D/$5E. This is not a convention difference — Sub_0C76 stores separate index values in each pair, and the handler uses whichever pair matches its role.</p>
-<p><strong>Different <abbr title="Video RAM — dedicated PPU memory for tile graphics and tilemaps; written via DMA during VBlank.">VRAM</abbr> slots.</strong> The named handlers write their computed tilemap word-indices into the <code>$09CA–$09F8</code> range. DefaultHandler writes to <code>$09B2–$09B8</code> (four slots, one pass of 4 corners). The computation formula is identical (Sub_1B36 + ADC $1D7C), only the destination addresses differ.</p>
-<p><strong>Different SPC callee.</strong> The named handlers call <code>Sub_1B90</code> with <abbr title="Direct Page mode — 2-byte instruction using an 8-bit offset added to the D register.">dp</abbr>:$FC as the audio argument. DefaultHandler calls <code>Sub_1BA7</code>, a 4-byte wrapper that loads <abbr title="Direct Page mode — 2-byte instruction using an 8-bit offset added to the D register.">dp</abbr>:$FB instead and then branches into <code>Sub_1B90</code>'s body at the second instruction. The parameter register ($FB vs $FC) selects a different SPC command argument from the audio table.</p>
-<p><strong>No mode-table prologue.</strong> The named handlers begin by incrementing selected entries in the <code>$7E:3000</code> layer-state table (2–6 entries depending on mode). DefaultHandler has no such prologue. Its <abbr title="Video RAM — dedicated PPU memory for tile graphics and tilemaps; written via DMA during VBlank.">VRAM</abbr> section is conditional: it only runs if <abbr title="Direct Page mode — 2-byte instruction using an 8-bit offset added to the D register.">dp</abbr>:$17 bit 1 is set, and only advances the layer-state entry if it reads <code>$FE</code> or <code>$E0</code> (terminal values).</p>
-<p><strong>Bit-5 transition loop.</strong> After the optional <abbr title="Video RAM — dedicated PPU memory for tile graphics and tilemaps; written via DMA during VBlank.">VRAM</abbr> section, DefaultHandler checks <abbr title="Direct Page mode — 2-byte instruction using an 8-bit offset added to the D register.">dp</abbr>:$17 bit 5. If set, it clears it and enters a busy-loop: <code>JSR $885A</code> (a large unmatched frame-work routine) followed by <code>JSR $00BF</code> (VBlankHandler), repeating until <abbr title="Direct Page mode — 2-byte instruction using an 8-bit offset added to the D register.">dp</abbr>:$38 reaches zero. After the loop it dispatches on <abbr title="Direct Page mode — 2-byte instruction using an 8-bit offset added to the D register.">dp</abbr>:$45 (values 1–4) to one of four transition sub-modes, each calling a mode-specific renderer with <abbr title="Direct Page — the 65816's relocatable 256-byte zero-page window; address = D register + 8-bit offset.">DP</abbr> temporarily set to $1D00, then tail-calling Sub_EC60.</p>
-<p><strong>Bit-0 scene-swap.</strong> If bit 5 was clear, DefaultHandler checks bit 0 of <abbr title="Direct Page mode — 2-byte instruction using an 8-bit offset added to the D register.">dp</abbr>:$17. If set, it calls a scene-state probe at <code>$024C</code>. A carry-clear result triggers a full scene-swap sequence (<abbr title="Jump to Subroutine Long — 24-bit cross-bank call, pushes a 24-bit return address.">JSL</abbr> $C02C41, <abbr title="Jump to Subroutine Long — 24-bit cross-bank call, pushes a 24-bit return address.">JSL</abbr> $C10000, <abbr title="Jump to Subroutine — same-bank call, pushes a 16-bit return address onto the stack.">JSR</abbr> $0B64/$0B75, etc.); carry-set takes a quick-clear path and tail-calls the <code>$00EB</code> fragment.</p>
-<p><strong>Summary of differences:</strong></p>
-<table>
-<thead>
-<tr>
-<th>Attribute</th>
-<th>Named handlers (E6/EC/EE/FA/FC)</th>
-<th>DefaultHandler</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Layer-state index</td>
-<td><abbr title="Direct Page mode — 2-byte instruction using an 8-bit offset added to the D register.">dp</abbr>:$5B/$5C</td>
-<td><abbr title="Direct Page mode — 2-byte instruction using an 8-bit offset added to the D register.">dp</abbr>:$5D/$5E</td>
-</tr>
-<tr>
-<td><abbr title="Video RAM — dedicated PPU memory for tile graphics and tilemaps; written via DMA during VBlank.">VRAM</abbr> slots</td>
-<td>$09CA–$09F8</td>
-<td>$09B2–$09B8</td>
-</tr>
-<tr>
-<td>SPC callee</td>
-<td>Sub_1B90 (<abbr title="Direct Page mode — 2-byte instruction using an 8-bit offset added to the D register.">dp</abbr>:$FC)</td>
-<td>Sub_1BA7 (<abbr title="Direct Page mode — 2-byte instruction using an 8-bit offset added to the D register.">dp</abbr>:$FB)</td>
-</tr>
-<tr>
-<td>Mode-table prologue</td>
-<td>Yes (2–6 entries)</td>
-<td>No</td>
-</tr>
-<tr>
-<td><abbr title="Video RAM — dedicated PPU memory for tile graphics and tilemaps; written via DMA during VBlank.">VRAM</abbr> update</td>
-<td>Unconditional</td>
-<td>Conditional on <abbr title="Direct Page mode — 2-byte instruction using an 8-bit offset added to the D register.">dp</abbr>:$17 bit 1</td>
-</tr>
-<tr>
-<td>Post-<abbr title="Video RAM — dedicated PPU memory for tile graphics and tilemaps; written via DMA during VBlank.">VRAM</abbr> action</td>
-<td><abbr title="Branch Long — 16-bit relative branch (signed offset from next PC); asar 1.91 quirk: BRL $XXXX stores $XXXX raw, not a target address.">BRL</abbr> tail to $16DC</td>
-<td>Bit-5/bit-0 section</td>
-</tr>
-</tbody>
-</table>
-<h2 id="unmatched-next-targets">Unmatched (next targets)</h2>
-<p><strong>State byte encoding</strong> at <code>$7F:1B00+X</code>:
-- <code>$00</code> = inactive (skip)
-- <code>positive, &lt; threshold</code> = partially initialized (C=1, skip)
-- <code>positive, ≥ threshold</code> = ready to init (run JSRs, set <code>$80</code>)
-- <code>negative, bits 0-6 non-zero</code> = partially done (re-run init)
-- exactly <code>$80</code> = fully initialized, proceed to render</p>
-<table>
-<thead>
-<tr>
-<th>Routine</th>
-<th>Addr</th>
-<th>Complexity</th>
-<th>Caller</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>Sub_595C</code></td>
-<td><code>$C0:595C</code></td>
-<td>33 bytes; scene table dispatcher; dispatches via $7F2003 table</td>
-<td>Sub_01A5</td>
-</tr>
-<tr>
-<td><code>Sub_597D</code></td>
-<td><code>$C0:597D</code></td>
-<td>92 bytes; sprite slot init/reset; jump table at $5D6E</td>
-<td>Sub_1A03</td>
-</tr>
-<tr>
-<td><code>$C0:881E</code></td>
-<td>—</td>
-<td>Unknown; ~60 bytes body + callee tree</td>
-<td>Frame loop + VBlankHandler</td>
-</tr>
-<tr>
-<td><code>Sub_E12A</code></td>
-<td><code>$C0:E12A</code></td>
-<td>829+ instructions traced; deferred</td>
-<td>Sub_01A5</td>
-</tr>
-<tr>
-<td><code>$C0:1AAC</code></td>
-<td>—</td>
-<td>Unknown</td>
-<td><code>GameLoop_FrameBody</code></td>
-</tr>
-<tr>
-<td><code>$C0:EC60</code></td>
-<td>—</td>
-<td>Unknown</td>
-<td>Frame loop tail (<abbr title="Branch Long — 16-bit relative branch (signed offset from next PC); asar 1.91 quirk: BRL $XXXX stores $XXXX raw, not a target address.">BRL</abbr>)</td>
-</tr>
-<tr>
-<td><code>$C0:EA63</code></td>
-<td>—</td>
-<td>Unknown</td>
-<td><abbr title="Non-Maskable Interrupt — fires at the start of VBlank each frame; the safe window for PPU updates.">NMI</abbr> stub (installed to <abbr title="Work RAM — 128KB of SNES main RAM at $7E:0000–$7F:FFFF, holds all runtime game state.">WRAM</abbr>)</td>
-</tr>
-<tr>
-<td><code>$C0:ECCC</code></td>
-<td>—</td>
-<td>Unknown</td>
-<td>IRQ stub (installed to <abbr title="Work RAM — 128KB of SNES main RAM at $7E:0000–$7F:FFFF, holds all runtime game state.">WRAM</abbr>)</td>
-</tr>
-</tbody>
-</table>
+<p>The trampolines are not set by <code>MainInit</code>. <code>Sys_HaltWithColor</code> sets both to <code>RTI</code> (at <code>$C0:2E4B</code>),
+and unmatched code in bank <code>$FD</code> (<code>$FD:EAF4</code>) repoints both into that bank (see <code>!NmiTrampoline</code>
+in <code>ram_engine.inc</code>).</p>
+<h2 id="key-field-structures">Key field structures</h2>
+<ul>
+<li><strong>The field direct page</strong> (<code>$0100</code>–<code>$01FF</code>, <abbr title="Direct Page — the 65816's relocatable 256-byte zero-page window; address = D register + 8-bit offset.">DP</abbr>=<code>$0100</code>): <code>Loc_Id</code> at <code>$0100</code>, the frame
+  handshake <code>Nmi_FramePending</code> (<code>$52</code>), the current object <code>Obj_Cur</code> (<code>$6D</code>), the <abbr title="Object Attribute Memory — the PPU's 512+32-byte sprite table (up to 128 sprites: X/Y, tile, palette, size).">OAM</abbr> range
+  pointers (<code>$7B</code>–<code>$8B</code>, <code>$DB</code>–<code>$DF</code>) and the fade and scene flags.</li>
+<li><strong>Per-object tables</strong> indexed by object number × 2 (<code>Obj_Cur</code>): screen position (<code>$0A00</code>),
+  draw buckets (<code>$0E00</code>, 64 words), size class (<code>Obj_SprSize</code>, <code>$1201</code>), draw state (<code>Obj_State</code>,
+  <code>$1B00</code>), position in 1/16 pixel (<code>Obj_PosX/Y</code>), and the event script position.</li>
+<li><strong>The <abbr title="Object Attribute Memory — the PPU's 512+32-byte sprite table (up to 128 sprites: X/Y, tile, palette, size).">OAM</abbr> shadow</strong>: low table at <code>$0700</code> (4 bytes per sprite), high table at <code>$0900</code>, split into
+  three ranges, uploaded by the <abbr title="Non-Maskable Interrupt — fires at the start of VBlank each frame; the safe window for PPU updates.">NMI</abbr> (<code>Oam_UploadShadow</code>). See
+  <a href="../how-sprite-init-works/">How Sprite Init Works</a>.</li>
+<li><strong>The map page</strong> (<code>$1D00</code>, <abbr title="Direct Page — the 65816's relocatable 256-byte zero-page window; address = D register + 8-bit offset.">DP</abbr>=<code>$1D00</code>) for the map code, and the map's metatile buffers in
+  bank <code>$7E</code>/<code>$7F</code>.</li>
+</ul>
       
       </div>
 

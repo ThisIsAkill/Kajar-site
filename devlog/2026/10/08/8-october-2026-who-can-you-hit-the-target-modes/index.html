@@ -107,7 +107,15 @@
           
         
           
+          <a class="wk-nav-link" href="../../../../../systems/frame-cycle/">Frame cycle & NMI</a>
+          
+        
+          
           <a class="wk-nav-link" href="../../../../../systems/engine/">Engine core</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../../../../../systems/field-events/">Field event scripts</a>
           
         
           
@@ -115,7 +123,19 @@
           
         
           
+          <a class="wk-nav-link" href="../../../../../systems/scene-engine/">Scene engine</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../../../../../systems/text-windows/">Text windows</a>
+          
+        
+          
           <a class="wk-nav-link" href="../../../../../systems/battle-engine/">Battle engine</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../../../../../systems/battle-actions/">Battle actions</a>
           
         
           
@@ -344,7 +364,7 @@
 <p>The rest of the day changed what "done" means. Until now a routine was finished once its bytes <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr>. From today, there are three levels, and only the last one counts as done:</p>
 <ol>
 <li><strong>Matched</strong>: the source assembles to the exact bytes of the ROM.</li>
-<li><strong>Readable</strong>: the source passes <code>tools/lint_readability.py</code>. Named structures instead of raw offsets (<code>SprTile[3].OfsY</code> or <code>!Pc_MenuRow,X</code>, not a bare address), named calls instead of addresses, named constants for anything that isn't obviously a count, an explicit <code>.b</code>/<code>.w</code>/<code>.l</code> width wherever <abbr title="The 65816 assembler used for this project — patches matched .asm source into a ROM copy for byte-exact verification.">asar</abbr> can't know it, and no test plumbing inside the game's code.</li>
+<li><strong>Readable</strong>: the source passes <code>tools/lint_readability.py</code>. Named structures instead of raw offsets (<code>SprTile[3].OfsY</code> or <code>!Pc_MenuRow,X</code>, not a bare address), named calls instead of addresses, named constants for anything that isn't obviously a count, an explicit <code>.b</code>/<code>.w</code>/<code>.l</code> width wherever <abbr title="The 65816 assembler used for this project (version 1.91) — patches matched .asm source into a ROM copy for byte-exact verification.">asar</abbr> can't know it, and no test plumbing inside the game's code.</li>
 <li><strong>Verified</strong>: someone other than the author read the routine against the ROM and approved it. The approval is tied to a hash of the routine's source, header comments included, so editing a single comment sends the routine back for review.</li>
 </ol>
 <p>The gate went into the pre-commit hook the same evening. Then every routine written so far was brought up to it: bank <code>$C0</code>, bank <code>$C1</code>, the boot code in <code>$FD</code> and the vectors in <code>$00</code>. All 256 routines (29,032 bytes) are now readable, and the readability baseline file, which listed the routines still waiting, is empty.</p>

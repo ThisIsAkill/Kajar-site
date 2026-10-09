@@ -107,7 +107,15 @@
           
         
           
+          <a class="wk-nav-link" href="../../../../../systems/frame-cycle/">Frame cycle & NMI</a>
+          
+        
+          
           <a class="wk-nav-link" href="../../../../../systems/engine/">Engine core</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../../../../../systems/field-events/">Field event scripts</a>
           
         
           
@@ -115,7 +123,19 @@
           
         
           
+          <a class="wk-nav-link" href="../../../../../systems/scene-engine/">Scene engine</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../../../../../systems/text-windows/">Text windows</a>
+          
+        
+          
           <a class="wk-nav-link" href="../../../../../systems/battle-engine/">Battle engine</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../../../../../systems/battle-actions/">Battle actions</a>
           
         
           
@@ -266,7 +286,7 @@
 <li><strong>Same-frame check.</strong> Compare the frame byte from <code>Sub_CB3A</code> with <code>$0F01,X</code> (the frame type loaded now). If equal, the sprite is already set up: <code>CLC</code>+<code>RTS</code> with no new allocation.</li>
 <li><strong>Slot allocation.</strong> <code>JSR Sub_E952</code>, <code>Sub_E97A</code> or <code>Sub_E9AA</code> (1, 2 or 3 slots) by sprite type.</li>
 <li><strong><abbr title="Direct Memory Access — hardware block copy bypassing the CPU; used for VRAM uploads, WRAM clears, OAM.">DMA</abbr> tile loop.</strong> Read the frame-data table via <code>[$D3],Y</code>; for each 16-bit entry, <code>BIT #$4000</code>: set → <code>JSR Sub_E534</code> (<code>$FD00</code>-table fill), clear → <code>JSR Sub_E687</code> (bank-switched tile copy). 16 or 32 passes.</li>
-<li><strong><abbr title="Object Attribute Memory — the PPU's 512+32-byte sprite table (up to 128 sprites: X/Y, tile, palette, size).">OAM</abbr> staging.</strong> Write frame attributes (tile base, size bits, position offsets) to the <code>$7F:48XX,X</code> <abbr title="Bank $7F WRAM area ($7F:4F00+X, $7F:4BC0+X) where sprite OAM data is pre-assembled each frame before Sub_B309 copies it into OAM buffer slots.">staging buffer</abbr>.</li>
+<li><strong><abbr title="Object Attribute Memory — the PPU's 512+32-byte sprite table (up to 128 sprites: X/Y, tile, palette, size).">OAM</abbr> staging.</strong> Write frame attributes (tile base, size bits, position offsets) to the <code>$7F:48XX,X</code> <abbr title="Older devlog name for an object's sprite tile records in bank $7F (SprTile at $7F:4BC0, 8 bytes per sprite tile), which Spr_AppendToOam copies into the OAM shadow.">staging buffer</abbr>.</li>
 <li><strong>Finish.</strong> <code>INC $1B00,X</code> (mark the slot active); <code>RTS</code>.</li>
 </ol>
 <p>All the callees (<code>Sub_CB3A</code>, <code>Sub_E952</code>, <code>Sub_E97A</code>, <code>Sub_E9AA</code>, <code>Sub_E534</code>, <code>Sub_E687</code>) are now <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr>.</p>
@@ -309,7 +329,7 @@
 <ul>
 <li><code>AND #$00FF</code> / <code>CMP #$0002</code> in M=0 need explicit 16-bit immediates.</li>
 <li><code>LDA [$D6]</code> assembles as <abbr title="The first byte of a CPU instruction, identifying the operation (e.g. $60 = RTS, $78 = SEI).">opcode</abbr> <code>$A7</code> (<abbr title="Direct Page mode — 2-byte instruction using an 8-bit offset added to the D register.">dp</abbr> indirect long).</li>
-<li><code>LDA $7F0B01,X</code> / <code>STA $7F0B01,X</code> are long indexed (<code>$BF</code>/<code>$9F</code>); <abbr title="The 65816 assembler used for this project — patches matched .asm source into a ROM copy for byte-exact verification.">asar</abbr> uses long mode when the bank byte is explicit.</li>
+<li><code>LDA $7F0B01,X</code> / <code>STA $7F0B01,X</code> are long indexed (<code>$BF</code>/<code>$9F</code>); <abbr title="The 65816 assembler used for this project (version 1.91) — patches matched .asm source into a ROM copy for byte-exact verification.">asar</abbr> uses long mode when the bank byte is explicit.</li>
 <li><code>STA $D6</code>, <code>LDA $D6</code>, <code>SBC $D9</code>, <code>ADC $D9</code> and <code>ADC $D6</code> use raw hex direct-page addresses, which avoids the equate-name quirk that forces long mode.</li>
 </ul>
 <p><code>make diff</code>: 4,194,304 of 4,194,304 bytes identical on the first try.</p>
@@ -344,7 +364,7 @@
 <td>$CEF5–$D289</td>
 <td>~660</td>
 <td>2 (Sub_E97A)</td>
-<td>32 tiles, <abbr title="Branch Long — 16-bit relative branch (signed offset from next PC); asar 1.91 quirk: BRL $XXXX stores $XXXX raw, not a target address.">BRL</abbr> dispatch</td>
+<td>32 tiles, <abbr title="Branch Long — 16-bit relative branch (signed offset from the next instruction); asar 1.91 computes it from a label, but stores a numeric operand ($XXXX) as the raw offset.">BRL</abbr> dispatch</td>
 </tr>
 <tr>
 <td>Sub_D28A</td>

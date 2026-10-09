@@ -107,7 +107,15 @@
           
         
           
+          <a class="wk-nav-link" href="../../../../../systems/frame-cycle/">Frame cycle & NMI</a>
+          
+        
+          
           <a class="wk-nav-link" href="../../../../../systems/engine/">Engine core</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../../../../../systems/field-events/">Field event scripts</a>
           
         
           
@@ -115,7 +123,19 @@
           
         
           
+          <a class="wk-nav-link" href="../../../../../systems/scene-engine/">Scene engine</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../../../../../systems/text-windows/">Text windows</a>
+          
+        
+          
           <a class="wk-nav-link" href="../../../../../systems/battle-engine/">Battle engine</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../../../../../systems/battle-actions/">Battle actions</a>
           
         
           
@@ -304,10 +324,10 @@
 </tbody>
 </table>
 <p>It uses <code>CMP</code> + <code>BNE</code> + <code>BRL</code> chains, because the stubs are more than 128 bytes away. Each <code>BRL</code> is a tail call: the stub's <code>RTS</code> returns to <code>Sub_E687</code>'s caller. With no <code>JSR</code>/<code>RTS</code> pair, the stubs had to be in scope in the same pass.</p>
-<p><strong><code>Sub_E8C2</code></strong>, the <code>$7F</code> stub, differs from the others in one way: it uses <code>LDA.w $0000,X</code> (<abbr title="The first byte of a CPU instruction, identifying the operation (e.g. $60 = RTS, $78 = SEI).">opcode</abbr> <code>BD</code>, absolute indexed) instead of <code>LDA $7F0000,X</code> (<abbr title="The first byte of a CPU instruction, identifying the operation (e.g. $60 = RTS, $78 = SEI).">opcode</abbr> <code>BF</code>, long indexed). It has already set DB = <code>$7F</code> with <code>PLB</code>, so the absolute load reads <code>$7F:0000+X</code> and the long form would waste a byte. <code>LDA.w</code> stops <abbr title="The 65816 assembler used for this project — patches matched .asm source into a ROM copy for byte-exact verification.">asar</abbr> from upgrading it to long.</p>
+<p><strong><code>Sub_E8C2</code></strong>, the <code>$7F</code> stub, differs from the others in one way: it uses <code>LDA.w $0000,X</code> (<abbr title="The first byte of a CPU instruction, identifying the operation (e.g. $60 = RTS, $78 = SEI).">opcode</abbr> <code>BD</code>, absolute indexed) instead of <code>LDA $7F0000,X</code> (<abbr title="The first byte of a CPU instruction, identifying the operation (e.g. $60 = RTS, $78 = SEI).">opcode</abbr> <code>BF</code>, long indexed). It has already set DB = <code>$7F</code> with <code>PLB</code>, so the absolute load reads <code>$7F:0000+X</code> and the long form would waste a byte. <code>LDA.w</code> stops <abbr title="The 65816 assembler used for this project (version 1.91) — patches matched .asm source into a ROM copy for byte-exact verification.">asar</abbr> from upgrading it to long.</p>
 <h2 id="the-db-a97f-trick">The <code>db $A9,$7F</code> trick</h2>
-<p>Each stub starts <code>PHB / LDA #$7F / PHA / PLB</code>. In the ROM, <code>LDA #$7F</code> at <code>$E739</code> is the 2-byte 8-bit form, <code>A9 7F</code>. But in the source the stubs follow <code>Sub_E687</code>, which contains a <code>SEP #$20</code> early (for the <code>CMP</code> against <code>$CF</code>) and a <code>REP #$20</code> in the inline <code>.d5copy</code> path. By the stubs, <abbr title="The 65816 assembler used for this project — patches matched .asm source into a ROM copy for byte-exact verification.">asar</abbr> tracks M=0, and <code>LDA #$7F</code> would assemble as <code>A9 7F 00</code>, three bytes. The fix is <code>db $A9,$7F</code>, which emits the two bytes regardless of mode.</p>
-<p>The quirk can cost an hour the first time. In 16-bit mode <abbr title="The 65816 assembler used for this project — patches matched .asm source into a ROM copy for byte-exact verification.">asar</abbr> zero-extends the immediate, but the ROM sometimes has the two-byte form, with the next byte being the next instruction. It wasn't in <a href="../../../../../ASAR_QUIRKS/"><abbr title="The 65816 assembler used for this project — patches matched .asm source into a ROM copy for byte-exact verification.">asar</abbr> Quirks</a>, so the first commit of session 27 added it there, next to the <abbr title="Branch Long — 16-bit relative branch (signed offset from next PC); asar 1.91 quirk: BRL $XXXX stores $XXXX raw, not a target address.">BRL</abbr> offset quirk and the STA-with-equate quirk:</p>
+<p>Each stub starts <code>PHB / LDA #$7F / PHA / PLB</code>. In the ROM, <code>LDA #$7F</code> at <code>$E739</code> is the 2-byte 8-bit form, <code>A9 7F</code>. But in the source the stubs follow <code>Sub_E687</code>, which contains a <code>SEP #$20</code> early (for the <code>CMP</code> against <code>$CF</code>) and a <code>REP #$20</code> in the inline <code>.d5copy</code> path. By the stubs, <abbr title="The 65816 assembler used for this project (version 1.91) — patches matched .asm source into a ROM copy for byte-exact verification.">asar</abbr> tracks M=0, and <code>LDA #$7F</code> would assemble as <code>A9 7F 00</code>, three bytes. The fix is <code>db $A9,$7F</code>, which emits the two bytes regardless of mode.</p>
+<p>The quirk can cost an hour the first time. In 16-bit mode <abbr title="The 65816 assembler used for this project (version 1.91) — patches matched .asm source into a ROM copy for byte-exact verification.">asar</abbr> zero-extends the immediate, but the ROM sometimes has the two-byte form, with the next byte being the next instruction. It wasn't in <a href="../../../../../ASAR_QUIRKS/"><abbr title="The 65816 assembler used for this project (version 1.91) — patches matched .asm source into a ROM copy for byte-exact verification.">asar</abbr> Quirks</a>, so the first commit of session 27 added it there, next to the <abbr title="Branch Long — 16-bit relative branch (signed offset from the next instruction); asar 1.91 computes it from a label, but stores a numeric operand ($XXXX) as the raw offset.">BRL</abbr> offset quirk and the STA-with-equate quirk:</p>
 <div class="language-asm highlight"><span class="filename">65C816 Assembly</span><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1"></a><a href="#__codelineno-0-1"><span class="linenos" data-linenos="1 "></span></a><span class="nf">db</span><span class="w"> </span><span class="no">$A9</span><span class="p">,</span><span class="no">$7F</span><span class="w">    </span><span class="c1">; two bytes, exactly</span>
 </code></pre></div>
 <h2 id="one-set-of-bytes-two-meanings">One set of bytes, two meanings</h2>

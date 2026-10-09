@@ -6,10 +6,10 @@
   
   
   <meta name="description" content="Byte-exact matching decompilation of Chrono Trigger (SNES, US 1.0)">
-  <link rel="canonical" href="https://thisisakill.github.io/Kajar-site/systems/battle-menu/">
+  <link rel="canonical" href="https://thisisakill.github.io/Kajar-site/systems/battle-actions/">
   
   
-  <title>Battle menu — Kajar</title>
+  <title>Battle actions — Kajar</title>
   
   
   <link rel="stylesheet" href="../../stylesheets/wiki.css">
@@ -135,11 +135,11 @@
           
         
           
-          <a class="wk-nav-link" href="../battle-actions/">Battle actions</a>
+          <a class="wk-nav-link is-active" href="./">Battle actions</a>
           
         
           
-          <a class="wk-nav-link is-active" href="./">Battle menu</a>
+          <a class="wk-nav-link" href="../battle-menu/">Battle menu</a>
           
         
           
@@ -251,9 +251,9 @@
         <ol class="wk-toc-list" id="wk-toc-list">
           
           <li>
-            <a href="#battle-menu" class="wk-toc-link">Battle menu</a>
+            <a href="#battle-actions" class="wk-toc-link">Battle actions</a>
             
-            <ol><li><a href="#the-rebuild-chain" class="wk-toc-link">The rebuild chain</a></li><li><a href="#the-ready-queue" class="wk-toc-link">The ready queue</a></li><li><a href="#windows-and-lists" class="wk-toc-link">Windows and lists</a></li><li><a href="#choosing-a-target-and-committing" class="wk-toc-link">Choosing a target and committing</a></li></ol>
+            <ol><li><a href="#service-4-battlesys_runaction" class="wk-toc-link">Service 4: BattleSys_RunAction</a></li><li><a href="#loading-an-action" class="wk-toc-link">Loading an action</a></li><li><a href="#script-threads" class="wk-toc-link">Script threads</a></li><li><a href="#enemy-movers" class="wk-toc-link">Enemy movers</a></li><li><a href="#not-matched-yet" class="wk-toc-link">Not matched yet</a></li></ol>
             
           </li>
           
@@ -267,64 +267,151 @@
       
       <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="October 9, 2026 00:05:30 UTC">October 9, 2026</span></p>
       
-      <h1 id="battle-menu">Battle menu</h1>
-<p>The battle command menu in bank <code>$C1</code> (<code>$C1:0785</code>–<code>$C1:1C49</code>, plus <code>BattleMenu_BuildTargetList</code> at
-<code>$C1:1F79</code>): the per-PC command windows, the tech and item lists, the input handlers for each
-window, the queue of PCs waiting for a command, and the cursor sprites. It runs with M=1, X=0,
-<abbr title="Direct Page — the 65816's relocatable 256-byte zero-page window; address = D register + 8-bit offset.">DP</abbr>=0 and DB=<code>$7E</code>, like the rest of the battle.</p>
-<p>See also: <a href="../battle-targeting/">Battle targeting</a>, <a href="../battle-status/">Status bar &amp; text</a>,
-<a href="../battle-engine/">Battle engine</a>.</p>
-<h2 id="the-rebuild-chain">The rebuild chain</h2>
-<p>The menu is not redrawn every frame: it rebuilds only on frames where <code>!BattleMenu_Dirty</code> is set.
-Three routines gate it the same way: <code>BattleMenu_RefreshIfDirtyL</code> (<code>$C1:10E3</code>, the <code>JSL</code> form),
-<code>BattleMenu_RefreshIfDirtyAndTick</code> (<code>$C1:10FA</code>, which also runs a per-frame service tick and is
-called after each frame wait of an action) and <code>BattleSys_UpkeepTwoFrames</code> (service 3). Each one
-clears the flag and runs the chain:</p>
+      <h1 id="battle-actions">Battle actions</h1>
+<p>How the battle plays one action, an attack, a tech or the like: service 4 of bank <code>$C1</code>'s service
+dispatcher loads the action's script, graphics and palette steps, then runs the script frame by
+frame until it ends. The whole of this machinery, <code>$C1:4058</code>–<code>$C1:7C3C</code>, is <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr>: the service,
+its loaders, the reach check and path search, the thread runner and every <abbr title="The first byte of a CPU instruction, identifying the operation (e.g. $60 = RTS, $78 = SEI).">opcode</abbr> handler.
+"Action", "attack" and "tech" are the headers' readings of the records the loaders take; they are
+not checked against what the player sees.</p>
+<p>These routines belong to the "Battle engine" group, so their table is on the
+<a href="../battle-engine/">Battle engine</a> page.</p>
+<p>See also: <a href="../battle-engine/">Battle engine</a>, <a href="../battle-targeting/">Battle targeting</a>.</p>
+<h2 id="service-4-battlesys_runaction">Service 4: BattleSys_RunAction</h2>
+<p><code>BattleSys_RunAction</code> (<code>$C1:4058</code>, 358 bytes) is reached only through the dispatcher (entry 4 of
+the table at <code>$C1:0051</code>). The one request found is <code>BattleSys_UnkBFA4</code>, called only by
+<code>BattleSys_UnkAC57</code>, which then applies the hits (<code>Battle_ApplyHits</code>); <code>BattleSys_UnkAC57</code> is
+called by the enemy turn (<code>BattleAi_EnemyTurn</code>), the PC command runner (<code>BattleSys_UnkB967</code>,
+<code>BattleSys_RunPcAttack</code>), the KO check and a turn-list helper. It plays the action described by
+the block at <code>Battle_ActCaster</code> (caster, kind, id, target masks), filled from the chosen command
+(for an enemy by <code>BattleAi_FillActBlock</code>):</p>
 <ol>
-<li><code>BattleMenu_DequeueReadyBattler</code>: take the next PC off the ready queue;</li>
-<li><code>BattleMenu_UpdateWindows</code> (<code>$C1:0C2D</code>): window upkeep by submenu: the main command window
-   (<code>BattleMenu_UpdateMainWindow</code>), the tech window (<code>BattleMenu_UpdateTechWindow</code>, with the MP
-   check of each visible tech in <code>BattleMenu_UpdateTechMpAvail</code>), or the item window;</li>
-<li><code>BattleMenu_ProcessInput</code> (<code>$C1:1153</code>): the command window's input;</li>
-<li><code>BattleMenu_UpdateCursorOverlay</code> (<code>$C1:17DD</code>, 828 bytes): draw whichever cursor belongs on
-   screen now: none, the target cursor(s), the tech-list cursor (a 2–3 sprite cluster over the
-   partners for a double or triple tech) or the item-list cursor and scroll arrows.</li>
+<li>reset the action state and wait a frame;</li>
+<li>build the battler lists (<code>BattleAct_BuildBattlerList</code>) and load the script
+   (<code>BattleAct_LoadScript</code>);</li>
+<li>each frame: the battlers' action animations (<code>BattleAct_StepBattlerAnims</code>, at most one frame
+   decoded per frame), the menu, palette steps, the per-entry calculations
+   (<code>BattleAct_TickCalcs</code>), the occupied-cell map, the probes, and the script threads
+   (<code>BattleAct_RunThreads</code>), until the script says it has ended;</li>
+<li>send APU command <code>$18</code>, wait until <code>Battle_Unk5D9B</code> is 0, and pick every battler's status
+   animation again (<code>Battle_PickNextStatusAnim</code>);</li>
+<li>if a PC was among the targets, flag each PC whose pending hit reaches its HP
+   (<code>BattleAct_FlagLethalPcHits</code>) and draw that PC's KO frame.</li>
 </ol>
-<h2 id="the-ready-queue">The ready queue</h2>
-<p>Services 1 and 2 of the battle's service dispatcher manage the PCs waiting for a command:
-<code>BattleMenu_EnqueueReadyBattler</code> (<code>$C1:1B19</code>) marks the PC's command record "waiting for a
-command", appends it to <code>!BattleMenu_ReadyQueue</code> and plays sound <code>$42</code> (inferred: the "turn ready"
-cue); <code>BattleMenu_RemoveBattlerFromReady</code> (<code>$C1:1BAA</code>) is its inverse.
-<code>BattleMenu_DequeueReadyBattler</code> pops the head (up to 3 deep) into the roster of PCs shown in the
-menu. <code>BattleMenu_CycleActivePcPrev</code> / <code>Next</code> switch between the roster's PCs.</p>
-<h2 id="windows-and-lists">Windows and lists</h2>
+<h2 id="loading-an-action">Loading an action</h2>
+<p><code>BattleAct_LoadScript</code> (<code>$C1:4310</code>) clears the 16-byte parameter block and calls one loader per
+<code>Battle_ActKind</code> through <code>BattleAct_LoaderTable</code> (<code>$C1:7A63</code>):</p>
+<table>
+<thead>
+<tr>
+<th>Kind</th>
+<th>Loader</th>
+<th>Reads</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0 (and 4 up)</td>
+<td><code>BattleAct_LoadNone</code></td>
+<td>nothing; no thread starts</td>
+</tr>
+<tr>
+<td>1</td>
+<td><code>BattleAct_LoadAttack</code> (<code>$C1:432C</code>)</td>
+<td>three record sets per PC, two records per enemy type (the "attack" reading is a guess)</td>
+</tr>
+<tr>
+<td>2</td>
+<td><code>BattleAct_LoadTech</code> (<code>$C1:45A0</code>)</td>
+<td>a 7-byte record per action id, for PCs and enemies (the "tech" reading is a guess)</td>
+</tr>
+<tr>
+<td>3</td>
+<td><code>BattleAct_LoadKind3</code> (<code>$C1:475B</code>)</td>
+<td>like the PC tech branch, for any caster, with id − <code>$BC</code></td>
+</tr>
+</tbody>
+</table>
+<p>Each record gives a script number, two graphics sets, and indexes of the compressed sprite
+frames, the palette steps and the object lists. All loaders end in <code>BattleAct_LoadCommon</code>, which
+loads the graphics sets, unpacks the sprite frames into <code>$7E:2D00</code> (<code>BattleAct_UnpackFrames</code>,
+through the <code>$C3:0002</code> vector) and splits the object records (<code>BattleAct_IndexObjLists</code>). The PC
+command runner uses kind 3 for items (id = item id); whether <code>BattleAct_LoadKind3</code> is "the item
+loader" is still open in <code>NEXT.md</code>.</p>
+<p>Before a PC's attack is loaded, <code>BattleAct_CheckReach</code> decides whether the target is near enough,
+and <code>BattleAct_FindPath</code> (<code>$C1:4A71</code>) is a breadth-first search on the path map from the
+attacker's cell to the target's.</p>
+<h2 id="script-threads">Script threads</h2>
+<p>A script starts with two 16-bit thread masks (bit 15 down to bit 0 for threads 0–15), then one
+offset per set bit. Every frame <code>BattleAct_RunThreads</code> (<code>$C1:4BBE</code>) runs one step of each live
+thread, in the order 0–4, then 8–15. A thread stands for an actor:</p>
+<table>
+<thead>
+<tr>
+<th>Threads</th>
+<th>Actor</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0–3</td>
+<td>The battler in that entry of <code>Battle_ActBattlers</code>: the caster, the two partner slots, the main target</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Every slot of the target set, while the target mask is non-zero</td>
+</tr>
+<tr>
+<td>5–7</td>
+<td>Never run</td>
+</tr>
+<tr>
+<td>8–15</td>
+<td>Object threads 0–7, which drive the action's own objects</td>
+</tr>
+</tbody>
+</table>
+<p><code>BattleAct_RunThread</code> (<code>$C1:4C9E</code>) runs <abbr title="First bytes of CPU instructions, identifying operations (e.g. $60 = RTS, $78 = SEI).">opcodes</abbr> through <code>BattleAct_OpcodeTable</code> (<code>$C1:7A6B</code>,
+224 words) until a handler stops it for the frame. Only <abbr title="First bytes of CPU instructions, identifying operations (e.g. $60 = RTS, $78 = SEI).">opcodes</abbr> below <code>$DB</code> run, so the last five
+entries are never reached; 75 entries point at <code>BattleAct_OpEndScript</code> (<abbr title="The first byte of a CPU instruction, identifying the operation (e.g. $60 = RTS, $78 = SEI).">opcode</abbr> <code>$01</code> and the
+unused <abbr title="First bytes of CPU instructions, identifying operations (e.g. $60 = RTS, $78 = SEI).">opcodes</abbr>), and there are 115 distinct handlers. A handler moves the script on with
+<code>BattleAct_AdvanceScript</code>; one that does not (a wait) runs again next frame.</p>
+<p>The <abbr title="The first byte of a CPU instruction, identifying the operation (e.g. $60 = RTS, $78 = SEI).">opcode</abbr> handlers (<code>$C1:4CF0</code>–<code>$C1:75BA</code>) fall into groups, each with its own banner:</p>
 <ul>
-<li><strong>Command window</strong>: <code>BattleMenu_DrawCommandList</code> and <code>BattleMenu_DrawCommandWindowFrames</code>
-  (<code>$C1:0785</code>–<code>$C1:095C</code>) draw each roster PC's commands; <code>BattleMenu_LoadCommandWindowMap</code> copies
-  the window map from ROM. <code>BattleMenu_CursorUp</code> / <code>Down</code> move between rows; <code>BattleMenu_ConfirmCommand</code>
-  dispatches row 0 (attack, <code>BattleMenu_ChooseAttack</code>), row 1 (tech, <code>BattleMenu_OpenTechList</code>)
-  and row 2 (item, <code>BattleMenu_OpenItemList</code>).</li>
-<li><strong>Tech list</strong> (submenu 1): <code>BattleMenu_RenderTechListRows</code> / <code>RenderTechRow</code> copy tech names from
-  the tables in bank <code>$CC</code>; <code>BattleMenu_TechListInput</code> (<code>$C1:1320</code>) with <code>TechListPrev</code> / <code>Next</code>,
-  <code>TechConfirm</code> and <code>TechListCancel</code>.</li>
-<li><strong>Item list</strong> (submenu 2): <code>BattleMenu_RenderItemListRows</code> / <code>RenderItemRow</code>;
-  <code>BattleMenu_ItemListInput</code> (<code>$C1:143D</code>) with cursor, page and scroll handlers,
-  <code>ItemConfirm</code> and <code>ItemListCancel</code>.</li>
+<li><strong>Control</strong>: end the thread or script, call and return, pause, the waits on script variables,
+  follow / unfollow.</li>
+<li><strong>Animation</strong>: play, loop or show an animation frame of the actor, set its speed and facing.</li>
+<li><strong>Movement</strong>: straight moves (<code>BattleAct_OpMoveTo</code>), curving moves, path walks
+  (<code>BattleAct_OpPathTo</code>, using <code>BattleAct_FindPath</code>), arcs (<code>BattleAct_OpArcToCalc</code>), circles and
+  ellipses, moves along a heading, the midpoint move, the shake (<code>BattleAct_OpShake</code>), and the
+  position history.</li>
+<li><strong>Script variables</strong>: set, count, add, copy and swap them.</li>
+<li><strong>Hit numbers</strong>: <code>BattleAct_OpShowHitNumbers</code> (<code>$C1:5ADB</code>).</li>
+<li><strong>Palettes</strong>: load an entry, start and stop palette sequences, a special palette and its
+  restore, colour rotation and blinking.</li>
+<li><strong>Sound</strong>: APU commands <code>$18</code>/<code>$19</code> with an id (<code>BattleAct_OpSound</code>), and the PC attack sounds.</li>
 </ul>
-<h2 id="choosing-a-target-and-committing">Choosing a target and committing</h2>
-<p>Confirming an attack, tech or item builds the target list (<code>BattleMenu_BuildTargetList</code>, see
-<a href="../battle-targeting/">Battle targeting</a>) and switches to target selection, whose input is
-<code>BattleMenu_TargetSelectInput</code> (<code>$C1:1561</code>; <code>BattleMenu_TargetNext</code> / <code>Prev</code> cycle the cursor).
-Confirming a target runs <code>BattleMenu_CommitAction</code> (<code>$C1:161A</code>): it fills the PC's <code>BattleCmd</code>
-record (kind <code>$80</code> attack, <code>$20</code> tech, <code>$40</code> item; the partners; the action id; the first
-selected target), consumes the partners of a double or triple tech
-(<code>BattleMenu_ConsumePartnerSlot</code>) so they do not act too, decrements the item's quantity,
-appends the PC to <code>!Battle_CmdQueue</code> and shows the next roster entry. The battle's turn handler
-later runs the command (see <a href="../battle-engine/#pc-commands-and-techs">Battle engine</a>).</p>
-<div class="wk-stat-tiles"><div class="wk-stat-tile"><span class="wk-stat-tile-val">63</span><span class="wk-stat-tile-label">functions matched</span></div><div class="wk-stat-tile"><span class="wk-stat-tile-val">5,046</span><span class="wk-stat-tile-label">bytes matched</span></div><div class="wk-stat-tile"><span class="wk-stat-tile-val">63</span><span class="wk-stat-tile-label">readable</span></div><div class="wk-stat-tile"><span class="wk-stat-tile-val">63</span><span class="wk-stat-tile-label">verified</span></div></div>
-<h2 id="functions">Functions</h2>
-<table class="wk-fntable"><thead><tr><th>Address</th><th>Function</th><th>Size</th><th>Status</th><th>Notes</th></tr></thead><tbody><tr><td><code>$C1:0785</code></td><td><code>BattleMenu_<wbr>DrawCommandList</code></td><td>153</td><td><span class="wk-status wk-status-verified">verified</span></td><td></td></tr><tr><td><code>$C1:081E</code></td><td><code>BattleMenu_<wbr>DrawCommandWindowFrames</code></td><td>84</td><td><span class="wk-status wk-status-verified">verified</span></td><td></td></tr><tr><td><code>$C1:0929</code></td><td><code>BattleMenu_<wbr>DrawCommandWindowFrame</code></td><td>52</td><td><span class="wk-status wk-status-verified">verified</span></td><td></td></tr><tr><td><code>$C1:095D</code></td><td><code>BattleMenu_<wbr>RenderItemListRows</code></td><td>83</td><td><span class="wk-status wk-status-verified">verified</span></td><td></td></tr><tr><td><code>$C1:09B0</code></td><td><code>BattleMenu_<wbr>RenderItemRow</code></td><td>215</td><td><span class="wk-status wk-status-verified">verified</span></td><td></td></tr><tr><td><code>$C1:0A87</code></td><td><code>BattleMenu_<wbr>RenderItemRow_<wbr>Exit</code></td><td>1</td><td><span class="wk-status wk-status-verified">verified</span></td><td></td></tr><tr><td><code>$C1:0A88</code></td><td><code>BattleMenu_<wbr>RenderTechListRows</code></td><td>75</td><td><span class="wk-status wk-status-verified">verified</span></td><td></td></tr><tr><td><code>$C1:0AD3</code></td><td><code>BattleMenu_<wbr>BuildTechAvailFlags</code></td><td>56</td><td><span class="wk-status wk-status-verified">verified</span></td><td></td></tr><tr><td><code>$C1:0B0B</code></td><td><code>BattleMenu_<wbr>RenderTechRow</code></td><td>171</td><td><span class="wk-status wk-status-verified">verified</span></td><td>Renders one tech-list line: blanks the text rows (!BattleMsg_TextTiles / TextTopTiles), fills them by the line code !Tech_ListCode[TechCodeIdx], and copies them into the tech text buffer at !BattleMen</td></tr><tr><td><code>$C1:0BB6</code></td><td><code>BattleMenu_<wbr>DrawTechLowerRow</code></td><td>29</td><td><span class="wk-status wk-status-verified">verified</span></td><td>Blank-line / header exit path of BattleMenu_RenderTechRow: advances !BattleMenu_TechRowNum, blanks the lead cells, then copies 18 lower-row tiles from !BattleMsg_TextTiles into the line from col 3 (pa</td></tr><tr><td><code>$C1:0BD3</code></td><td><code>BattleMenu_<wbr>BlankNameLeadCells</code></td><td>45</td><td><span class="wk-status wk-status-verified">verified</span></td><td>Blanks cols 3-5, the lead cells left of the name (which starts at col 6), on both rows of the tech-list line at !BattleMenu_RowMapOffset (blank tile, palette 3).</td></tr><tr><td><code>$C1:0C00</code></td><td><code>BattleMenu_<wbr>BlankNameTailCells</code></td><td>45</td><td><span class="wk-status wk-status-verified">verified</span></td><td>Tech-name exit path of BattleMenu_RenderTechRow (reached by its tail JMP): blanks cols 17-20 (right of the 11-tile name) on both rows of the line (blank tile, palette 3); the mirror of BattleMenu_Blan</td></tr><tr><td><code>$C1:0C2D</code></td><td><code>BattleMenu_<wbr>UpdateWindows</code></td><td>25</td><td><span class="wk-status wk-status-verified">verified</span></td><td>BattleMenu_UpdateWindows_Exit, $C10C46–$C10C48)</td></tr><tr><td><code>$C1:0C46</code></td><td><code>BattleMenu_<wbr>UpdateWindows_<wbr>Exit</code></td><td>3</td><td><span class="wk-status wk-status-verified">verified</span></td><td></td></tr><tr><td><code>$C1:0C49</code></td><td><code>BattleMenu_<wbr>UpdateMainWindow</code></td><td>58</td><td><span class="wk-status wk-status-verified">verified</span></td><td>Main command-window upkeep (submenu 0): - If !BattleMenu_RosterIdx differs from !BattleMenu_RosterIdxDrawn: reload the command window map and rebuild the status bar.</td></tr><tr><td><code>$C1:0C83</code></td><td><code>BattleMenu_<wbr>UpdateTechWindow</code></td><td>471</td><td><span class="wk-status wk-status-verified">verified</span></td><td></td></tr><tr><td><code>$C1:0E5A</code></td><td><code>BattleMenu_<wbr>DrawTechCursorRow</code></td><td>96</td><td><span class="wk-status wk-status-verified">verified</span></td><td></td></tr><tr><td><code>$C1:0EBA</code></td><td><code>BattleMenu_<wbr>ClearTechCursorTiles</code></td><td>39</td><td><span class="wk-status wk-status-verified">verified</span></td><td>Blanks cols 1-2 (the row-cursor columns) of all 6 tech-window rows.</td></tr><tr><td><code>$C1:0EE1</code></td><td><code>BattleMenu_<wbr>UpdateTechMpAvail</code></td><td>348</td><td><span class="wk-status wk-status-verified">verified</span></td><td></td></tr><tr><td><code>$C1:103D</code></td><td><code>BattleMenu_<wbr>Return</code></td><td>1</td><td><span class="wk-status wk-status-verified">verified</span></td><td>Shared RTS, also the JMP target of BattleMenu_UpdateMainWindow, BattleMenu_DrawTechCursorRow and BattleMenu_UpdateWindows_Exit.</td></tr><tr><td><code>$C1:10E3</code></td><td><code>BattleMenu_<wbr>RefreshIfDirtyL</code></td><td>23</td><td><span class="wk-status wk-status-verified">verified</span></td><td>JSL-entry twin of BattleMenu_RefreshIfDirtyAndTick, reached via the bank&#x27;s cross-bank entry-vector table: JSL $C10012 -&gt; JMP $C110E3.</td></tr><tr><td><code>$C1:10FA</code></td><td><code>BattleMenu_<wbr>RefreshIfDirtyAndTick</code></td><td>27</td><td><span class="wk-status wk-status-verified">verified</span></td><td>Same-bank JSR twin of BattleMenu_RefreshIfDirtyL — identical dirty- flag gate and menu rebuild chain, but always follows up with a cross-bank per-frame service tick (BattleSys_FrameTickVec) before ret</td></tr><tr><td><code>$C1:1115</code></td><td><code>BattleMenu_<wbr>DrawCursorSprites</code></td><td>62</td><td><span class="wk-status wk-status-verified">verified</span></td><td>Builds OAM sprites 0-3 (BattleOam) for the command cursor over the shown PC: each of the 4 template sprites in BattleRom_CursorSprite is offset by the PC&#x27;s !Battler_ScreenX/Y, and its palette bits are</td></tr><tr><td><code>$C1:1153</code></td><td><code>BattleMenu_<wbr>ProcessInput</code></td><td>142</td><td><span class="wk-status wk-status-verified">verified</span></td><td>Battle command-window input handler.</td></tr><tr><td><code>$C1:11E1</code></td><td><code>BattleMenu_<wbr>CycleActivePcPrev</code></td><td>55</td><td><span class="wk-status wk-status-verified">verified</span></td><td>Left D-pad: step !BattleMenu_RosterIdx back (wrap 0..2), skipping roster entries that are negative.</td></tr><tr><td><code>$C1:1218</code></td><td><code>BattleMenu_<wbr>CycleActivePcNext</code></td><td>56</td><td><span class="wk-status wk-status-verified">verified</span></td><td>Right D-pad: mirror of CycleActivePcPrev — steps !BattleMenu_RosterIdx forward (wrap at 3 back to 0) instead; the same sound 0 and the same cursor-memory handling.</td></tr><tr><td><code>$C1:1250</code></td><td><code>BattleMenu_<wbr>CursorUp</code></td><td>20</td><td><span class="wk-status wk-status-verified">verified</span></td><td>Up D-pad: step the shown PC&#x27;s !Pc_MenuRow back (wrap 0..2) and flag the cursor redraw (!BattleUI_PanelRedraw).</td></tr><tr><td><code>$C1:1264</code></td><td><code>BattleMenu_<wbr>CursorDown</code></td><td>23</td><td><span class="wk-status wk-status-verified">verified</span></td><td>Down D-pad: step the shown PC&#x27;s !Pc_MenuRow forward (wrap at 3 back to 0) and flag the cursor redraw (!BattleUI_PanelRedraw).</td></tr><tr><td><code>$C1:127B</code></td><td><code>BattleMenu_<wbr>ConfirmCommand</code></td><td>33</td><td><span class="wk-status wk-status-verified">verified</span></td><td>Confirm-button dispatch: sets !BattleUI_UnkA0D7 to $FF (compared by BattleUI_BuildStatusBarFrame with the first selected target), calls BattleFx_SetPtrA2FromTable for the shown PC, then tail-jumps on</td></tr><tr><td><code>$C1:129C</code></td><td><code>BattleMenu_<wbr>ChooseAttack</code></td><td>32</td><td><span class="wk-status wk-status-verified">verified</span></td><td>Row 0 (Attack) confirm: message call with &quot;none&quot;, flags the cursor redraw, sets !BattleTgt_Mode = attack, !BattleMenu_CmdMenu = 0, builds the target list, sets !BattleMenu_TargetMoved (so UpdateCursor</td></tr><tr><td><code>$C1:12BC</code></td><td><code>BattleMenu_<wbr>OpenTechList</code></td><td>49</td><td><span class="wk-status wk-status-verified">verified</span></td><td>Row 1 (Tech) confirm: unless !BattleMenu_Lock bit 0 is set, renders the tech list lines, builds !Tech_ListAvail, switches to the tech list (!BattleMenu_Submenu = !BattleMenu_CmdMenu = 1) and requests</td></tr><tr><td><code>$C1:12ED</code></td><td><code>BattleMenu_<wbr>OpenItemList</code></td><td>51</td><td><span class="wk-status wk-status-verified">verified</span></td><td>Row 2 (Item) confirm: unless !BattleMenu_Lock is non-zero, renders the item list at !BattleMenu_ItemScroll, queues the item map upload, copies the item box frame (!BattleRom_ItemBoxMap) into !BattleMe</td></tr><tr><td><code>$C1:1320</code></td><td><code>BattleMenu_<wbr>TechListInput</code></td><td>73</td><td><span class="wk-status wk-status-verified">verified</span></td><td></td></tr><tr><td><code>$C1:1369</code></td><td><code>BattleMenu_<wbr>TechConfirm</code></td><td>38</td><td><span class="wk-status wk-status-verified">verified</span></td><td>Confirms the highlighted tech: aborts unless the rows have been graded (!BattleMenu_TechAvailDone) and Tech_CursorEntry.Flags bit 7 is clear.</td></tr><tr><td><code>$C1:138F</code></td><td><code>BattleMenu_<wbr>TechListCancel</code></td><td>30</td><td><span class="wk-status wk-status-verified">verified</span></td><td>Closes the tech list: reload the command window, back to the main menu, force a window rebuild, and restore this PC&#x27;s saved tech-list cursor (!Pc_SavedTechRow / SavedTechScroll -&gt; !Pc_TechRow / TechSc</td></tr><tr><td><code>$C1:13AD</code></td><td><code>BattleMenu_<wbr>TechListPrev</code></td><td>71</td><td><span class="wk-status wk-status-verified">verified</span></td><td></td></tr><tr><td><code>$C1:13F4</code></td><td><code>BattleMenu_<wbr>TechListNext</code></td><td>73</td><td><span class="wk-status wk-status-verified">verified</span></td><td>Down/Right in the tech list: mirror of TechListPrev — walks forward instead of backward, bounded by the list length (!Pc_TechCount) instead of the start of the list, and scrolls down instead of up whe</td></tr><tr><td><code>$C1:143D</code></td><td><code>BattleMenu_<wbr>ItemListInput</code></td><td>91</td><td><span class="wk-status wk-status-verified">verified</span></td><td>Per-frame input handler while the item list is open (submenu 2).</td></tr><tr><td><code>$C1:1498</code></td><td><code>BattleMenu_<wbr>ItemConfirm</code></td><td>67</td><td><span class="wk-status wk-status-verified">verified</span></td><td></td></tr><tr><td><code>$C1:14DB</code></td><td><code>BattleMenu_<wbr>ItemListCancel</code></td><td>17</td><td><span class="wk-status wk-status-verified">verified</span></td><td>Closes the item list: reload the command window, back to the main menu, force a window rebuild, and invalidate the scroll-arrow cache.</td></tr><tr><td><code>$C1:14EC</code></td><td><code>BattleMenu_<wbr>ItemCursorUp</code></td><td>22</td><td><span class="wk-status wk-status-verified">verified</span></td><td>Up/Left in the item list: decrement !BattleMenu_ItemRow, scrolling the list up via ItemListScrollUp when already at the top row.</td></tr><tr><td><code>$C1:1502</code></td><td><code>BattleMenu_<wbr>ItemCursorDown</code></td><td>26</td><td><span class="wk-status wk-status-verified">verified</span></td><td>Down/Right in the item list: increment !BattleMenu_ItemRow (max 2), scrolling the list down via ItemListScrollDown when already at the bottom row.</td></tr><tr><td><code>$C1:151C</code></td><td><code>BattleMenu_<wbr>ItemListPageDown</code></td><td>27</td><td><span class="wk-status wk-status-verified">verified</span></td><td>Page-down button: page the item list down 3 rows at once, clamped at scroll position $FA.</td></tr><tr><td><code>$C1:1537</code></td><td><code>BattleMenu_<wbr>ItemListPageUp</code></td><td>20</td><td><span class="wk-status wk-status-verified">verified</span></td><td>Page-up button: page the item list up 3 rows at once, clamped at 0.</td></tr><tr><td><code>$C1:154B</code></td><td><code>BattleMenu_<wbr>ItemListRefresh</code></td><td>22</td><td><span class="wk-status wk-status-verified">verified</span></td><td>Re-renders the item list rows, invalidates both draw caches and clears !BattleMenu_ItemRefresh.</td></tr><tr><td><code>$C1:1561</code></td><td><code>BattleMenu_<wbr>TargetSelectInput</code></td><td>185</td><td><span class="wk-status wk-status-verified">verified</span></td><td>Per-frame input handler while target selection runs (entered from BattleMenu_ProcessInput when !BattleMenu_TargetSelect != 0).</td></tr><tr><td><code>$C1:161A</code></td><td><code>BattleMenu_<wbr>CommitAction</code></td><td>308</td><td><span class="wk-status wk-status-verified">verified</span></td><td></td></tr><tr><td><code>$C1:174E</code></td><td><code>BattleMenu_<wbr>ConsumePartnerSlot</code></td><td>30</td><td><span class="wk-status wk-status-verified">verified</span></td><td>Removes PC slot !BattleMenu_PartnerArg from the ready state as part of committing a double/triple tech: if it&#x27;s in the roster, decrements !BattleMenu_ReadyCount; either way marks its roster entry empt</td></tr><tr><td><code>$C1:176C</code></td><td><code>BattleMenu_<wbr>TargetNext</code></td><td>26</td><td><span class="wk-status wk-status-verified">verified</span></td><td>Right/Down while cycling targets: advance !BattleTgt_Cursor (wrap at 11), skipping empty candidate entries, and select the battler it lands on (!BattleTgt_Selected).</td></tr><tr><td><code>$C1:1786</code></td><td><code>BattleMenu_<wbr>TargetPrev</code></td><td>22</td><td><span class="wk-status wk-status-verified">verified</span></td><td>Left/Up while cycling targets: mirror of TargetNext — steps !BattleTgt_Cursor back (wrap to 10) instead.</td></tr><tr><td><code>$C1:17A1</code></td><td><code>BattleMenu_<wbr>ItemListScrollUp</code></td><td>16</td><td><span class="wk-status wk-status-verified">verified</span></td><td>BattleMenu_ItemListScrollUp_SetScroll $C117B1, BattleMenu_ItemListScrollUp_RenderTail $C117B3 and BattleMenu_ItemListScrollUp_SkipRender $C117B6–$C117BE)</td></tr><tr><td><code>$C1:17B1</code></td><td><code>BattleMenu_<wbr>ItemListScrollUp_<wbr>SetScroll</code></td><td>2</td><td><span class="wk-status wk-status-verified">verified</span></td><td></td></tr><tr><td><code>$C1:17B3</code></td><td><code>BattleMenu_<wbr>ItemListScrollUp_<wbr>RenderTail</code></td><td>3</td><td><span class="wk-status wk-status-verified">verified</span></td><td></td></tr><tr><td><code>$C1:17B6</code></td><td><code>BattleMenu_<wbr>ItemListScrollUp_<wbr>SkipRender</code></td><td>9</td><td><span class="wk-status wk-status-verified">verified</span></td><td></td></tr><tr><td><code>$C1:17BF</code></td><td><code>BattleMenu_<wbr>ItemListScrollDown</code></td><td>18</td><td><span class="wk-status wk-status-verified">verified</span></td><td>BattleMenu_ItemListScrollDown_RenderTail $C117D1 and BattleMenu_ItemListScrollDown_SkipRender $C117D4–$C117DC)</td></tr><tr><td><code>$C1:17D1</code></td><td><code>BattleMenu_<wbr>ItemListScrollDown_<wbr>RenderTail</code></td><td>3</td><td><span class="wk-status wk-status-verified">verified</span></td><td></td></tr><tr><td><code>$C1:17D4</code></td><td><code>BattleMenu_<wbr>ItemListScrollDown_<wbr>SkipRender</code></td><td>9</td><td><span class="wk-status wk-status-verified">verified</span></td><td></td></tr><tr><td><code>$C1:17DD</code></td><td><code>BattleMenu_<wbr>UpdateCursorOverlay</code></td><td>828</td><td><span class="wk-status wk-status-verified">verified</span></td><td></td></tr><tr><td><code>$C1:1B19</code></td><td><code>BattleMenu_<wbr>EnqueueReadyBattler</code></td><td>60</td><td><span class="wk-status wk-status-verified">verified</span></td><td>Service 1 of the $C10045 service dispatcher (dispatch table at $C10051: service 0 -&gt; $0023, 1 -&gt; here, 2 -&gt; RemoveBattlerFromReady).</td></tr><tr><td><code>$C1:1B67</code></td><td><code>BattleMenu_<wbr>DequeueReadyBattler</code></td><td>67</td><td><span class="wk-status wk-status-verified">verified</span></td><td>Pops the head of !BattleMenu_ReadyQueue (up to 3 deep, count in !BattleMenu_ReadyQueueLen) into the roster: clears its !Battle_Unk9F38, restores its tech-list cursor (!Pc_SavedTechRow / SavedTechScrol</td></tr><tr><td><code>$C1:1BAA</code></td><td><code>BattleMenu_<wbr>RemoveBattlerFromReady</code></td><td>144</td><td><span class="wk-status wk-status-verified">verified</span></td><td></td></tr><tr><td><code>$C1:1C3A</code></td><td><code>BattleMenu_<wbr>LoadCommandWindowMap</code></td><td>16</td><td><span class="wk-status wk-status-verified">verified</span></td><td>Copies the $180-byte command window map (!BattleRom_CommandWindowMap, bank $D1) into !BattleMenu_WindowMap.</td></tr><tr><td><code>$C1:1F79</code></td><td><code>BattleMenu_<wbr>BuildTargetList</code></td><td>100</td><td><span class="wk-status wk-status-verified">verified</span></td><td>Records the requesting PC (!BattleTgt_Caster), resets the selection state (!BattleTgt_Result/CanCycle/TargetAll, two Unk bytes) and blanks !BattleTgt_Candidates and !BattleTgt_Selected (indices 0-11)</td></tr></tbody></table>
-<p class="wk-page-meta">Generated from <code>functions.csv</code>. Do not edit.</p>
+<p>Many <abbr title="First bytes of CPU instructions, identifying operations (e.g. $60 = RTS, $78 = SEI).">opcodes</abbr> take a point from one of two dispatchers: <code>BattleAct_CalcFacing</code> (25 facing modes:
+like an entry, toward an entry, fixed, toward the centre) and <code>BattleAct_RunCalc</code> (72 point
+calculations: a battler's position, a midpoint, a centroid, a fixed point, a saved position, an
+object's offset, a point along a line). Their tables are <code>BattleAct_FacingModeTable</code> and
+<code>BattleAct_CalcTable</code> (<code>$C1:79A1</code>–<code>$C1:7A62</code>).</p>
+<h2 id="enemy-movers">Enemy movers</h2>
+<p>Outside actions, enemies move by themselves in 8-pixel steps (<code>$C1:3714</code>–<code>$C1:4057</code>):
+<code>Battle_TickEnemyMovers</code> runs, each frame, the mover picked by the enemy's animation through
+<code>Battle_EnemyMoverTable</code> (9 entries): stay put, approach the target, charge, line up on one
+axis, keep to a ring round the target, orbit it, loop round an ellipse, fixed directions, head for
+the screen centre. Each picks the heading of the next step and tests the box there against the
+cell map and the other battlers; the stepper that then moves the enemy (<code>$CF:F978</code>) is not
+<abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr>.</p>
+<h2 id="not-matched-yet">Not <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr> yet</h2>
+<p>From <code>NEXT.md</code>: the movers in bank <code>$CF</code> that the movement <abbr title="First bytes of CPU instructions, identifying operations (e.g. $60 = RTS, $78 = SEI).">opcodes</abbr> hand over to (dispatch at
+<code>$CF:EFC4</code>), the position-history recorder <code>$CF:ED1D</code>, the hit-number bounce <code>$CF:E781</code>, the
+colour rotation <code>$CF:E600</code>, the palette stepper <code>BattleAct_StepPalettes</code> and the action helpers
+in bank <code>$CC</code>, and the code at <code>$C1:ACF0</code> that fills part of the action block.</p>
+<p>The banner before <code>BattleSys_RunAction</code> still says the script interpreter "is not <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr> yet",
+and the thread banner calls <code>BattleAct_OpcodeTable</code> unmatched; both are now <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr> (the second
+is listed in <code>NEXT.md</code> as stale).</p>
       
       </div>
 

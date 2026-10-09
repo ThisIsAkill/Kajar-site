@@ -6,10 +6,10 @@
   
   
   <meta name="description" content="Byte-exact matching decompilation of Chrono Trigger (SNES, US 1.0)">
-  <link rel="canonical" href="https://thisisakill.github.io/Kajar-site/systems/battle-menu/">
+  <link rel="canonical" href="https://thisisakill.github.io/Kajar-site/systems/frame-cycle/">
   
   
-  <title>Battle menu — Kajar</title>
+  <title>Frame cycle & NMI — Kajar</title>
   
   
   <link rel="stylesheet" href="../../stylesheets/wiki.css">
@@ -107,7 +107,7 @@
           
         
           
-          <a class="wk-nav-link" href="../frame-cycle/">Frame cycle & NMI</a>
+          <a class="wk-nav-link is-active" href="./">Frame cycle & NMI</a>
           
         
           
@@ -139,7 +139,7 @@
           
         
           
-          <a class="wk-nav-link is-active" href="./">Battle menu</a>
+          <a class="wk-nav-link" href="../battle-menu/">Battle menu</a>
           
         
           
@@ -251,9 +251,9 @@
         <ol class="wk-toc-list" id="wk-toc-list">
           
           <li>
-            <a href="#battle-menu" class="wk-toc-link">Battle menu</a>
+            <a href="#frame-cycle-and-nmi" class="wk-toc-link">Frame cycle and NMI</a>
             
-            <ol><li><a href="#the-rebuild-chain" class="wk-toc-link">The rebuild chain</a></li><li><a href="#the-ready-queue" class="wk-toc-link">The ready queue</a></li><li><a href="#windows-and-lists" class="wk-toc-link">Windows and lists</a></li><li><a href="#choosing-a-target-and-committing" class="wk-toc-link">Choosing a target and committing</a></li></ol>
+            <ol><li><a href="#one-field-frame" class="wk-toc-link">One field frame</a></li><li><a href="#the-handshake" class="wk-toc-link">The handshake</a></li><li><a href="#nmihandler" class="wk-toc-link">NmiHandler</a></li><li><a href="#the-oam-shadow" class="wk-toc-link">The OAM shadow</a></li><li><a href="#other-frame-cycles" class="wk-toc-link">Other frame cycles</a></li></ol>
             
           </li>
           
@@ -265,66 +265,95 @@
       <div class="wk-article-body">
       
       
-      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="October 9, 2026 00:05:30 UTC">October 9, 2026</span></p>
+      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="October 9, 2026 00:11:08 UTC">October 9, 2026</span></p>
       
-      <h1 id="battle-menu">Battle menu</h1>
-<p>The battle command menu in bank <code>$C1</code> (<code>$C1:0785</code>–<code>$C1:1C49</code>, plus <code>BattleMenu_BuildTargetList</code> at
-<code>$C1:1F79</code>): the per-PC command windows, the tech and item lists, the input handlers for each
-window, the queue of PCs waiting for a command, and the cursor sprites. It runs with M=1, X=0,
-<abbr title="Direct Page — the 65816's relocatable 256-byte zero-page window; address = D register + 8-bit offset.">DP</abbr>=0 and DB=<code>$7E</code>, like the rest of the battle.</p>
-<p>See also: <a href="../battle-targeting/">Battle targeting</a>, <a href="../battle-status/">Status bar &amp; text</a>,
-<a href="../battle-engine/">Battle engine</a>.</p>
-<h2 id="the-rebuild-chain">The rebuild chain</h2>
-<p>The menu is not redrawn every frame: it rebuilds only on frames where <code>!BattleMenu_Dirty</code> is set.
-Three routines gate it the same way: <code>BattleMenu_RefreshIfDirtyL</code> (<code>$C1:10E3</code>, the <code>JSL</code> form),
-<code>BattleMenu_RefreshIfDirtyAndTick</code> (<code>$C1:10FA</code>, which also runs a per-frame service tick and is
-called after each frame wait of an action) and <code>BattleSys_UpkeepTwoFrames</code> (service 3). Each one
-clears the flag and runs the chain:</p>
-<ol>
-<li><code>BattleMenu_DequeueReadyBattler</code>: take the next PC off the ready queue;</li>
-<li><code>BattleMenu_UpdateWindows</code> (<code>$C1:0C2D</code>): window upkeep by submenu: the main command window
-   (<code>BattleMenu_UpdateMainWindow</code>), the tech window (<code>BattleMenu_UpdateTechWindow</code>, with the MP
-   check of each visible tech in <code>BattleMenu_UpdateTechMpAvail</code>), or the item window;</li>
-<li><code>BattleMenu_ProcessInput</code> (<code>$C1:1153</code>): the command window's input;</li>
-<li><code>BattleMenu_UpdateCursorOverlay</code> (<code>$C1:17DD</code>, 828 bytes): draw whichever cursor belongs on
-   screen now: none, the target cursor(s), the tech-list cursor (a 2–3 sprite cluster over the
-   partners for a double or triple tech) or the item-list cursor and scroll arrows.</li>
-</ol>
-<h2 id="the-ready-queue">The ready queue</h2>
-<p>Services 1 and 2 of the battle's service dispatcher manage the PCs waiting for a command:
-<code>BattleMenu_EnqueueReadyBattler</code> (<code>$C1:1B19</code>) marks the PC's command record "waiting for a
-command", appends it to <code>!BattleMenu_ReadyQueue</code> and plays sound <code>$42</code> (inferred: the "turn ready"
-cue); <code>BattleMenu_RemoveBattlerFromReady</code> (<code>$C1:1BAA</code>) is its inverse.
-<code>BattleMenu_DequeueReadyBattler</code> pops the head (up to 3 deep) into the roster of PCs shown in the
-menu. <code>BattleMenu_CycleActivePcPrev</code> / <code>Next</code> switch between the roster's PCs.</p>
-<h2 id="windows-and-lists">Windows and lists</h2>
+      <h1 id="frame-cycle-and-nmi">Frame cycle and <abbr title="Non-Maskable Interrupt — fires at the start of VBlank each frame; the safe window for PPU updates.">NMI</abbr></h1>
+<p>How one frame of the field runs: the game logic in <code>GameLoop_FrameBody</code>, the end-of-frame work
+that prepares the next picture, the frame wait, and the <abbr title="Non-Maskable Interrupt — fires at the start of VBlank each frame; the safe window for PPU updates.">NMI</abbr> handler that uploads it during
+vertical blank. The scene mode in bank <code>$C2</code> and the battle have frame cycles of their own,
+summarised at the end.</p>
+<p>See also: <a href="../engine/">Engine core</a>, <a href="../boot/">Boot</a>, <a href="../../ARCHITECTURE/">Architecture</a>.</p>
+<h2 id="one-field-frame">One field frame</h2>
+<div class="language-text highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>GameLoop_FrameBody ($C0:0097)
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>  input, scene changes, field update, event hooks …   game logic (see Engine core)
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>  Field_EndOfFrame ($C0:00BF)
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>    Vblank_Unk59D9               queue the objects whose script timer ran out
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>    Vblank_ReadScanlineCounters  run their scripts while the frame has time
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>    JSL EngFD_UnkC2C1            one HDMA table builder (two table sets, alternate frames)
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>    JSL FdVec_FFF7               the $0520 animation records (not analysed)
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>    Vblank_UnkA810               move every object, cull to the view, tick animations
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>    Field_ProcessAnimQueue       build queued sprite frames while there is time
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>    BRL Oam_BuildShadow          rebuild the OAM shadow for the next frame
+<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>  Field_WaitFrame ($C0:EC60)     handshake with the NMI
+<a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>  BRA GameLoop_FrameBody
+</code></pre></div>
+<p>The <code>Vblank_</code> names are historical: none of these routines runs inside the interrupt.
+<code>Field_EndOfFrame</code>'s header says so plainly: it is "not an interrupt handler and waits for
+nothing itself". Two loops in this list stop on the <abbr title="Picture Processing Unit — the SNES graphics chip handling BGs, sprites, palettes, windows, and compositing.">PPU</abbr>'s V counter rather than a fixed count,
+so the work spreads over frames when there is a lot of it: the script runner
+(<code>Vblank_ReadScanlineCounters</code>) and the frame builder (<code>Field_ProcessAnimQueue</code>).</p>
+<p><code>Field_EndOfFrameShort</code> (<code>$C0:00DE</code>) runs only the two bank-$FD calls, for the fade and idle
+loops, and <code>Field_IdleFrame</code> (<code>$C0:00EB</code>) is one frame of upkeep without game logic:
+<code>Field_FrameUpdate</code>, <code>Field_EndOfFrameShort</code>, <code>Field_WaitFrame</code>.</p>
+<h2 id="the-handshake">The handshake</h2>
+<p><code>Field_WaitFrame</code> (<code>$C0:EC60</code>, 23 bytes) counts <code>Field_Unk58</code> up, increments
+<code>Nmi_FramePending</code> (<code>$0152</code>) and spins until it reads 0 again. Only <code>NmiHandler</code> clears it, after
+the frame's uploads (the "frame handshake" of <code>ram_engine.inc</code>). The <abbr title="Non-Maskable Interrupt — fires at the start of VBlank each frame; the safe window for PPU updates.">NMI</abbr> must be on, or
+<code>Field_WaitFrame</code> never returns.</p>
+<h2 id="nmihandler">NmiHandler</h2>
+<p><code>NmiHandler</code> (<code>$C0:EA63</code>, 509 bytes) is entered through the <abbr title="Work RAM — 128KB of SNES main RAM at $7E:0000–$7F:FFFF, holds all runtime game state.">WRAM</abbr> trampoline at <code>$7E:0500</code> that
+<code>InstallNMI</code> writes. It saves A, X, Y, <abbr title="Direct Page — the 65816's relocatable 256-byte zero-page window; address = D register + 8-bit offset.">DP</abbr> and DB, sets DB=<code>$00</code>, acknowledges the <abbr title="Non-Maskable Interrupt — fires at the start of VBlank each frame; the safe window for PPU updates.">NMI</abbr> (<code>RDNMI</code>),
+turns HDMA off and writes <code>NMITIMEN</code> and <code>BGMODE</code>. Then:</p>
 <ul>
-<li><strong>Command window</strong>: <code>BattleMenu_DrawCommandList</code> and <code>BattleMenu_DrawCommandWindowFrames</code>
-  (<code>$C1:0785</code>–<code>$C1:095C</code>) draw each roster PC's commands; <code>BattleMenu_LoadCommandWindowMap</code> copies
-  the window map from ROM. <code>BattleMenu_CursorUp</code> / <code>Down</code> move between rows; <code>BattleMenu_ConfirmCommand</code>
-  dispatches row 0 (attack, <code>BattleMenu_ChooseAttack</code>), row 1 (tech, <code>BattleMenu_OpenTechList</code>)
-  and row 2 (item, <code>BattleMenu_OpenItemList</code>).</li>
-<li><strong>Tech list</strong> (submenu 1): <code>BattleMenu_RenderTechListRows</code> / <code>RenderTechRow</code> copy tech names from
-  the tables in bank <code>$CC</code>; <code>BattleMenu_TechListInput</code> (<code>$C1:1320</code>) with <code>TechListPrev</code> / <code>Next</code>,
-  <code>TechConfirm</code> and <code>TechListCancel</code>.</li>
-<li><strong>Item list</strong> (submenu 2): <code>BattleMenu_RenderItemListRows</code> / <code>RenderItemRow</code>;
-  <code>BattleMenu_ItemListInput</code> (<code>$C1:143D</code>) with cursor, page and scroll handlers,
-  <code>ItemConfirm</code> and <code>ItemListCancel</code>.</li>
+<li><strong>Lag frame</strong> (<code>Nmi_FramePending</code> = 0: the game has not reached its wait): no uploads at all.</li>
+<li>
+<p><strong>Otherwise</strong>, with <abbr title="Direct Page — the 65816's relocatable 256-byte zero-page window; address = D register + 8-bit offset.">DP</abbr>=<code>$0100</code>, the first that applies:</p>
+<ol>
+<li><code>Field_Unk47</code> nonzero: the first of its bits 0–3 that is set is cleared and its upload runs
+   (<code>Field_UploadUnk1D00</code>, <code>1C00</code>, <code>1F00</code>, <code>57E0</code>), one per frame; then the common uploads.</li>
+<li>A map redraw step in <code>Field_MapRedrawDone</code>: the 2 KB buffer <code>Map_BufC800</code> to one of the
+   map's tilemaps (<code>Map_UploadBuf2K</code>), or to <abbr title="Video RAM — dedicated PPU memory for tile graphics and tilemaps; written via DMA during VBlank.">VRAM</abbr> <code>$7000</code> / <code>$7400</code>; then
+   <code>Hdma_InitChannelsFD</code>, skipping the common uploads.</li>
+<li>Otherwise one line of the staff credits if requested (<code>Credits_UploadLine</code>) and the
+   <code>Field_Unk36</code> upload if requested (<code>Field_UploadUnk5800</code>), then the common uploads.</li>
+</ol>
+<p>The common uploads are <code>Pal_UploadCgram</code> (the palette buffer at <code>$7E:2200</code> to CGRAM),
+<code>Oam_UploadShadow</code> (<code>$220</code> bytes from <code>$0700</code> to <abbr title="Object Attribute Memory — the PPU's 512+32-byte sprite table (up to 128 sprites: X/Y, tile, palette, size).">OAM</abbr>), <code>VramQ_Flush</code> (queued sprite tile
+uploads), then, with <abbr title="Direct Page — the 65816's relocatable 256-byte zero-page window; address = D register + 8-bit offset.">DP</abbr>=<code>$1D00</code>, the map edge uploads for each layer and direction marked in
+<code>Map_BuiltRowYInc</code> … <code>Map_BuiltColXDec</code> (<code>Map_UploadRowYInc1</code> … <code>Map_UploadColXDec3</code>,
+<code>$C0:8445</code>–<code>$C0:87F0</code>), <code>Hdma_InitChannelsFD</code> and <code>Nmi_FramePending</code> = 0.
+- <strong>Every <abbr title="Non-Maskable Interrupt — fires at the start of VBlank each frame; the safe window for PPU updates.">NMI</abbr></strong>: <code>JSL BankC2_Entry8002</code> (the joypad reader <code>Menu_ReadPad</code>), the window shadows
+  <code>Ppu_W12SelShadow</code> … <code>Ppu_CgwSelShadow</code> to <code>W12SEL</code> … <code>CGWSEL</code>, the fixed colour, <code>HDMAEN</code> from
+  <code>Field_HdmaEnable</code> and <code>INIDISP</code> from <code>Fade_Brightness</code> (forced blank when it is 0). These read
+  the field bytes with absolute addresses, because on a lag frame <abbr title="Direct Page — the 65816's relocatable 256-byte zero-page window; address = D register + 8-bit offset.">DP</abbr> is still the interrupted
+  code's. Then it restores everything and returns with <code>RTI</code>.</p>
+</li>
 </ul>
-<h2 id="choosing-a-target-and-committing">Choosing a target and committing</h2>
-<p>Confirming an attack, tech or item builds the target list (<code>BattleMenu_BuildTargetList</code>, see
-<a href="../battle-targeting/">Battle targeting</a>) and switches to target selection, whose input is
-<code>BattleMenu_TargetSelectInput</code> (<code>$C1:1561</code>; <code>BattleMenu_TargetNext</code> / <code>Prev</code> cycle the cursor).
-Confirming a target runs <code>BattleMenu_CommitAction</code> (<code>$C1:161A</code>): it fills the PC's <code>BattleCmd</code>
-record (kind <code>$80</code> attack, <code>$20</code> tech, <code>$40</code> item; the partners; the action id; the first
-selected target), consumes the partners of a double or triple tech
-(<code>BattleMenu_ConsumePartnerSlot</code>) so they do not act too, decrements the item's quantity,
-appends the PC to <code>!Battle_CmdQueue</code> and shows the next roster entry. The battle's turn handler
-later runs the command (see <a href="../battle-engine/#pc-commands-and-techs">Battle engine</a>).</p>
-<div class="wk-stat-tiles"><div class="wk-stat-tile"><span class="wk-stat-tile-val">63</span><span class="wk-stat-tile-label">functions matched</span></div><div class="wk-stat-tile"><span class="wk-stat-tile-val">5,046</span><span class="wk-stat-tile-label">bytes matched</span></div><div class="wk-stat-tile"><span class="wk-stat-tile-val">63</span><span class="wk-stat-tile-label">readable</span></div><div class="wk-stat-tile"><span class="wk-stat-tile-val">63</span><span class="wk-stat-tile-label">verified</span></div></div>
-<h2 id="functions">Functions</h2>
-<table class="wk-fntable"><thead><tr><th>Address</th><th>Function</th><th>Size</th><th>Status</th><th>Notes</th></tr></thead><tbody><tr><td><code>$C1:0785</code></td><td><code>BattleMenu_<wbr>DrawCommandList</code></td><td>153</td><td><span class="wk-status wk-status-verified">verified</span></td><td></td></tr><tr><td><code>$C1:081E</code></td><td><code>BattleMenu_<wbr>DrawCommandWindowFrames</code></td><td>84</td><td><span class="wk-status wk-status-verified">verified</span></td><td></td></tr><tr><td><code>$C1:0929</code></td><td><code>BattleMenu_<wbr>DrawCommandWindowFrame</code></td><td>52</td><td><span class="wk-status wk-status-verified">verified</span></td><td></td></tr><tr><td><code>$C1:095D</code></td><td><code>BattleMenu_<wbr>RenderItemListRows</code></td><td>83</td><td><span class="wk-status wk-status-verified">verified</span></td><td></td></tr><tr><td><code>$C1:09B0</code></td><td><code>BattleMenu_<wbr>RenderItemRow</code></td><td>215</td><td><span class="wk-status wk-status-verified">verified</span></td><td></td></tr><tr><td><code>$C1:0A87</code></td><td><code>BattleMenu_<wbr>RenderItemRow_<wbr>Exit</code></td><td>1</td><td><span class="wk-status wk-status-verified">verified</span></td><td></td></tr><tr><td><code>$C1:0A88</code></td><td><code>BattleMenu_<wbr>RenderTechListRows</code></td><td>75</td><td><span class="wk-status wk-status-verified">verified</span></td><td></td></tr><tr><td><code>$C1:0AD3</code></td><td><code>BattleMenu_<wbr>BuildTechAvailFlags</code></td><td>56</td><td><span class="wk-status wk-status-verified">verified</span></td><td></td></tr><tr><td><code>$C1:0B0B</code></td><td><code>BattleMenu_<wbr>RenderTechRow</code></td><td>171</td><td><span class="wk-status wk-status-verified">verified</span></td><td>Renders one tech-list line: blanks the text rows (!BattleMsg_TextTiles / TextTopTiles), fills them by the line code !Tech_ListCode[TechCodeIdx], and copies them into the tech text buffer at !BattleMen</td></tr><tr><td><code>$C1:0BB6</code></td><td><code>BattleMenu_<wbr>DrawTechLowerRow</code></td><td>29</td><td><span class="wk-status wk-status-verified">verified</span></td><td>Blank-line / header exit path of BattleMenu_RenderTechRow: advances !BattleMenu_TechRowNum, blanks the lead cells, then copies 18 lower-row tiles from !BattleMsg_TextTiles into the line from col 3 (pa</td></tr><tr><td><code>$C1:0BD3</code></td><td><code>BattleMenu_<wbr>BlankNameLeadCells</code></td><td>45</td><td><span class="wk-status wk-status-verified">verified</span></td><td>Blanks cols 3-5, the lead cells left of the name (which starts at col 6), on both rows of the tech-list line at !BattleMenu_RowMapOffset (blank tile, palette 3).</td></tr><tr><td><code>$C1:0C00</code></td><td><code>BattleMenu_<wbr>BlankNameTailCells</code></td><td>45</td><td><span class="wk-status wk-status-verified">verified</span></td><td>Tech-name exit path of BattleMenu_RenderTechRow (reached by its tail JMP): blanks cols 17-20 (right of the 11-tile name) on both rows of the line (blank tile, palette 3); the mirror of BattleMenu_Blan</td></tr><tr><td><code>$C1:0C2D</code></td><td><code>BattleMenu_<wbr>UpdateWindows</code></td><td>25</td><td><span class="wk-status wk-status-verified">verified</span></td><td>BattleMenu_UpdateWindows_Exit, $C10C46–$C10C48)</td></tr><tr><td><code>$C1:0C46</code></td><td><code>BattleMenu_<wbr>UpdateWindows_<wbr>Exit</code></td><td>3</td><td><span class="wk-status wk-status-verified">verified</span></td><td></td></tr><tr><td><code>$C1:0C49</code></td><td><code>BattleMenu_<wbr>UpdateMainWindow</code></td><td>58</td><td><span class="wk-status wk-status-verified">verified</span></td><td>Main command-window upkeep (submenu 0): - If !BattleMenu_RosterIdx differs from !BattleMenu_RosterIdxDrawn: reload the command window map and rebuild the status bar.</td></tr><tr><td><code>$C1:0C83</code></td><td><code>BattleMenu_<wbr>UpdateTechWindow</code></td><td>471</td><td><span class="wk-status wk-status-verified">verified</span></td><td></td></tr><tr><td><code>$C1:0E5A</code></td><td><code>BattleMenu_<wbr>DrawTechCursorRow</code></td><td>96</td><td><span class="wk-status wk-status-verified">verified</span></td><td></td></tr><tr><td><code>$C1:0EBA</code></td><td><code>BattleMenu_<wbr>ClearTechCursorTiles</code></td><td>39</td><td><span class="wk-status wk-status-verified">verified</span></td><td>Blanks cols 1-2 (the row-cursor columns) of all 6 tech-window rows.</td></tr><tr><td><code>$C1:0EE1</code></td><td><code>BattleMenu_<wbr>UpdateTechMpAvail</code></td><td>348</td><td><span class="wk-status wk-status-verified">verified</span></td><td></td></tr><tr><td><code>$C1:103D</code></td><td><code>BattleMenu_<wbr>Return</code></td><td>1</td><td><span class="wk-status wk-status-verified">verified</span></td><td>Shared RTS, also the JMP target of BattleMenu_UpdateMainWindow, BattleMenu_DrawTechCursorRow and BattleMenu_UpdateWindows_Exit.</td></tr><tr><td><code>$C1:10E3</code></td><td><code>BattleMenu_<wbr>RefreshIfDirtyL</code></td><td>23</td><td><span class="wk-status wk-status-verified">verified</span></td><td>JSL-entry twin of BattleMenu_RefreshIfDirtyAndTick, reached via the bank&#x27;s cross-bank entry-vector table: JSL $C10012 -&gt; JMP $C110E3.</td></tr><tr><td><code>$C1:10FA</code></td><td><code>BattleMenu_<wbr>RefreshIfDirtyAndTick</code></td><td>27</td><td><span class="wk-status wk-status-verified">verified</span></td><td>Same-bank JSR twin of BattleMenu_RefreshIfDirtyL — identical dirty- flag gate and menu rebuild chain, but always follows up with a cross-bank per-frame service tick (BattleSys_FrameTickVec) before ret</td></tr><tr><td><code>$C1:1115</code></td><td><code>BattleMenu_<wbr>DrawCursorSprites</code></td><td>62</td><td><span class="wk-status wk-status-verified">verified</span></td><td>Builds OAM sprites 0-3 (BattleOam) for the command cursor over the shown PC: each of the 4 template sprites in BattleRom_CursorSprite is offset by the PC&#x27;s !Battler_ScreenX/Y, and its palette bits are</td></tr><tr><td><code>$C1:1153</code></td><td><code>BattleMenu_<wbr>ProcessInput</code></td><td>142</td><td><span class="wk-status wk-status-verified">verified</span></td><td>Battle command-window input handler.</td></tr><tr><td><code>$C1:11E1</code></td><td><code>BattleMenu_<wbr>CycleActivePcPrev</code></td><td>55</td><td><span class="wk-status wk-status-verified">verified</span></td><td>Left D-pad: step !BattleMenu_RosterIdx back (wrap 0..2), skipping roster entries that are negative.</td></tr><tr><td><code>$C1:1218</code></td><td><code>BattleMenu_<wbr>CycleActivePcNext</code></td><td>56</td><td><span class="wk-status wk-status-verified">verified</span></td><td>Right D-pad: mirror of CycleActivePcPrev — steps !BattleMenu_RosterIdx forward (wrap at 3 back to 0) instead; the same sound 0 and the same cursor-memory handling.</td></tr><tr><td><code>$C1:1250</code></td><td><code>BattleMenu_<wbr>CursorUp</code></td><td>20</td><td><span class="wk-status wk-status-verified">verified</span></td><td>Up D-pad: step the shown PC&#x27;s !Pc_MenuRow back (wrap 0..2) and flag the cursor redraw (!BattleUI_PanelRedraw).</td></tr><tr><td><code>$C1:1264</code></td><td><code>BattleMenu_<wbr>CursorDown</code></td><td>23</td><td><span class="wk-status wk-status-verified">verified</span></td><td>Down D-pad: step the shown PC&#x27;s !Pc_MenuRow forward (wrap at 3 back to 0) and flag the cursor redraw (!BattleUI_PanelRedraw).</td></tr><tr><td><code>$C1:127B</code></td><td><code>BattleMenu_<wbr>ConfirmCommand</code></td><td>33</td><td><span class="wk-status wk-status-verified">verified</span></td><td>Confirm-button dispatch: sets !BattleUI_UnkA0D7 to $FF (compared by BattleUI_BuildStatusBarFrame with the first selected target), calls BattleFx_SetPtrA2FromTable for the shown PC, then tail-jumps on</td></tr><tr><td><code>$C1:129C</code></td><td><code>BattleMenu_<wbr>ChooseAttack</code></td><td>32</td><td><span class="wk-status wk-status-verified">verified</span></td><td>Row 0 (Attack) confirm: message call with &quot;none&quot;, flags the cursor redraw, sets !BattleTgt_Mode = attack, !BattleMenu_CmdMenu = 0, builds the target list, sets !BattleMenu_TargetMoved (so UpdateCursor</td></tr><tr><td><code>$C1:12BC</code></td><td><code>BattleMenu_<wbr>OpenTechList</code></td><td>49</td><td><span class="wk-status wk-status-verified">verified</span></td><td>Row 1 (Tech) confirm: unless !BattleMenu_Lock bit 0 is set, renders the tech list lines, builds !Tech_ListAvail, switches to the tech list (!BattleMenu_Submenu = !BattleMenu_CmdMenu = 1) and requests</td></tr><tr><td><code>$C1:12ED</code></td><td><code>BattleMenu_<wbr>OpenItemList</code></td><td>51</td><td><span class="wk-status wk-status-verified">verified</span></td><td>Row 2 (Item) confirm: unless !BattleMenu_Lock is non-zero, renders the item list at !BattleMenu_ItemScroll, queues the item map upload, copies the item box frame (!BattleRom_ItemBoxMap) into !BattleMe</td></tr><tr><td><code>$C1:1320</code></td><td><code>BattleMenu_<wbr>TechListInput</code></td><td>73</td><td><span class="wk-status wk-status-verified">verified</span></td><td></td></tr><tr><td><code>$C1:1369</code></td><td><code>BattleMenu_<wbr>TechConfirm</code></td><td>38</td><td><span class="wk-status wk-status-verified">verified</span></td><td>Confirms the highlighted tech: aborts unless the rows have been graded (!BattleMenu_TechAvailDone) and Tech_CursorEntry.Flags bit 7 is clear.</td></tr><tr><td><code>$C1:138F</code></td><td><code>BattleMenu_<wbr>TechListCancel</code></td><td>30</td><td><span class="wk-status wk-status-verified">verified</span></td><td>Closes the tech list: reload the command window, back to the main menu, force a window rebuild, and restore this PC&#x27;s saved tech-list cursor (!Pc_SavedTechRow / SavedTechScroll -&gt; !Pc_TechRow / TechSc</td></tr><tr><td><code>$C1:13AD</code></td><td><code>BattleMenu_<wbr>TechListPrev</code></td><td>71</td><td><span class="wk-status wk-status-verified">verified</span></td><td></td></tr><tr><td><code>$C1:13F4</code></td><td><code>BattleMenu_<wbr>TechListNext</code></td><td>73</td><td><span class="wk-status wk-status-verified">verified</span></td><td>Down/Right in the tech list: mirror of TechListPrev — walks forward instead of backward, bounded by the list length (!Pc_TechCount) instead of the start of the list, and scrolls down instead of up whe</td></tr><tr><td><code>$C1:143D</code></td><td><code>BattleMenu_<wbr>ItemListInput</code></td><td>91</td><td><span class="wk-status wk-status-verified">verified</span></td><td>Per-frame input handler while the item list is open (submenu 2).</td></tr><tr><td><code>$C1:1498</code></td><td><code>BattleMenu_<wbr>ItemConfirm</code></td><td>67</td><td><span class="wk-status wk-status-verified">verified</span></td><td></td></tr><tr><td><code>$C1:14DB</code></td><td><code>BattleMenu_<wbr>ItemListCancel</code></td><td>17</td><td><span class="wk-status wk-status-verified">verified</span></td><td>Closes the item list: reload the command window, back to the main menu, force a window rebuild, and invalidate the scroll-arrow cache.</td></tr><tr><td><code>$C1:14EC</code></td><td><code>BattleMenu_<wbr>ItemCursorUp</code></td><td>22</td><td><span class="wk-status wk-status-verified">verified</span></td><td>Up/Left in the item list: decrement !BattleMenu_ItemRow, scrolling the list up via ItemListScrollUp when already at the top row.</td></tr><tr><td><code>$C1:1502</code></td><td><code>BattleMenu_<wbr>ItemCursorDown</code></td><td>26</td><td><span class="wk-status wk-status-verified">verified</span></td><td>Down/Right in the item list: increment !BattleMenu_ItemRow (max 2), scrolling the list down via ItemListScrollDown when already at the bottom row.</td></tr><tr><td><code>$C1:151C</code></td><td><code>BattleMenu_<wbr>ItemListPageDown</code></td><td>27</td><td><span class="wk-status wk-status-verified">verified</span></td><td>Page-down button: page the item list down 3 rows at once, clamped at scroll position $FA.</td></tr><tr><td><code>$C1:1537</code></td><td><code>BattleMenu_<wbr>ItemListPageUp</code></td><td>20</td><td><span class="wk-status wk-status-verified">verified</span></td><td>Page-up button: page the item list up 3 rows at once, clamped at 0.</td></tr><tr><td><code>$C1:154B</code></td><td><code>BattleMenu_<wbr>ItemListRefresh</code></td><td>22</td><td><span class="wk-status wk-status-verified">verified</span></td><td>Re-renders the item list rows, invalidates both draw caches and clears !BattleMenu_ItemRefresh.</td></tr><tr><td><code>$C1:1561</code></td><td><code>BattleMenu_<wbr>TargetSelectInput</code></td><td>185</td><td><span class="wk-status wk-status-verified">verified</span></td><td>Per-frame input handler while target selection runs (entered from BattleMenu_ProcessInput when !BattleMenu_TargetSelect != 0).</td></tr><tr><td><code>$C1:161A</code></td><td><code>BattleMenu_<wbr>CommitAction</code></td><td>308</td><td><span class="wk-status wk-status-verified">verified</span></td><td></td></tr><tr><td><code>$C1:174E</code></td><td><code>BattleMenu_<wbr>ConsumePartnerSlot</code></td><td>30</td><td><span class="wk-status wk-status-verified">verified</span></td><td>Removes PC slot !BattleMenu_PartnerArg from the ready state as part of committing a double/triple tech: if it&#x27;s in the roster, decrements !BattleMenu_ReadyCount; either way marks its roster entry empt</td></tr><tr><td><code>$C1:176C</code></td><td><code>BattleMenu_<wbr>TargetNext</code></td><td>26</td><td><span class="wk-status wk-status-verified">verified</span></td><td>Right/Down while cycling targets: advance !BattleTgt_Cursor (wrap at 11), skipping empty candidate entries, and select the battler it lands on (!BattleTgt_Selected).</td></tr><tr><td><code>$C1:1786</code></td><td><code>BattleMenu_<wbr>TargetPrev</code></td><td>22</td><td><span class="wk-status wk-status-verified">verified</span></td><td>Left/Up while cycling targets: mirror of TargetNext — steps !BattleTgt_Cursor back (wrap to 10) instead.</td></tr><tr><td><code>$C1:17A1</code></td><td><code>BattleMenu_<wbr>ItemListScrollUp</code></td><td>16</td><td><span class="wk-status wk-status-verified">verified</span></td><td>BattleMenu_ItemListScrollUp_SetScroll $C117B1, BattleMenu_ItemListScrollUp_RenderTail $C117B3 and BattleMenu_ItemListScrollUp_SkipRender $C117B6–$C117BE)</td></tr><tr><td><code>$C1:17B1</code></td><td><code>BattleMenu_<wbr>ItemListScrollUp_<wbr>SetScroll</code></td><td>2</td><td><span class="wk-status wk-status-verified">verified</span></td><td></td></tr><tr><td><code>$C1:17B3</code></td><td><code>BattleMenu_<wbr>ItemListScrollUp_<wbr>RenderTail</code></td><td>3</td><td><span class="wk-status wk-status-verified">verified</span></td><td></td></tr><tr><td><code>$C1:17B6</code></td><td><code>BattleMenu_<wbr>ItemListScrollUp_<wbr>SkipRender</code></td><td>9</td><td><span class="wk-status wk-status-verified">verified</span></td><td></td></tr><tr><td><code>$C1:17BF</code></td><td><code>BattleMenu_<wbr>ItemListScrollDown</code></td><td>18</td><td><span class="wk-status wk-status-verified">verified</span></td><td>BattleMenu_ItemListScrollDown_RenderTail $C117D1 and BattleMenu_ItemListScrollDown_SkipRender $C117D4–$C117DC)</td></tr><tr><td><code>$C1:17D1</code></td><td><code>BattleMenu_<wbr>ItemListScrollDown_<wbr>RenderTail</code></td><td>3</td><td><span class="wk-status wk-status-verified">verified</span></td><td></td></tr><tr><td><code>$C1:17D4</code></td><td><code>BattleMenu_<wbr>ItemListScrollDown_<wbr>SkipRender</code></td><td>9</td><td><span class="wk-status wk-status-verified">verified</span></td><td></td></tr><tr><td><code>$C1:17DD</code></td><td><code>BattleMenu_<wbr>UpdateCursorOverlay</code></td><td>828</td><td><span class="wk-status wk-status-verified">verified</span></td><td></td></tr><tr><td><code>$C1:1B19</code></td><td><code>BattleMenu_<wbr>EnqueueReadyBattler</code></td><td>60</td><td><span class="wk-status wk-status-verified">verified</span></td><td>Service 1 of the $C10045 service dispatcher (dispatch table at $C10051: service 0 -&gt; $0023, 1 -&gt; here, 2 -&gt; RemoveBattlerFromReady).</td></tr><tr><td><code>$C1:1B67</code></td><td><code>BattleMenu_<wbr>DequeueReadyBattler</code></td><td>67</td><td><span class="wk-status wk-status-verified">verified</span></td><td>Pops the head of !BattleMenu_ReadyQueue (up to 3 deep, count in !BattleMenu_ReadyQueueLen) into the roster: clears its !Battle_Unk9F38, restores its tech-list cursor (!Pc_SavedTechRow / SavedTechScrol</td></tr><tr><td><code>$C1:1BAA</code></td><td><code>BattleMenu_<wbr>RemoveBattlerFromReady</code></td><td>144</td><td><span class="wk-status wk-status-verified">verified</span></td><td></td></tr><tr><td><code>$C1:1C3A</code></td><td><code>BattleMenu_<wbr>LoadCommandWindowMap</code></td><td>16</td><td><span class="wk-status wk-status-verified">verified</span></td><td>Copies the $180-byte command window map (!BattleRom_CommandWindowMap, bank $D1) into !BattleMenu_WindowMap.</td></tr><tr><td><code>$C1:1F79</code></td><td><code>BattleMenu_<wbr>BuildTargetList</code></td><td>100</td><td><span class="wk-status wk-status-verified">verified</span></td><td>Records the requesting PC (!BattleTgt_Caster), resets the selection state (!BattleTgt_Result/CanCycle/TargetAll, two Unk bytes) and blanks !BattleTgt_Candidates and !BattleTgt_Selected (indices 0-11)</td></tr></tbody></table>
-<p class="wk-page-meta">Generated from <code>functions.csv</code>. Do not edit.</p>
+<p>The uploads use <abbr title="Direct Memory Access — hardware block copy bypassing the CPU; used for VRAM uploads, WRAM clears, OAM.">DMA</abbr> channel 7. HDMA is set up by <code>Hdma_InitChannelsFD</code> (<code>$FD:C1EE</code>): eight
+indirect channels writing the BG tilemap bases, the three layers' scroll registers, the main and
+sub screens, two window positions and colour math, from one of two table sets in bank <code>$7F</code>
+(<code>$7F:0F80</code> or <code>$7F:1238</code>).</p>
+<h2 id="the-oam-shadow">The <abbr title="Object Attribute Memory — the PPU's 512+32-byte sprite table (up to 128 sprites: X/Y, tile, palette, size).">OAM</abbr> shadow</h2>
+<p><code>Oam_BuildShadow</code> (<code>$C0:B271</code>) rebuilds the <abbr title="Object Attribute Memory — the PPU's 512+32-byte sprite table (up to 128 sprites: X/Y, tile, palette, size).">OAM</abbr> shadow before the frame wait: low table at
+<code>$0700</code>, high table at <code>$0900</code>, split into three ranges that each object chooses with its
+<code>Obj_OamFlags</code> bits 2–3. It visits objects bucket by bucket, last bucket first (<code>Obj_DrawBucket</code>, 64 buckets;
+<code>Obj_DrawLink</code> puts an object in the bucket for its screen Y), calls <code>Spr_AppendToOam</code> for each, and parks every entry between
+a range's new end and last frame's end off screen (Y = <code>$E0</code>). The <abbr title="Non-Maskable Interrupt — fires at the start of VBlank each frame; the safe window for PPU updates.">NMI</abbr> copies the whole shadow to
+<abbr title="Object Attribute Memory — the PPU's 512+32-byte sprite table (up to 128 sprites: X/Y, tile, palette, size).">OAM</abbr>. See <a href="../../how-sprite-init-works/">How Sprite Init Works</a>.</p>
+<h2 id="other-frame-cycles">Other frame cycles</h2>
+<ul>
+<li><strong>Scene mode (bank <code>$C2</code>).</strong> <code>C2Scene_InstallInterrupts</code> points the trampolines at
+  <code>C2Scene_NmiHandler</code> (<code>$C2:015E</code>) and the one-byte <code>C2Scene_IrqHandler</code> (nothing in the scene
+  code enables IRQs). Here the <abbr title="Non-Maskable Interrupt — fires at the start of VBlank each frame; the safe window for PPU updates.">NMI</abbr> does the
+  frame's work itself: when <code>C2Scene_NmiFlags</code> bit 0 is set it uploads <abbr title="Object Attribute Memory — the PPU's 512+32-byte sprite table (up to 128 sprites: X/Y, tile, palette, size).">OAM</abbr>, the palette (bit 1)
+  and the <abbr title="Picture Processing Unit — the SNES graphics chip handling BGs, sprites, palettes, windows, and compositing.">PPU</abbr> shadows, flushes the scene's <abbr title="Video RAM — dedicated PPU memory for tile graphics and tilemaps; written via DMA during VBlank.">VRAM</abbr> queue, reads the joypad, then empties the sprite
+  list, runs every task (<code>C2Scene_TaskRunAll</code>) and draws the list into the <abbr title="Object Attribute Memory — the PPU's 512+32-byte sprite table (up to 128 sprites: X/Y, tile, palette, size).">OAM</abbr> shadow for the
+  next <abbr title="Non-Maskable Interrupt — fires at the start of VBlank each frame; the safe window for PPU updates.">NMI</abbr>. The main loop only waits (<code>C2Scene_WaitFrame</code>: spin until <code>C2Scene_FrameCounter</code>
+  changes) and dispatches on the scene mode. See <a href="../scene-engine/">Scene engine</a>.</li>
+<li><strong>Battle (bank <code>$C1</code>).</strong> <code>BattleSys_PumpFrames</code> (<code>$C1:007E</code>) sets <code>Battle_FramePending</code> and
+  calls a bank-$CD vector until the flag is cleared. Its header reads this as a frame wait, but
+  the clearing code in bank <code>$CF</code> is not traced, so "wait for the frame" is inferred, not proven.</li>
+</ul>
       
       </div>
 

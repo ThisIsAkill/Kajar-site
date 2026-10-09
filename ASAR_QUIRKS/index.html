@@ -107,7 +107,15 @@
           
         
           
+          <a class="wk-nav-link" href="../systems/frame-cycle/">Frame cycle & NMI</a>
+          
+        
+          
           <a class="wk-nav-link" href="../systems/engine/">Engine core</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../systems/field-events/">Field event scripts</a>
           
         
           
@@ -115,7 +123,19 @@
           
         
           
+          <a class="wk-nav-link" href="../systems/scene-engine/">Scene engine</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../systems/text-windows/">Text windows</a>
+          
+        
+          
           <a class="wk-nav-link" href="../systems/battle-engine/">Battle engine</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../systems/battle-actions/">Battle actions</a>
           
         
           
@@ -233,7 +253,7 @@
           <li>
             <a href="#asar-191-quirks" class="wk-toc-link">asar 1.91 Quirks</a>
             
-            <ol><li><a href="#1-named-equate-sta-generates-long-mode" class="wk-toc-link">1. Named equate → STA generates LONG mode</a></li><li><a href="#2-stx-equatename-unknown-command" class="wk-toc-link">2. STX EquateName — "Unknown command"</a></li><li><a href="#3-sta-0001x-dpx-mode-not-absx" class="wk-toc-link">3. STA $0001,X → dp,X mode (not abs,X)</a></li><li><a href="#4-brl-label-stores-the-raw-operand-not-a-target-address" class="wk-toc-link">4. BRL label stores the raw operand, not a target address</a></li><li><a href="#5-jsr-equatename-unknown-command" class="wk-toc-link">5. JSR EquateName — "Unknown command"</a></li><li><a href="#6-lda-7f-in-m0-context-rom-uses-2-byte-form-asar-emits-3-bytes" class="wk-toc-link">6. LDA #$7F in M=0 context: ROM uses 2-byte form, asar emits 3 bytes</a></li><li><a href="#7-sbc-nnnn-adc-nnnn-in-m0-context-wrong-encoding" class="wk-toc-link">7. SBC #$NNNN / ADC #$NNNN in M=0 context: wrong encoding</a></li><li><a href="#quick-reference" class="wk-toc-link">Quick reference</a></li></ol>
+            <ol><li><a href="#1-a-label-or-equate-operand-assembles-as-a-long-address" class="wk-toc-link">1. A label or equate operand assembles as a long address</a></li><li><a href="#2-immediate-width-follows-the-digits-not-the-m-flag" class="wk-toc-link">2. Immediate width follows the digits, not the M flag</a></li><li><a href="#3-direct-page-or-absolute-is-chosen-the-same-way" class="wk-toc-link">3. Direct page or absolute is chosen the same way</a></li><li><a href="#4-brl-with-a-number-stores-the-number-as-the-offset" class="wk-toc-link">4. BRL with a number stores the number as the offset</a></li><li><a href="#5-calls-to-code-that-is-not-matched-yet" class="wk-toc-link">5. Calls to code that is not matched yet</a></li><li><a href="#quick-reference" class="wk-toc-link">Quick reference</a></li></ol>
             
           </li>
           
@@ -245,125 +265,101 @@
       <div class="wk-article-body">
       
       
-      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="October 8, 2026 23:48:07 UTC">October 8, 2026</span></p>
+      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="October 9, 2026 00:07:32 UTC">October 9, 2026</span></p>
       
-      <h1 id="asar-191-quirks"><abbr title="The 65816 assembler used for this project — patches matched .asm source into a ROM copy for byte-exact verification.">asar</abbr> 1.91 Quirks</h1>
-<p>Surprises encountered during this project. Future contributors: read this before spending an hour debugging a byte offset.</p>
-<h2 id="1-named-equate-sta-generates-long-mode">1. Named equate → <code>STA</code> generates LONG mode</h2>
-<p><strong>Symptom:</strong> <code>STA INIDISP</code> emits <abbr title="The first byte of a CPU instruction, identifying the operation (e.g. $60 = RTS, $78 = SEI).">opcode</abbr> <code>8F</code> (STA long, 4 bytes) instead of <code>8D</code> (STA abs, 3 bytes). Every instruction downstream shifts by 1 byte.</p>
-<p><strong>Cause:</strong> When the operand is a named equate (e.g. <code>INIDISP = $2100</code>), <abbr title="The 65816 assembler used for this project — patches matched .asm source into a ROM copy for byte-exact verification.">asar</abbr> promotes to 24-bit addressing regardless of the value's size.</p>
-<p><strong>Fix:</strong> Force abs mode with the <code>.w</code> suffix:
-<div class="language-asm highlight"><span class="filename">65C816 Assembly</span><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1"></a><a href="#__codelineno-0-1"><span class="linenos" data-linenos="1 "></span></a><span class="nf">STA.w</span><span class="w"> </span><span class="no">INIDISP</span><span class="w">    </span><span class="c1">; $8D 00 21 — correct (3 bytes)</span>
-<a id="__codelineno-0-2" name="__codelineno-0-2"></a><a href="#__codelineno-0-2"><span class="linenos" data-linenos="2 "></span></a><span class="nf">STA.w</span><span class="w"> </span><span class="no">NMITIMEN</span><span class="w">   </span><span class="c1">; etc.</span>
+      <h1 id="asar-191-quirks"><abbr title="The 65816 assembler used for this project (version 1.91) — patches matched .asm source into a ROM copy for byte-exact verification.">asar</abbr> 1.91 Quirks</h1>
+<p>Surprises in how <abbr title="The 65816 assembler used for this project (version 1.91) — patches matched .asm source into a ROM copy for byte-exact verification.">asar</abbr> 1.91 picks an instruction's encoding. Future contributors: read this before
+spending an hour debugging a byte offset.</p>
+<p>The short version: <strong><abbr title="The 65816 assembler used for this project (version 1.91) — patches matched .asm source into a ROM copy for byte-exact verification.">asar</abbr> does not track the M and X flags</strong>, and it picks an operand's width
+from how the operand is written. The project's style rule (<code>STYLE.md</code>) is the fix for all of it:
+every data instruction whose operand is a define or struct field says <code>.b</code>, <code>.w</code> or <code>.l</code>. With
+that, every encoding in the <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr> code is written as an instruction; no <abbr title="The first byte of a CPU instruction, identifying the operation (e.g. $60 = RTS, $78 = SEI).">opcode</abbr> bytes are
+hand-written (<code>db $A9,$7F</code>), and the few encodings that could not be written as an instruction
+would get a named macro in <code>asm/include/macros.inc</code> (it is empty so far).</p>
+<p>Earlier versions of this page recommended raw <code>db</code> bytes, raw <code>BRL</code> offsets and raw hex operands.
+Those workarounds were wrong or no longer needed (the code repo's <code>STATUS.md</code> records two of them
+under "Known issues"); the notes below are what the current source does.</p>
+<h2 id="1-a-label-or-equate-operand-assembles-as-a-long-address">1. A label or equate operand assembles as a long address</h2>
+<p><strong>Symptom:</strong> <code>STA INIDISP</code>, where <code>INIDISP = $2100</code> is an equate (as in <code>asm/hardware.inc</code>), emits
+<abbr title="The first byte of a CPU instruction, identifying the operation (e.g. $60 = RTS, $78 = SEI).">opcode</abbr> <code>8F</code> (STA long, 4 bytes) instead of <code>8D</code> (STA absolute, 3 bytes). Everything after it
+shifts by a byte.</p>
+<p><strong>Cause:</strong> <abbr title="The 65816 assembler used for this project (version 1.91) — patches matched .asm source into a ROM copy for byte-exact verification.">asar</abbr> treats a label or equate as a 24-bit address.</p>
+<p><strong>Fix:</strong> give the width: <code>STA.w INIDISP</code> (<code>8D 00 21</code>). The same goes for <code>STX</code>/<code>STY</code>, which have
+no long form: plain <code>STX A1T7L</code> is an error ("Unknown command"), while <code>STX.w A1T7L</code> assembles to
+<code>8E 72 43</code>. The <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr> code writes, for example, <code>STX.w A1T7L</code> and <code>STY.w VMADDL</code>.</p>
+<p>Defines (<code>!Name = $2100</code>) are textual, so <code>STA !Name</code> takes the width of the number as written
+(<code>$2100</code>: absolute). The style rule asks for an explicit width on those too, so the encoding
+cannot drift when a define's value is written differently.</p>
+<h2 id="2-immediate-width-follows-the-digits-not-the-m-flag">2. Immediate width follows the digits, not the <abbr title="Processor status bit controlling accumulator width: M=1 → 8-bit A, M=0 → 16-bit A. Changed via SEP/REP.">M flag</abbr></h2>
+<p><strong>Symptom:</strong> in a 16-bit accumulator section (after <code>REP #$20</code>), <code>LDA #$7F</code> assembles to the
+2-byte <code>A9 7F</code>, and the CPU then reads the next byte as the operand's high byte.</p>
+<p><strong>Cause:</strong> <abbr title="The 65816 assembler used for this project (version 1.91) — patches matched .asm source into a ROM copy for byte-exact verification.">asar</abbr> doesn't know that M=0. It sizes an immediate by how it is written: <code>#$7F</code> is one
+byte, <code>#$007F</code> or <code>#$0040</code> two (<code>SBC #$0040</code> gives <code>E9 40 00</code> whatever M is).</p>
+<p><strong>Fix:</strong> write the width the CPU will use: <code>LDA.w #$007F</code> in 16-bit code, <code>LDA.b #!Bank7F</code> in
+8-bit code. The battle number formatters, entered with M=0 by their callers, carry an explicit
+<code>.w</code> on every <code>SBC</code>/<code>ADC</code> immediate for this reason. (An earlier note blamed <abbr title="The 65816 assembler used for this project (version 1.91) — patches matched .asm source into a ROM copy for byte-exact verification.">asar</abbr> for "not tracking
+<code>REP #$20</code>" in <code>SBC</code>/<code>ADC</code> and fixed it with <code>db</code> bytes; the <code>.w</code> suffix alone reproduces those
+encodings.)</p>
+<h2 id="3-direct-page-or-absolute-is-chosen-the-same-way">3. Direct page or absolute is chosen the same way</h2>
+<p><code>STA $01,X</code> assembles as direct page, X (<code>95 01</code>) and <code>STA $0001,X</code> as absolute, X (<code>9D 01 00</code>),
+again by the digits written. With named operands, use <code>.b</code> for direct page and <code>.w</code> for absolute;
+code that relocates the direct page onto a register block writes the register relative to its
+base, as in <code>STA.b INIDISP-!DP_PPU</code>.</p>
+<h2 id="4-brl-with-a-number-stores-the-number-as-the-offset">4. <code>BRL</code> with a number stores the number as the offset</h2>
+<p><code>BRL SomeLabel</code> works: <abbr title="The 65816 assembler used for this project (version 1.91) — patches matched .asm source into a ROM copy for byte-exact verification.">asar</abbr> computes the 16-bit offset from the next instruction. But
+<code>BRL $B193</code> stores <code>$B193</code> itself as the offset, not as a target address. Write the label.</p>
+<p>When the original's offset wraps around the 64 KB bank boundary, the <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr> code writes the
+target minus one bank, <code>BRL Target-!BankWrap</code> (<code>!BankWrap = $10000</code> in
+<code>asm/include/constants_engine.inc</code>), so <abbr title="The 65816 assembler used for this project (version 1.91) — patches matched .asm source into a ROM copy for byte-exact verification.">asar</abbr> computes the same wrapped offset; <code>Field_EndOfFrame</code>'s
+tail jump to <code>Oam_BuildShadow</code> is one.</p>
+<h2 id="5-calls-to-code-that-is-not-matched-yet">5. Calls to code that is not <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr> yet</h2>
+<p>A <code>JSR</code>, <code>JSL</code> or <code>JML</code> to an address outside the <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr> code needs a name. The project gives
+each such target a label-only stub in <code>asm/include/unmatched.asm</code> or <code>unmatched_battle.asm</code>: an
+<code>org</code> to the address and a label, emitting no bytes. When the routine is <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr> its stub is
+deleted and the real label takes over. Bank files never hold stubs, and call sites never use raw
+addresses.</p>
+<div class="language-asm highlight"><span class="filename">65C816 Assembly</span><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1"></a><a href="#__codelineno-0-1"><span class="linenos" data-linenos="1 "></span></a><span class="nf">org</span><span class="w"> </span><span class="no">$C0ECCC</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2"></a><a href="#__codelineno-0-2"><span class="linenos" data-linenos="2 "></span></a><span class="nl">IrqHandler:</span><span class="w">         </span><span class="c1">; label only: no bytes emitted</span>
 </code></pre></div>
-This applies to all hardware register writes where the register is defined as a named constant.</p>
-<h2 id="2-stx-equatename-unknown-command">2. <code>STX EquateName</code> — "Unknown command"</h2>
-<p><strong>Symptom:</strong> <code>STX A1T7L</code> (where <code>A1T7L = $4372</code>) produces an <abbr title="The 65816 assembler used for this project — patches matched .asm source into a ROM copy for byte-exact verification.">asar</abbr> error.</p>
-<p><strong>Cause:</strong> <abbr title="The 65816 assembler used for this project — patches matched .asm source into a ROM copy for byte-exact verification.">asar</abbr> 1.91 does not accept named equates as the operand for <code>STX</code>.</p>
-<p><strong>Fix:</strong> Use the raw hex literal:
-<div class="language-asm highlight"><span class="filename">65C816 Assembly</span><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1"></a><a href="#__codelineno-1-1"><span class="linenos" data-linenos="1 "></span></a><span class="nf">STX</span><span class="w"> </span><span class="no">$4372</span><span class="w">        </span><span class="c1">; works fine</span>
-</code></pre></div></p>
-<h2 id="3-sta-0001x-dpx-mode-not-absx">3. <code>STA $0001,X</code> → <abbr title="Direct Page mode — 2-byte instruction using an 8-bit offset added to the D register.">dp</abbr>,X mode (not abs,X)</h2>
-<p><strong>Symptom:</strong> <code>STA $0001,X</code> emits <abbr title="The first byte of a CPU instruction, identifying the operation (e.g. $60 = RTS, $78 = SEI).">opcode</abbr> <code>95</code> (<abbr title="Direct Page mode — 2-byte instruction using an 8-bit offset added to the D register.">dp</abbr>,X) instead of <code>9D</code> (abs,X). The value <code>$0001</code> fits in 8 bits so <abbr title="The 65816 assembler used for this project — patches matched .asm source into a ROM copy for byte-exact verification.">asar</abbr> defaults to direct-page indexed.</p>
-<p><strong>Fix:</strong>
-<div class="language-asm highlight"><span class="filename">65C816 Assembly</span><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1"></a><a href="#__codelineno-2-1"><span class="linenos" data-linenos="1 "></span></a><span class="nf">STA.w</span><span class="w"> </span><span class="no">$0001</span><span class="p">,</span><span class="no">X</span><span class="w">    </span><span class="c1">; forces abs,X: $9D 01 00</span>
-</code></pre></div>
-Comes up in the PostVBlank <abbr title="Object Attribute Memory — the PPU's 512+32-byte sprite table (up to 128 sprites: X/Y, tile, palette, size).">OAM</abbr>-fill loop.</p>
-<h2 id="4-brl-label-stores-the-raw-operand-not-a-target-address">4. <code>BRL label</code> stores the raw operand, not a target address</h2>
-<p><strong>Symptom:</strong> <code>BRL SomeLabel</code> works fine. <code>BRL $XXXX</code> stores <code>$XXXX</code> as the branch offset directly, not the absolute address.</p>
-<p><strong>Cause:</strong> By design in <abbr title="The 65816 assembler used for this project — patches matched .asm source into a ROM copy for byte-exact verification.">asar</abbr>. The <abbr title="Branch Long — 16-bit relative branch (signed offset from next PC); asar 1.91 quirk: BRL $XXXX stores $XXXX raw, not a target address.">BRL</abbr> operand is a <em>signed 16-bit offset from the next instruction</em>, not an address. When you write <code>BRL $XXXX</code>, <abbr title="The 65816 assembler used for this project — patches matched .asm source into a ROM copy for byte-exact verification.">asar</abbr> stores <code>$XXXX</code> literally.</p>
-<p><strong>Context in this project:</strong> <code>VBlankHandler</code> contains <code>BRL $B193</code>. That <code>$B193</code> is the raw signed offset that lands at <code>PostVBlank ($C0:B271)</code> — it is NOT the address <code>$B193</code>.</p>
-<p><strong>Fix:</strong> When <abbr title="Writing assembly source that assembles byte-for-byte identically to the original ROM via asar.">matching</abbr> a <code>BRL</code>, extract the signed 16-bit operand from the ROM bytes and use it directly:
-<div class="language-asm highlight"><span class="filename">65C816 Assembly</span><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1"></a><a href="#__codelineno-3-1"><span class="linenos" data-linenos="1 "></span></a><span class="nf">BRL</span><span class="w"> </span><span class="no">$B193</span><span class="w">        </span><span class="c1">; raw offset, not an address label</span>
-</code></pre></div>
-Using a label reference like <code>BRL PostVBlank</code> would likely produce a different offset.</p>
-<h2 id="5-jsr-equatename-unknown-command">5. <code>JSR EquateName</code> — "Unknown command"</h2>
-<p><strong>Symptom:</strong> Similar to the STX issue — <code>JSR SomeEquate</code> fails.</p>
-<p><strong>Fix:</strong> Define a label stub at the target address with <code>org</code>:
-<div class="language-asm highlight"><span class="filename">65C816 Assembly</span><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1"></a><a href="#__codelineno-4-1"><span class="linenos" data-linenos="1 "></span></a><span class="nf">org</span><span class="w"> </span><span class="no">$C0B309</span>
-<a id="__codelineno-4-2" name="__codelineno-4-2"></a><a href="#__codelineno-4-2"><span class="linenos" data-linenos="2 "></span></a><span class="nl">Sub_B309:</span><span class="w">        </span><span class="c1">; no bytes emitted — just a label for JSR to resolve</span>
-<a id="__codelineno-4-3" name="__codelineno-4-3"></a><a href="#__codelineno-4-3"><span class="linenos" data-linenos="3 "></span></a>
-<a id="__codelineno-4-4" name="__codelineno-4-4"></a><a href="#__codelineno-4-4"><span class="linenos" data-linenos="4 "></span></a><span class="c1">; ... later, or elsewhere:</span>
-<a id="__codelineno-4-5" name="__codelineno-4-5"></a><a href="#__codelineno-4-5"><span class="linenos" data-linenos="5 "></span></a><span class="w">    </span><span class="nf">JSR</span><span class="w"> </span><span class="no">Sub_B309</span><span class="w"> </span><span class="c1">; resolves correctly to $B309</span>
-</code></pre></div></p>
-<h2 id="6-lda-7f-in-m0-context-rom-uses-2-byte-form-asar-emits-3-bytes">6. <code>LDA #$7F</code> in M=0 context: ROM uses 2-byte form, <abbr title="The 65816 assembler used for this project — patches matched .asm source into a ROM copy for byte-exact verification.">asar</abbr> emits 3 bytes</h2>
-<p><strong>Symptom:</strong> <code>LDA #$7F</code> in a 16-bit accumulator (M=0) context assembles as <code>$A9 $7F $00</code> (3 bytes: immediate sign-zero-extended to 16 bits). If the ROM contains the 2-byte sequence <code>$A9 $7F</code> followed by an unrelated byte, <code>make diff</code> will show a 1-byte shift.</p>
-<p><strong>Cause:</strong> With M=0, LDA immediate is a 3-byte instruction. The assembler always emits the full 16-bit operand even if the value fits in 8 bits.</p>
-<p><strong>When it occurs:</strong> The ROM sometimes stores <code>$A9 $7F</code> (2 bytes) intending the next byte to be the <em>following instruction</em>, not the high byte of the immediate. This happens when the compiler originally ran in M=1 mode or used an 8-bit trick that <abbr title="The 65816 assembler used for this project — patches matched .asm source into a ROM copy for byte-exact verification.">asar</abbr> doesn't replicate automatically.</p>
-<p><strong>Fix:</strong> Emit the raw bytes directly:
-<div class="language-asm highlight"><span class="filename">65C816 Assembly</span><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1"></a><a href="#__codelineno-5-1"><span class="linenos" data-linenos="1 "></span></a><span class="nf">db</span><span class="w"> </span><span class="no">$A9</span><span class="p">,</span><span class="no">$7F</span><span class="w">        </span><span class="c1">; forces the 2-byte sequence in M=0 context</span>
-</code></pre></div>
-Do not write <code>LDA #$7F</code> when in 16-bit accumulator mode and the ROM has only 2 bytes here.</p>
-<p><strong>Discovered:</strong> session 26, during Sub_E12A Phase 1 <abbr title="Writing assembly source that assembles byte-for-byte identically to the original ROM via asar.">matching</abbr> (<code>LDA #$7F / STA $D2</code>).</p>
-<h2 id="7-sbc-nnnn-adc-nnnn-in-m0-context-wrong-encoding">7. <code>SBC #$NNNN</code> / <code>ADC #$NNNN</code> in M=0 context: wrong encoding</h2>
-<p><strong>Symptom:</strong> <code>SBC #$0040</code> (or <code>ADC #$0040</code>, etc.) in a 16-bit accumulator (M=0) context
-may assemble to the 2-byte M=1 form (<code>$E9 $40</code>) rather than the correct 3-byte M=0 form
-(<code>$E9 $40 $00</code>). This causes a 1-byte shift and a cascade of mismatches downstream.</p>
-<p><strong>Cause:</strong> <abbr title="The 65816 assembler used for this project — patches matched .asm source into a ROM copy for byte-exact verification.">asar</abbr> 1.91 does not always track the <abbr title="Processor status bit controlling accumulator width: M=1 → 8-bit A, M=0 → 16-bit A. Changed via SEP/REP.">M flag</abbr> correctly across <code>REP #$20</code> when
-choosing immediate operand width for <code>SBC</code> and <code>ADC</code>.</p>
-<p><strong>When it occurs:</strong> Any <code>SBC #$xxxx</code> or <code>ADC #$xxxx</code> in M=0 (16-bit A) context, especially
-when the upper byte of the immediate is <code>$00</code> (i.e., the value fits in 8 bits, making the
-2-byte vs 3-byte ambiguity matter).</p>
-<p><strong>Fix:</strong> Emit the raw bytes directly, same pattern as the <code>LDA #$7F</code> workaround:
-<div class="language-asm highlight"><span class="filename">65C816 Assembly</span><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1"></a><a href="#__codelineno-6-1"><span class="linenos" data-linenos="1 "></span></a><span class="nf">REP</span><span class="w"> </span><span class="c1">#$20                        ; M=0</span>
-<a id="__codelineno-6-2" name="__codelineno-6-2"></a><a href="#__codelineno-6-2"><span class="linenos" data-linenos="2 "></span></a><span class="c1">; instead of: SBC #$0040        (may emit 2 bytes)</span>
-<a id="__codelineno-6-3" name="__codelineno-6-3"></a><a href="#__codelineno-6-3"><span class="linenos" data-linenos="3 "></span></a><span class="nf">db</span><span class="w"> </span><span class="no">$E9</span><span class="p">,</span><span class="no">$40</span><span class="p">,</span><span class="no">$00</span><span class="w">                  </span><span class="c1">; SBC #$0040 — explicit 3-byte M=0 encoding</span>
-<a id="__codelineno-6-4" name="__codelineno-6-4"></a><a href="#__codelineno-6-4"><span class="linenos" data-linenos="4 "></span></a><span class="c1">; instead of: ADC #$000E        (may emit 2 bytes)</span>
-<a id="__codelineno-6-5" name="__codelineno-6-5"></a><a href="#__codelineno-6-5"><span class="linenos" data-linenos="5 "></span></a><span class="nf">db</span><span class="w"> </span><span class="no">$69</span><span class="p">,</span><span class="no">$0E</span><span class="p">,</span><span class="no">$00</span><span class="w">                  </span><span class="c1">; ADC #$000E — explicit 3-byte M=0 encoding</span>
-</code></pre></div></p>
-<p>The <abbr title="The first byte of a CPU instruction, identifying the operation (e.g. $60 = RTS, $78 = SEI).">opcode</abbr> bytes are: <code>$E9</code> = SBC immediate, <code>$69</code> = ADC immediate; followed by the
-16-bit little-endian operand.</p>
-<p><strong>Discovered:</strong> session 35 (BattleMsg_FormatNumberDigits); applies to all 16-bit SBC/ADC
-immediates in M=0 context. Confirmed again in session 36 (BattleUI_BuildStatusBarFrame).</p>
 <h2 id="quick-reference">Quick reference</h2>
 <table>
 <thead>
 <tr>
-<th>Instruction</th>
-<th>Broken form</th>
-<th>Working form</th>
+<th>Situation</th>
+<th>Wrong</th>
+<th>Right</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>STA to named register</td>
-<td><code>STA INIDISP</code></td>
+<td>Store to a named register</td>
+<td><code>STA INIDISP</code> (long)</td>
 <td><code>STA.w INIDISP</code></td>
 </tr>
 <tr>
-<td>STX to named equate</td>
-<td><code>STX A1T7L</code></td>
-<td><code>STX $4372</code></td>
+<td><code>STX</code>/<code>STY</code> to a named register</td>
+<td><code>STX A1T7L</code> (error)</td>
+<td><code>STX.w A1T7L</code></td>
 </tr>
 <tr>
-<td>STA indexed small offset</td>
-<td><code>STA $0001,X</code></td>
-<td><code>STA.w $0001,X</code></td>
+<td>16-bit immediate</td>
+<td><code>LDA #$7F</code> (1-byte operand)</td>
+<td><code>LDA.w #$007F</code></td>
 </tr>
 <tr>
-<td><abbr title="Branch Long — 16-bit relative branch (signed offset from next PC); asar 1.91 quirk: BRL $XXXX stores $XXXX raw, not a target address.">BRL</abbr> with raw offset</td>
-<td><code>BRL PostVBlank</code></td>
+<td>8-bit immediate from a define</td>
+<td><code>LDA #!Name</code></td>
+<td><code>LDA.b #!Name</code></td>
+</tr>
+<tr>
+<td>Long branch</td>
 <td><code>BRL $B193</code> (raw offset)</td>
+<td><code>BRL Label</code> (or <code>Label-!BankWrap</code> across the bank edge)</td>
 </tr>
 <tr>
-<td><abbr title="Jump to Subroutine — same-bank call, pushes a 16-bit return address onto the stack.">JSR</abbr> to named equate</td>
-<td><code>JSR SomeEquate</code></td>
-<td>define <code>org</code>/label stub</td>
-</tr>
-<tr>
-<td>LDA #small in M=0</td>
-<td><code>LDA #$7F</code> (3 bytes)</td>
-<td><code>db $A9,$7F</code> (2 bytes)</td>
-</tr>
-<tr>
-<td>SBC/ADC 16-bit imm in M=0</td>
-<td><code>SBC #$0040</code> (2 bytes)</td>
-<td><code>db $E9,$40,$00</code> (3 bytes)</td>
-</tr>
-<tr>
-<td>SBC/ADC 16-bit imm in M=0</td>
-<td><code>ADC #$000E</code> (2 bytes)</td>
-<td><code>db $69,$0E,$00</code> (3 bytes)</td>
+<td>Call into unmatched code</td>
+<td><code>JSR $9E29</code></td>
+<td>a stub label in <code>asm/include/unmatched*.asm</code></td>
 </tr>
 </tbody>
 </table>

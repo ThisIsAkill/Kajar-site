@@ -107,7 +107,15 @@
           
         
           
+          <a class="wk-nav-link" href="../../systems/frame-cycle/">Frame cycle & NMI</a>
+          
+        
+          
           <a class="wk-nav-link" href="../../systems/engine/">Engine core</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../../systems/field-events/">Field event scripts</a>
           
         
           
@@ -115,7 +123,19 @@
           
         
           
+          <a class="wk-nav-link" href="../../systems/scene-engine/">Scene engine</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../../systems/text-windows/">Text windows</a>
+          
+        
+          
           <a class="wk-nav-link" href="../../systems/battle-engine/">Battle engine</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../../systems/battle-actions/">Battle actions</a>
           
         
           
@@ -227,52 +247,38 @@
       <div class="wk-article-body">
       
       
-      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="October 8, 2026 23:48:07 UTC">October 8, 2026</span></p>
+      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="October 8, 2026 23:55:13 UTC">October 8, 2026</span></p>
       
       <table>
 <thead>
 <tr>
 <th>Bank</th>
-<th>Region</th>
-<th>Status</th>
-<th>Bytes</th>
+<th>What is <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr> there</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><code>$00</code></td>
-<td>Boot vectors, wave tables, ROM header</td>
-<td>Partial</td>
-<td>256</td>
-</tr>
-<tr>
 <td><code>$C0</code></td>
-<td>Engine core — GameLoop, <abbr title="Vertical blank — the ~1.2ms gap each frame when the PPU isn't drawing, safe for register writes.">VBlank</abbr>, <abbr title="Object Attribute Memory — the PPU's 512+32-byte sprite table (up to 128 sprites: X/Y, tile, palette, size).">OAM</abbr>, sprite render</td>
-<td>Partial</td>
-<td>19,498</td>
+<td>The field engine: game loop, frame wait and <abbr title="Non-Maskable Interrupt — fires at the start of VBlank each frame; the safe window for PPU updates.">NMI</abbr> handler, location loading, map scrolling, object motion, the event script <abbr title="First bytes of CPU instructions, identifying operations (e.g. $60 = RTS, $78 = SEI).">opcodes</abbr>, the sprite system, and the reset code, header and vectors at the top of the bank</td>
 </tr>
 <tr>
 <td><code>$C1</code></td>
-<td>Battle engine — math utilities, status-bar UI, menu rendering</td>
-<td>Partial</td>
-<td>8,061</td>
+<td>The battle engine: <code>BattleSys_Main</code> and its turn lists, the enemy behaviour scripts, the PC command runner, action scripts, the battle menu, targeting and status bar</td>
+</tr>
+<tr>
+<td><code>$C2</code></td>
+<td>The scene mode (tasks, scripts, sprite list, scene loading) and the text window decoder</td>
 </tr>
 <tr>
 <td><code>$FD</code></td>
-<td>MainInit (CPU/<abbr title="Picture Processing Unit — the SNES graphics chip handling BGs, sprites, palettes, windows, and compositing.">PPU</abbr> init sequence)</td>
-<td>Partial</td>
-<td>215</td>
+<td><code>MainInit</code>, the battle helpers bank <code>$C1</code> calls with <code>JSL</code>, the field HDMA set-up and the location animation set-up</td>
 </tr>
 <tr>
-<td>Everything else</td>
-<td>—</td>
-<td>Unmapped</td>
-<td>0</td>
+<td><code>$CC</code>, <code>$CF</code>, <code>$FF</code></td>
+<td>Copies of <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr> code kept in other banks: the 8×8 multiply (<code>$CC</code>), a scaled sine and a four-digit number formatter (<code>$CF</code>), the wave tables (<code>$FF</code>)</td>
 </tr>
 </tbody>
 </table>
-<p><strong>Total <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr>: ~28,030 bytes out of 4,194,304 (0.668%)</strong></p>
-<p><em>Run <code>python3 tools/progress.py --update-index</code> after updating <code>docs/PROGRESS.md</code> to regenerate this table.</em></p>
       
       </div>
 

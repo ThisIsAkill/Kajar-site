@@ -107,7 +107,15 @@
           
         
           
+          <a class="wk-nav-link" href="../../../../../systems/frame-cycle/">Frame cycle & NMI</a>
+          
+        
+          
           <a class="wk-nav-link" href="../../../../../systems/engine/">Engine core</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../../../../../systems/field-events/">Field event scripts</a>
           
         
           
@@ -115,7 +123,19 @@
           
         
           
+          <a class="wk-nav-link" href="../../../../../systems/scene-engine/">Scene engine</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../../../../../systems/text-windows/">Text windows</a>
+          
+        
+          
           <a class="wk-nav-link" href="../../../../../systems/battle-engine/">Battle engine</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../../../../../systems/battle-actions/">Battle actions</a>
           
         
           
@@ -274,7 +294,7 @@
 <li><strong><code>BattleMenu_RefreshIfDirtyAndTick</code></strong> (<code>$C1:10FA</code>, 27 bytes) is a plain <code>JSR</code> target, called from several places in the battle-phase state machine. It adds a cross-bank tick (<code>JSL $CD0009</code>) before an ordinary <code>RTS</code>.</li>
 </ul>
 <p>Same logic, two calling conventions. Two near-identical routines are not necessarily duplicated code; they can serve call sites with different stack contracts.</p>
-<p>Three of those callees weren't <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr> yet (<code>BattleMenu_DequeueReadyBattler</code> at <code>$C1:1B67</code>, <code>BattleMenu_ProcessInput</code> at <code>$C1:1153</code> and <code>BattleMenu_UpdateCursorOverlay</code> at <code>$C1:17DD</code>), so they went in as label stubs: an <code>org</code> line with a bare label and no bytes, the trick used earlier in bank <code>$C0</code> for forward references. <abbr title="The 65816 assembler used for this project — patches matched .asm source into a ROM copy for byte-exact verification.">asar</abbr> resolves the <code>JSR</code>s, and a later increment fills in the body at the same <code>org</code>.</p>
+<p>Three of those callees weren't <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr> yet (<code>BattleMenu_DequeueReadyBattler</code> at <code>$C1:1B67</code>, <code>BattleMenu_ProcessInput</code> at <code>$C1:1153</code> and <code>BattleMenu_UpdateCursorOverlay</code> at <code>$C1:17DD</code>), so they went in as label stubs: an <code>org</code> line with a bare label and no bytes, the trick used earlier in bank <code>$C0</code> for forward references. <abbr title="The 65816 assembler used for this project (version 1.91) — patches matched .asm source into a ROM copy for byte-exact verification.">asar</abbr> resolves the <code>JSR</code>s, and a later increment fills in the body at the same <code>org</code>.</p>
 <p><strong><code>BattleMenu_DrawCursorSprites</code></strong> (<code>$C1:1115</code>, 62 bytes) sits between the gate routines and <code>ProcessInput</code>. It builds the four <abbr title="Object Attribute Memory — the PPU's 512+32-byte sprite table (up to 128 sprites: X/Y, tile, palette, size).">OAM</abbr> entries of the cursor that points at the selected command. The shape is a fixed 4-tile template in ROM (<code>$CCF604</code>–<code>$CCF607</code>); the position comes from per-slot coordinates at <code>$1D0C</code>/<code>$1D23</code>, indexed by the active PC. The attribute byte's palette bits are replaced from <code>$9F46</code> each time, almost certainly what makes the cursor flash or change color. What drives that byte isn't traced yet.</p>
 <h2 id="reading-the-controller">Reading the controller</h2>
 <p><code>BattleMenu_ProcessInput</code> (<code>$C1:1153</code>, 142 bytes) reads two <abbr title="Work RAM — 128KB of SNES main RAM at $7E:0000–$7F:FFFF, holds all runtime game state.">WRAM</abbr> bytes, <code>$EE</code> and <code>$EF</code>. They are pad-edge bytes: a bit is set only on the frame a button goes from released to pressed, not while it is held. <code>$EE</code> holds buttons (confirm is <code>$80</code>), <code>$EF</code> the D-pad (<code>$02</code> left, <code>$08</code> up, <code>$04</code> down, <code>$01</code> right). The routine:</p>

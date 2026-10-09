@@ -107,7 +107,15 @@
           
         
           
+          <a class="wk-nav-link" href="../../../../../systems/frame-cycle/">Frame cycle & NMI</a>
+          
+        
+          
           <a class="wk-nav-link" href="../../../../../systems/engine/">Engine core</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../../../../../systems/field-events/">Field event scripts</a>
           
         
           
@@ -115,7 +123,19 @@
           
         
           
+          <a class="wk-nav-link" href="../../../../../systems/scene-engine/">Scene engine</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../../../../../systems/text-windows/">Text windows</a>
+          
+        
+          
           <a class="wk-nav-link" href="../../../../../systems/battle-engine/">Battle engine</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../../../../../systems/battle-actions/">Battle actions</a>
           
         
           
@@ -263,7 +283,7 @@
 <h2 id="the-item-list-almost-the-tech-list-but-simpler">The item list: almost the tech list, but simpler</h2>
 <p><strong><code>BattleMenu_ItemListInput</code></strong> (<code>$C1:143D</code>, 91 bytes) has the same confirm/cancel/up/down checks plus two branches the tech list lacks: page the list up or down three rows at once, and a check of a flag (<code>$A0D0</code>) that forces a full re-render when something elsewhere has marked the display stale.</p>
 <p>Cursor movement is where it differs most. Items don't need skipping: an unusable item still gets a cursor position and just renders greyed out. So <strong><code>BattleMenu_ItemCursorUp</code></strong> (<code>$C1:14EC</code>, 22 bytes) and <strong><code>BattleMenu_ItemCursorDown</code></strong> (<code>$C1:1502</code>, 26 bytes) move the row by one and only call a scroll helper at the top or bottom edge of the window. Same UI pattern, different implementation, because the two lists have different rules for where the cursor may stop.</p>
-<p><strong>Borrowing another routine's ending.</strong> <strong><code>BattleMenu_ItemListPageDown</code></strong> (<code>$C1:151C</code>, 27 bytes) and <strong><code>BattleMenu_ItemListPageUp</code></strong> (<code>$C1:1537</code>, 20 bytes) don't call the renderer themselves. They set the scroll position and <code>JSR</code> into the <em>middle</em> of <strong><code>BattleMenu_ItemListScrollDown</code></strong> (<code>$C1:17BF</code>, 30 bytes) / <strong><code>BattleMenu_ItemListScrollUp</code></strong> (<code>$C1:17A1</code>, 30 bytes), right at the instruction that calls the renderer, so that routine's tail (render, then flag the scroll arrows for a refresh) does double duty. Bank <code>$C0</code>'s <code>Sub_1BA7</code> does the same, entering <code>Sub_1B90</code> partway to reuse its tail. On the <abbr title="Writing assembly source that assembles byte-for-byte identically to the original ROM via asar.">matching</abbr> side, that internal entry point had to be a real global label instead of a private <code>.dot</code> label: in <abbr title="The 65816 assembler used for this project — patches matched .asm source into a ROM copy for byte-exact verification.">asar</abbr> a new global label resets the local scope, so a label jumped to from outside must be global.</p>
+<p><strong>Borrowing another routine's ending.</strong> <strong><code>BattleMenu_ItemListPageDown</code></strong> (<code>$C1:151C</code>, 27 bytes) and <strong><code>BattleMenu_ItemListPageUp</code></strong> (<code>$C1:1537</code>, 20 bytes) don't call the renderer themselves. They set the scroll position and <code>JSR</code> into the <em>middle</em> of <strong><code>BattleMenu_ItemListScrollDown</code></strong> (<code>$C1:17BF</code>, 30 bytes) / <strong><code>BattleMenu_ItemListScrollUp</code></strong> (<code>$C1:17A1</code>, 30 bytes), right at the instruction that calls the renderer, so that routine's tail (render, then flag the scroll arrows for a refresh) does double duty. Bank <code>$C0</code>'s <code>Sub_1BA7</code> does the same, entering <code>Sub_1B90</code> partway to reuse its tail. On the <abbr title="Writing assembly source that assembles byte-for-byte identically to the original ROM via asar.">matching</abbr> side, that internal entry point had to be a real global label instead of a private <code>.dot</code> label: in <abbr title="The 65816 assembler used for this project (version 1.91) — patches matched .asm source into a ROM copy for byte-exact verification.">asar</abbr> a new global label resets the local scope, so a label jumped to from outside must be global.</p>
 <p><strong>A branch that can't happen.</strong> <code>BattleMenu_ItemListScrollUp</code> opens with two <code>BEQ</code>s in a row on the same flag, with nothing in between that changes it. The first is a normal check. The second asks a question already answered: if the flag were set, the first branch would have fired. This is a different kind of "does nothing" from the dead block in <code>BattleMenu_TargetSelectInput</code> three days ago. That was code nothing can execute; this runs every time and always gets "no". Both are reproduced exactly.</p>
 <p><strong><code>BattleMenu_ItemConfirm</code></strong> (<code>$C1:1498</code>, 67 bytes), <strong><code>BattleMenu_ItemListCancel</code></strong> (<code>$C1:14DB</code>, 17 bytes) and <strong><code>BattleMenu_ItemListRefresh</code></strong> (<code>$C1:154B</code>, 22 bytes) complete the set.</p>
 <h2 id="fixing-an-old-label">Fixing an old label</h2>

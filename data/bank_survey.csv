@@ -1,7 +1,7 @@
 bank,code_bytes,data_bytes,contents
-$C0,61779,3757,"Boot and core engine: game loop, VBlank, scene loading, sprites"
-$C1,63904,1632,"Battle engine: battle menus, targeting, status bar, maths helpers"
-$C2,55037,10499,Entered from the game loop for game modes $01F0 and up
+$C0,61779,3757,"Boot and field engine: game loop, NMI, location loading, map, event scripts, sprites"
+$C1,63904,1632,"Battle engine: main loop, turn lists, enemy scripts, actions, menu, targeting, status bar"
+$C2,55037,10499,"Scene mode (locations $01F0 and up), menu entry points, text decoder"
 $C3,4037,61499,
 $C4,0,65536,
 $C5,0,65536,
@@ -60,6 +60,6 @@ $F9,394,65142,
 $FA,0,65536,
 $FB,0,65536,
 $FC,406,65130,
-$FD,16590,48946,"Main init, reached from the reset vector"
+$FD,16590,48946,"Main init, battle helpers, field HDMA and location animation set-up"
 $FE,218,65318,
 $FF,1580,63956,

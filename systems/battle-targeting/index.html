@@ -107,7 +107,15 @@
           
         
           
+          <a class="wk-nav-link" href="../frame-cycle/">Frame cycle & NMI</a>
+          
+        
+          
           <a class="wk-nav-link" href="../engine/">Engine core</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../field-events/">Field event scripts</a>
           
         
           
@@ -115,7 +123,19 @@
           
         
           
+          <a class="wk-nav-link" href="../scene-engine/">Scene engine</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../text-windows/">Text windows</a>
+          
+        
+          
           <a class="wk-nav-link" href="../battle-engine/">Battle engine</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../battle-actions/">Battle actions</a>
           
         
           
@@ -233,6 +253,8 @@
           <li>
             <a href="#battle-targeting" class="wk-toc-link">Battle targeting</a>
             
+            <ol><li><a href="#target-modes" class="wk-toc-link">Target modes</a></li><li><a href="#area-shapes" class="wk-toc-link">Area shapes</a></li><li><a href="#candidate-list-helpers" class="wk-toc-link">Candidate-list helpers</a></li></ol>
+            
           </li>
           
         </ol>
@@ -243,12 +265,132 @@
       <div class="wk-article-body">
       
       
-      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="October 8, 2026 23:48:07 UTC">October 8, 2026</span></p>
+      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="October 9, 2026 00:05:30 UTC">October 9, 2026</span></p>
       
       <h1 id="battle-targeting">Battle targeting</h1>
-<p>Choosing who an action hits: the target list, target-select input, the target-mode table and its
-handlers, area queries and candidate-list helpers, and the queue of battlers ready to act.</p>
-<p>See also: <a href="../battle-menu/">Battle menu</a>.</p>
+<p>Choosing who an action hits (<code>$C1:1FDD</code>–<code>$C1:283C</code>): the table of target modes and their
+handlers, the four area shapes, and the candidate-list helpers. The menu side that drives it
+(<code>BattleMenu_BuildTargetList</code>, the target-select input and the commit) is on the
+<a href="../battle-menu/">Battle menu</a> page; the position queries of service 5 are on
+<a href="../battle-engine/#shared-services-and-helpers">Battle engine</a>.</p>
+<p>See also: <a href="../battle-menu/">Battle menu</a>, <a href="../battle-actions/">Battle actions</a>.</p>
+<h2 id="target-modes">Target modes</h2>
+<p><code>BattleMenu_BuildTargetList</code> (<code>$C1:1F79</code>) records the caster, blanks the candidate and selection
+lists (<code>!BattleTgt_Candidates</code>, <code>!BattleTgt_Selected</code>, battler slots 0–2 for the PCs and 3–10 for
+the enemies), and runs the handler for <code>!BattleTgt_Mode &amp; $7F</code> (clamped to <code>$20</code>) from
+<code>BattleTgt_ModeTable</code> (<code>$C1:1FF8</code>, 33 words). Each handler fills the candidates, seeds the
+selection from the cursor, and says whether the player may move the cursor
+(<code>!BattleTgt_CanCycle</code>) or the action hits the whole list (<code>!BattleTgt_TargetAll = $80</code>). An
+empty selection means "no valid target".</p>
+<table>
+<thead>
+<tr>
+<th>Modes</th>
+<th>Handler</th>
+<th>Targets</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>others</td>
+<td><code>BattleTgt_SingleAlly</code></td>
+<td>One PC, cursor may cycle (the default)</td>
+</tr>
+<tr>
+<td><code>$01</code>, <code>$04</code></td>
+<td><code>BattleTgt_AllAllies</code></td>
+<td>All PCs</td>
+</tr>
+<tr>
+<td><code>$02</code></td>
+<td><code>BattleTgt_Self</code></td>
+<td>The caster</td>
+</tr>
+<tr>
+<td><code>$03</code></td>
+<td><code>BattleTgt_SingleKoAlly</code></td>
+<td>One PC whose status bit 7 is set (by context, a KO'd ally)</td>
+</tr>
+<tr>
+<td><code>$05</code>, <code>$06</code></td>
+<td><code>BattleTgt_PcByCharId5</code> / <code>4</code></td>
+<td>The party member with a given character id</td>
+</tr>
+<tr>
+<td><code>$07</code></td>
+<td><code>BattleTgt_SingleEnemy</code></td>
+<td>One enemy, cursor may cycle</td>
+</tr>
+<tr>
+<td><code>$08</code>, <code>$0A</code></td>
+<td><code>BattleTgt_AllEnemies</code></td>
+<td>All enemies</td>
+</tr>
+<tr>
+<td><code>$09</code></td>
+<td><code>BattleTgt_Everyone</code></td>
+<td>Everyone</td>
+</tr>
+<tr>
+<td><code>$0B</code>–<code>$0D</code></td>
+<td><code>BattleTgt_EnemyLineFrom*</code></td>
+<td>Enemies on a line from a PC toward a chosen enemy</td>
+</tr>
+<tr>
+<td><code>$0F</code>, <code>$11</code>–<code>$14</code>, <code>$18</code>, <code>$1A</code>, <code>$1B</code></td>
+<td>radius, row and triangle handlers</td>
+<td>Enemies inside a circle, a row band, or the triangle of the three PCs</td>
+</tr>
+</tbody>
+</table>
+<h2 id="area-shapes">Area shapes</h2>
+<p>The area modes pick an anchor (the caster, a chosen enemy, or a particular party member), fill
+the area parameter block (<code>!BattleTgt_AreaCentre</code>, <code>AreaAim</code>, <code>AreaSize</code>, <code>AreaVariant</code>,
+<code>AreaSide</code>), run one geometry routine that writes the battlers it hits into the candidates, and
+select the whole list:</p>
+<table>
+<thead>
+<tr>
+<th>Routine</th>
+<th>Address</th>
+<th>Shape</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>BattleTgt_AreaRow</code></td>
+<td><code>$C1:2332</code></td>
+<td>A band of ±<code>$20</code> around the anchor's screen Y</td>
+</tr>
+<tr>
+<td><code>BattleTgt_AreaPartyTriangle</code></td>
+<td><code>$C1:23A4</code></td>
+<td>Inside the triangle whose corners are the three PCs</td>
+</tr>
+<tr>
+<td><code>BattleTgt_AreaLine</code></td>
+<td><code>$C1:25A3</code></td>
+<td>Along the line from a source toward the aimed-at battler</td>
+</tr>
+<tr>
+<td><code>BattleTgt_AreaCircle</code></td>
+<td><code>$C1:2701</code></td>
+<td>Within a radius of the centre battler</td>
+</tr>
+</tbody>
+</table>
+<p>Some handlers look for a specific party member: <code>BattleTgt_EnemyLineFromChar3</code> and
+<code>BattleTgt_Char3Radius</code> use the member with character id 3 (<code>!Pc_CharRobo</code>, inferred: Robo), and
+<code>BattleTgt_Char6Radius</code> the member with id 6; they return early when no PC has that id. The
+enemy-anchored modes let the D-pad move the aim, with a sound on each step.</p>
+<p><strong>Service 7</strong> (<code>BattleTgt_RunAreaQuery</code>, <code>$C1:1FDD</code>) runs one of the same geometry routines by
+<code>!BattleTgt_AreaType</code> through <code>BattleTgt_AreaTable</code> (7 entries). Its header reads it as
+"presumably" how code outside the menu (enemy scripts, scripted attacks) asks which battlers an
+area hits.</p>
+<h2 id="candidate-list-helpers">Candidate-list helpers</h2>
+<p><code>$C1:27AD</code>–<code>$C1:283C</code>: <code>BattleTgt_AreaAddAnchor</code> (put the anchor first), <code>CompactCandidates</code>,
+<code>ClearLists</code>, <code>SelectAllCandidates</code>, <code>CycleNext</code> / <code>CyclePrev</code> (move the cursor to the next
+non-empty candidate, wrapping at 11) and <code>AnyCandidate</code>.</p>
 <div class="wk-stat-tiles"><div class="wk-stat-tile"><span class="wk-stat-tile-val">34</span><span class="wk-stat-tile-label">functions matched</span></div><div class="wk-stat-tile"><span class="wk-stat-tile-val">2,144</span><span class="wk-stat-tile-label">bytes matched</span></div><div class="wk-stat-tile"><span class="wk-stat-tile-val">34</span><span class="wk-stat-tile-label">readable</span></div><div class="wk-stat-tile"><span class="wk-stat-tile-val">34</span><span class="wk-stat-tile-label">verified</span></div></div>
 <h2 id="functions">Functions</h2>
 <table class="wk-fntable"><thead><tr><th>Address</th><th>Function</th><th>Size</th><th>Status</th><th>Notes</th></tr></thead><tbody><tr><td><code>$C1:1FDD</code></td><td><code>BattleTgt_<wbr>RunAreaQuery</code></td><td>13</td><td><span class="wk-status wk-status-verified">verified</span></td><td>Service 7 of the $C10045 service dispatcher (dispatch table at $C10051; reached only by same-bank JSR from bank $C1, see BattleMenu_EnqueueReadyBattler).</td></tr><tr><td><code>$C1:1FEA</code></td><td><code>BattleTgt_<wbr>AreaTable</code></td><td>14</td><td><span class="wk-status wk-status-verified">verified</span></td><td></td></tr><tr><td><code>$C1:1FF8</code></td><td><code>BattleTgt_<wbr>ModeTable</code></td><td>66</td><td><span class="wk-status wk-status-verified">verified</span></td><td>Target-mode handler table, indexed by (!BattleTgt_Mode &amp; $7F) clamped to $20, called from BattleMenu_BuildTargetList.</td></tr><tr><td><code>$C1:203A</code></td><td><code>BattleTgt_<wbr>SingleAlly</code></td><td>11</td><td><span class="wk-status wk-status-verified">verified</span></td><td></td></tr><tr><td><code>$C1:2045</code></td><td><code>BattleTgt_<wbr>CollectValidTargets</code></td><td>85</td><td><span class="wk-status wk-status-verified">verified</span></td><td></td></tr><tr><td><code>$C1:209A</code></td><td><code>BattleTgt_<wbr>AllAllies</code></td><td>15</td><td><span class="wk-status wk-status-verified">verified</span></td><td></td></tr><tr><td><code>$C1:20A9</code></td><td><code>BattleTgt_<wbr>SingleEnemy</code></td><td>13</td><td><span class="wk-status wk-status-verified">verified</span></td><td>cursor may cycle.</td></tr><tr><td><code>$C1:20B6</code></td><td><code>BattleTgt_<wbr>AllEnemies</code></td><td>16</td><td><span class="wk-status wk-status-verified">verified</span></td><td></td></tr><tr><td><code>$C1:20C6</code></td><td><code>BattleTgt_<wbr>Everyone</code></td><td>16</td><td><span class="wk-status wk-status-verified">verified</span></td><td></td></tr><tr><td><code>$C1:20D6</code></td><td><code>BattleTgt_<wbr>Self</code></td><td>10</td><td><span class="wk-status wk-status-verified">verified</span></td><td></td></tr><tr><td><code>$C1:20E0</code></td><td><code>BattleTgt_<wbr>SingleKoAlly</code></td><td>86</td><td><span class="wk-status wk-status-verified">verified</span></td><td>Lists the PCs whose BattlerStats.Status has bit 7 set — by context, KO&#x27;d allies, i.e.</td></tr><tr><td><code>$C1:2136</code></td><td><code>BattleTgt_<wbr>PcByCharId5</code></td><td>4</td><td><span class="wk-status wk-status-verified">verified</span></td><td></td></tr><tr><td><code>$C1:213A</code></td><td><code>BattleTgt_<wbr>FindPcByCharId</code></td><td>41</td><td><span class="wk-status wk-status-verified">verified</span></td><td></td></tr><tr><td><code>$C1:2163</code></td><td><code>BattleTgt_<wbr>PcByCharId4</code></td><td>6</td><td><span class="wk-status wk-status-verified">verified</span></td><td></td></tr><tr><td><code>$C1:2169</code></td><td><code>BattleTgt_<wbr>EnemyLineFromCaster</code></td><td>70</td><td><span class="wk-status wk-status-verified">verified</span></td><td></td></tr><tr><td><code>$C1:21AF</code></td><td><code>BattleTgt_<wbr>EnemyLineFromChar3</code></td><td>84</td><td><span class="wk-status wk-status-verified">verified</span></td><td>but the source is the party member with character id 3 (!Pc_CharRobo, inferred: Robo; the name keeps the numeric id).</td></tr><tr><td><code>$C1:2203</code></td><td><code>BattleTgt_<wbr>EnemyLineFromCaster2</code></td><td>72</td><td><span class="wk-status wk-status-verified">verified</span></td><td>EnemyLineFromCaster with !BattleTgt_AreaVariant = 1</td></tr><tr><td><code>$C1:224B</code></td><td><code>BattleTgt_<wbr>CasterRadius</code></td><td>20</td><td><span class="wk-status wk-status-verified">verified</span></td><td>the caster</td></tr><tr><td><code>$C1:225F</code></td><td><code>BattleTgt_<wbr>EnemyRadius</code></td><td>69</td><td><span class="wk-status wk-status-verified">verified</span></td><td>chosen enemy; size $19 for mode $1A, else $09</td></tr><tr><td><code>$C1:22A4</code></td><td><code>BattleTgt_<wbr>Char3Radius</code></td><td>47</td><td><span class="wk-status wk-status-verified">verified</span></td><td>member id 3; size $19 for mode $14, else $10.</td></tr><tr><td><code>$C1:22D3</code></td><td><code>BattleTgt_<wbr>Char6Radius</code></td><td>34</td><td><span class="wk-status wk-status-verified">verified</span></td><td>party member id 6.</td></tr><tr><td><code>$C1:22F5</code></td><td><code>BattleTgt_<wbr>EnemyRow</code></td><td>52</td><td><span class="wk-status wk-status-verified">verified</span></td><td>chosen enemy as anchor for BattleTgt_AreaRow (a +/-$20 band around the anchor&#x27;s !Battler_ScreenY)</td></tr><tr><td><code>$C1:2329</code></td><td><code>BattleTgt_<wbr>PartyTriangle</code></td><td>9</td><td><span class="wk-status wk-status-verified">verified</span></td><td>the triangle formed by the three PCs (BattleTgt_AreaPartyTriangle)</td></tr><tr><td><code>$C1:2332</code></td><td><code>BattleTgt_<wbr>AreaRow</code></td><td>114</td><td><span class="wk-status wk-status-verified">verified</span></td><td></td></tr><tr><td><code>$C1:23A4</code></td><td><code>BattleTgt_<wbr>AreaPartyTriangle</code></td><td>511</td><td><span class="wk-status wk-status-verified">verified</span></td><td></td></tr><tr><td><code>$C1:25A3</code></td><td><code>BattleTgt_<wbr>AreaLine</code></td><td>350</td><td><span class="wk-status wk-status-verified">verified</span></td><td></td></tr><tr><td><code>$C1:2701</code></td><td><code>BattleTgt_<wbr>AreaCircle</code></td><td>172</td><td><span class="wk-status wk-status-verified">verified</span></td><td></td></tr><tr><td><code>$C1:27AD</code></td><td><code>BattleTgt_<wbr>AreaAddAnchor</code></td><td>24</td><td><span class="wk-status wk-status-verified">verified</span></td><td>Shared tail of the area scans: puts !BattleTgt_Anchor at the front of !BattleTgt_Candidates if it belongs to the scanned side (see the AreaCircle header), then falls into BattleTgt_CompactCandidates.</td></tr><tr><td><code>$C1:27C5</code></td><td><code>BattleTgt_<wbr>CompactCandidates</code></td><td>20</td><td><span class="wk-status wk-status-verified">verified</span></td><td>front slot is empty, shift the list left by one.</td></tr><tr><td><code>$C1:27D9</code></td><td><code>BattleTgt_<wbr>ClearLists</code></td><td>15</td><td><span class="wk-status wk-status-verified">verified</span></td><td>and selection lists (12 entries each, one more than they use)</td></tr><tr><td><code>$C1:27E8</code></td><td><code>BattleTgt_<wbr>SelectAllCandidates</code></td><td>18</td><td><span class="wk-status wk-status-verified">verified</span></td><td>target-all and copy the 11 candidates into the selection list</td></tr><tr><td><code>$C1:27FA</code></td><td><code>BattleTgt_<wbr>CycleNext</code></td><td>26</td><td><span class="wk-status wk-status-verified">verified</span></td><td>next non-empty candidate (wrap at 11); no-op on an empty list.</td></tr><tr><td><code>$C1:2814</code></td><td><code>BattleTgt_<wbr>CyclePrev</code></td><td>25</td><td><span class="wk-status wk-status-verified">verified</span></td><td></td></tr><tr><td><code>$C1:282D</code></td><td><code>BattleTgt_<wbr>AnyCandidate</code></td><td>16</td><td><span class="wk-status wk-status-verified">verified</span></td><td>candidate slots are $FF, Z=0 as soon as one isn&#x27;t</td></tr></tbody></table>

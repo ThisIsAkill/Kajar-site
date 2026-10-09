@@ -107,7 +107,15 @@
           
         
           
+          <a class="wk-nav-link" href="../../../../../systems/frame-cycle/">Frame cycle & NMI</a>
+          
+        
+          
           <a class="wk-nav-link" href="../../../../../systems/engine/">Engine core</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../../../../../systems/field-events/">Field event scripts</a>
           
         
           
@@ -115,7 +123,19 @@
           
         
           
+          <a class="wk-nav-link" href="../../../../../systems/scene-engine/">Scene engine</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../../../../../systems/text-windows/">Text windows</a>
+          
+        
+          
           <a class="wk-nav-link" href="../../../../../systems/battle-engine/">Battle engine</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../../../../../systems/battle-actions/">Battle actions</a>
           
         
           
@@ -280,15 +300,15 @@
 <h2 id="the-toolchain">The toolchain</h2>
 <p>The build uses:</p>
 <ul>
-<li><strong><abbr title="The 65816 assembler used for this project — patches matched .asm source into a ROM copy for byte-exact verification.">asar</abbr> 1.91</strong>, the standard SNES assembler used by nearly every SNES decomp</li>
+<li><strong><abbr title="The 65816 assembler used for this project (version 1.91) — patches matched .asm source into a ROM copy for byte-exact verification.">asar</abbr> 1.91</strong>, the standard SNES assembler used by nearly every SNES decomp</li>
 <li><strong>Python 3</strong> for tooling (diff scripts, progress tracking)</li>
 <li><strong>make</strong> to tie it together</li>
 </ul>
-<p>The build copies the original ROM, runs <abbr title="The 65816 assembler used for this project — patches matched .asm source into a ROM copy for byte-exact verification.">asar</abbr> to patch in the <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr> assembly, and compares the result with the original byte for byte. "0 bytes differ" means a good match.</p>
-<p>One flag matters: <code>--fix-checksum=off</code>. Without it <abbr title="The 65816 assembler used for this project — patches matched .asm source into a ROM copy for byte-exact verification.">asar</abbr> recalculates the ROM checksum, and the output differs from the original by 4 bytes. Always pass it.</p>
+<p>The build copies the original ROM, runs <abbr title="The 65816 assembler used for this project (version 1.91) — patches matched .asm source into a ROM copy for byte-exact verification.">asar</abbr> to patch in the <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr> assembly, and compares the result with the original byte for byte. "0 bytes differ" means a good match.</p>
+<p>One flag matters: <code>--fix-checksum=off</code>. Without it <abbr title="The 65816 assembler used for this project (version 1.91) — patches matched .asm source into a ROM copy for byte-exact verification.">asar</abbr> recalculates the ROM checksum, and the output differs from the original by 4 bytes. Always pass it.</p>
 <h2 id="what-i-learned">What I learned</h2>
 <p><strong><abbr title="SNES ROM mapping where each bank is a full 64KB of ROM — bank $C0 = first 64KB of the ROM file.">HiROM</abbr> addressing.</strong> Bank <code>$C0</code> maps directly to the first 64 KB of the ROM file. Bank <code>$FD</code> is at file offset <code>($FD - $C0) × $10000 = $3D0000</code>. The reset vector at <code>$FFFC</code> is in bank <code>$00</code>, which mirrors bank <code>$C0</code> for addresses <code>$8000</code>–<code>$FFFF</code> in <abbr title="SNES ROM mapping where each bank is a full 64KB of ROM — bank $C0 = first 64KB of the ROM file.">HiROM</abbr>. Since <code>$FF00</code> is in the upper half, bank <code>$00</code> works as expected here.</p>
-<p><strong>The ROM header.</strong> The 80-byte header at <code>$00:FFB0</code> holds the title ("CHRONO TRIGGER"), the memory map type (<code>$31</code> = <abbr title="SNES ROM mapping where each bank is a full 64KB of ROM — bank $C0 = first 64KB of the ROM file.">HiROM</abbr> FastROM), ROM size, SRAM size and the checksum that <abbr title="The 65816 assembler used for this project — patches matched .asm source into a ROM copy for byte-exact verification.">asar</abbr> would otherwise overwrite.</p>
+<p><strong>The ROM header.</strong> The 80-byte header at <code>$00:FFB0</code> holds the title ("CHRONO TRIGGER"), the memory map type (<code>$31</code> = <abbr title="SNES ROM mapping where each bank is a full 64KB of ROM — bank $C0 = first 64KB of the ROM file.">HiROM</abbr> FastROM), ROM size, SRAM size and the checksum that <abbr title="The 65816 assembler used for this project (version 1.91) — patches matched .asm source into a ROM copy for byte-exact verification.">asar</abbr> would otherwise overwrite.</p>
 <p><strong>Wave tables.</strong> The two 64-byte sine-wave tables at <code>$FF30</code> and <code>$FF70</code> are not audio. They are scroll-effect tables that make backgrounds wobble. Each is a 32-entry signed 16-bit table with values in the range ±6.</p>
 <h2 id="next">Next</h2>
 <p>The reset stub jumps straight to <code>$FD:C000</code>, which is <code>MainInit</code>. Matching it is the way into the engine's startup sequence.</p>

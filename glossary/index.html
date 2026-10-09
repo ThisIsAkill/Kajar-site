@@ -107,7 +107,15 @@
           
         
           
+          <a class="wk-nav-link" href="../systems/frame-cycle/">Frame cycle & NMI</a>
+          
+        
+          
           <a class="wk-nav-link" href="../systems/engine/">Engine core</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../systems/field-events/">Field event scripts</a>
           
         
           
@@ -115,7 +123,19 @@
           
         
           
+          <a class="wk-nav-link" href="../systems/scene-engine/">Scene engine</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../systems/text-windows/">Text windows</a>
+          
+        
+          
           <a class="wk-nav-link" href="../systems/battle-engine/">Battle engine</a>
+          
+        
+          
+          <a class="wk-nav-link" href="../systems/battle-actions/">Battle actions</a>
           
         
           
@@ -236,6 +256,11 @@
           </li>
           
           <li>
+            <a href="#matched-readable-verified" class="wk-toc-link">Matched, readable, verified</a>
+            
+          </li>
+          
+          <li>
             <a href="#rom-bank" class="wk-toc-link">ROM bank</a>
             
           </li>
@@ -323,14 +348,16 @@
       <div class="wk-article-body">
       
       
-      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="October 8, 2026 23:48:07 UTC">October 8, 2026</span></p>
+      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="October 9, 2026 00:09:04 UTC">October 9, 2026</span></p>
       
       <p>A running glossary for terms I keep using in the devlog. Bookmark this if you're new to SNES dev.</p>
 <hr />
 <h2 id="byte-exact-matching">Byte-exact / <abbr title="Writing assembly source that assembles byte-for-byte identically to the original ROM via asar.">matching</abbr></h2>
 <p>A function is "<abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr>" when the assembly source I've written can be run through the assembler and produces output <strong>identical to the original ROM</strong> — byte for byte. Not just "equivalent behavior", literally the same bytes. This matters because the goal of a <abbr title="Writing assembly source that assembles byte-for-byte identically to the original ROM via asar.">matching</abbr> decompilation is a reproducible reconstruction of the original binary, not a reimplementation.</p>
+<h2 id="matched-readable-verified">Matched, readable, verified</h2>
+<p>The three levels a routine goes through, each including the one before. <strong>Matched</strong>: every byte from its label to the next is emitted by the source and equals the ROM (<code>make diff</code>, <code>make verify</code>). <strong>Readable</strong>: it also passes the readability lint (named RAM and constants, explicit widths, a header with its CPU state on entry and exit). <strong>Verified</strong>: an independent reviewer approved its current source; the approval is tied to a hash of that source, so any edit sends it back for review. The <a href="../PROGRESS/">Progress</a> page counts all three.</p>
 <h2 id="rom-bank"><abbr title="A 64KB segment of the SNES address space; Chrono Trigger has 64 banks in HiROM mapping.">ROM bank</abbr></h2>
-<p>The SNES memory map is split into 256-byte "banks". Each bank is 64KB of address space. The Chrono Trigger ROM is 4MB total, which works out to 64 banks of 64KB each. When I write <code>$C0:B271</code>, that means bank <code>$C0</code>, address <code>$B271</code> within that bank.</p>
+<p>The <abbr title="The 16-bit CPU inside the SNES, an extended 6502 capable of 8-bit emulation and full 16-bit native mode.">65816</abbr>'s 24-bit address space is split into 256 "banks" of 64KB each. The Chrono Trigger ROM is 4MB total, which works out to 64 banks of 64KB each. When I write <code>$C0:B271</code>, that means bank <code>$C0</code>, address <code>$B271</code> within that bank.</p>
 <h2 id="hirom"><abbr title="SNES ROM mapping where each bank is a full 64KB of ROM — bank $C0 = first 64KB of the ROM file.">HiROM</abbr></h2>
 <p>One of two common SNES ROM mapping layouts (the other is LoROM). In <abbr title="SNES ROM mapping where each bank is a full 64KB of ROM — bank $C0 = first 64KB of the ROM file.">HiROM</abbr>, the full 64KB of each bank is available as ROM — bank <code>$C0</code> maps directly to the first 64KB of the ROM file, bank <code>$C1</code> to the next 64KB, etc. This is different from LoROM where only the upper 32KB of each bank is ROM. Chrono Trigger uses <abbr title="SNES ROM mapping where each bank is a full 64KB of ROM — bank $C0 = first 64KB of the ROM file.">HiROM</abbr>.</p>
 <h2 id="65816"><abbr title="The 16-bit CPU inside the SNES, an extended 6502 capable of 8-bit emulation and full 16-bit native mode.">65816</abbr></h2>
@@ -346,7 +373,7 @@
 <p>You change these with <code>SEP #$20</code> (set M=1, A→8-bit), <code>REP #$20</code> (clear M=0, A→16-bit), and similarly <code>SEP #$10</code> / <code>REP #$10</code> for X/Y.</p>
 <p>These flags change the <em>size</em> of instructions mid-code, which is one of the things that makes <abbr title="The 16-bit CPU inside the SNES, an extended 6502 capable of 8-bit emulation and full 16-bit native mode.">65816</abbr> assembly tricky to disassemble without knowing the mode at every point.</p>
 <h2 id="dp-direct-page"><abbr title="Direct Page — the 65816's relocatable 256-byte zero-page window; address = D register + 8-bit offset.">DP</abbr> (Direct Page)</h2>
-<p>Also called "zero page" in 6502 land. The <abbr title="The 16-bit CPU inside the SNES, an extended 6502 capable of 8-bit emulation and full 16-bit native mode.">65816</abbr> has a special register called the Direct Page pointer (D). When you write a "<abbr title="Direct Page mode — 2-byte instruction using an 8-bit offset added to the D register.">dp</abbr> mode" instruction like <code>LDA $6D</code>, it doesn't load from address <code>$006D</code> — it loads from <code>D + $6D</code>. Chrono Trigger sets D to <code>$0100</code> early in startup, so <code>LDA $6D</code> actually reads from <abbr title="Work RAM — 128KB of SNES main RAM at $7E:0000–$7F:FFFF, holds all runtime game state.">WRAM</abbr> address <code>$016D</code>.</p>
+<p>Also called "zero page" in 6502 land. The <abbr title="The 16-bit CPU inside the SNES, an extended 6502 capable of 8-bit emulation and full 16-bit native mode.">65816</abbr> has a special register called the Direct Page pointer (D). When you write a "<abbr title="Direct Page mode — 2-byte instruction using an 8-bit offset added to the D register.">dp</abbr> mode" instruction like <code>LDA $6D</code>, it doesn't load from address <code>$006D</code> — it loads from <code>D + $6D</code>. The field engine runs with D = <code>$0100</code>, so there <code>LDA $6D</code> actually reads <abbr title="Work RAM — 128KB of SNES main RAM at $7E:0000–$7F:FFFF, holds all runtime game state.">WRAM</abbr> address <code>$016D</code> (<code>Obj_Cur</code>). Other code uses other pages: the map code <code>$1D00</code>, the battle and the scene mode <code>$0000</code>, and init code points D at a register block (<code>$2100</code>, <code>$4200</code>) so every register write is a 2-byte instruction.</p>
 <p>This is a common source of confusion when reading disassembly. If you see small two-digit hex addresses used in <code>LDA</code>, <code>STA</code>, etc., they're almost certainly <abbr title="Direct Page mode — 2-byte instruction using an 8-bit offset added to the D register.">dp</abbr>-relative.</p>
 <h2 id="wram"><abbr title="Work RAM — 128KB of SNES main RAM at $7E:0000–$7F:FFFF, holds all runtime game state.">WRAM</abbr></h2>
 <p>The SNES has 128KB of work RAM (<abbr title="Work RAM — 128KB of SNES main RAM at $7E:0000–$7F:FFFF, holds all runtime game state.">WRAM</abbr>), mapped at <code>$7E:0000</code>–<code>$7F:FFFF</code>. This is where the game stores everything that changes at runtime: game mode, sprite positions, input state, audio queues, etc. (The ROM itself is read-only.)</p>
@@ -358,7 +385,7 @@
 <li>Uploading <abbr title="Object Attribute Memory — the PPU's 512+32-byte sprite table (up to 128 sprites: X/Y, tile, palette, size).">OAM</abbr> (sprite attribute) data to the <abbr title="Picture Processing Unit — the SNES graphics chip handling BGs, sprites, palettes, windows, and compositing.">PPU</abbr></li>
 </ul>
 <h2 id="nmi-vblank"><abbr title="Non-Maskable Interrupt — fires at the start of VBlank each frame; the safe window for PPU updates.">NMI</abbr> / <abbr title="Vertical blank — the ~1.2ms gap each frame when the PPU isn't drawing, safe for register writes.">VBlank</abbr></h2>
-<p><abbr title="Non-Maskable Interrupt — fires at the start of VBlank each frame; the safe window for PPU updates.">NMI</abbr> stands for Non-Maskable Interrupt. On the SNES, it fires at the start of <abbr title="Vertical blank — the ~1.2ms gap each frame when the PPU isn't drawing, safe for register writes.">VBlank</abbr> — the ~1.2ms window each frame (at 60fps, every ~16.7ms) when the <abbr title="Picture Processing Unit — the SNES graphics chip handling BGs, sprites, palettes, windows, and compositing.">PPU</abbr> is not drawing to the screen. This is the only safe time to update <abbr title="Picture Processing Unit — the SNES graphics chip handling BGs, sprites, palettes, windows, and compositing.">PPU</abbr> registers and upload data to <abbr title="Video RAM — dedicated PPU memory for tile graphics and tilemaps; written via DMA during VBlank.">VRAM</abbr>/<abbr title="Object Attribute Memory — the PPU's 512+32-byte sprite table (up to 128 sprites: X/Y, tile, palette, size).">OAM</abbr>. Chrono Trigger's <abbr title="Non-Maskable Interrupt — fires at the start of VBlank each frame; the safe window for PPU updates.">NMI</abbr> handler is where all the real-time display updates happen.</p>
+<p><abbr title="Non-Maskable Interrupt — fires at the start of VBlank each frame; the safe window for PPU updates.">NMI</abbr> stands for Non-Maskable Interrupt. On the SNES, it fires at the start of <abbr title="Vertical blank — the ~1.2ms gap each frame when the PPU isn't drawing, safe for register writes.">VBlank</abbr> — the ~1.2ms window each frame (at 60fps, every ~16.7ms) when the <abbr title="Picture Processing Unit — the SNES graphics chip handling BGs, sprites, palettes, windows, and compositing.">PPU</abbr> is not drawing to the screen. This is the only safe time to update <abbr title="Picture Processing Unit — the SNES graphics chip handling BGs, sprites, palettes, windows, and compositing.">PPU</abbr> registers and upload data to <abbr title="Video RAM — dedicated PPU memory for tile graphics and tilemaps; written via DMA during VBlank.">VRAM</abbr>/<abbr title="Object Attribute Memory — the PPU's 512+32-byte sprite table (up to 128 sprites: X/Y, tile, palette, size).">OAM</abbr>. On the field, <code>NmiHandler</code> (<code>$C0:EA63</code>) does the frame's uploads (palette, <abbr title="Object Attribute Memory — the PPU's 512+32-byte sprite table (up to 128 sprites: X/Y, tile, palette, size).">OAM</abbr>, queued graphics, map edges) once the game has finished the frame; see <a href="../systems/frame-cycle/">Frame cycle and <abbr title="Non-Maskable Interrupt — fires at the start of VBlank each frame; the safe window for PPU updates.">NMI</abbr></a>.</p>
 <h2 id="vblank"><abbr title="Vertical blank — the ~1.2ms gap each frame when the PPU isn't drawing, safe for register writes.">VBlank</abbr></h2>
 <p>The vertical blank period — the gap between the last visible scanline and the next frame starting. See <abbr title="Non-Maskable Interrupt — fires at the start of VBlank each frame; the safe window for PPU updates.">NMI</abbr> above.</p>
 <h2 id="oam"><abbr title="Object Attribute Memory — the PPU's 512+32-byte sprite table (up to 128 sprites: X/Y, tile, palette, size).">OAM</abbr></h2>
@@ -373,12 +400,12 @@
 <li><code>JML addr</code> — Jump long (no return address, like a goto)</li>
 <li><code>RTS</code> — Return from subroutine (pops return address from stack, jumps back)</li>
 </ul>
-<h2 id="brl"><abbr title="Branch Long — 16-bit relative branch (signed offset from next PC); asar 1.91 quirk: BRL $XXXX stores $XXXX raw, not a target address.">BRL</abbr></h2>
-<p>Branch Long. Like a <code>BRA</code> (unconditional branch) but with a 16-bit relative offset instead of 8-bit, so it can jump further. The offset is signed and relative to the next instruction's address. <abbr title="The 65816 assembler used for this project — patches matched .asm source into a ROM copy for byte-exact verification.">asar</abbr> 1.91 has a quirk where <code>BRL $XXXX</code> stores <code>$XXXX</code> directly as the operand instead of computing the relative offset — so you have to compute the offset yourself.</p>
-<h2 id="asar"><abbr title="The 65816 assembler used for this project — patches matched .asm source into a ROM copy for byte-exact verification.">asar</abbr></h2>
+<h2 id="brl"><abbr title="Branch Long — 16-bit relative branch (signed offset from the next instruction); asar 1.91 computes it from a label, but stores a numeric operand ($XXXX) as the raw offset.">BRL</abbr></h2>
+<p>Branch Long. Like a <code>BRA</code> (unconditional branch) but with a 16-bit relative offset instead of 8-bit, so it can jump further. The offset is signed and relative to the next instruction's address. <abbr title="The 65816 assembler used for this project (version 1.91) — patches matched .asm source into a ROM copy for byte-exact verification.">asar</abbr> 1.91 computes it for you from a label (<code>BRL Oam_BuildShadow</code>), but stores a number as the raw offset (<code>BRL $B193</code>), so always write the label; see <a href="../ASAR_QUIRKS/"><abbr title="The 65816 assembler used for this project (version 1.91) — patches matched .asm source into a ROM copy for byte-exact verification.">asar</abbr> Quirks</a>.</p>
+<h2 id="asar"><abbr title="The 65816 assembler used for this project (version 1.91) — patches matched .asm source into a ROM copy for byte-exact verification.">asar</abbr></h2>
 <p>The assembler used for this project. It takes <code>.asm</code> source files and patches them into a copy of the ROM. Works in "patch mode" — you give it the assembly source and the ROM to patch, and it overwrites just the bytes you've specified. Version 1.91 is what we're using.</p>
 <h2 id="reassembly">Reassembly</h2>
-<p>Running the <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr> assembly through the assembler and comparing the output to the original ROM. If the diff shows 0 bytes differ, the match is <abbr title="The assembled output matches the original ROM byte-for-byte — not just equivalent behavior, literally identical bytes.">byte-exact</abbr>.</p>
+<p>Running the <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr> assembly through the assembler and comparing the output to the original ROM (<code>make diff</code>). If the diff shows 0 bytes differ, the match is <abbr title="The assembled output matches the original ROM byte-for-byte — not just equivalent behavior, literally identical bytes.">byte-exact</abbr>. <code>make verify</code> goes one step further: it assembles onto blank bases, so a routine can't hide behind bytes the original ROM already had.</p>
       
       </div>
 
