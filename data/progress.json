@@ -1,19 +1,19 @@
 {
   "schema": 2,
-  "emitted_bytes": 138463,
+  "emitted_bytes": 143313,
   "code_bytes": 359278,
   "totals": {
     "matched": {
-      "functions": 1858,
-      "bytes": 138463
+      "functions": 1933,
+      "bytes": 143313
     },
     "readable": {
-      "functions": 1858,
-      "bytes": 138463
+      "functions": 1933,
+      "bytes": 143313
     },
     "verified": {
-      "functions": 1858,
-      "bytes": 138463
+      "functions": 1933,
+      "bytes": 143313
     }
   },
   "banks": [
@@ -54,18 +54,18 @@
     {
       "bank": "$C2",
       "code_bytes": null,
-      "emitted_bytes": 26079,
+      "emitted_bytes": 30929,
       "matched": {
-        "functions": 581,
-        "bytes": 26079
+        "functions": 656,
+        "bytes": 30929
       },
       "readable": {
-        "functions": 581,
-        "bytes": 26079
+        "functions": 656,
+        "bytes": 30929
       },
       "verified": {
-        "functions": 581,
-        "bytes": 26079
+        "functions": 656,
+        "bytes": 30929
       }
     },
     {
@@ -2210,7 +2210,7 @@
       "bank": "$C2",
       "start": "$C2:6000",
       "end": "$C2:6FFF",
-      "emitted_bytes": 799,
+      "emitted_bytes": 4096,
       "functions": [
         "TextWin_TileOfs4bpp",
         "TextWin_GlyphWidths",
@@ -2225,15 +2225,86 @@
         "C2Scene_GetListCUnk03",
         "C2Scene_GetMapCell",
         "C2Scene_GetTileProp",
-        "C2Scene_GetSoundZone"
+        "C2Scene_GetSoundZone",
+        "C2Scene_MapView",
+        "C2Scene_MapViewBuild",
+        "C2Scene_MapTileColors",
+        "C2Scene_MapTilePixelBit",
+        "C2Scene_MapDrawPixels",
+        "C2Scene_MapCellPixels",
+        "C2Scene_MapFilterColor",
+        "C2Scene_MapBuildTilemap",
+        "C2Scene_TaskMapZoom",
+        "C2Scene_MapZoomStates",
+        "C2Scene_MapZoomInit",
+        "C2Scene_MapZoomOut",
+        "C2Scene_MapZoomWait",
+        "C2Scene_MapZoomIn",
+        "C2Scene_MapZoomMatrix",
+        "C2Scene_MapZoomDivide",
+        "C2Scene_TaskLeaderMarker",
+        "C2Scene_TaskObjAMarker",
+        "C2Scene_MapMarkerPos",
+        "C2Scene_TaskLocMarker",
+        "C2Scene_LocMarkerX",
+        "C2Scene_MapViewGradient",
+        "C2Scene_MapViewLabel",
+        "C2Scene_MapLabelStr",
+        "C2Scene_ScrMapViewStart",
+        "C2Scene_ScrMapViewExit",
+        "C2Scene_ScrMapViewMarkers",
+        "C2Scene_AnimLeaderMarker",
+        "C2Scene_AnimObjAMarker",
+        "C2Scene_FrameMapMarkerA",
+        "C2Scene_FrameMapMarkerB",
+        "C2Scene_Dial",
+        "C2Scene_TaskDial",
+        "C2Scene_DialStates",
+        "C2Scene_DialInit",
+        "C2Scene_DialInput",
+        "C2Scene_DialTurn",
+        "C2Scene_DialLocs",
+        "C2Scene_DialLocsLate",
+        "C2Scene_DialAngles",
+        "C2Scene_DialDrawHand",
+        "C2Scene_DialHandShape",
+        "C2Scene_DialMul",
+        "C2Scene_TaskSwirl",
+        "C2Scene_SwirlStates",
+        "C2Scene_SwirlInit"
       ]
     },
     {
       "bank": "$C2",
       "start": "$C2:7000",
       "end": "$C2:7FFF",
-      "emitted_bytes": 106,
+      "emitted_bytes": 1463,
       "functions": [
+        "C2Scene_SwirlStep",
+        "C2Scene_TaskDialMark",
+        "C2Scene_DialMarkStates",
+        "C2Scene_DialMarkInit",
+        "C2Scene_DialMarkHidden",
+        "C2Scene_DialMarkSelect",
+        "C2Scene_DialMarkShown",
+        "C2Scene_DialMarkDeselect",
+        "C2Scene_DialMarkPos",
+        "C2Scene_DialMarkAnims",
+        "C2Scene_DialUnpack",
+        "C2Scene_DialPacks",
+        "C2Scene_DialUploadPixels",
+        "C2Scene_DialUploadMap",
+        "C2Scene_DialMapBlocks",
+        "C2Scene_DialUploadObjTiles",
+        "C2Scene_DialObjTileList",
+        "C2Scene_DialUnpackNibbles",
+        "C2Scene_DialLoad",
+        "C2Scene_DialSelLoc",
+        "C2Scene_DialFindLoc",
+        "C2Scene_ScrDialFadeIn",
+        "C2Scene_ScrDialFadeOut",
+        "C2Scene_ScrDialCentre",
+        "C2Scene_ScrDialPalCycle",
         "C2Scene_LoadExtraObjPack",
         "C2Scene_LoadExtraPalette",
         "C2Scene_LoadUnkC600"
@@ -2243,13 +2314,17 @@
       "bank": "$C2",
       "start": "$C2:8000",
       "end": "$C2:8FFF",
-      "emitted_bytes": 274,
+      "emitted_bytes": 470,
       "functions": [
         "BankC2_Entry8000",
         "BankC2_Entry8002",
         "BankC2_Entry8004",
         "BankC2_ReadPadLong",
         "BankC2_CommandLong",
+        "Menu_Nmi",
+        "Menu_Irq",
+        "Menu_NmiPad",
+        "Menu_RepeatDelays",
         "Menu_ReadPad",
         "Menu_PollPad",
         "Menu_MapButtons",

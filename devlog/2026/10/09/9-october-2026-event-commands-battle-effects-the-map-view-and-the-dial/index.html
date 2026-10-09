@@ -6,10 +6,10 @@
   
   
   <meta name="description" content="Byte-exact matching decompilation of Chrono Trigger (SNES, US 1.0)">
-  <link rel="canonical" href="https://thisisakill.github.io/Kajar-site/devlog/2026/10/09/9-october-2026-the-rest-of-the-event-commands-and-how-battle-effects-run/">
+  <link rel="canonical" href="https://thisisakill.github.io/Kajar-site/devlog/2026/10/09/9-october-2026-event-commands-battle-effects-the-map-view-and-the-dial/">
   
   
-  <title>9 October 2026: the rest of the event commands, and how battle effects run — Kajar</title>
+  <title>9 October 2026: event commands, battle effects, the map view and the dial — Kajar</title>
   
   
   <link rel="stylesheet" href="../../../../../stylesheets/wiki.css">
@@ -212,21 +212,21 @@
       <div class="wk-party">
         <div class="wk-party-row" title="Bytes matched: the rebuilt ROM is byte-identical here">
           <span class="wk-party-k">HP</span>
-          <span class="wk-party-v">138,463<small>/359,278</small></span>
+          <span class="wk-party-v">143,313<small>/359,278</small></span>
         </div>
-        <div class="wk-stat-track"><div class="wk-stat-fill" style="width:38.54%"></div></div>
-        <p class="wk-party-note">bytes matched · 38.54% of code</p>
+        <div class="wk-stat-track"><div class="wk-stat-fill" style="width:39.89%"></div></div>
+        <p class="wk-party-note">bytes matched · 39.89% of code</p>
 
         <div class="wk-party-row" title="Matched functions that also meet the readability standard">
           <span class="wk-party-k">MP</span>
-          <span class="wk-party-v">1858<small>/1858</small></span>
+          <span class="wk-party-v">1933<small>/1933</small></span>
         </div>
         <div class="wk-stat-track"><div class="wk-stat-fill wk-stat-fill-mp" style="width:100.0%"></div></div>
         <p class="wk-party-note">functions readable</p>
 
         <div class="wk-party-row" title="Readable functions that passed an independent review">
           <span class="wk-party-k">TP</span>
-          <span class="wk-party-v">1858<small>/1858</small></span>
+          <span class="wk-party-v">1933<small>/1933</small></span>
         </div>
         <div class="wk-stat-track"><div class="wk-stat-fill wk-stat-fill-dim" style="width:100.0%"></div></div>
         <p class="wk-party-note">functions verified</p>
@@ -251,9 +251,9 @@
         <ol class="wk-toc-list" id="wk-toc-list">
           
           <li>
-            <a href="#9-october-2026-the-rest-of-the-event-commands-and-how-battle-effects-run" class="wk-toc-link">9 October 2026: the rest of the event commands, and how battle effects run</a>
+            <a href="#9-october-2026-event-commands-battle-effects-the-map-view-and-the-dial" class="wk-toc-link">9 October 2026: event commands, battle effects, the map view and the dial</a>
             
-            <ol><li><a href="#event-commands-part-two" class="wk-toc-link">Event commands, part two</a></li><li><a href="#targets-and-effects" class="wk-toc-link">Targets and effects</a></li><li><a href="#housekeeping" class="wk-toc-link">Housekeeping</a></li><li><a href="#next" class="wk-toc-link">Next</a></li></ol>
+            <ol><li><a href="#event-commands-part-two" class="wk-toc-link">Event commands, part two</a></li><li><a href="#targets-and-effects" class="wk-toc-link">Targets and effects</a></li><li><a href="#housekeeping" class="wk-toc-link">Housekeeping</a></li><li><a href="#the-map-view-and-the-dial" class="wk-toc-link">The map view and the dial</a></li><li><a href="#next" class="wk-toc-link">Next</a></li></ol>
             
           </li>
           
@@ -272,7 +272,7 @@
   </p>
   
   
-  <h1 id="9-october-2026-the-rest-of-the-event-commands-and-how-battle-effects-run">9 October 2026: the rest of the event commands, and how battle effects run</h1>
+  <h1 id="9-october-2026-event-commands-battle-effects-the-map-view-and-the-dial">9 October 2026: event commands, battle effects, the map view and the dial</h1>
 <p>Two more batches went through review overnight: the second half of the field's event-script commands in <code>$C0</code>, and the part of the battle engine that resolves an action's targets and runs its effects in <code>$C1</code>. Together 10,245 bytes in 143 routines, all independently verified.</p>
 <!-- more -->
 
@@ -297,9 +297,16 @@
 <li>The caller-finding tool's tests were pinned to code that has since been <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr>. They now test the same thing without depending on how much is <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr>.</li>
 <li>Every page of this wiki was checked against the current source and brought up to date, and five new system pages describe the frame cycle, the field event scripts, the scene engine, the text windows and battle actions.</li>
 </ul>
-<p><code>main</code> now stands at 138,463 bytes, 38.54% of the game's code, all 1,858 <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr> routines independently verified.</p>
+<h2 id="the-map-view-and-the-dial">The map view and the dial</h2>
+<p>A third batch (<code>$C2</code>, 4,850 bytes) followed in the early hours: two of the <code>$C2</code> scenes' special modes and the menu's own interrupt handler.</p>
+<ul>
+<li><strong>The map view</strong> (mode 6) builds a Mode 7 picture of the whole scene, one pixel across and two down per map tile, zooms out from the leader, shows position markers over a blue gradient and zooms back in on a button press.</li>
+<li><strong>The dial</strong> (mode 8) lets the player turn a hand to one of seven location markers. The hand is a triangle drawn line by line into the window registers' HDMA tables, and the pick becomes object A's next destination, which settles a question the scene-object batch had left open.</li>
+</ul>
+<p>Most of review's findings were one recurring slip: headers saying a routine takes either X width when it really needs 16-bit X. All 20 were fixed and passed a second review.</p>
+<p><code>main</code> now stands at 143,313 bytes, 39.89% of the game's code, all 1,933 <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr> routines independently verified.</p>
 <h2 id="next">Next</h2>
-<p>The map view and the dial in the <code>$C2</code> scenes are in review. Matching continues with the last event commands in <code>$C0</code>, the code after the dial in <code>$C2</code>, and the effect arithmetic in <code>$C1</code>.</p>
+<p>Matching continues with the last event commands in <code>$C0</code>, the code after the dial in <code>$C2</code>, and the effect arithmetic in <code>$C1</code>.</p>
   
   <p class="wk-post-back"><a href="../../../../">← Back to devlog</a></p>
 </article>
