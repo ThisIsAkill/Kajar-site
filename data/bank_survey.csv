@@ -1,5 +1,5 @@
 bank,code_bytes,data_bytes,contents
-$C0,61779,3757,"Boot and field engine: game loop, NMI, location loading, map, event scripts, sprites"
+$C0,60857,4679,"Boot and field engine: game loop, NMI, location loading, map, event scripts, sprites"
 $C1,63904,1632,"Battle engine: main loop, turn lists, enemy scripts, actions, menu, targeting, status bar"
 $C2,55037,10499,"Scene mode (locations $01F0 and up), menu entry points, text decoder"
 $C3,4037,61499,

@@ -131,6 +131,10 @@
           
         
           
+          <a class="wk-nav-link" href="menu/">Menu</a>
+          
+        
+          
           <a class="wk-nav-link" href="battle-engine/">Battle engine</a>
           
         
@@ -212,21 +216,21 @@
       <div class="wk-party">
         <div class="wk-party-row" title="Bytes matched: the rebuilt ROM is byte-identical here">
           <span class="wk-party-k">HP</span>
-          <span class="wk-party-v">158,620<small>/359,278</small></span>
+          <span class="wk-party-v">154,931<small>/358,356</small></span>
         </div>
-        <div class="wk-stat-track"><div class="wk-stat-fill" style="width:44.15%"></div></div>
-        <p class="wk-party-note">bytes matched · 44.15% of code</p>
+        <div class="wk-stat-track"><div class="wk-stat-fill" style="width:43.23%"></div></div>
+        <p class="wk-party-note">code bytes matched · 43.23% of code · 10,444 B data</p>
 
         <div class="wk-party-row" title="Matched functions that also meet the readability standard">
           <span class="wk-party-k">MP</span>
-          <span class="wk-party-v">2135<small>/2135</small></span>
+          <span class="wk-party-v">2184<small>/2184</small></span>
         </div>
         <div class="wk-stat-track"><div class="wk-stat-fill wk-stat-fill-mp" style="width:100.0%"></div></div>
         <p class="wk-party-note">functions readable</p>
 
         <div class="wk-party-row" title="Readable functions that passed an independent review">
           <span class="wk-party-k">TP</span>
-          <span class="wk-party-v">2135<small>/2135</small></span>
+          <span class="wk-party-v">2184<small>/2184</small></span>
         </div>
         <div class="wk-stat-track"><div class="wk-stat-fill wk-stat-fill-dim" style="width:100.0%"></div></div>
         <p class="wk-party-note">functions verified</p>
@@ -263,7 +267,7 @@
       <div class="wk-article-body">
       
       
-      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="October 9, 2026 04:53:48 UTC">October 9, 2026</span></p>
+      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="October 9, 2026 05:52:36 UTC">October 9, 2026</span></p>
       
       <h1 id="systems">Systems</h1>
 <p>One page per game system: a summary written by hand from the <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr> code's headers, then, on
@@ -308,6 +312,10 @@ counts every group.</p>
 <td>Bank <code>$C2</code>'s text decoder</td>
 </tr>
 <tr>
+<td><a href="menu/">Menu</a></td>
+<td>Bank <code>$C2</code>'s menu: entry, thread scheduler, interrupts, shared helpers</td>
+</tr>
+<tr>
 <td><a href="battle-engine/">Battle engine</a></td>
 <td><code>BattleSys_Main</code>, turn lists, enemy behaviour scripts, PC commands, effects and damage, hit records, bank <code>$FD</code> helpers</td>
 </tr>
@@ -329,13 +337,13 @@ counts every group.</p>
 </tr>
 </tbody>
 </table>
-<p>Field event scripts, frame cycle, scene engine, text windows and battle actions are parts of the
-larger "Engine" and "Battle engine" groups, so their routines are listed on the
+<p>Field event scripts, frame cycle, scene engine, text windows, the menu and battle actions are
+parts of the larger "Engine" and "Battle engine" groups, so their routines are listed on the
 <a href="engine/">Engine core</a> and <a href="battle-engine/">Battle engine</a> pages.</p>
 <p>To add a system: give its routines a <code>subsystem</code> in the code repo (a name prefix in
 <code>tools/progress.py</code>), add a page here (copy any existing one and change its <code>wk:system</code> marker),
 add it to the nav in <code>mkdocs.yml</code>, and run <code>tools/sync_progress.py</code>.</p>
-<table><thead><tr><th>System</th><th>Banks</th><th>Matched fns</th><th>Matched bytes</th><th>Readable</th><th>Verified</th></tr></thead><tbody><tr><td><a href="engine/">Engine</a></td><td>$C0, $C1, $C2, $FD, $FF</td><td>1,458</td><td>91,925</td><td>1,458</td><td>1,458</td></tr><tr><td><a href="battle-engine/">Battle engine</a></td><td>$C1, $CC, $CF, $FD</td><td>354</td><td>30,249</td><td>354</td><td>354</td></tr><tr><td><a href="battle-engine/">Battle system</a></td><td>$C1</td><td>137</td><td>17,485</td><td>137</td><td>137</td></tr><tr><td><a href="sprites/">Sprites &amp; objects</a></td><td>$C0</td><td>53</td><td>9,130</td><td>53</td><td>53</td></tr><tr><td><a href="battle-menu/">Battle menu</a></td><td>$C1</td><td>63</td><td>5,046</td><td>63</td><td>63</td></tr><tr><td><a href="battle-targeting/">Battle targeting</a></td><td>$C1</td><td>34</td><td>2,144</td><td>34</td><td>34</td></tr><tr><td><a href="battle-status/">Battle status bar</a></td><td>$C1</td><td>9</td><td>1,443</td><td>9</td><td>9</td></tr><tr><td><a href="engine/">Engine (unnamed)</a></td><td>$C0</td><td>2</td><td>506</td><td>2</td><td>2</td></tr><tr><td><a href="battle-status/">Battle text &amp; numbers</a></td><td>$C1, $CF</td><td>5</td><td>365</td><td>5</td><td>5</td></tr><tr><td><a href="boot/">Boot</a></td><td>$C0, $FD</td><td>5</td><td>247</td><td>5</td><td>5</td></tr><tr><td>ROM header</td><td>$C0</td><td>15</td><td>80</td><td>15</td><td>15</td></tr></tbody></table>
+<table><thead><tr><th>System</th><th>Banks</th><th>Matched fns</th><th>Matched code bytes</th><th>Readable</th><th>Verified</th></tr></thead><tbody><tr><td><a href="engine/">Engine</a></td><td>$C0, $C1, $C2, $FD, $FF</td><td>1,465</td><td>86,137</td><td>1,465</td><td>1,465</td></tr><tr><td><a href="battle-engine/">Battle engine</a></td><td>$C1, $CC, $CF, $FD</td><td>355</td><td>29,322</td><td>355</td><td>355</td></tr><tr><td><a href="battle-engine/">Battle system</a></td><td>$C1</td><td>174</td><td>20,713</td><td>174</td><td>174</td></tr><tr><td><a href="sprites/">Sprites &amp; objects</a></td><td>$C0</td><td>53</td><td>9,088</td><td>53</td><td>53</td></tr><tr><td><a href="battle-menu/">Battle menu</a></td><td>$C1</td><td>63</td><td>5,046</td><td>63</td><td>63</td></tr><tr><td>ROM header</td><td>$C0</td><td>19</td><td>0</td><td>19</td><td>19</td></tr><tr><td><a href="battle-targeting/">Battle targeting</a></td><td>$C1</td><td>34</td><td>2,064</td><td>34</td><td>34</td></tr><tr><td><a href="battle-status/">Battle status bar</a></td><td>$C1</td><td>9</td><td>1,443</td><td>9</td><td>9</td></tr><tr><td><a href="engine/">Engine (unnamed)</a></td><td>$C0</td><td>2</td><td>506</td><td>2</td><td>2</td></tr><tr><td><a href="battle-status/">Battle text &amp; numbers</a></td><td>$C1, $CF</td><td>5</td><td>365</td><td>5</td><td>5</td></tr><tr><td><a href="boot/">Boot</a></td><td>$C0, $FD</td><td>5</td><td>247</td><td>5</td><td>5</td></tr></tbody></table>
 <p class="wk-page-meta">Generated from <code>functions.csv</code>. Do not edit.</p>
       
       </div>

@@ -6,13 +6,13 @@
   
   
   <meta name="description" content="Byte-exact matching decompilation of Chrono Trigger (SNES, US 1.0)">
-  <link rel="canonical" href="https://thisisakill.github.io/Kajar-site/devlog/category/bank-c0/">
+  <link rel="canonical" href="https://thisisakill.github.io/Kajar-site/systems/menu/">
   
   
-  <title>Bank $C0 — Kajar</title>
+  <title>Menu — Kajar</title>
   
   
-  <link rel="stylesheet" href="../../../stylesheets/wiki.css">
+  <link rel="stylesheet" href="../../stylesheets/wiki.css">
   
   
   
@@ -26,7 +26,7 @@
 <!-- ── Header ──────────────────────────────────────────────── -->
 <header class="wk-header">
   <button class="wk-nav-toggle" id="wk-nav-toggle" aria-label="Toggle navigation" aria-expanded="false" aria-controls="wk-nav">☰</button>
-  <a class="wk-wordmark" href="../../.." aria-label="Kajar home">
+  <a class="wk-wordmark" href="../.." aria-label="Kajar home">
     <svg class="wk-wordmark-clock" viewBox="0 0 32 32" aria-hidden="true">
       <circle cx="16" cy="16" r="13.5" fill="#0f1438" stroke="#ffd76e" stroke-width="2.5"/>
       <g stroke="#cdd5ff" stroke-width="1.6" stroke-linecap="round">
@@ -61,10 +61,10 @@
 
   <!-- Left sidebar -->
   <nav class="wk-nav" id="wk-nav" aria-label="Site navigation">
-    <a href="../../.." class="wk-portal-icon" aria-label="Home">
+    <a href="../.." class="wk-portal-icon" aria-label="Home">
       <span class="wk-emblem">
         <span class="wk-emblem-art">
-          <img src="../../../assets/ct-icon.png" alt="Crono" width="220" height="220">
+          <img src="../../assets/ct-icon.png" alt="Crono" width="220" height="220">
         </span>
         <span class="wk-emblem-caption">Crono · 1000 AD</span>
       </span>
@@ -72,86 +72,86 @@
 
     
       
-      <a class="wk-nav-link" href="../../..">Home</a>
+      <a class="wk-nav-link" href="../..">Home</a>
       
     
       
-        <details class="wk-nav-group" open>
+        <details class="wk-nav-group">
         <summary class="wk-nav-heading">The Journey</summary>
         
           
-          <a class="wk-nav-link" href="../../">Devlog</a>
+          <a class="wk-nav-link" href="../../devlog/">Devlog</a>
           
         
           
-          <a class="wk-nav-link" href="../../../gallery/">Gallery</a>
+          <a class="wk-nav-link" href="../../gallery/">Gallery</a>
           
         
           
-          <a class="wk-nav-link" href="../../../PROGRESS/">Progress</a>
+          <a class="wk-nav-link" href="../../PROGRESS/">Progress</a>
           
         
         </details>
       
     
       
-        <details class="wk-nav-group">
+        <details class="wk-nav-group" open>
         <summary class="wk-nav-heading">Systems</summary>
         
           
-          <a class="wk-nav-link" href="../../../systems/">Overview</a>
+          <a class="wk-nav-link" href="../">Overview</a>
           
         
           
-          <a class="wk-nav-link" href="../../../systems/boot/">Boot</a>
+          <a class="wk-nav-link" href="../boot/">Boot</a>
           
         
           
-          <a class="wk-nav-link" href="../../../systems/frame-cycle/">Frame cycle & NMI</a>
+          <a class="wk-nav-link" href="../frame-cycle/">Frame cycle & NMI</a>
           
         
           
-          <a class="wk-nav-link" href="../../../systems/engine/">Engine core</a>
+          <a class="wk-nav-link" href="../engine/">Engine core</a>
           
         
           
-          <a class="wk-nav-link" href="../../../systems/field-events/">Field event scripts</a>
+          <a class="wk-nav-link" href="../field-events/">Field event scripts</a>
           
         
           
-          <a class="wk-nav-link" href="../../../systems/sprites/">Sprites & objects</a>
+          <a class="wk-nav-link" href="../sprites/">Sprites & objects</a>
           
         
           
-          <a class="wk-nav-link" href="../../../systems/scene-engine/">Scene engine</a>
+          <a class="wk-nav-link" href="../scene-engine/">Scene engine</a>
           
         
           
-          <a class="wk-nav-link" href="../../../systems/text-windows/">Text windows</a>
+          <a class="wk-nav-link" href="../text-windows/">Text windows</a>
           
         
           
-          <a class="wk-nav-link" href="../../../systems/menu/">Menu</a>
+          <a class="wk-nav-link is-active" href="./">Menu</a>
           
         
           
-          <a class="wk-nav-link" href="../../../systems/battle-engine/">Battle engine</a>
+          <a class="wk-nav-link" href="../battle-engine/">Battle engine</a>
           
         
           
-          <a class="wk-nav-link" href="../../../systems/battle-actions/">Battle actions</a>
+          <a class="wk-nav-link" href="../battle-actions/">Battle actions</a>
           
         
           
-          <a class="wk-nav-link" href="../../../systems/battle-menu/">Battle menu</a>
+          <a class="wk-nav-link" href="../battle-menu/">Battle menu</a>
           
         
           
-          <a class="wk-nav-link" href="../../../systems/battle-targeting/">Battle targeting</a>
+          <a class="wk-nav-link" href="../battle-targeting/">Battle targeting</a>
           
         
           
-          <a class="wk-nav-link" href="../../../systems/battle-status/">Status bar & text</a>
+          <a class="wk-nav-link" href="../battle-status/">Status bar & text</a>
           
         
         </details>
@@ -162,19 +162,19 @@
         <summary class="wk-nav-heading">How It Works</summary>
         
           
-          <a class="wk-nav-link" href="../../../ARCHITECTURE/">Architecture</a>
+          <a class="wk-nav-link" href="../../ARCHITECTURE/">Architecture</a>
           
         
           
-          <a class="wk-nav-link" href="../../../ROM_MAP/">ROM Map</a>
+          <a class="wk-nav-link" href="../../ROM_MAP/">ROM Map</a>
           
         
           
-          <a class="wk-nav-link" href="../../../how-sprite-init-works/">Sprite Init Explainer</a>
+          <a class="wk-nav-link" href="../../how-sprite-init-works/">Sprite Init Explainer</a>
           
         
           
-          <a class="wk-nav-link" href="../../../ROM_HASH/">Target ROM</a>
+          <a class="wk-nav-link" href="../../ROM_HASH/">Target ROM</a>
           
         
         </details>
@@ -185,26 +185,26 @@
         <summary class="wk-nav-heading">For Time Travelers</summary>
         
           
-          <a class="wk-nav-link" href="../../../CONTRIBUTING/">Contributing</a>
+          <a class="wk-nav-link" href="../../CONTRIBUTING/">Contributing</a>
           
         
           
-          <a class="wk-nav-link" href="../../../ASAR_QUIRKS/">asar Quirks</a>
+          <a class="wk-nav-link" href="../../ASAR_QUIRKS/">asar Quirks</a>
           
         
           
-          <a class="wk-nav-link" href="../../../glossary/">Glossary</a>
+          <a class="wk-nav-link" href="../../glossary/">Glossary</a>
           
         
           
-          <a class="wk-nav-link" href="../../../CI_SETUP/">CI Setup</a>
+          <a class="wk-nav-link" href="../../CI_SETUP/">CI Setup</a>
           
         
         </details>
       
     
       
-      <a class="wk-nav-link" href="../../../credits/">Credits</a>
+      <a class="wk-nav-link" href="../../credits/">Credits</a>
       
     
 
@@ -236,7 +236,7 @@
         <p class="wk-party-note">functions verified</p>
       </div>
       
-      <p class="wk-stat-link"><a href="../../../PROGRESS/">View full progress →</a></p>
+      <p class="wk-stat-link"><a href="../../PROGRESS/">View full progress →</a></p>
     </div>
   </nav>
 
@@ -245,49 +245,187 @@
     <div class="wk-article">
 
       
-
-<div class="wk-toc wk-blog-toc" id="wk-toc">
-  <div class="wk-toc-header">
-    <b>Sessions</b>
-    <button class="wk-toc-toggle"
-      onclick="var l=document.getElementById('wk-toc-list');l.hidden=!l.hidden;this.textContent=l.hidden?'[show]':'[hide]'">[hide]</button>
-  </div>
-  <ol class="wk-toc-list" id="wk-toc-list">
-    
-    
-    <li><a href="../../2026/08/12/12-august-2026-the-sprite-init-system-closes-and-a-first-look-at-bank-c1/" class="wk-toc-link">12 August 2026: the sprite-init system closes, and a first look at bank C1</a></li>
-    
-  </ol>
-</div>
-
-
+      
+      <div class="wk-toc" id="wk-toc">
+        <div class="wk-toc-header">
+          <b>Contents</b>
+          <button class="wk-toc-toggle"
+            onclick="var l=document.getElementById('wk-toc-list');l.hidden=!l.hidden;this.textContent=l.hidden?'[show]':'[hide]'">[hide]</button>
+        </div>
+        <ol class="wk-toc-list" id="wk-toc-list">
+          
+          <li>
+            <a href="#menu-bank-c2" class="wk-toc-link">Menu (bank $C2)</a>
+            
+            <ol><li><a href="#entry-points" class="wk-toc-link">Entry points</a></li><li><a href="#entering-and-leaving" class="wk-toc-link">Entering and leaving</a></li><li><a href="#the-thread-scheduler" class="wk-toc-link">The thread scheduler</a></li><li><a href="#interrupts-and-the-frame" class="wk-toc-link">Interrupts and the frame</a></li><li><a href="#shared-helpers" class="wk-toc-link">Shared helpers</a></li><li><a href="#what-is-not-matched-yet" class="wk-toc-link">What is not matched yet</a></li></ol>
+            
+          </li>
+          
+        </ol>
+      </div>
+      
+      
 
       <div class="wk-article-body">
       
-<div>
-  <h1 id="bank-c0">Bank $C0</h1>
-  
-  
-  <div class="wk-blog-entry">
-    
-    <p class="wk-post-meta"><time datetime="2026-08-12 00:00:00+00:00">2026-08-12</time></p>
-    
-    <div class="wk-blog-excerpt"><h2 id="12-august-2026-the-sprite-init-system-closes-and-a-first-look-at-bank-c1"><a class="toclink" href="../../2026/08/12/12-august-2026-the-sprite-init-system-closes-and-a-first-look-at-bank-c1/">12 August 2026: the sprite-init system closes, and a first look at bank C1</a></h2>
-<p>The triple-slot routines, the dispatcher layer above the sprite-slot cluster and the animation queue that drives it are all <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr>, so the sprite system from <code>$C98A</code> to <code>$E129</code> is one continuous run of <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr> code. Then a scouting pass over bank <code>$C1</code>, the battle engine. 3,509 new bytes in 10 functions (sessions 31 to 33).</p>
-</div>
-    
-    <p class="wk-read-more"><a href="../../2026/08/12/12-august-2026-the-sprite-init-system-closes-and-a-first-look-at-bank-c1/">Continue reading →</a></p>
-    
-  </div>
-  
-  
-  <nav class="wk-pagination">
-    
-    
-  </nav>
-  
-</div>
-
+      
+      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="October 9, 2026 05:52:36 UTC">October 9, 2026</span></p>
+      
+      <h1 id="menu-bank-c2">Menu (bank $C2)</h1>
+<p>The second half of bank <code>$C2</code>, from <code>$C2:8000</code> on, is the menu. The field
+(<code>Field_PauseAndMenuInput</code>, <code>Field_SceneChangeTick</code>, <code>Field_RunBankC2Mode5</code>) and the scene mode's
+mode 5 call it with <code>JSL BankC2_Entry8000</code> and an argument 0–6. Most of the menu's own screens are
+not <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr> yet, so this page covers the frame around them: the entry, the thread scheduler, the
+interrupt handlers and the helpers the screens share.</p>
+<p>The menu runs with <abbr title="Direct Page — the 65816's relocatable 256-byte zero-page window; address = D register + 8-bit offset.">DP</abbr>=<code>$0000</code> and DB=<code>$7E</code> unless stated (names in <code>include/ram_menu.inc</code> and
+<code>include/constants_menu.inc</code>, prefix <code>Menu</code>).</p>
+<p>See also: <a href="../scene-engine/">Scene engine</a>, <a href="../frame-cycle/">Frame cycle and <abbr title="Non-Maskable Interrupt — fires at the start of VBlank each frame; the safe window for PPU updates.">NMI</abbr></a>.</p>
+<h2 id="entry-points">Entry points</h2>
+<table>
+<thead>
+<tr>
+<th>Address</th>
+<th>Vector</th>
+<th>Goes to</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>$C2:8000</code></td>
+<td><code>BankC2_Entry8000</code></td>
+<td><code>BankC2_MenuEntry</code>, A = the argument (0–6)</td>
+</tr>
+<tr>
+<td><code>$C2:8002</code></td>
+<td><code>BankC2_Entry8002</code></td>
+<td><code>BankC2_ReadPadLong</code> → <code>Menu_ReadPad</code>, the joypad reader</td>
+</tr>
+<tr>
+<td><code>$C2:8004</code></td>
+<td><code>BankC2_Entry8004</code></td>
+<td><code>BankC2_CommandLong</code> → <code>Menu_Unk8C36</code>, A = a command (not <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr>)</td>
+</tr>
+</tbody>
+</table>
+<h2 id="entering-and-leaving">Entering and leaving</h2>
+<p><code>BankC2_MenuEntry</code> (<code>$C2:800E</code>) turns interrupts off, saves <abbr title="Direct Page — the 65816's relocatable 256-byte zero-page window; address = D register + 8-bit offset.">DP</abbr>, DB and P, keeps A and X
+(<code>Menu_EntryArg</code>, <code>Menu_EntryX</code>), forces blank and turns <abbr title="Non-Maskable Interrupt — fires at the start of VBlank each frame; the safe window for PPU updates.">NMI</abbr>, <abbr title="Direct Memory Access — hardware block copy bypassing the CPU; used for VRAM uploads, WRAM clears, OAM.">DMA</abbr> and HDMA off.</p>
+<ul>
+<li><strong>Argument 0 on a new game</strong> (<code>Menu_DataInitDone</code> still 0): it fills the new game's data
+  (<code>Menu_InitNewGameData</code>), clears two SRAM bytes and leaves through <code>Menu_ExitRestart</code> to
+  <code>GameLoop_Main</code>. No menu is shown.</li>
+<li><strong>Otherwise</strong>: it moves the stack to <code>Menu_StackTop</code>, runs <code>Menu_InitSystems</code>, starts the
+  play-time clock, picks the mode from <code>Menu_EntryModes</code> (arguments 0–6 give modes <code>$0E</code>, <code>$00</code>,
+  <code>$0C</code>, <code>$0D</code>, <code>$0F</code>, <code>$07</code>, <code>$0B</code>), turns the <abbr title="Non-Maskable Interrupt — fires at the start of VBlank each frame; the safe window for PPU updates.">NMI</abbr> and interrupts on and hands over to
+  <code>Menu_RunThreads</code>, which never returns.</li>
+</ul>
+<p><code>Menu_InitSystems</code> (<code>$C2:8096</code>) copies <code>Menu_InterruptVectors</code> (<code>$C2:8406</code>: <code>JML Menu_Nmi</code>,
+<code>JML Menu_Irq</code>) over the interrupt trampolines at <code>$0500</code>, sends five sound-driver commands
+("meanings not traced"), sets up the <abbr title="Picture Processing Unit — the SNES graphics chip handling BGs, sprites, palettes, windows, and compositing.">PPU</abbr> and clears RAM (<code>Menu_InitPpuAndRam</code>), builds the party
+lists (<code>Menu_BuildPartyLists</code>) and runs six more set-up routines that are not <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr> yet.</p>
+<p>The menu leaves in one of two ways. <code>Menu_Exit</code> (<code>$C2:82B2</code>) frees every thread, fades out,
+restores the stack, P, DB and <abbr title="Direct Page — the 65816's relocatable 256-byte zero-page window; address = D register + 8-bit offset.">DP</abbr> and returns with <code>RTL</code> to the caller of <code>BankC2_Entry8000</code>.
+<code>Menu_ExitToGame</code> (<code>$C2:8320</code>) fades out and jumps through <code>ReentryVectors</code> entry 0 to
+<code>GameLoop_Main</code> (the warm restart).</p>
+<h2 id="the-thread-scheduler">The thread scheduler</h2>
+<p>The menu's screens run as up to eight cooperative <strong>threads</strong>. <code>Menu_RunThreads</code> (<code>$C2:8190</code>)
+keeps them in eight 8-byte slots (<code>Menu_Thread</code>, at <code>$00B0</code>), each with a 64-byte stack from
+<code>$0A00</code> on. It starts <code>Menu_MainThread</code> in slot 1 and <code>Menu_UnkE91B</code> (not <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr>) in slot 3,
+then once a frame:</p>
+<ol>
+<li>waits until <code>Menu_FrameReady</code> is non-zero (the menu <abbr title="Non-Maskable Interrupt — fires at the start of VBlank each frame; the safe window for PPU updates.">NMI</abbr> has done its upload);</li>
+<li>for each slot in use, counts its <code>.Wait</code> down and runs the thread when it reaches 0: a new
+   thread starts at its entry on a fresh stack, a waiting one gets its stack, X, Y, P and <abbr title="Direct Page — the 65816's relocatable 256-byte zero-page window; address = D register + 8-bit offset.">DP</abbr> back
+   and returns from its yield;</li>
+<li>after the last slot, clears <code>Menu_FrameReady</code>.</li>
+</ol>
+<p>A thread gives the CPU back by jumping to one of three sub-entries:</p>
+<table>
+<thead>
+<tr>
+<th>Sub-entry</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Menu_Yield</code> (<code>$C2:821E</code>, <code>JSR</code>)</td>
+<td>Wait one frame</td>
+</tr>
+<tr>
+<td><code>Menu_YieldFrames</code> (<code>$C2:822B</code>, <code>JSR</code>)</td>
+<td>Wait A frames (0 means 256)</td>
+</tr>
+<tr>
+<td><code>Menu_ThreadEnd</code> (<code>$C2:8216</code>, <code>JMP</code>)</td>
+<td>Free the slot</td>
+</tr>
+</tbody>
+</table>
+<p><code>Menu_StartThread</code> (<code>$C2:8249</code>) puts a new thread in a slot (it starts on the next pass) and
+<code>Menu_KillThreads</code> (<code>$C2:8255</code>) frees the slots whose bits are set in A. Each thread also keeps
+one word, <code>Menu_ThreadVar</code>, across its yields. The header notes that DB is set only at the start
+of each frame, so a thread starts or resumes with the DB the thread before it left.</p>
+<p><strong>The main thread.</strong> <code>Menu_MainThread</code> (<code>$C2:826C</code>, slot 1) calls one handler a frame: entry
+<code>Menu_ThreadVar</code> of the current mode's list in <code>Menu_ModeLists</code> (<code>$C2:8292</code>, 16 modes). A handler
+moves on by changing <code>Menu_ThreadVar</code> or <code>Menu_Mode</code>. The mode lists themselves are not <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr>
+yet; modes 8–10 point at a bare <code>RTS</code> and are "probably not used".</p>
+<h2 id="interrupts-and-the-frame">Interrupts and the frame</h2>
+<p><code>Menu_Nmi</code> (<code>$C2:840E</code>) runs on its own stack with <abbr title="Direct Page — the 65816's relocatable 256-byte zero-page window; address = D register + 8-bit offset.">DP</abbr> = <code>Menu_NmiDp</code> (<code>$0D00</code>). It counts frames,
+forces blank and, when the threads have a frame ready, turns HDMA off, runs the upload
+(<code>Menu_Unk85D6</code>, not <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr>) and sets <code>Menu_FrameReady</code> to <code>$FF</code>, which the scheduler waits for.
+Then it reads the pad and ticks the play-time clock (<code>Menu_NmiPad</code>, with the menu's auto-repeat:
+<code>$20</code> frames before the first repeat, then 5), and sets the BG mode and the screen brightness.
+<code>Menu_Irq</code> (<code>$C2:8472</code>) is a bare <code>RTI</code>.</p>
+<p><code>Menu_ReadPad</code> (<code>$C2:84D2</code>) reads joypad 1 (<code>Menu_PollPad</code>), maps it through the configurable
+button map (<code>Menu_MapButtons</code>) and advances the play-time clock <code>Menu_TickPlayTime</code> (<code>$C2:85AE</code>:
+frames, seconds, two-digit minutes and hours, with a flag once it passes 99:59:59). The scene <abbr title="Non-Maskable Interrupt — fires at the start of VBlank each frame; the safe window for PPU updates.">NMI</abbr>
+and code in other banks call it too, the battle's play-time hit modifier among them.</p>
+<h2 id="shared-helpers">Shared helpers</h2>
+<ul>
+<li><strong>Set-up.</strong> <code>Menu_InitPpuAndRam</code> (<code>$C2:940D</code>) puts the <abbr title="Picture Processing Unit — the SNES graphics chip handling BGs, sprites, palettes, windows, and compositing.">PPU</abbr> into the menu's starting state and
+  clears <abbr title="Video RAM — dedicated PPU memory for tile graphics and tilemaps; written via DMA during VBlank.">VRAM</abbr> and most of bank <code>$7E</code> with its <abbr title="Direct Memory Access — hardware block copy bypassing the CPU; used for VRAM uploads, WRAM clears, OAM.">DMA</abbr> helpers; <code>Menu_InitNewGameData</code> fills the data
+  of a new game (inferred from what it fills) and <code>Menu_ClearConfigAndFlags</code> clears the flag block,
+  the play time and the settings, then loads the default settings and button map
+  (<code>$C2:956E</code>–<code>$C2:960A</code>).</li>
+<li><strong>Fades.</strong> <code>Menu_Fade</code> (<code>$C2:83D0</code>) steps the brightness by A each frame, yielding between
+  steps, until it reaches 0 or 15; <code>Menu_FadeOut</code> uses a step of −2, and <code>Menu_StartFadeIn</code> starts
+  <code>Menu_FadeInThread</code> (+2 a frame) in slot 0.</li>
+<li><strong><abbr title="Video RAM — dedicated PPU memory for tile graphics and tilemaps; written via DMA during VBlank.">VRAM</abbr> queue.</strong> <code>Menu_QueueVramRom</code> / <code>Menu_QueueVramWram</code> (<code>$C2:8385</code>) append an 8-byte upload
+  record from bank <code>$C2</code> or <code>$7E</code> to <code>Menu_VramQueue</code>; <code>Menu_FlushVramQueue</code> (<code>$C2:8663</code>) sends
+  them, newest first, with <abbr title="Direct Memory Access — hardware block copy bypassing the CPU; used for VRAM uploads, WRAM clears, OAM.">DMA</abbr> channel 7 and empties the queue.</li>
+<li><strong>Palette and gradient.</strong> <code>Menu_UploadPalette</code> (<code>$C2:86A9</code>) sends the 512 bytes of
+  <code>Menu_PalBuf</code> to CGRAM when <code>Menu_PalDirty</code> is set. <code>Menu_BuildGradient</code> (<code>$C2:86DD</code>) builds an
+  HDMA table of colour-math lines for channel 0 in the buffer not built last, from
+  <code>Menu_GradSpec</code> and the steps in <code>Menu_GradientSteps</code>.</li>
+<li><strong>Inventory.</strong> <code>Menu_AddItem</code>, <code>Menu_RemoveItem</code> and <code>Menu_FindItem</code> (<code>$C2:8791</code>–<code>$C2:8815</code>)
+  add to and take from the 256 item slots, a count capped at 99.</li>
+<li><strong>Characters and party.</strong> <code>Menu_BuildPartyLists</code> lists the present characters and counts the
+  active members (positions 0–2) and all of them; <code>Menu_LoadCharRecA</code> (<code>$C2:8839</code>) copies a
+  character's <code>$50</code>-byte record to <code>Menu_CurCharRec</code>, and <code>Menu_LoadPartyCharRec</code> does it for the
+  current member.</li>
+<li><strong>Items and equipment.</strong> <code>Menu_ItemCategory</code> (<code>$C2:8881</code>) sorts an item id into one of five
+  categories by id range, and <code>Menu_ItemDataPtrA</code> / <code>B</code> give the address of its record in bank
+  <code>$CC</code> ("what the records hold is not traced"). <code>Menu_CountEquippedBy</code> counts the characters
+  that have an item equipped, and <code>Menu_ListEquipItems</code> (<code>$C2:8953</code>) lists the inventory items of
+  one id range that <code>Menu_Unk93A8</code> accepts (not <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr>; "probably 'the current character cannot
+  equip it'" when it refuses).</li>
+<li><strong>Cursors and list arrows</strong> (<code>$C2:89E4</code>–<code>$C2:8C35</code>). Threads in slot 6 draw the blinking
+  pointing-hand cursor sprites at the positions of <code>Menu_CursorPos</code> records, in four variants
+  (<code>Menu_StartCursorA</code>–<code>D</code>; D shows one cursor per active party member). <code>Menu_ListArrowsThread</code>
+  (slot 4) blinks the up and down arrows of a scrolling list: the up arrow when the list's top
+  is not 0, the down arrow when it is below <code>Menu_ListRows</code>.</li>
+</ul>
+<p>Quirks the headers keep include <code>Menu_CursorStepD</code> calling <code>Menu_CursorPosAB</code> with a 16-bit A, so
+its cursors sit one pixel lower than the others, and a missing <code>CLC</code> in <code>Menu_ListArrowsThread</code>
+that can put the down arrow one pixel lower.</p>
+<h2 id="what-is-not-matched-yet">What is not <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr> yet</h2>
+<p>From <code>NEXT.md</code>, in reach order: the command dispatcher <code>Menu_Unk8C36</code> (behind
+<code>BankC2_Entry8004</code>, which calls the inventory routines), the set-up routines <code>Menu_InitSystems</code>
+calls, thread 3 (<code>Menu_UnkE91B</code>) and the mode handler lists. The menu <abbr title="Non-Maskable Interrupt — fires at the start of VBlank each frame; the safe window for PPU updates.">NMI</abbr>'s upload
+<code>Menu_Unk85D6</code> is also still open. After <code>$C2:8C36</code> only the set-up at <code>$C2:940D</code>–<code>$C2:960A</code>
+and <code>Menu_CursorRecOffset</code> (<code>$C2:EA27</code>) are <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr>.</p>
+      
       </div>
 
     </div>
@@ -384,7 +522,7 @@ var input   = document.getElementById('wk-q');
 var results = document.getElementById('wk-results');
 var docs    = null;
 if (input) {
-  fetch("../../../search/search_index.json")
+  fetch("../../search/search_index.json")
     .then(function (r) { return r.json(); })
     .then(function (d) { docs = d.docs; });
 
@@ -419,7 +557,7 @@ function onSearch() {
     return (d.title + ' ' + d.text).toLowerCase().indexOf(q) !== -1;
   }).slice(0, 8);
   if (!hits.length) { results.hidden = true; return; }
-  var base = "../../..";
+  var base = "../..";
   results.innerHTML = hits.map(function (d) {
     var text  = d.text || '';
     var i     = text.toLowerCase().indexOf(q);

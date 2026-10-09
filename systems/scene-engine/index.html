@@ -131,6 +131,10 @@
           
         
           
+          <a class="wk-nav-link" href="../menu/">Menu</a>
+          
+        
+          
           <a class="wk-nav-link" href="../battle-engine/">Battle engine</a>
           
         
@@ -212,21 +216,21 @@
       <div class="wk-party">
         <div class="wk-party-row" title="Bytes matched: the rebuilt ROM is byte-identical here">
           <span class="wk-party-k">HP</span>
-          <span class="wk-party-v">158,620<small>/359,278</small></span>
+          <span class="wk-party-v">154,931<small>/358,356</small></span>
         </div>
-        <div class="wk-stat-track"><div class="wk-stat-fill" style="width:44.15%"></div></div>
-        <p class="wk-party-note">bytes matched · 44.15% of code</p>
+        <div class="wk-stat-track"><div class="wk-stat-fill" style="width:43.23%"></div></div>
+        <p class="wk-party-note">code bytes matched · 43.23% of code · 10,444 B data</p>
 
         <div class="wk-party-row" title="Matched functions that also meet the readability standard">
           <span class="wk-party-k">MP</span>
-          <span class="wk-party-v">2135<small>/2135</small></span>
+          <span class="wk-party-v">2184<small>/2184</small></span>
         </div>
         <div class="wk-stat-track"><div class="wk-stat-fill wk-stat-fill-mp" style="width:100.0%"></div></div>
         <p class="wk-party-note">functions readable</p>
 
         <div class="wk-party-row" title="Readable functions that passed an independent review">
           <span class="wk-party-k">TP</span>
-          <span class="wk-party-v">2135<small>/2135</small></span>
+          <span class="wk-party-v">2184<small>/2184</small></span>
         </div>
         <div class="wk-stat-track"><div class="wk-stat-fill wk-stat-fill-dim" style="width:100.0%"></div></div>
         <p class="wk-party-note">functions verified</p>
@@ -253,7 +257,7 @@
           <li>
             <a href="#scene-engine-bank-c2" class="wk-toc-link">Scene engine (bank $C2)</a>
             
-            <ol><li><a href="#entry-points" class="wk-toc-link">Entry points</a></li><li><a href="#boot-and-the-main-loop" class="wk-toc-link">Boot and the main loop</a></li><li><a href="#tasks" class="wk-toc-link">Tasks</a></li><li><a href="#scripts-and-animations" class="wk-toc-link">Scripts and animations</a></li><li><a href="#drawing" class="wk-toc-link">Drawing</a></li><li><a href="#loading-a-scene" class="wk-toc-link">Loading a scene</a></li><li><a href="#mode-6-the-map-view" class="wk-toc-link">Mode 6: the map view</a></li><li><a href="#mode-8-the-dial" class="wk-toc-link">Mode 8: the dial</a></li><li><a href="#menu-side" class="wk-toc-link">Menu side</a></li><li><a href="#what-is-not-matched-yet" class="wk-toc-link">What is not matched yet</a></li></ol>
+            <ol><li><a href="#entry-points" class="wk-toc-link">Entry points</a></li><li><a href="#boot-and-the-main-loop" class="wk-toc-link">Boot and the main loop</a></li><li><a href="#tasks" class="wk-toc-link">Tasks</a></li><li><a href="#scripts-and-animations" class="wk-toc-link">Scripts and animations</a></li><li><a href="#drawing" class="wk-toc-link">Drawing</a></li><li><a href="#loading-a-scene" class="wk-toc-link">Loading a scene</a></li><li><a href="#screen-effects" class="wk-toc-link">Screen effects</a></li><li><a href="#mode-6-the-map-view" class="wk-toc-link">Mode 6: the map view</a></li><li><a href="#mode-8-the-dial" class="wk-toc-link">Mode 8: the dial</a></li><li><a href="#menu-side" class="wk-toc-link">Menu side</a></li><li><a href="#what-is-not-matched-yet" class="wk-toc-link">What is not matched yet</a></li></ol>
             
           </li>
           
@@ -265,13 +269,13 @@
       <div class="wk-article-body">
       
       
-      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="October 9, 2026 04:51:50 UTC">October 9, 2026</span></p>
+      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="October 9, 2026 05:52:36 UTC">October 9, 2026</span></p>
       
       <h1 id="scene-engine-bank-c2">Scene engine (bank $C2)</h1>
 <p>Bank <code>$C2</code> holds a second, self-contained game mode that <code>GameLoop_Main</code> hands over to for
-locations <code>$01F0</code> and up, and the entry points of the menu. This page calls it the <strong>scene mode</strong>,
-after its routines' <code>C2Scene_</code> prefix; what the locations it runs show in the game is not traced
-yet, so the descriptions below stay with what the code does. Its text decoder has a page of its
+locations <code>$01F0</code> and up, and, from <code>$C2:8000</code> on, the <a href="../menu/">menu</a>. This page calls it the
+<strong>scene mode</strong>, after its routines' <code>C2Scene_</code> prefix; what the locations it runs show in the game
+is not traced yet, so the descriptions below stay with what the code does. Its text decoder has a page of its
 own: <a href="../text-windows/">Text windows</a>.</p>
 <p>The scene mode has its own direct-page and low-<abbr title="Work RAM — 128KB of SNES main RAM at $7E:0000–$7F:FFFF, holds all runtime game state.">WRAM</abbr> layout (names in <code>include/ram_menu.inc</code> and
 <code>include/constants_menu.inc</code>, prefixes <code>Menu</code>, <code>C2Scene</code> and <code>TextWin</code>). It runs with <abbr title="Direct Page — the 65816's relocatable 256-byte zero-page window; address = D register + 8-bit offset.">DP</abbr>=<code>$0000</code>
@@ -305,7 +309,7 @@ and DB=<code>$00</code>.</p>
 <tr>
 <td><code>$C2:8000</code></td>
 <td><code>BankC2_Entry8000</code></td>
-<td><code>BankC2_MenuEntry</code> (the menu; not <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr>)</td>
+<td><code>BankC2_MenuEntry</code>, the <a href="../menu/">menu</a></td>
 </tr>
 <tr>
 <td><code>$C2:8002</code></td>
@@ -438,6 +442,40 @@ pack at <code>$7E:7200</code> (it starts with a map of sound zones), the trigger
 the packs hold is inferred from where they go. <code>C2Scene_SaveState</code> / <code>C2Scene_RestoreState</code>
 (<code>$C2:2E23</code>, <code>$C2:2E72</code>) copy the scene's state to bank <code>$7F</code> and back around the menu, and
 <code>C2Scene_ReloadScene</code> reloads its graphics.</p>
+<h2 id="screen-effects">Screen effects</h2>
+<p>The scene scripts in bank <code>$C3</code> call small routines in bank <code>$C2</code> with op <code>$34</code> and start task
+handlers with op <code>$35</code> (<code>$C2:754D</code>–<code>$C2:7B59</code> and <code>$C2:7BC4</code>–<code>$C2:7DE3</code>; none of them is
+referenced from bank <code>$C2</code> code).
+They run inside <code>C2Scene_TaskRunAll</code>, from the scene <abbr title="Non-Maskable Interrupt — fires at the start of VBlank each frame; the safe window for PPU updates.">NMI</abbr>.</p>
+<ul>
+<li><strong>BG3 tasks</strong>: <code>C2Scene_TaskBg3Drift</code> moves layer 3 a pixel left every 4th frame and down
+  every 8th; <code>C2Scene_TaskBg3Slide</code> and <code>C2Scene_TaskBg3SlideFast</code> move it at a fixed velocity;
+  <code>C2Scene_TaskBg3Wave</code> bends it into a horizontal wave with HDMA (one sine period over 64 lines,
+  repeated down the screen), and <code>C2Scene_TaskBg3DriftWave</code> drifts it as well. They wait while
+  object A is in mode 8, and also scroll layer 3 by the leader's last move.
+  <code>C2Scene_TaskBg3LineWave</code> (a wave on every odd line) and <code>C2Scene_TaskBg1Pan</code> (layer 1, a
+  pixel every 4th frame) have no reference found.</li>
+<li><strong>Windows</strong>: <code>C2Scene_Win1Init</code> / <code>Win1Step</code> and <code>C2Scene_Win2Init</code> / <code>Win2Step</code> set up HDMA
+  for window 1 or 2 and have <code>BankC3_Entry0008</code> build the window table from the task's position
+  and size into one of two buffers, so the table being written is not the one on screen ("the
+  shape is not traced").</li>
+<li><strong>Line waves</strong>: <code>C2Scene_Bg2HWaveInit</code> / <code>Bg2HWaveStep</code> (and the unreferenced vertical pair)
+  run a wave up layer 2: each step moves the lines up by one and adds a new bottom line from a
+  sine. <code>C2Scene_NoiseInit</code> fills a line buffer with the first <code>$1C0</code> bytes of <abbr title="A 64KB segment of the SNES address space; Chrono Trigger has 64 banks in HiROM mapping.">ROM bank</abbr> <code>$C0</code>
+  ("code, used as noise") and scrolls layers 1 and 2 by them; <code>C2Scene_NoiseStep</code>,
+  <code>NoiseShow</code> and <code>NoiseHide</code> move through the noise, show it or hide it.</li>
+<li><strong>Placement and motion</strong>: random positions below the view or near fixed points, one of 16
+  random velocities, a gravity step (1/8 pixel a frame added to the Y velocity), a random nudge,
+  and a test of whether the task is in view.</li>
+<li><strong>Other</strong>: clear, save and restore the party, unpack a BG pack, set or test flag bits, set the
+  music byte <code>Menu_Config1E</code>, and <code>C2Scene_BuildPatternTiles</code>, ten tiles whose patterns get denser
+  from pair to pair ("probably the steps of a dissolve").</li>
+</ul>
+<p>The scene objects also use three direction helpers (<code>$C2:2273</code>–<code>$C2:232C</code>), with 256 steps per
+turn: <code>C2Scene_Unk2273</code> and <code>C2Scene_Unk2277</code> give the cosine and sine of a direction (from
+<code>Rom_SineTable256</code>, ±128 at the quarter turns), and <code>C2Scene_Unk229D</code> the direction from one point
+to another on the wrapping scene map. Their header suggests the names <code>C2Scene_Cos256</code>,
+<code>C2Scene_Sin256</code> and <code>C2Scene_DirToPoint</code>.</p>
 <h2 id="mode-6-the-map-view">Mode 6: the map view</h2>
 <p><code>C2Scene_Mode6</code> (<code>$C2:258D</code>) fades out with a mosaic, turns interrupts, <abbr title="Direct Memory Access — hardware block copy bypassing the CPU; used for VRAM uploads, WRAM clears, OAM.">DMA</abbr> and HDMA off, copies
 the direct page and the 64 task records to bank <code>$7F</code> and runs <code>C2Scene_MapView</code> (<code>$C2:631F</code>–
@@ -472,25 +510,11 @@ left or down (or another button) forward one; confirming a marker that is not th
 <code>Loc_Id</code> in <code>C2Scene_ObjANextLoc</code> and ends the dial, confirming the current one plays a sound
 ("probably a refusal sound"), and cancel stores <code>C2Scene_DialNoDest</code> and ends it.</p>
 <h2 id="menu-side">Menu side</h2>
-<p>Matched so far from the menu half of the bank: the joypad reader <code>Menu_ReadPad</code> / <code>Menu_PollPad</code>
-with the configurable button map (<code>Menu_MapButtons</code>), the play-time clock <code>Menu_TickPlayTime</code>
-(<code>$C2:85AE</code>: frames, seconds, two-digit minutes and hours, with a flag once it passes
-99:59:59), <code>Menu_InitPpuAndRam</code> (<code>$C2:940D</code>) with its <abbr title="Direct Memory Access — hardware block copy bypassing the CPU; used for VRAM uploads, WRAM clears, OAM.">DMA</abbr>
-helpers, <code>Menu_InitNewGameData</code> (the data of a new game, inferred from what it fills) and
-<code>Menu_ClearConfigAndFlags</code>.</p>
-<p>The menu's interrupt handlers are <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr> too. <code>Menu_Nmi</code> (<code>$C2:840E</code>) runs on its own stack with
-<abbr title="Direct Page — the 65816's relocatable 256-byte zero-page window; address = D register + 8-bit offset.">DP</abbr> = <code>Menu_NmiDp</code> (<code>$0D00</code>): it counts frames, forces blank, and when the menu loop has a frame
-ready turns HDMA off, runs the upload (<code>Menu_Unk85D6</code>, not <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr>) and sets <code>Menu_FrameReady</code> to
-<code>$FF</code>; then the pad and the play-time clock (<code>Menu_NmiPad</code>, with the menu's auto-repeat: <code>$20</code>
-frames before the first repeat, then 5), the BG mode and the screen brightness. <code>Menu_Irq</code>
-(<code>$C2:8472</code>) is a bare <code>RTI</code>. Both are reached through <code>JML</code>s at <code>$C2:8406</code>/<code>$C2:840A</code>, which are
-not <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr>.</p>
+<p>The menu in the second half of the bank has a page of its own: <a href="../menu/">Menu</a>.</p>
 <h2 id="what-is-not-matched-yet">What is not <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr> yet</h2>
-<p>From <code>NEXT.md</code>, in reach order: the code after the dial's scripts (<code>$C2:754D</code> on), the three
-helpers the scene objects call at <code>$C2:2273</code>–<code>$C2:232C</code> (<code>C2Scene_Unk2273</code>, <code>C2Scene_Unk2277</code>,
-<code>C2Scene_Unk229D</code>: probably a cosine, a sine and the direction between two points), the menu's
-per-frame upload <code>Menu_Unk85D6</code>, the <code>JML</code>s at <code>$C2:8406</code>–<code>$C2:840D</code>, the menu itself
-(<code>BankC2_MenuEntry</code>, <code>$C2:800E</code>), and the command handler <code>Menu_Unk8C36</code>.</p>
+<p>Everything from <code>$C2:0000</code> to the menu's start at <code>$C2:8000</code> is <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr>, the <code>$FF</code> fill at
+<code>$C2:7DE4</code> included. What is left in the bank is the menu's; see
+<a href="../menu/#what-is-not-matched-yet">Menu</a>.</p>
       
       </div>
 

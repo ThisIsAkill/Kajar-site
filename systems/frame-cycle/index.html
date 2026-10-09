@@ -131,6 +131,10 @@
           
         
           
+          <a class="wk-nav-link" href="../menu/">Menu</a>
+          
+        
+          
           <a class="wk-nav-link" href="../battle-engine/">Battle engine</a>
           
         
@@ -212,21 +216,21 @@
       <div class="wk-party">
         <div class="wk-party-row" title="Bytes matched: the rebuilt ROM is byte-identical here">
           <span class="wk-party-k">HP</span>
-          <span class="wk-party-v">158,620<small>/359,278</small></span>
+          <span class="wk-party-v">154,931<small>/358,356</small></span>
         </div>
-        <div class="wk-stat-track"><div class="wk-stat-fill" style="width:44.15%"></div></div>
-        <p class="wk-party-note">bytes matched · 44.15% of code</p>
+        <div class="wk-stat-track"><div class="wk-stat-fill" style="width:43.23%"></div></div>
+        <p class="wk-party-note">code bytes matched · 43.23% of code · 10,444 B data</p>
 
         <div class="wk-party-row" title="Matched functions that also meet the readability standard">
           <span class="wk-party-k">MP</span>
-          <span class="wk-party-v">2135<small>/2135</small></span>
+          <span class="wk-party-v">2184<small>/2184</small></span>
         </div>
         <div class="wk-stat-track"><div class="wk-stat-fill wk-stat-fill-mp" style="width:100.0%"></div></div>
         <p class="wk-party-note">functions readable</p>
 
         <div class="wk-party-row" title="Readable functions that passed an independent review">
           <span class="wk-party-k">TP</span>
-          <span class="wk-party-v">2135<small>/2135</small></span>
+          <span class="wk-party-v">2184<small>/2184</small></span>
         </div>
         <div class="wk-stat-track"><div class="wk-stat-fill wk-stat-fill-dim" style="width:100.0%"></div></div>
         <p class="wk-party-note">functions verified</p>
@@ -265,7 +269,7 @@
       <div class="wk-article-body">
       
       
-      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="October 9, 2026 04:51:12 UTC">October 9, 2026</span></p>
+      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="October 9, 2026 05:53:00 UTC">October 9, 2026</span></p>
       
       <h1 id="frame-cycle-and-nmi">Frame cycle and <abbr title="Non-Maskable Interrupt — fires at the start of VBlank each frame; the safe window for PPU updates.">NMI</abbr></h1>
 <p>How one frame of the field runs: the game logic in <code>GameLoop_FrameBody</code>, the end-of-frame work
@@ -343,8 +347,15 @@ waits for H-blank, forces blank and turns HDMA off, then by <code>Field_Unk53</c
 <p><code>Irq_UploadTileAnim</code> (<code>$C0:ED15</code>) runs one queued tilemap job per call: either the new metatiles
 of a tile animation (the four tilemap words of each map tile, to the <abbr title="Video RAM — dedicated PPU memory for tile graphics and tilemaps; written via DMA during VBlank.">VRAM</abbr> addresses a
 <code>Mode*_Handler</code> queued in <code>TileAnim_VramAddrs</code>) or <code>DefaultHandler</code>'s single tile step. A step
-queued together with an animation waits for the next IRQ. Before that, while <code>Field_Unk63</code> is
-not negative, it calls <code>Irq_UnkF05E</code> (not <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr>; the message choice cursor, probably).</p>
+queued together with an animation waits for the next IRQ.</p>
+<p>Before that, while <code>Field_Unk63</code> is not negative, it calls <code>Irq_DrawChoiceCursor</code> (<code>$C0:F05E</code>).
+That routine draws a 2×2-tile picture (tiles <code>$0FC</code>–<code>$0FF</code>) at choice row <code>Field_Unk63</code> (0–3) of
+the tilemap that <code>Field_UploadUnk1C00</code> sends to <abbr title="Video RAM — dedicated PPU memory for tile graphics and tilemaps; written via DMA during VBlank.">VRAM</abbr> <code>$1C00</code>, and puts <code>Field_Unk2B78</code>'s grid
+entries back in the other three rows (<code>Irq_ChoiceCursorClearRow0</code>–<code>3</code>). A value of 4 or more clears all four
+rows and sets <code>Field_Unk63</code> idle, so the next IRQs skip it. Its header calls this the choice
+cursor as "probable, not traced on screen": <code>Field_Unk63</code> is the index <code>Sub_1ADF</code> steps with Up
+and Down while a message choice is active. What the four tiles show (the hand cursor, probably)
+and which layer uses the <code>$1C00</code> tilemap are open in <code>NEXT.md</code>.</p>
 <h2 id="the-oam-shadow">The <abbr title="Object Attribute Memory — the PPU's 512+32-byte sprite table (up to 128 sprites: X/Y, tile, palette, size).">OAM</abbr> shadow</h2>
 <p><code>Oam_BuildShadow</code> (<code>$C0:B271</code>) rebuilds the <abbr title="Object Attribute Memory — the PPU's 512+32-byte sprite table (up to 128 sprites: X/Y, tile, palette, size).">OAM</abbr> shadow before the frame wait: low table at
 <code>$0700</code>, high table at <code>$0900</code>, split into three ranges that each object chooses with its
@@ -363,9 +374,10 @@ a range's new end and last frame's end off screen (Y = <code>$E0</code>). The <a
   next <abbr title="Non-Maskable Interrupt — fires at the start of VBlank each frame; the safe window for PPU updates.">NMI</abbr>. The main loop only waits (<code>C2Scene_WaitFrame</code>: spin until <code>C2Scene_FrameCounter</code>
   changes) and dispatches on the scene mode. See <a href="../scene-engine/">Scene engine</a>.</li>
 <li><strong>Menu (bank <code>$C2</code>).</strong> <code>Menu_Nmi</code> (<code>$C2:840E</code>) runs on its own stack with <abbr title="Direct Page — the 65816's relocatable 256-byte zero-page window; address = D register + 8-bit offset.">DP</abbr>=<code>$0D00</code>; when the
-  menu loop has a frame ready it runs the upload (<code>Menu_Unk85D6</code>, not <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr>) and sets
-  <code>Menu_FrameReady</code> to <code>$FF</code>, which the menu loop waits for. Every <abbr title="Non-Maskable Interrupt — fires at the start of VBlank each frame; the safe window for PPU updates.">NMI</abbr> reads the pad and ticks the
-  play-time clock (<code>Menu_NmiPad</code>). <code>Menu_Irq</code> is a bare <code>RTI</code>.</li>
+  menu's threads have a frame ready it runs the upload (<code>Menu_Unk85D6</code>, not <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr>) and sets
+  <code>Menu_FrameReady</code> to <code>$FF</code>. The thread scheduler <code>Menu_RunThreads</code> waits for that, runs each
+  thread that is due until it yields, then clears the flag. Every <abbr title="Non-Maskable Interrupt — fires at the start of VBlank each frame; the safe window for PPU updates.">NMI</abbr> reads the pad and ticks the
+  play-time clock (<code>Menu_NmiPad</code>). <code>Menu_Irq</code> is a bare <code>RTI</code>. See <a href="../menu/">Menu</a>.</li>
 <li><strong>Battle (bank <code>$C1</code>).</strong> <code>BattleSys_PumpFrames</code> (<code>$C1:007E</code>) sets <code>Battle_FramePending</code> and
   calls a bank-$CD vector until the flag is cleared. Its header reads this as a frame wait, but
   the clearing code in bank <code>$CF</code> is not traced, so "wait for the frame" is inferred, not proven.</li>

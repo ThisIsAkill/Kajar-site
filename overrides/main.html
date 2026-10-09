@@ -118,7 +118,7 @@
           <span class="wk-party-v">{{ '{:,}'.format(wk.matched_bytes) }}<small>/{{ '{:,}'.format(wk.code_bytes) }}</small></span>
         </div>
         <div class="wk-stat-track"><div class="wk-stat-fill" style="width:{{ wk.pct_code }}%"></div></div>
-        <p class="wk-party-note">bytes matched · {{ wk.pct_code }}% of code</p>
+        <p class="wk-party-note">code bytes matched · {{ wk.pct_code }}% of code{% if wk.matched_data_bytes %} · {{ '{:,}'.format(wk.matched_data_bytes) }} B data{% endif %}</p>
 
         <div class="wk-party-row" title="Matched functions that also meet the readability standard">
           <span class="wk-party-k">MP</span>

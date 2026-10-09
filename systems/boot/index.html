@@ -131,6 +131,10 @@
           
         
           
+          <a class="wk-nav-link" href="../menu/">Menu</a>
+          
+        
+          
           <a class="wk-nav-link" href="../battle-engine/">Battle engine</a>
           
         
@@ -212,21 +216,21 @@
       <div class="wk-party">
         <div class="wk-party-row" title="Bytes matched: the rebuilt ROM is byte-identical here">
           <span class="wk-party-k">HP</span>
-          <span class="wk-party-v">158,620<small>/359,278</small></span>
+          <span class="wk-party-v">154,931<small>/358,356</small></span>
         </div>
-        <div class="wk-stat-track"><div class="wk-stat-fill" style="width:44.15%"></div></div>
-        <p class="wk-party-note">bytes matched · 44.15% of code</p>
+        <div class="wk-stat-track"><div class="wk-stat-fill" style="width:43.23%"></div></div>
+        <p class="wk-party-note">code bytes matched · 43.23% of code · 10,444 B data</p>
 
         <div class="wk-party-row" title="Matched functions that also meet the readability standard">
           <span class="wk-party-k">MP</span>
-          <span class="wk-party-v">2135<small>/2135</small></span>
+          <span class="wk-party-v">2184<small>/2184</small></span>
         </div>
         <div class="wk-stat-track"><div class="wk-stat-fill wk-stat-fill-mp" style="width:100.0%"></div></div>
         <p class="wk-party-note">functions readable</p>
 
         <div class="wk-party-row" title="Readable functions that passed an independent review">
           <span class="wk-party-k">TP</span>
-          <span class="wk-party-v">2135<small>/2135</small></span>
+          <span class="wk-party-v">2184<small>/2184</small></span>
         </div>
         <div class="wk-stat-track"><div class="wk-stat-fill wk-stat-fill-dim" style="width:100.0%"></div></div>
         <p class="wk-party-note">functions verified</p>
@@ -353,7 +357,7 @@ Mode 7 multiply result (<code>MPYL</code>), which reads 0 because both operands 
 <p><code>GameLoop</code> is reached a second time by <code>BRL</code> from <code>Scene_Unk0283</code> (probably the game-over path).
 The review of <code>MainInit</code> noted that its name is probably wrong, since it starts with an init
 sequence rather than a loop.</p>
-<div class="wk-stat-tiles"><div class="wk-stat-tile"><span class="wk-stat-tile-val">5</span><span class="wk-stat-tile-label">functions matched</span></div><div class="wk-stat-tile"><span class="wk-stat-tile-val">247</span><span class="wk-stat-tile-label">bytes matched</span></div><div class="wk-stat-tile"><span class="wk-stat-tile-val">5</span><span class="wk-stat-tile-label">readable</span></div><div class="wk-stat-tile"><span class="wk-stat-tile-val">5</span><span class="wk-stat-tile-label">verified</span></div></div>
+<div class="wk-stat-tiles"><div class="wk-stat-tile"><span class="wk-stat-tile-val">5</span><span class="wk-stat-tile-label">functions matched</span></div><div class="wk-stat-tile"><span class="wk-stat-tile-val">247</span><span class="wk-stat-tile-label">code bytes matched</span></div><div class="wk-stat-tile"><span class="wk-stat-tile-val">5</span><span class="wk-stat-tile-label">readable</span></div><div class="wk-stat-tile"><span class="wk-stat-tile-val">5</span><span class="wk-stat-tile-label">verified</span></div></div>
 <h2 id="functions">Functions</h2>
 <table class="wk-fntable"><thead><tr><th>Address</th><th>Function</th><th>Size</th><th>Status</th><th>Notes</th></tr></thead><tbody><tr><td><code>$C0:FF00</code></td><td><code>Reset</code></td><td>16</td><td><span class="wk-status wk-status-verified">verified</span></td><td>target of the emulation-mode RESET vector ($FFFC)</td></tr><tr><td><code>$C0:FF10</code></td><td><code>NMI_<wbr>Stub</code></td><td>4</td><td><span class="wk-status wk-status-verified">verified</span></td><td>Native-mode interrupt stubs ($FF10–$FF17)</td></tr><tr><td><code>$C0:FF14</code></td><td><code>IRQ_<wbr>Stub</code></td><td>4</td><td><span class="wk-status wk-status-verified">verified</span></td><td></td></tr><tr><td><code>$C0:FF18</code></td><td><code>BRK_<wbr>Handler</code></td><td>8</td><td><span class="wk-status wk-status-verified">verified</span></td><td>native BRK and emulation-mode COP both land here</td></tr><tr><td><code>$FD:C000</code></td><td><code>MainInit</code></td><td>215</td><td><span class="wk-status wk-status-verified">verified</span></td><td>Called via: JML from Reset ($00:FF03), which also carries the soft resets, and JML $FDC000 at $C0:418D (Evt_OpFF96_Reset, after JSR InitHW and S=$06FF).</td></tr></tbody></table>
 <p class="wk-page-meta">Generated from <code>functions.csv</code>. Do not edit.</p>

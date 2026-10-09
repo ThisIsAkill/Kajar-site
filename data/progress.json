@@ -1,139 +1,202 @@
 {
-  "schema": 2,
-  "emitted_bytes": 158620,
-  "code_bytes": 359278,
+  "schema": 3,
+  "emitted_bytes": 165375,
+  "code_bytes": 358356,
+  "surveyed_code_bytes": 358356,
   "totals": {
     "matched": {
-      "functions": 2135,
-      "bytes": 158620
+      "functions": 2184,
+      "bytes": 165375,
+      "code_bytes": 154931,
+      "data_bytes": 10444
     },
     "readable": {
-      "functions": 2135,
-      "bytes": 158620
+      "functions": 2184,
+      "bytes": 165375,
+      "code_bytes": 154931,
+      "data_bytes": 10444
     },
     "verified": {
-      "functions": 2135,
-      "bytes": 158620
+      "functions": 2184,
+      "bytes": 165375,
+      "code_bytes": 154931,
+      "data_bytes": 10444
     }
   },
   "banks": [
     {
       "bank": "$C0",
-      "code_bytes": 61779,
-      "emitted_bytes": 62302,
+      "code_bytes": 60857,
+      "surveyed_code_bytes": 60857,
+      "survey_low": false,
+      "emitted_bytes": 65536,
       "matched": {
-        "functions": 736,
-        "bytes": 62302
+        "functions": 747,
+        "bytes": 65536,
+        "code_bytes": 60857,
+        "data_bytes": 4679
       },
       "readable": {
-        "functions": 736,
-        "bytes": 62302
+        "functions": 747,
+        "bytes": 65536,
+        "code_bytes": 60857,
+        "data_bytes": 4679
       },
       "verified": {
-        "functions": 736,
-        "bytes": 62302
+        "functions": 747,
+        "bytes": 65536,
+        "code_bytes": 60857,
+        "data_bytes": 4679
       }
     },
     {
       "bank": "$C1",
       "code_bytes": 63904,
-      "emitted_bytes": 53803,
+      "surveyed_code_bytes": 63904,
+      "survey_low": false,
+      "emitted_bytes": 57324,
       "matched": {
-        "functions": 571,
-        "bytes": 53803
+        "functions": 609,
+        "bytes": 57324,
+        "code_bytes": 55049,
+        "data_bytes": 2275
       },
       "readable": {
-        "functions": 571,
-        "bytes": 53803
+        "functions": 609,
+        "bytes": 57324,
+        "code_bytes": 55049,
+        "data_bytes": 2275
       },
       "verified": {
-        "functions": 571,
-        "bytes": 53803
+        "functions": 609,
+        "bytes": 57324,
+        "code_bytes": 55049,
+        "data_bytes": 2275
       }
     },
     {
       "bank": "$C2",
       "code_bytes": null,
+      "surveyed_code_bytes": null,
+      "survey_low": false,
       "emitted_bytes": 36278,
       "matched": {
         "functions": 769,
-        "bytes": 36278
+        "bytes": 36278,
+        "code_bytes": 33184,
+        "data_bytes": 3094
       },
       "readable": {
         "functions": 769,
-        "bytes": 36278
+        "bytes": 36278,
+        "code_bytes": 33184,
+        "data_bytes": 3094
       },
       "verified": {
         "functions": 769,
-        "bytes": 36278
+        "bytes": 36278,
+        "code_bytes": 33184,
+        "data_bytes": 3094
       }
     },
     {
       "bank": "$CC",
       "code_bytes": null,
+      "surveyed_code_bytes": null,
+      "survey_low": false,
       "emitted_bytes": 30,
       "matched": {
         "functions": 1,
-        "bytes": 30
+        "bytes": 30,
+        "code_bytes": 30,
+        "data_bytes": 0
       },
       "readable": {
         "functions": 1,
-        "bytes": 30
+        "bytes": 30,
+        "code_bytes": 30,
+        "data_bytes": 0
       },
       "verified": {
         "functions": 1,
-        "bytes": 30
+        "bytes": 30,
+        "code_bytes": 30,
+        "data_bytes": 0
       }
     },
     {
       "bank": "$CF",
       "code_bytes": null,
+      "surveyed_code_bytes": null,
+      "survey_low": false,
       "emitted_bytes": 187,
       "matched": {
         "functions": 2,
-        "bytes": 187
+        "bytes": 187,
+        "code_bytes": 187,
+        "data_bytes": 0
       },
       "readable": {
         "functions": 2,
-        "bytes": 187
+        "bytes": 187,
+        "code_bytes": 187,
+        "data_bytes": 0
       },
       "verified": {
         "functions": 2,
-        "bytes": 187
+        "bytes": 187,
+        "code_bytes": 187,
+        "data_bytes": 0
       }
     },
     {
       "bank": "$FD",
       "code_bytes": null,
+      "surveyed_code_bytes": null,
+      "survey_low": false,
       "emitted_bytes": 5892,
       "matched": {
         "functions": 54,
-        "bytes": 5892
+        "bytes": 5892,
+        "code_bytes": 5624,
+        "data_bytes": 268
       },
       "readable": {
         "functions": 54,
-        "bytes": 5892
+        "bytes": 5892,
+        "code_bytes": 5624,
+        "data_bytes": 268
       },
       "verified": {
         "functions": 54,
-        "bytes": 5892
+        "bytes": 5892,
+        "code_bytes": 5624,
+        "data_bytes": 268
       }
     },
     {
       "bank": "$FF",
       "code_bytes": null,
+      "surveyed_code_bytes": null,
+      "survey_low": false,
       "emitted_bytes": 128,
       "matched": {
         "functions": 2,
-        "bytes": 128
+        "bytes": 128,
+        "code_bytes": 0,
+        "data_bytes": 128
       },
       "readable": {
         "functions": 2,
-        "bytes": 128
+        "bytes": 128,
+        "code_bytes": 0,
+        "data_bytes": 128
       },
       "verified": {
         "functions": 2,
-        "bytes": 128
+        "bytes": 128,
+        "code_bytes": 0,
+        "data_bytes": 128
       }
     }
   ],
@@ -973,8 +1036,19 @@
       "bank": "$C0",
       "start": "$C0:F000",
       "end": "$C0:FFFF",
-      "emitted_bytes": 862,
+      "emitted_bytes": 4096,
       "functions": [
+        "Irq_DrawChoiceCursor",
+        "Irq_ChoiceCursorClearRow3",
+        "Irq_ChoiceCursorClearTail",
+        "Irq_ChoiceCursorClearRow2",
+        "Irq_ChoiceCursorClearRow1",
+        "Irq_ChoiceCursorClearRow0",
+        "BankC0_OldBuildLeftovers",
+        "Rom_AngleTable",
+        "Rom_DirToFacing",
+        "Rom_SineTable256",
+        "Rom_SineTable",
         "BitReverseTable",
         "RandomTable",
         "Reset",
@@ -1491,7 +1565,7 @@
       "bank": "$C1",
       "start": "$C1:A000",
       "end": "$C1:AFFF",
-      "emitted_bytes": 915,
+      "emitted_bytes": 1004,
       "functions": [
         "BattleAi_ReadTargets",
         "BattleAi_ReadTargets_Code",
@@ -1512,6 +1586,7 @@
         "BattleAi_UnkAED3",
         "BattleAi_NoteFirstTest",
         "Battle_RandRange",
+        "Battle_RandRangeAlt",
         "BattleAi_RunMainPart"
       ]
     },
@@ -1660,7 +1735,7 @@
       "bank": "$C1",
       "start": "$C1:E000",
       "end": "$C1:EFFF",
-      "emitted_bytes": 3321,
+      "emitted_bytes": 4096,
       "functions": [
         "BattleSys_ArmStatusList",
         "BattleSys_CalcDamage",
@@ -1676,21 +1751,58 @@
         "BattleSys_LoadTargetStats",
         "BattleSys_StealItem",
         "BattleSys_RunUnkB2CCHandlers",
+        "BattleSys_ClearPcStatuses",
+        "BattleSys_ClearPcKo",
         "BattleSys_CopyEffectBytes78",
         "BattleSys_RunUnkB2CCHandler",
+        "BattleSys_ReviveHeal",
         "Battle_SumHitSets",
         "Battle_RecordHit",
         "Battle_ClearCancelledHits",
-        "Battle_ApplyHits"
+        "Battle_ApplyHits",
+        "BattleSys_HitModChanceMul",
+        "BattleSys_HitModNone",
+        "BattleSys_HitModScale",
+        "BattleSys_HitModUnk47Scale",
+        "BattleSys_HitModPerEmptyPc",
+        "BattleSys_HitModPlayTime",
+        "BattleSys_HitModRandomStatus",
+        "BattleSys_HitModUnk47Status",
+        "BattleSys_HitModChanceStatus",
+        "BattleSys_HitModLeaveOneHp",
+        "BattleSys_HitModUnk6CScale",
+        "BattleSys_HitModScaleThenUnk6C",
+        "BattleSys_HitModRollDp1A",
+        "BattleSys_AddBattleItem"
       ]
     },
     {
       "bank": "$C1",
       "start": "$C1:F000",
       "end": "$C1:FFFF",
-      "emitted_bytes": 882,
+      "emitted_bytes": 3539,
       "functions": [
-        "BattleSys_UnkB2CCHandlerTable",
+        "BattleSys_HitModRestore",
+        "BattleSys_HitModHalveHp",
+        "BattleSys_HitModClearBits",
+        "BattleSys_HitModHpDigit",
+        "BattleSys_HitModZeroHp",
+        "BattleSys_HitModKoOrDrop",
+        "BattleSys_HitModAltBoost",
+        "BattleSys_HitModSetBits",
+        "BattleSys_AwardTechPoints",
+        "BattleSys_BuildComboMasks",
+        "BattleSys_SpendTechPoints",
+        "BattleSys_TryNextTech",
+        "BattleSys_LearnSingleTech",
+        "BattleSys_LearnComboTechs",
+        "BattleSys_LevelUpStep",
+        "BattleSys_ApplyExpStep",
+        "BattleSys_GrowHpMp",
+        "BattleSys_AddExp",
+        "BattleSys_AwardExpAndTp",
+        "BattleSys_AwardReserveExp",
+        "BattleSys_HitModTable",
         "Battle_SetupBattle",
         "Battle_CalcUnk56",
         "Battle_Mul16Long",

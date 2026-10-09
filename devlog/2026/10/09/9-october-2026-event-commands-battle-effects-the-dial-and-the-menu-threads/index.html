@@ -131,6 +131,10 @@
           
         
           
+          <a class="wk-nav-link" href="../../../../../systems/menu/">Menu</a>
+          
+        
+          
           <a class="wk-nav-link" href="../../../../../systems/battle-engine/">Battle engine</a>
           
         
@@ -212,21 +216,21 @@
       <div class="wk-party">
         <div class="wk-party-row" title="Bytes matched: the rebuilt ROM is byte-identical here">
           <span class="wk-party-k">HP</span>
-          <span class="wk-party-v">158,620<small>/359,278</small></span>
+          <span class="wk-party-v">154,931<small>/358,356</small></span>
         </div>
-        <div class="wk-stat-track"><div class="wk-stat-fill" style="width:44.15%"></div></div>
-        <p class="wk-party-note">bytes matched · 44.15% of code</p>
+        <div class="wk-stat-track"><div class="wk-stat-fill" style="width:43.23%"></div></div>
+        <p class="wk-party-note">code bytes matched · 43.23% of code · 10,444 B data</p>
 
         <div class="wk-party-row" title="Matched functions that also meet the readability standard">
           <span class="wk-party-k">MP</span>
-          <span class="wk-party-v">2135<small>/2135</small></span>
+          <span class="wk-party-v">2184<small>/2184</small></span>
         </div>
         <div class="wk-stat-track"><div class="wk-stat-fill wk-stat-fill-mp" style="width:100.0%"></div></div>
         <p class="wk-party-note">functions readable</p>
 
         <div class="wk-party-row" title="Readable functions that passed an independent review">
           <span class="wk-party-k">TP</span>
-          <span class="wk-party-v">2135<small>/2135</small></span>
+          <span class="wk-party-v">2184<small>/2184</small></span>
         </div>
         <div class="wk-stat-track"><div class="wk-stat-fill wk-stat-fill-dim" style="width:100.0%"></div></div>
         <p class="wk-party-note">functions verified</p>
@@ -253,7 +257,7 @@
           <li>
             <a href="#9-october-2026-event-commands-battle-effects-the-dial-and-the-menu-threads" class="wk-toc-link">9 October 2026: event commands, battle effects, the dial and the menu threads</a>
             
-            <ol><li><a href="#event-commands-part-two" class="wk-toc-link">Event commands, part two</a></li><li><a href="#targets-and-effects" class="wk-toc-link">Targets and effects</a></li><li><a href="#housekeeping" class="wk-toc-link">Housekeeping</a></li><li><a href="#the-map-view-and-the-dial" class="wk-toc-link">The map view and the dial</a></li><li><a href="#the-effect-arithmetic" class="wk-toc-link">The effect arithmetic</a></li><li><a href="#the-last-event-commands" class="wk-toc-link">The last event commands</a></li><li><a href="#the-menus-threads-and-the-scene-effects" class="wk-toc-link">The menu's threads and the scene effects</a></li><li><a href="#next" class="wk-toc-link">Next</a></li></ol>
+            <ol><li><a href="#event-commands-part-two" class="wk-toc-link">Event commands, part two</a></li><li><a href="#targets-and-effects" class="wk-toc-link">Targets and effects</a></li><li><a href="#housekeeping" class="wk-toc-link">Housekeeping</a></li><li><a href="#the-map-view-and-the-dial" class="wk-toc-link">The map view and the dial</a></li><li><a href="#the-effect-arithmetic" class="wk-toc-link">The effect arithmetic</a></li><li><a href="#the-last-event-commands" class="wk-toc-link">The last event commands</a></li><li><a href="#the-menus-threads-and-the-scene-effects" class="wk-toc-link">The menu's threads and the scene effects</a></li><li><a href="#hit-modifiers-experience-and-tech-points" class="wk-toc-link">Hit modifiers, experience and tech points</a></li><li><a href="#bank-c0-is-complete" class="wk-toc-link">Bank $C0 is complete</a></li><li><a href="#counting-code-and-data-separately" class="wk-toc-link">Counting code and data separately</a></li><li><a href="#next" class="wk-toc-link">Next</a></li></ol>
             
           </li>
           
@@ -326,8 +330,15 @@
 <p>Quirks kept as found include a block copy that writes one byte past the end of its buffer, a cursor drawn one pixel low because a helper is called in the wrong register width, and a list arrow that can sit nine pixels lower instead of eight.</p>
 <p>Review found 22 header errors, most of them about what a register holds on exit. The most common: an instruction that switches the index registers to 8 bits wipes their high bytes for good, so a header cannot say Y comes back unchanged after calling such a routine. The same slip turned up in three older menu routines, which were fixed too. It took three rounds, but every routine in the batch is now independently verified.</p>
 <p><code>main</code> now stands at 158,620 bytes, 44.15% of the game's code, all 2,135 <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr> routines independently verified.</p>
+<h2 id="hit-modifiers-experience-and-tech-points">Hit modifiers, experience and tech points</h2>
+<p>Back in <code>$C1</code> (3,521 bytes), the 21 small handlers that the damage routine runs after working out a hit turned out to be <strong>hit modifiers</strong>: most scale the damage, some set a status, change HP or leave the target on 1 HP. The same batch covers what happens after a battle: experience and level-ups with their HP and MP growth, tech points, and learning single and combo techs. One quirk, kept as found: when one award of tech points pays for a tech and reaches into the next, part of it is taken off the next tech's cost a second time. Reserve characters gain at most one level per battle.</p>
+<p>Review again turned up the Y register slip (the random number routine switches the index registers to 8 bits, so nothing that rolls a random number can return Y unchanged), and two more older routines with the same error were fixed with the batch.</p>
+<h2 id="bank-c0-is-complete">Bank <code>$C0</code> is complete</h2>
+<p>The last 3,234 bytes of <code>$C0</code> are <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr>, so every byte of the bank now comes from source. They hold a routine run from the field's interrupt that draws what is probably the cursor of a message choice, 400 bytes of cut-off code left over from older builds, and four lookup tables: an angle table, a direction-to-facing table and two sine tables, each checked against its formula entry by entry.</p>
+<h2 id="counting-code-and-data-separately">Counting code and data separately</h2>
+<p>With <code>$C0</code> complete, the progress figure showed it as 106% <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr>, because the share counted every <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr> byte, tables and padding included, against a survey of code bytes only. The progress tool now tells code and data apart and measures the share with code alone; data is reported next to it. The survey for <code>$C0</code> also turned out 922 bytes too high. The headline figure is therefore lower than this post's earlier sections give: by the new measure, <code>main</code> now stands at 154,931 of 358,356 code bytes, 43.23%, plus 10,444 bytes of data, all 2,184 <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr> routines independently verified.</p>
 <h2 id="next">Next</h2>
-<p>Matching continues with the menu's command dispatcher and its handlers in <code>$C2</code>, the battle engine's remaining handlers in <code>$C1</code>, and the last unmatched stretch at the end of <code>$C0</code>.</p>
+<p>Matching continues with the menu's command dispatcher and its handlers in <code>$C2</code>. A sweep of every header that says a register comes back unchanged is under way, so the Y-register slip can be fixed everywhere at once and caught by the lint from now on.</p>
   
   <p class="wk-post-back"><a href="../../../../">← Back to devlog</a></p>
 </article>

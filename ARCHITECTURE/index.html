@@ -131,6 +131,10 @@
           
         
           
+          <a class="wk-nav-link" href="../systems/menu/">Menu</a>
+          
+        
+          
           <a class="wk-nav-link" href="../systems/battle-engine/">Battle engine</a>
           
         
@@ -212,21 +216,21 @@
       <div class="wk-party">
         <div class="wk-party-row" title="Bytes matched: the rebuilt ROM is byte-identical here">
           <span class="wk-party-k">HP</span>
-          <span class="wk-party-v">158,620<small>/359,278</small></span>
+          <span class="wk-party-v">154,931<small>/358,356</small></span>
         </div>
-        <div class="wk-stat-track"><div class="wk-stat-fill" style="width:44.15%"></div></div>
-        <p class="wk-party-note">bytes matched · 44.15% of code</p>
+        <div class="wk-stat-track"><div class="wk-stat-fill" style="width:43.23%"></div></div>
+        <p class="wk-party-note">code bytes matched · 43.23% of code · 10,444 B data</p>
 
         <div class="wk-party-row" title="Matched functions that also meet the readability standard">
           <span class="wk-party-k">MP</span>
-          <span class="wk-party-v">2135<small>/2135</small></span>
+          <span class="wk-party-v">2184<small>/2184</small></span>
         </div>
         <div class="wk-stat-track"><div class="wk-stat-fill wk-stat-fill-mp" style="width:100.0%"></div></div>
         <p class="wk-party-note">functions readable</p>
 
         <div class="wk-party-row" title="Readable functions that passed an independent review">
           <span class="wk-party-k">TP</span>
-          <span class="wk-party-v">2135<small>/2135</small></span>
+          <span class="wk-party-v">2184<small>/2184</small></span>
         </div>
         <div class="wk-stat-track"><div class="wk-stat-fill wk-stat-fill-dim" style="width:100.0%"></div></div>
         <p class="wk-party-note">functions verified</p>
@@ -265,7 +269,7 @@
       <div class="wk-article-body">
       
       
-      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="October 9, 2026 04:54:31 UTC">October 9, 2026</span></p>
+      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="October 9, 2026 05:53:54 UTC">October 9, 2026</span></p>
       
       <h1 id="engine-architecture">Engine Architecture</h1>
 <p>A high-level map of the Chrono Trigger SNES engine as recovered from <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr> code. Everything here
@@ -301,8 +305,8 @@ direct-page layout:</p>
 </tr>
 <tr>
 <td><code>$C2</code></td>
-<td>The scene mode (<code>Loc_Id</code> <code>$01F0</code> and up), the menu's entry points and the text window decoder</td>
-<td><code>$0000</code> (<code>$0200</code> for the text decoder)</td>
+<td>The scene mode (<code>Loc_Id</code> <code>$01F0</code> and up), the menu's entry, thread scheduler and shared helpers, and the text window decoder</td>
+<td><code>$0000</code> (<code>$0200</code> for the text decoder, <code>$0D00</code> for the menu's <abbr title="Non-Maskable Interrupt — fires at the start of VBlank each frame; the safe window for PPU updates.">NMI</abbr>)</td>
 </tr>
 <tr>
 <td><code>$C1</code></td>
@@ -454,7 +458,10 @@ block (the second of each pair mirrored).</p>
 <li><strong>The menu and the bank-$C2 calls.</strong> <code>Field_SaveState</code> copies the field's save block
   (<code>$7E:0920</code>, <code>$14E0</code> bytes) to <code>$7F:2000</code> and records the party's positions; the field then calls
   <code>BankC2_Entry8000</code> with an argument (1 from the menu button, "very likely the main menu" in its
-  header; 5 from <code>Field_RunBankC2Mode5</code>, meaning unverified). Afterwards <code>Field_RestoreState</code>
+  header; 5 from <code>Field_RunBankC2Mode5</code>, meaning unverified). The menu installs its own interrupt
+  handlers, runs its screens as cooperative threads (<code>Menu_RunThreads</code>) and returns with <code>RTL</code>
+  through <code>Menu_Exit</code>, or restarts the game loop through <code>Menu_ExitToGame</code> (see
+  <a href="../systems/menu/">Menu</a>). Afterwards <code>Field_RestoreState</code>
   rebuilds the field, and <code>Party_ReinitIfChanged</code> runs the init function of each character
   object again if the party is no longer the one taken at load.</li>
 <li><strong>The scene mode.</strong> For <code>Loc_Id</code> <code>$01F0</code>–<code>$81EF</code>, <code>GameLoop_Main</code> jumps to
@@ -490,14 +497,14 @@ jump on through trampolines in <abbr title="Work RAM — 128KB of SNES main RAM 
 <tr>
 <td><code>$7E:0500</code></td>
 <td><code>NMI_Stub</code> (<code>$00:FF10</code>)</td>
-<td><code>InstallNMI</code> (field), <code>C2Scene_InstallInterrupts</code> (scene mode)</td>
-<td><code>NmiHandler</code> (<code>$C0:EA63</code>), <code>C2Scene_NmiHandler</code> (<code>$C2:015E</code>)</td>
+<td><code>InstallNMI</code> (field), <code>C2Scene_InstallInterrupts</code> (scene mode), <code>Menu_InitSystems</code> (menu)</td>
+<td><code>NmiHandler</code> (<code>$C0:EA63</code>), <code>C2Scene_NmiHandler</code> (<code>$C2:015E</code>), <code>Menu_Nmi</code> (<code>$C2:840E</code>)</td>
 </tr>
 <tr>
 <td><code>$7E:0504</code></td>
 <td><code>IRQ_Stub</code> (<code>$00:FF14</code>)</td>
-<td><code>InstallIRQ</code>, <code>C2Scene_InstallInterrupts</code></td>
-<td><code>IrqHandler</code> (<code>$C0:ECCC</code>), <code>C2Scene_IrqHandler</code> (<code>$C2:0345</code>)</td>
+<td><code>InstallIRQ</code>, <code>C2Scene_InstallInterrupts</code>, <code>Menu_InitSystems</code></td>
+<td><code>IrqHandler</code> (<code>$C0:ECCC</code>), <code>C2Scene_IrqHandler</code> (<code>$C2:0345</code>), <code>Menu_Irq</code> (<code>$C2:8472</code>)</td>
 </tr>
 </tbody>
 </table>
@@ -505,8 +512,9 @@ jump on through trampolines in <abbr title="Work RAM — 128KB of SNES main RAM 
 and unmatched code in bank <code>$FD</code> (<code>$FD:EAF4</code>) repoints both into that bank (see <code>!NmiTrampoline</code>
 in <code>ram_engine.inc</code>).</p>
 <p>The menu in bank <code>$C2</code> has handlers of its own, <code>Menu_Nmi</code> (<code>$C2:840E</code>) and <code>Menu_Irq</code>
-(<code>$C2:8472</code>, a bare <code>RTI</code>), reached through <code>JML</code>s at <code>$C2:8406</code> / <code>$C2:840A</code> (not <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr>); which
-vector those sit behind is not traced. See <a href="../systems/frame-cycle/#other-frame-cycles">Frame cycle and <abbr title="Non-Maskable Interrupt — fires at the start of VBlank each frame; the safe window for PPU updates.">NMI</abbr></a>.</p>
+(<code>$C2:8472</code>, a bare <code>RTI</code>): <code>Menu_InitSystems</code> copies the two <code>JML</code>s at <code>$C2:8406</code>
+(<code>Menu_InterruptVectors</code>) over the trampolines. See
+<a href="../systems/frame-cycle/#other-frame-cycles">Frame cycle and <abbr title="Non-Maskable Interrupt — fires at the start of VBlank each frame; the safe window for PPU updates.">NMI</abbr></a>.</p>
 <h2 id="key-field-structures">Key field structures</h2>
 <ul>
 <li><strong>The field direct page</strong> (<code>$0100</code>–<code>$01FF</code>, <abbr title="Direct Page — the 65816's relocatable 256-byte zero-page window; address = D register + 8-bit offset.">DP</abbr>=<code>$0100</code>): <code>Loc_Id</code> at <code>$0100</code>, the frame
