@@ -265,7 +265,7 @@
       <div class="wk-article-body">
       
       
-      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="October 9, 2026 00:05:30 UTC">October 9, 2026</span></p>
+      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="October 9, 2026 04:51:28 UTC">October 9, 2026</span></p>
       
       <h1 id="text-windows">Text windows</h1>
 <p>The text decoder in bank <code>$C2</code> (<code>$C2:57DF</code>–<code>$C2:6262</code>) turns a string of bytes into glyphs drawn
@@ -283,9 +283,13 @@ each step the number of characters to draw.</p>
   runs the handler of the current status (<code>TextWin_StatusTable</code>, statuses <code>$00</code>–<code>$20</code>), which
   says whether to go on; if so, the handler of the current state runs.</li>
 </ul>
-<p>The callers <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr> so far are in the scene mode's label task (<code>C2Scene_LabelWait</code>,
-<code>C2Scene_LabelDraw</code>, which draws one character per frame). The field's caller
-(<code>$C0:20F4</code>–<code>$C0:2121</code>, which sets the buffer to <code>$7E:F000</code>) is not <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr> yet.</p>
+<p>Two callers use it. In the scene mode, the label task (<code>C2Scene_LabelWait</code>, <code>C2Scene_LabelDraw</code>)
+draws one character per frame. On the field, the message window step <code>Field_Unk1F87</code> starts it
+with <code>Field_MsgStart</code> (<code>$C0:20F2</code>: the string from the treasure string table at <code>$DE:FF00</code> for a
+treasure, else from the pointer <code>Evt_OpB8_SetMsgPtr</code> set; buffer <code>$7E:F000</code>, mode 0) and draws
+one glyph a step with <code>Field_MsgStep</code> (<code>$C0:2126</code>), acting on the status each step leaves: a new
+line, a new page, a timed wait, a wait ("for a press, probably") or the end. See
+<a href="../field-events/#messages">Field event scripts</a>.</p>
 <h2 id="the-string-format">The string format</h2>
 <p>A string is a run of bytes at <code>TextWin_TextPtr</code>:</p>
 <table>

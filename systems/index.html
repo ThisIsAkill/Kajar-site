@@ -263,7 +263,7 @@
       <div class="wk-article-body">
       
       
-      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="October 9, 2026 00:05:30 UTC">October 9, 2026</span></p>
+      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="October 9, 2026 04:53:48 UTC">October 9, 2026</span></p>
       
       <h1 id="systems">Systems</h1>
 <p>One page per game system: a summary written by hand from the <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr> code's headers, then, on
@@ -285,7 +285,7 @@ counts every group.</p>
 </tr>
 <tr>
 <td><a href="frame-cycle/">Frame cycle and <abbr title="Non-Maskable Interrupt — fires at the start of VBlank each frame; the safe window for PPU updates.">NMI</abbr></a></td>
-<td>One field frame, the frame wait, <code>NmiHandler</code>, the other modes' frames</td>
+<td>One field frame, the frame wait, <code>NmiHandler</code>, the field IRQ, the other modes' frames</td>
 </tr>
 <tr>
 <td><a href="engine/">Engine core</a></td>
@@ -301,7 +301,7 @@ counts every group.</p>
 </tr>
 <tr>
 <td><a href="scene-engine/">Scene engine</a></td>
-<td>Bank <code>$C2</code>'s scene mode: tasks, scripts, sprite list, scene loading</td>
+<td>Bank <code>$C2</code>'s scene mode: tasks, scripts, sprite list, scene loading, the map view and the dial</td>
 </tr>
 <tr>
 <td><a href="text-windows/">Text windows</a></td>
@@ -309,7 +309,7 @@ counts every group.</p>
 </tr>
 <tr>
 <td><a href="battle-engine/">Battle engine</a></td>
-<td><code>BattleSys_Main</code>, turn lists, enemy behaviour scripts, PC commands, hit records, bank <code>$FD</code> helpers</td>
+<td><code>BattleSys_Main</code>, turn lists, enemy behaviour scripts, PC commands, effects and damage, hit records, bank <code>$FD</code> helpers</td>
 </tr>
 <tr>
 <td><a href="battle-actions/">Battle actions</a></td>

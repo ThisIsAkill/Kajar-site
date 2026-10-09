@@ -265,7 +265,7 @@
       <div class="wk-article-body">
       
       
-      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="October 9, 2026 00:05:30 UTC">October 9, 2026</span></p>
+      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="October 9, 2026 04:50:28 UTC">October 9, 2026</span></p>
       
       <h1 id="boot">Boot</h1>
 <p>Power-on and reset, from the vectors at the top of bank <code>$C0</code> (seen by the CPU as bank <code>$00</code>) to
@@ -337,8 +337,9 @@ register write goes through a relocated direct page, so each store is two bytes:
 <li>the <abbr title="Picture Processing Unit — the SNES graphics chip handling BGs, sprites, palettes, windows, and compositing.">PPU</abbr> registers through <abbr title="Direct Page — the 65816's relocatable 256-byte zero-page window; address = D register + 8-bit offset.">DP</abbr> = <code>$2100</code> (<code>$FD:C042</code>–<code>$C0D2</code>); most are zeroed;</li>
 <li><code>JML GameLoop</code> (<code>$FD:C0D3</code>).</li>
 </ol>
-<p>It leaves with interrupts, <abbr title="Non-Maskable Interrupt — fires at the start of VBlank each frame; the safe window for PPU updates.">NMI</abbr>, <abbr title="Direct Memory Access — hardware block copy bypassing the CPU; used for VRAM uploads, WRAM clears, OAM.">DMA</abbr> and HDMA off. It is also reached by <code>JML $FDC000</code> at
-<code>$C0:418D</code> (unmatched), after <code>InitHW</code>. <code>Ppu_SetBgLayout</code> (<code>$FD:C0D7</code>), right after it, sets a fixed
+<p>It leaves with interrupts, <abbr title="Non-Maskable Interrupt — fires at the start of VBlank each frame; the safe window for PPU updates.">NMI</abbr>, <abbr title="Direct Memory Access — hardware block copy bypassing the CPU; used for VRAM uploads, WRAM clears, OAM.">DMA</abbr> and HDMA off. It is also reached by <code>JML MainInit</code> at
+<code>$C0:418D</code>, in <code>Evt_OpFF96_Reset</code> (event <abbr title="The first byte of a CPU instruction, identifying the operation (e.g. $60 = RTS, $78 = SEI).">opcode</abbr> <code>$FF $96</code>), after <code>InitHW</code>: the game restarts
+from its cold start. <code>Ppu_SetBgLayout</code> (<code>$FD:C0D7</code>), right after it, sets a fixed
 background layout the same way.</p>
 <h2 id="gameloops-cold-init">GameLoop's cold init</h2>
 <p><code>GameLoop</code> (<code>$C0:000E</code>) installs the interrupt trampolines (<code>InstallNMI</code>: <code>JML NmiHandler</code> into

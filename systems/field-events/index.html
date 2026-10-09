@@ -265,13 +265,13 @@
       <div class="wk-article-body">
       
       
-      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="October 9, 2026 00:05:30 UTC">October 9, 2026</span></p>
+      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="October 9, 2026 04:49:43 UTC">October 9, 2026</span></p>
       
       <h1 id="field-event-scripts">Field event scripts</h1>
 <p>Every object on a field location (people, doors, the party members themselves) is driven by a
-byte-code script in the location's event data. The interpreter and most of its <abbr title="The first byte of a CPU instruction, identifying the operation (e.g. $60 = RTS, $78 = SEI).">opcode</abbr> handlers are
-in bank <code>$C0</code> and <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr>; the <abbr title="The first byte of a CPU instruction, identifying the operation (e.g. $60 = RTS, $78 = SEI).">opcode</abbr> table itself (<code>Evt_OpcodeTable</code>, <code>$C0:5D6E</code>, 256 words) is
-not yet, and a number of handlers still have no name (see <a href="#what-is-not-matched-yet">What is not <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr> yet</a>).</p>
+byte-code script in the location's event data. The interpreter, the <abbr title="The first byte of a CPU instruction, identifying the operation (e.g. $60 = RTS, $78 = SEI).">opcode</abbr> table
+(<code>Evt_OpcodeTable</code>, <code>$C0:5D6E</code>, 256 words) and every <abbr title="The first byte of a CPU instruction, identifying the operation (e.g. $60 = RTS, $78 = SEI).">opcode</abbr> handler are in bank <code>$C0</code> and <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr>;
+what is left is outside the interpreter (see <a href="#what-is-not-matched-yet">What is not <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr> yet</a>).</p>
 <p>See also: <a href="../frame-cycle/">Frame cycle and <abbr title="Non-Maskable Interrupt — fires at the start of VBlank each frame; the safe window for PPU updates.">NMI</abbr></a>, <a href="../engine/">Engine core</a>,
 <a href="../sprites/">Sprites &amp; objects</a>.</p>
 <h2 id="objects-functions-and-levels">Objects, functions and levels</h2>
@@ -308,7 +308,11 @@ until its next run. A handler that returns its own position with C=0 runs again 
 how waits and moves in progress work. The two scheduler routines keep their <code>Vblank_</code> names because
 verified callers use them; their headers suggest <code>Obj_QueueScripts</code> / <code>Obj_RunQueuedScripts</code>.</p>
 <h2 id="the-opcodes">The <abbr title="First bytes of CPU instructions, identifying operations (e.g. $60 = RTS, $78 = SEI).">opcodes</abbr></h2>
-<p>Matched handlers, by group (each group has its own banner in <code>bankC0.asm</code>):</p>
+<p><code>Evt_OpcodeTable</code> (<code>$C0:5D6E</code>–<code>$C0:5F6D</code>) holds one bank-<code>$C0</code> handler address per <abbr title="The first byte of a CPU instruction, identifying the operation (e.g. $60 = RTS, $78 = SEI).">opcode</abbr>. Four
+places read it with <code>JSR (Evt_OpcodeTable,X)</code>: <code>Evt_InitObjects</code>, <code>Evt_RunObj0Func1</code>,
+<code>Evt_RunObjInit</code> and <code>Evt_RunObjScriptSteps</code>. Its first two bytes are also read by the 32-byte
+copies of <code>LocLoad_InitUnk7F3700</code> (see <a href="#party-walks">Party walks</a>).</p>
+<p>The handlers, by group (each group has its own banner in <code>bankC0.asm</code>):</p>
 <table>
 <thead>
 <tr>
@@ -385,6 +389,42 @@ verified callers use them; their headers suggest <code>Obj_QueueScripts</code> /
 <td><code>$C0:353F</code>–<code>$C0:3710</code></td>
 <td><code>Evt_OpB1_Yield</code>, <code>Evt_OpB5_FollowObj</code>, <code>Evt_OpBB_Msg</code>, <code>Evt_OpC0_MsgChoice</code></td>
 </tr>
+<tr>
+<td><code>$D9</code>, <code>$DA</code></td>
+<td>Party walks and gathers</td>
+<td><code>$C0:326C</code>–<code>$C0:353E</code></td>
+<td><code>Evt_OpD9_PartyWalkToTiles</code>, <code>Evt_OpDA_PartyGather</code></td>
+</tr>
+<tr>
+<td><code>$33</code>, <code>$C7</code>–<code>$D8</code></td>
+<td>Palette, items, gold, characters, battle</td>
+<td><code>$C0:3711</code>–<code>$C0:3AB6</code></td>
+<td><code>Evt_Op33_SetPalette</code>, <code>Evt_OpC9_IfHasItem</code>, <code>Evt_OpCD_AddGold</code>, <code>Evt_OpD3_AddCharToParty</code>, <code>Evt_OpD8_StartBattle</code></td>
+</tr>
+<tr>
+<td><code>$DC</code>–<code>$E8</code>, <code>$EA</code>–<code>$EE</code>, <code>$F0</code>–<code>$F4</code>, <code>$F8</code>–<code>$FA</code></td>
+<td>Locations, control, sound, fades, map effects</td>
+<td><code>$C0:3AB7</code>–<code>$C0:3E83</code></td>
+<td><code>Evt_OpE0_Warp</code>, <code>Evt_OpE3_SetControl</code>, <code>Evt_OpE4_CopyMapRegion</code>, <code>Evt_OpEA_PlayMusic</code>, <code>Evt_OpF0_FadeBrightness</code>, <code>Evt_OpF4_SetShake</code></td>
+</tr>
+<tr>
+<td><code>$29</code>–<code>$2C</code>, <code>$2F</code>, <code>$32</code>, <code>$FE</code>, <code>$FF</code></td>
+<td>Credits, layer 3, window effects and scene exits</td>
+<td><code>$C0:3E84</code>–<code>$C0:41E3</code></td>
+<td><code>Evt_Op29_StartCredits</code>, <code>Evt_Op32_CreditsLine</code>, <code>Evt_OpFE_WinQuad</code>, <code>Evt_OpFF_Misc</code></td>
+</tr>
+<tr>
+<td><code>$57</code>, <code>$5C</code>, <code>$62</code>, <code>$68</code>, <code>$6A</code>, <code>$6C</code>, <code>$6D</code>, <code>$80</code>–<code>$83</code></td>
+<td>Character and sprite objects</td>
+<td><code>$C0:41E4</code>–<code>$C0:4866</code></td>
+<td><code>Evt_Op57_InitChar0</code>, <code>Evt_Op80_InitCharObj</code>, <code>Evt_Op81_InitSprite</code>, <code>Evt_Op83_InitEnemySprite</code></td>
+</tr>
+<tr>
+<td><code>$2E</code>, <code>$7C</code>–<code>$7E</code>, <code>$84</code>, <code>$87</code>–<code>$8E</code>, <code>$90</code>, <code>$91</code></td>
+<td>Object settings and palette animations</td>
+<td><code>$C0:4867</code>–<code>$C0:4D05</code></td>
+<td><code>Evt_Op84_SetUnk1B01</code>, <code>Evt_Op87_SetScriptPeriod</code>, <code>Evt_Op88_ObjPalAnim</code>, <code>Evt_Op8B_PlaceAtTile</code></td>
+</tr>
 </tbody>
 </table>
 <p>The unused <abbr title="First bytes of CPU instructions, identifying operations (e.g. $60 = RTS, $78 = SEI).">opcodes</abbr> (<code>$01</code>, <code>$3A</code>, <code>$3D</code>, <code>$3E</code>, <code>$45</code>, <code>$46</code>, <code>$6E</code>, <code>$70</code>, <code>$74</code>, <code>$78</code>, <code>$79</code>,
@@ -408,8 +448,30 @@ jump", per its header), with a gravity operand.</p>
 <h3 id="messages">Messages</h3>
 <p>The message <abbr title="First bytes of CPU instructions, identifying operations (e.g. $60 = RTS, $78 = SEI).">opcodes</abbr> (<code>$B8</code>, <code>$BB</code>, <code>$C0</code>–<code>$C4</code>) wait until <code>Field_Unk29</code> is 0, start
 <code>Field_Unk1F87</code>'s sequence with a number, the object and a pointer set by <code>Evt_OpB8_SetMsgPtr</code>,
-then wait for it to finish. Reading this as a text message with a choice cursor is, per the
-banner, "an inference from those uses, not traced through <code>Field_Unk1F87</code>" (which is not <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr>).</p>
+then wait for it to finish. A treasure (<code>Field_CheckTileInFront</code>) starts the same sequence.</p>
+<p><code>Field_Unk1F87</code> (<code>$C0:1F87</code>, run every frame from <code>GameLoop_FrameBody</code>) is the message window's
+frame step; its banner suggests the name <code>Field_MessageStep</code>. It works by state in <code>Field_Unk29</code>:
+clear the 1 KB text buffer at <code>$7E:F000</code> (<code>Field_MsgClearBuf</code>) and let the <abbr title="Non-Maskable Interrupt — fires at the start of VBlank each frame; the safe window for PPU updates.">NMI</abbr> send it to the
+four text lines; open the window a step a frame, placing it in the upper or lower half of the
+screen ("away from the object, probably") unless <code>Field_Unk30</code> fixes the place; draw the text one glyph
+a step with bank <code>$C2</code>'s text window (<code>TextWin_Init</code> / <code>TextWin_Step</code>, through <code>Field_MsgStart</code> and
+<code>Field_MsgStep</code>); wait; then close the window step by step. The status codes the string's control codes
+set (<code>TextWin_Status</code>) drive the waits: the end, a timed wait (its argument × 15 frames), a new
+line or a new page, some after a button press. A choice cursor (<code>Field_Unk62</code>, <code>64</code>, <code>65</code>)
+runs in the wait state, "probably". The text-line reading of <code>Field_Unk31</code>, and the reading of the
+status codes, come from what the code does with them.</p>
+<h3 id="items-gold-and-characters">Items, gold and characters</h3>
+<p>The item and gold <abbr title="First bytes of CPU instructions, identifying operations (e.g. $60 = RTS, $78 = SEI).">opcodes</abbr> (<code>$C7</code>, <code>$C9</code>–<code>$CE</code>) call the bank-<code>$C1</code> services behind
+<code>BankC1_Entry8003</code> (<code>BankC1_ServiceTable</code>, <code>$C1:D126</code>): 0 finds an item in the inventory, 1 adds
+one, 2 removes one, 3 tests the 24-bit gold against an amount, 4 adds gold, 5 takes it off when
+there is that much. The character <abbr title="First bytes of CPU instructions, identifying operations (e.g. $60 = RTS, $78 = SEI).">opcodes</abbr> (<code>$CF</code>–<code>$D3</code>), the item count (<code>$D7</code>) and <code>$D5</code>,
+<code>$F8</code>–<code>$FA</code> go through <code>BankC2_Entry8004</code> to the menu's command handler <code>Menu_Unk8C36</code> (not
+<abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr>); its character commands work on the 9-byte list <code>Menu_PartyOrder</code> (three party places, then six reserve places).</p>
+<h3 id="party-walks">Party walks</h3>
+<p><code>Evt_OpD9_PartyWalkToTiles</code> walks the leader and the two other members to three tiles, and
+<code>Evt_OpDA_PartyGather</code> walks members 2 and 3 to the leader. Both send the members off on small
+scripts that <code>LocLoad_InitUnk7F3700</code> seeds at <code>$7F:3700</code> (each member runs at level 0) and wait in
+the calling object until every member is back.</p>
 <h2 id="quirks-kept">Quirks kept</h2>
 <p>The handlers keep the original's oddities, each documented in its header. A few:
 <code>Evt_Op00_Return</code>'s level search has no upper bound; <code>Evt_Op6F_ShrVarByte</code> treats a count of 0
@@ -417,14 +479,14 @@ as 256 shifts; the comparison numbers of <abbr title="First bytes of CPU instruc
 are not masked; <code>Evt_OpB6_FollowPc</code> is missing a <code>CLC</code>; <code>Evt_InitObjects</code> fills three bank-$7F
 tables and then clears them again in its next step.</p>
 <h2 id="what-is-not-matched-yet">What is not <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr> yet</h2>
+<p>Every <abbr title="The first byte of a CPU instruction, identifying the operation (e.g. $60 = RTS, $78 = SEI).">opcode</abbr> handler is <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr>. Outside the interpreter, the code the handlers lean on that is
+not <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr> yet:</p>
 <ul>
-<li><code>Evt_OpcodeTable</code> itself (<code>$C0:5D6E</code>–<code>$C0:5F6D</code>).</li>
-<li>The handlers with no name yet: <code>$29</code>–<code>$2C</code>, <code>$2E</code>, <code>$2F</code>, <code>$32</code>, <code>$33</code>, <code>$57</code>, <code>$5C</code>, <code>$62</code>,
-  <code>$68</code>, <code>$6A</code>, <code>$6C</code>, <code>$6D</code>, <code>$7C</code>–<code>$7E</code>, <code>$80</code>–<code>$84</code>, <code>$87</code>–<code>$8E</code>, <code>$90</code>, <code>$91</code>, <code>$C7</code>–<code>$DA</code>,
-  <code>$DC</code>–<code>$E8</code>, <code>$EA</code>–<code>$EE</code>, <code>$F0</code>–<code>$F4</code>, <code>$F8</code>–<code>$FA</code>, <code>$FE</code>, <code>$FF</code> (from <code>NEXT.md</code>, which lists the
-  code at <code>$C0:326C</code>–<code>$C0:353E</code> and <code>$C0:3711</code>–<code>$C0:4CD5</code> as next).</li>
-<li>The party-control callees <code>Party_Unk9E29</code>, <code>Party_UnkA26B</code>, <code>Party_UnkA2CE</code> (the leader's step
-  log and the members' follow, probably).</li>
+<li>Where <code>$FF</code> with a second byte below <code>$90</code> goes: bank <code>$C3</code> (<code>BankC3_Entry0000</code>) and the bank-<code>$FD</code>
+  vectors <code>FdVec_FFF1</code>, <code>FdVec_FFEB</code>, <code>FdVec_FFE8</code>, <code>FdVec_FFE5</code>. These leave the field for good.</li>
+<li>The menu's command handler <code>Menu_Unk8C36</code>, behind the character <abbr title="First bytes of CPU instructions, identifying operations (e.g. $60 = RTS, $78 = SEI).">opcodes</abbr>.</li>
+<li><code>FdVec_FFF7</code>'s routine (<code>EngFD_UnkE39C</code>), which works each frame on the palette-animation records
+  that <code>$2E</code> and <code>$88</code> fill.</li>
 </ul>
       
       </div>

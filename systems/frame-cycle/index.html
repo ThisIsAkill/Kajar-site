@@ -253,7 +253,7 @@
           <li>
             <a href="#frame-cycle-and-nmi" class="wk-toc-link">Frame cycle and NMI</a>
             
-            <ol><li><a href="#one-field-frame" class="wk-toc-link">One field frame</a></li><li><a href="#the-handshake" class="wk-toc-link">The handshake</a></li><li><a href="#nmihandler" class="wk-toc-link">NmiHandler</a></li><li><a href="#the-oam-shadow" class="wk-toc-link">The OAM shadow</a></li><li><a href="#other-frame-cycles" class="wk-toc-link">Other frame cycles</a></li></ol>
+            <ol><li><a href="#one-field-frame" class="wk-toc-link">One field frame</a></li><li><a href="#the-handshake" class="wk-toc-link">The handshake</a></li><li><a href="#nmihandler" class="wk-toc-link">NmiHandler</a></li><li><a href="#the-field-irq" class="wk-toc-link">The field IRQ</a></li><li><a href="#the-oam-shadow" class="wk-toc-link">The OAM shadow</a></li><li><a href="#other-frame-cycles" class="wk-toc-link">Other frame cycles</a></li></ol>
             
           </li>
           
@@ -265,7 +265,7 @@
       <div class="wk-article-body">
       
       
-      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="October 9, 2026 00:11:08 UTC">October 9, 2026</span></p>
+      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="October 9, 2026 04:51:12 UTC">October 9, 2026</span></p>
       
       <h1 id="frame-cycle-and-nmi">Frame cycle and <abbr title="Non-Maskable Interrupt — fires at the start of VBlank each frame; the safe window for PPU updates.">NMI</abbr></h1>
 <p>How one frame of the field runs: the game logic in <code>GameLoop_FrameBody</code>, the end-of-frame work
@@ -333,6 +333,18 @@ uploads), then, with <abbr title="Direct Page — the 65816's relocatable 256-by
 indirect channels writing the BG tilemap bases, the three layers' scroll registers, the main and
 sub screens, two window positions and colour math, from one of two table sets in bank <code>$7F</code>
 (<code>$7F:0F80</code> or <code>$7F:1238</code>).</p>
+<h2 id="the-field-irq">The field IRQ</h2>
+<p><code>IrqHandler</code> (<code>$C0:ECCC</code>) is entered through the trampoline at <code>$7E:0504</code> that <code>InstallIRQ</code>
+writes. It does nothing when <code>Field_Unk0F</code> bit 7 is set (who sets it is not traced) or when
+<code>TIMEUP</code> says this is not a timer IRQ. Otherwise it turns the V-count IRQ off until the next <abbr title="Non-Maskable Interrupt — fires at the start of VBlank each frame; the safe window for PPU updates.">NMI</abbr>,
+waits for H-blank, forces blank and turns HDMA off, then by <code>Field_Unk53</code> bit 0, which
+<code>EngFD_UnkC2C1</code> flips each frame, runs <code>Irq_UploadTileAnim</code> or <code>FdVec_FFFD</code> (bank <code>$FD</code>, not
+<abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr>). The tile writes therefore happen every other frame.</p>
+<p><code>Irq_UploadTileAnim</code> (<code>$C0:ED15</code>) runs one queued tilemap job per call: either the new metatiles
+of a tile animation (the four tilemap words of each map tile, to the <abbr title="Video RAM — dedicated PPU memory for tile graphics and tilemaps; written via DMA during VBlank.">VRAM</abbr> addresses a
+<code>Mode*_Handler</code> queued in <code>TileAnim_VramAddrs</code>) or <code>DefaultHandler</code>'s single tile step. A step
+queued together with an animation waits for the next IRQ. Before that, while <code>Field_Unk63</code> is
+not negative, it calls <code>Irq_UnkF05E</code> (not <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr>; the message choice cursor, probably).</p>
 <h2 id="the-oam-shadow">The <abbr title="Object Attribute Memory — the PPU's 512+32-byte sprite table (up to 128 sprites: X/Y, tile, palette, size).">OAM</abbr> shadow</h2>
 <p><code>Oam_BuildShadow</code> (<code>$C0:B271</code>) rebuilds the <abbr title="Object Attribute Memory — the PPU's 512+32-byte sprite table (up to 128 sprites: X/Y, tile, palette, size).">OAM</abbr> shadow before the frame wait: low table at
 <code>$0700</code>, high table at <code>$0900</code>, split into three ranges that each object chooses with its
@@ -350,6 +362,10 @@ a range's new end and last frame's end off screen (Y = <code>$E0</code>). The <a
   list, runs every task (<code>C2Scene_TaskRunAll</code>) and draws the list into the <abbr title="Object Attribute Memory — the PPU's 512+32-byte sprite table (up to 128 sprites: X/Y, tile, palette, size).">OAM</abbr> shadow for the
   next <abbr title="Non-Maskable Interrupt — fires at the start of VBlank each frame; the safe window for PPU updates.">NMI</abbr>. The main loop only waits (<code>C2Scene_WaitFrame</code>: spin until <code>C2Scene_FrameCounter</code>
   changes) and dispatches on the scene mode. See <a href="../scene-engine/">Scene engine</a>.</li>
+<li><strong>Menu (bank <code>$C2</code>).</strong> <code>Menu_Nmi</code> (<code>$C2:840E</code>) runs on its own stack with <abbr title="Direct Page — the 65816's relocatable 256-byte zero-page window; address = D register + 8-bit offset.">DP</abbr>=<code>$0D00</code>; when the
+  menu loop has a frame ready it runs the upload (<code>Menu_Unk85D6</code>, not <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr>) and sets
+  <code>Menu_FrameReady</code> to <code>$FF</code>, which the menu loop waits for. Every <abbr title="Non-Maskable Interrupt — fires at the start of VBlank each frame; the safe window for PPU updates.">NMI</abbr> reads the pad and ticks the
+  play-time clock (<code>Menu_NmiPad</code>). <code>Menu_Irq</code> is a bare <code>RTI</code>.</li>
 <li><strong>Battle (bank <code>$C1</code>).</strong> <code>BattleSys_PumpFrames</code> (<code>$C1:007E</code>) sets <code>Battle_FramePending</code> and
   calls a bank-$CD vector until the flag is cleared. Its header reads this as a frame wait, but
   the clearing code in bank <code>$CF</code> is not traced, so "wait for the frame" is inferred, not proven.</li>

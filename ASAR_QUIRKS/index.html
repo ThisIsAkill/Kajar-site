@@ -265,7 +265,7 @@
       <div class="wk-article-body">
       
       
-      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="October 9, 2026 00:07:32 UTC">October 9, 2026</span></p>
+      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="October 9, 2026 04:54:39 UTC">October 9, 2026</span></p>
       
       <h1 id="asar-191-quirks"><abbr title="The 65816 assembler used for this project (version 1.91) — patches matched .asm source into a ROM copy for byte-exact verification.">asar</abbr> 1.91 Quirks</h1>
 <p>Surprises in how <abbr title="The 65816 assembler used for this project (version 1.91) — patches matched .asm source into a ROM copy for byte-exact verification.">asar</abbr> 1.91 picks an instruction's encoding. Future contributors: read this before
@@ -318,8 +318,8 @@ each such target a label-only stub in <code>asm/include/unmatched.asm</code> or 
 <code>org</code> to the address and a label, emitting no bytes. When the routine is <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr> its stub is
 deleted and the real label takes over. Bank files never hold stubs, and call sites never use raw
 addresses.</p>
-<div class="language-asm highlight"><span class="filename">65C816 Assembly</span><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1"></a><a href="#__codelineno-0-1"><span class="linenos" data-linenos="1 "></span></a><span class="nf">org</span><span class="w"> </span><span class="no">$C0ECCC</span>
-<a id="__codelineno-0-2" name="__codelineno-0-2"></a><a href="#__codelineno-0-2"><span class="linenos" data-linenos="2 "></span></a><span class="nl">IrqHandler:</span><span class="w">         </span><span class="c1">; label only: no bytes emitted</span>
+<div class="language-asm highlight"><span class="filename">65C816 Assembly</span><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1"></a><a href="#__codelineno-0-1"><span class="linenos" data-linenos="1 "></span></a><span class="nf">org</span><span class="w"> </span><span class="no">$C0F05E</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2"></a><a href="#__codelineno-0-2"><span class="linenos" data-linenos="2 "></span></a><span class="nl">Irq_UnkF05E:</span><span class="w">        </span><span class="c1">; label only: no bytes emitted</span>
 </code></pre></div>
 <h2 id="quick-reference">Quick reference</h2>
 <table>

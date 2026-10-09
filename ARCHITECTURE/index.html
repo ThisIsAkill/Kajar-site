@@ -265,7 +265,7 @@
       <div class="wk-article-body">
       
       
-      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="October 9, 2026 00:11:08 UTC">October 9, 2026</span></p>
+      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="October 9, 2026 04:54:31 UTC">October 9, 2026</span></p>
       
       <h1 id="engine-architecture">Engine Architecture</h1>
 <p>A high-level map of the Chrono Trigger SNES engine as recovered from <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr> code. Everything here
@@ -314,14 +314,15 @@ direct-page layout:</p>
 <p>Other banks enter <code>$C0</code>, <code>$C1</code> and <code>$C2</code> only through small fixed vector tables:</p>
 <ul>
 <li><code>ReentryVectors</code> at <code>$C0:0000</code>: entry 0 is a warm restart (<code>GameLoop_Main</code>), entries 1–4 are
-  <code>JSL</code> targets that tail into the routine they name.</li>
+  <code>JSL</code> targets that tail into <code>ScrollStepAccum</code>, <code>Field_RefreshHdmaLong</code>, <code>MusicCueDispatch</code> and
+  <code>AudioFadeDispatch</code> (see <a href="../systems/engine/#services-for-other-banks">Engine core</a>).</li>
 <li><code>BankC2_Entry0000</code>–<code>000C</code> at <code>$C2:0000</code> (the scene mode and the text window calls) and
   <code>BankC2_Entry8000</code>/<code>8002</code>/<code>8004</code> at <code>$C2:8000</code> (the menu entry, the joypad reader and a
   command dispatcher).</li>
 <li><code>$C1:0000</code> and on: the battle entry (<code>JSL $C10000</code> from the field), the exit vector, and a
   same-bank service dispatcher at <code>$C1:0045</code> with a 10-entry table at <code>$C1:0051</code>. The vectors
   themselves are not <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr> yet; <code>BankC1_BattleStartVec</code> (<code>$C1:8000</code>) and <code>BankC1_Entry8003</code>
-  (<code>$C1:8003</code>) are.</li>
+  (<code>$C1:8003</code>, the inventory and gold services the field's event scripts use) are.</li>
 </ul>
 <h2 id="boot-sequence">Boot sequence</h2>
 <div class="language-text highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>RESET vector → Reset ($00:FF00)
@@ -385,7 +386,7 @@ vectors), <code>Obj_ResetStates</code>, <code>Scene_PostLoadInit</code> (the obj
 <a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>  Field_SceneChangeTick       fades; warps, bank-$C2 calls, tile animations, battles
 <a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>  Field_FrameUpdate           D-pad, the leader's collision (probably), layer scroll
 <a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>  Field_ActionButton          action button: an object or treasure in front of the leader
-<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>  JSL Field_Unk1F87           (not matched)
+<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>  JSL Field_Unk1F87           the message window: open, draw the text, wait, close
 <a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>  Field_EventHookDispatch     one of 16 window-effect hooks
 <a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>  Field_ServiceUnk54          staff credits lines, map redraw requests
 <a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>  Field_EndOfFrame            object scripts, HDMA, motion, frame builds, OAM shadow
@@ -496,13 +497,16 @@ jump on through trampolines in <abbr title="Work RAM — 128KB of SNES main RAM 
 <td><code>$7E:0504</code></td>
 <td><code>IRQ_Stub</code> (<code>$00:FF14</code>)</td>
 <td><code>InstallIRQ</code>, <code>C2Scene_InstallInterrupts</code></td>
-<td><code>IrqHandler</code> (<code>$C0:ECCC</code>, not <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr>), <code>C2Scene_IrqHandler</code> (<code>$C2:0345</code>)</td>
+<td><code>IrqHandler</code> (<code>$C0:ECCC</code>), <code>C2Scene_IrqHandler</code> (<code>$C2:0345</code>)</td>
 </tr>
 </tbody>
 </table>
 <p>The trampolines are not set by <code>MainInit</code>. <code>Sys_HaltWithColor</code> sets both to <code>RTI</code> (at <code>$C0:2E4B</code>),
 and unmatched code in bank <code>$FD</code> (<code>$FD:EAF4</code>) repoints both into that bank (see <code>!NmiTrampoline</code>
 in <code>ram_engine.inc</code>).</p>
+<p>The menu in bank <code>$C2</code> has handlers of its own, <code>Menu_Nmi</code> (<code>$C2:840E</code>) and <code>Menu_Irq</code>
+(<code>$C2:8472</code>, a bare <code>RTI</code>), reached through <code>JML</code>s at <code>$C2:8406</code> / <code>$C2:840A</code> (not <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr>); which
+vector those sit behind is not traced. See <a href="../systems/frame-cycle/#other-frame-cycles">Frame cycle and <abbr title="Non-Maskable Interrupt — fires at the start of VBlank each frame; the safe window for PPU updates.">NMI</abbr></a>.</p>
 <h2 id="key-field-structures">Key field structures</h2>
 <ul>
 <li><strong>The field direct page</strong> (<code>$0100</code>–<code>$01FF</code>, <abbr title="Direct Page — the 65816's relocatable 256-byte zero-page window; address = D register + 8-bit offset.">DP</abbr>=<code>$0100</code>): <code>Loc_Id</code> at <code>$0100</code>, the frame
