@@ -212,21 +212,21 @@
       <div class="wk-party">
         <div class="wk-party-row" title="Bytes matched: the rebuilt ROM is byte-identical here">
           <span class="wk-party-k">HP</span>
-          <span class="wk-party-v">143,313<small>/359,278</small></span>
+          <span class="wk-party-v">153,271<small>/359,278</small></span>
         </div>
-        <div class="wk-stat-track"><div class="wk-stat-fill" style="width:39.89%"></div></div>
-        <p class="wk-party-note">bytes matched · 39.89% of code</p>
+        <div class="wk-stat-track"><div class="wk-stat-fill" style="width:42.66%"></div></div>
+        <p class="wk-party-note">bytes matched · 42.66% of code</p>
 
         <div class="wk-party-row" title="Matched functions that also meet the readability standard">
           <span class="wk-party-k">MP</span>
-          <span class="wk-party-v">1933<small>/1933</small></span>
+          <span class="wk-party-v">2022<small>/2022</small></span>
         </div>
         <div class="wk-stat-track"><div class="wk-stat-fill wk-stat-fill-mp" style="width:100.0%"></div></div>
         <p class="wk-party-note">functions readable</p>
 
         <div class="wk-party-row" title="Readable functions that passed an independent review">
           <span class="wk-party-k">TP</span>
-          <span class="wk-party-v">1933<small>/1933</small></span>
+          <span class="wk-party-v">2022<small>/2022</small></span>
         </div>
         <div class="wk-stat-track"><div class="wk-stat-fill wk-stat-fill-dim" style="width:100.0%"></div></div>
         <p class="wk-party-note">functions verified</p>
@@ -253,7 +253,7 @@
           <li>
             <a href="#9-october-2026-event-commands-battle-effects-the-map-view-and-the-dial" class="wk-toc-link">9 October 2026: event commands, battle effects, the map view and the dial</a>
             
-            <ol><li><a href="#event-commands-part-two" class="wk-toc-link">Event commands, part two</a></li><li><a href="#targets-and-effects" class="wk-toc-link">Targets and effects</a></li><li><a href="#housekeeping" class="wk-toc-link">Housekeeping</a></li><li><a href="#the-map-view-and-the-dial" class="wk-toc-link">The map view and the dial</a></li><li><a href="#next" class="wk-toc-link">Next</a></li></ol>
+            <ol><li><a href="#event-commands-part-two" class="wk-toc-link">Event commands, part two</a></li><li><a href="#targets-and-effects" class="wk-toc-link">Targets and effects</a></li><li><a href="#housekeeping" class="wk-toc-link">Housekeeping</a></li><li><a href="#the-map-view-and-the-dial" class="wk-toc-link">The map view and the dial</a></li><li><a href="#the-effect-arithmetic" class="wk-toc-link">The effect arithmetic</a></li><li><a href="#the-last-event-commands" class="wk-toc-link">The last event commands</a></li><li><a href="#next" class="wk-toc-link">Next</a></li></ol>
             
           </li>
           
@@ -305,8 +305,23 @@
 </ul>
 <p>Most of review's findings were one recurring slip: headers saying a routine takes either X width when it really needs 16-bit X. All 20 were fixed and passed a second review.</p>
 <p><code>main</code> now stands at 143,313 bytes, 39.89% of the game's code, all 1,933 <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr> routines independently verified.</p>
+<h2 id="the-effect-arithmetic">The effect arithmetic</h2>
+<p>Next came the arithmetic behind the battle effects in <code>$C1</code> (4,347 bytes): restoring HP and MP, curing and setting status, the hit roll, damage and its formulas, the hit, evade and defence adjustments, the timed-status lists, drain, steal, and the bank's small service table for finding, adding and removing items and gold.</p>
+<p>The code has some real bugs, all kept as found and documented:</p>
+<ul>
+<li>Damage kinds 8 to 10 never work as intended, because one test is inverted.</li>
+<li>One effect can never miss: its miss flag is stored to the wrong byte.</li>
+<li>Two of the timed-status lists are never started; the code that would start them cannot be reached.</li>
+<li>Adding an item to a full inventory overwrites the first slot.</li>
+<li>Gold is capped at 9,999,999, but adding to a total of 9,961,472 or more can lose money instead when the low part overflows: 9,999,999 + 30,000 leaves 9,964,463.</li>
+</ul>
+<p>Review sent six headers back, mostly for wording that was close but not exact about edge cases. All six were fixed and passed a second review.</p>
+<h2 id="the-last-event-commands">The last event commands</h2>
+<p>The final batch of event-script commands in <code>$C0</code> (5,611 bytes) completed the field's command table: the remaining handlers, the 256-entry table itself (32 of its entries are never used), the party's walking and running animations with their 65-entry table, the message window, the animated map tiles, and the field's interrupt handler, which uploads one tile-animation job each time it runs. A routine that had been called an audio sync turned out to touch no sound at all; it refreshes the HDMA tables and is now named for that.</p>
+<p>Four headers needed fixes, among them an address range that stopped two bytes short and a register claimed to be "any" when a callee needs it zero. All four passed a second review.</p>
+<p><code>main</code> now stands at 153,271 bytes, 42.66% of the game's code, all 2,022 <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr> routines independently verified.</p>
 <h2 id="next">Next</h2>
-<p>Matching continues with the last event commands in <code>$C0</code>, the code after the dial in <code>$C2</code>, and the effect arithmetic in <code>$C1</code>.</p>
+<p>A large <code>$C2</code> batch is in review: the scene screen effects, the menu's entry point and its cooperative thread scheduler, the menu's inventory and equipment helpers, and the cursor threads. After it, <abbr title="Writing assembly source that assembles byte-for-byte identically to the original ROM via asar.">matching</abbr> continues with the menu's command dispatcher and the battle engine's remaining handlers.</p>
   
   <p class="wk-post-back"><a href="../../../../">← Back to devlog</a></p>
 </article>

@@ -1,54 +1,54 @@
 {
   "schema": 2,
-  "emitted_bytes": 143313,
+  "emitted_bytes": 153271,
   "code_bytes": 359278,
   "totals": {
     "matched": {
-      "functions": 1933,
-      "bytes": 143313
+      "functions": 2022,
+      "bytes": 153271
     },
     "readable": {
-      "functions": 1933,
-      "bytes": 143313
+      "functions": 2022,
+      "bytes": 153271
     },
     "verified": {
-      "functions": 1933,
-      "bytes": 143313
+      "functions": 2022,
+      "bytes": 153271
     }
   },
   "banks": [
     {
       "bank": "$C0",
       "code_bytes": 61779,
-      "emitted_bytes": 56691,
+      "emitted_bytes": 62302,
       "matched": {
-        "functions": 674,
-        "bytes": 56691
+        "functions": 736,
+        "bytes": 62302
       },
       "readable": {
-        "functions": 674,
-        "bytes": 56691
+        "functions": 736,
+        "bytes": 62302
       },
       "verified": {
-        "functions": 674,
-        "bytes": 56691
+        "functions": 736,
+        "bytes": 62302
       }
     },
     {
       "bank": "$C1",
       "code_bytes": 63904,
-      "emitted_bytes": 49456,
+      "emitted_bytes": 53803,
       "matched": {
-        "functions": 544,
-        "bytes": 49456
+        "functions": 571,
+        "bytes": 53803
       },
       "readable": {
-        "functions": 544,
-        "bytes": 49456
+        "functions": 571,
+        "bytes": 53803
       },
       "verified": {
-        "functions": 544,
-        "bytes": 49456
+        "functions": 571,
+        "bytes": 53803
       }
     },
     {
@@ -142,7 +142,7 @@
       "bank": "$C0",
       "start": "$C0:0000",
       "end": "$C0:0FFF",
-      "emitted_bytes": 4055,
+      "emitted_bytes": 4096,
       "functions": [
         "ReentryVectors",
         "GameLoop",
@@ -178,6 +178,7 @@
         "LocLoad_Unk09DD",
         "LocLoad_Unk0A14",
         "LocLoad_DrawMap",
+        "Field_RefreshHdmaLong",
         "Scene_ResumeNmi",
         "InitHW",
         "InstallNMI",
@@ -192,7 +193,7 @@
       "bank": "$C0",
       "start": "$C0:1000",
       "end": "$C0:1FFF",
-      "emitted_bytes": 3638,
+      "emitted_bytes": 4096,
       "functions": [
         "ModeEE_Handler",
         "ModeFA_Handler",
@@ -209,6 +210,8 @@
         "Audio_PlayTileSfxA",
         "Audio_PlaySfxAtLeader",
         "Audio_PlayTileSfxB",
+        "MusicCueDispatch",
+        "AudioFadeDispatch",
         "Field_FindObjInFront",
         "Field_ObjInReachTable",
         "Field_ObjInReachUp",
@@ -225,15 +228,19 @@
         "Field_TileInFrontRight",
         "Field_CheckTileInFront_Start",
         "Fade_StepBrightness",
-        "Fade_StepFixedColor"
+        "Fade_StepFixedColor",
+        "Field_Unk1F87"
       ]
     },
     {
       "bank": "$C0",
       "start": "$C0:2000",
       "end": "$C0:2FFF",
-      "emitted_bytes": 2891,
+      "emitted_bytes": 4096,
       "functions": [
+        "Field_MsgClearBuf",
+        "Field_MsgStart",
+        "Field_MsgStep",
         "Field_EventHookDispatch",
         "Field_EventHookTable",
         "Field_HookWinGrow0",
@@ -254,8 +261,13 @@
         "Field_FadeInAfterReload",
         "Scene_SettleFrames",
         "Scene_ReloadStep",
+        "TileAnimList_Clear",
+        "TileAnimList_AddCurrent",
+        "TileAnimList_ApplyAll",
+        "TileAnimList_ApplyOne",
         "Field_Unk29F7",
         "Field_Unk2B78",
+        "ScrollStepAccum",
         "VramDma_Upload",
         "ClearRAMDMA",
         "Sys_HaltWithColor",
@@ -365,7 +377,7 @@
       "bank": "$C0",
       "start": "$C0:4000",
       "end": "$C0:4FFF",
-      "emitted_bytes": 2913,
+      "emitted_bytes": 4096,
       "functions": [
         "Evt_OpFFTable",
         "Evt_OpFF90_WinGrow0",
@@ -399,6 +411,23 @@
         "Evt_InitWramSprite",
         "Evt_Op82_InitWramSprite",
         "Evt_Op83_InitEnemySprite",
+        "Evt_Op84_SetUnk1B01",
+        "Evt_Op87_SetScriptPeriod",
+        "Evt_Op88_ObjPalAnim",
+        "Evt_Op2E_PalAnim",
+        "Evt_FindFreeAnimB",
+        "Evt_Op89_SetSpeed",
+        "Evt_Op8A_SetSpeedVar",
+        "Evt_Op8B_PlaceAtTile",
+        "Evt_Op8C_PlaceAtTileVar",
+        "Evt_Op8D_SetPos",
+        "Evt_Op8E_SetOamFlags",
+        "Evt_Op90_SetUnk1A81On",
+        "Evt_Op90_Store",
+        "Evt_Op91_ClearUnk1A81",
+        "Evt_Op7E_SetUnk1A81Bit7",
+        "Evt_Op7C_SetObjUnk1A81On",
+        "Evt_Op7D_ClearObjUnk1A81",
         "Evt_Op7A_ArcToTile",
         "Evt_Op7B_ArcSteps",
         "Evt_Op92_WalkDir",
@@ -412,7 +441,7 @@
       "bank": "$C0",
       "start": "$C0:5000",
       "end": "$C0:5FFF",
-      "emitted_bytes": 3584,
+      "emitted_bytes": 4096,
       "functions": [
         "Evt_Op97_WalkToTileVar",
         "Evt_OpA0_MoveToTile",
@@ -471,6 +500,7 @@
         "LocLoad_CheckEvtData",
         "LocLoad_InitUnk7F3700",
         "LocLoad_Unk7F3700Init",
+        "Evt_OpcodeTable",
         "Evt_UnusedOpcode",
         "Evt_Op00_Return",
         "Evt_Op02_CallObjFunc",
@@ -732,7 +762,7 @@
       "bank": "$C0",
       "start": "$C0:9000",
       "end": "$C0:9FFF",
-      "emitted_bytes": 3625,
+      "emitted_bytes": 4096,
       "functions": [
         "Map_Unk9175",
         "Map_Unk91AC",
@@ -776,15 +806,45 @@
         "Map_SlopeSide",
         "Map_ProbeLevelBlocked",
         "Map_StepTileEffects",
-        "Map_InitEntryTile"
+        "Map_InitEntryTile",
+        "Party_Unk9E29",
+        "Party_LeaderAnim",
+        "Party_Member2Anim",
+        "Party_Member3Anim",
+        "Party_FollowerHoldAnim",
+        "Party_AnimNoStep",
+        "Party_AnimTable"
       ]
     },
     {
       "bank": "$C0",
       "start": "$C0:A000",
       "end": "$C0:AFFF",
-      "emitted_bytes": 3269,
+      "emitted_bytes": 4096,
       "functions": [
+        "Party_AnimLeftWalk",
+        "Party_AnimRightWalk",
+        "Party_AnimUpWalk",
+        "Party_AnimDownWalk",
+        "Party_AnimLeftRun",
+        "Party_AnimRightRun",
+        "Party_AnimUpRun",
+        "Party_AnimDownRun",
+        "Party_AnimDownLeftWalk",
+        "Party_AnimDownRightWalk",
+        "Party_AnimUpLeftWalk",
+        "Party_AnimUpRightWalk",
+        "Party_AnimDownLeftRun",
+        "Party_AnimDownRightRun",
+        "Party_AnimUpLeftRun",
+        "Party_AnimUpRightRun",
+        "Party_AnimWalk",
+        "Party_AnimRun",
+        "Party_AnimRowUnk19",
+        "Party_AnimIdle",
+        "Party_AnimRowUnk1B",
+        "Party_UnkA26B",
+        "Party_UnkA2CE",
         "LocLoad_UnkA33B",
         "LocLoad_EmptyStep",
         "Ppu_ApplyMapScreens",
@@ -884,7 +944,7 @@
       "bank": "$C0",
       "start": "$C0:E000",
       "end": "$C0:EFFF",
-      "emitted_bytes": 3276,
+      "emitted_bytes": 4096,
       "functions": [
         "Spr_LoadLargeObj",
         "Spr_CopyTileFlipped",
@@ -904,14 +964,16 @@
         "NmiHandler",
         "Field_WaitFrame",
         "Credits_UploadLine",
-        "Oam_UploadShadow"
+        "Oam_UploadShadow",
+        "IrqHandler",
+        "Irq_UploadTileAnim"
       ]
     },
     {
       "bank": "$C0",
       "start": "$C0:F000",
       "end": "$C0:FFFF",
-      "emitted_bytes": 768,
+      "emitted_bytes": 862,
       "functions": [
         "BitReverseTable",
         "RandomTable",
@@ -1501,7 +1563,7 @@
       "bank": "$C1",
       "start": "$C1:C000",
       "end": "$C1:CFFF",
-      "emitted_bytes": 4030,
+      "emitted_bytes": 4096,
       "functions": [
         "Battle_ScaleByte20",
         "Battle_ScaleByte30",
@@ -1533,15 +1595,24 @@
         "BattleSys_UnkCE3A",
         "BattleSys_UnkCF15",
         "BattleSys_UnkCF52",
-        "BattleSys_UnkCF69"
+        "BattleSys_UnkCF69",
+        "BattleAi_EnemyTurnJsr",
+        "BankC1_RunService",
+        "BankC1_FindItem"
       ]
     },
     {
       "bank": "$C1",
       "start": "$C1:D000",
       "end": "$C1:DFFF",
-      "emitted_bytes": 2309,
+      "emitted_bytes": 4096,
       "functions": [
+        "BankC1_AddItem",
+        "BankC1_RemoveItem",
+        "BankC1_HasGold",
+        "BankC1_AddGold",
+        "BankC1_RemoveGold",
+        "BankC1_ServiceTable",
         "BattleSys_EffRecArgsUnk66",
         "BattleSys_EffRecArgs12",
         "BattleSys_EffRecArg10Unk46",
@@ -1574,22 +1645,39 @@
         "BattleSys_UnkD7C4",
         "BattleSys_UnkD8D1",
         "BattleSys_EffectTable",
-        "BattleSys_TechMpCostTable"
+        "BattleSys_TechMpCostTable",
+        "BattleSys_RestoreHpMp",
+        "BattleSys_CureStatus",
+        "BattleSys_SetStatus",
+        "BattleSys_RollHit",
+        "BattleSys_ApplyDamage",
+        "BattleSys_TestEnemyUnk46",
+        "BattleSys_AdjustHit",
+        "BattleSys_AdjustEvade"
       ]
     },
     {
       "bank": "$C1",
       "start": "$C1:E000",
       "end": "$C1:EFFF",
-      "emitted_bytes": 869,
+      "emitted_bytes": 3321,
       "functions": [
+        "BattleSys_ArmStatusList",
+        "BattleSys_CalcDamage",
+        "BattleSys_WakeTarget",
+        "BattleSys_AdjustDefence",
+        "BattleSys_RollUpTo1A",
+        "BattleSys_DrainHpMp",
         "Battle_HitEntryOffset",
         "BattleSys_CasterHitOffset",
         "BattleSys_RecordMiss",
         "BattleSys_UnkE976",
         "BattleSys_LoadCasterStats",
         "BattleSys_LoadTargetStats",
+        "BattleSys_StealItem",
+        "BattleSys_RunUnkB2CCHandlers",
         "BattleSys_CopyEffectBytes78",
+        "BattleSys_RunUnkB2CCHandler",
         "Battle_SumHitSets",
         "Battle_RecordHit",
         "Battle_ClearCancelledHits",
@@ -1600,8 +1688,9 @@
       "bank": "$C1",
       "start": "$C1:F000",
       "end": "$C1:FFFF",
-      "emitted_bytes": 840,
+      "emitted_bytes": 882,
       "functions": [
+        "BattleSys_UnkB2CCHandlerTable",
         "Battle_SetupBattle",
         "Battle_CalcUnk56",
         "Battle_Mul16Long",
