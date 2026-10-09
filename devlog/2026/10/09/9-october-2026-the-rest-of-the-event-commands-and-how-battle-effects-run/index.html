@@ -6,13 +6,13 @@
   
   
   <meta name="description" content="Byte-exact matching decompilation of Chrono Trigger (SNES, US 1.0)">
-  <link rel="canonical" href="https://thisisakill.github.io/Kajar-site/devlog/category/oam/">
+  <link rel="canonical" href="https://thisisakill.github.io/Kajar-site/devlog/2026/10/09/9-october-2026-the-rest-of-the-event-commands-and-how-battle-effects-run/">
   
   
-  <title>OAM — Kajar</title>
+  <title>9 October 2026: the rest of the event commands, and how battle effects run — Kajar</title>
   
   
-  <link rel="stylesheet" href="../../../stylesheets/wiki.css">
+  <link rel="stylesheet" href="../../../../../stylesheets/wiki.css">
   
   
   
@@ -26,7 +26,7 @@
 <!-- ── Header ──────────────────────────────────────────────── -->
 <header class="wk-header">
   <button class="wk-nav-toggle" id="wk-nav-toggle" aria-label="Toggle navigation" aria-expanded="false" aria-controls="wk-nav">☰</button>
-  <a class="wk-wordmark" href="../../.." aria-label="Kajar home">
+  <a class="wk-wordmark" href="../../../../.." aria-label="Kajar home">
     <svg class="wk-wordmark-clock" viewBox="0 0 32 32" aria-hidden="true">
       <circle cx="16" cy="16" r="13.5" fill="#0f1438" stroke="#ffd76e" stroke-width="2.5"/>
       <g stroke="#cdd5ff" stroke-width="1.6" stroke-linecap="round">
@@ -61,10 +61,10 @@
 
   <!-- Left sidebar -->
   <nav class="wk-nav" id="wk-nav" aria-label="Site navigation">
-    <a href="../../.." class="wk-portal-icon" aria-label="Home">
+    <a href="../../../../.." class="wk-portal-icon" aria-label="Home">
       <span class="wk-emblem">
         <span class="wk-emblem-art">
-          <img src="../../../assets/ct-icon.png" alt="Crono" width="220" height="220">
+          <img src="../../../../../assets/ct-icon.png" alt="Crono" width="220" height="220">
         </span>
         <span class="wk-emblem-caption">Crono · 1000 AD</span>
       </span>
@@ -72,7 +72,7 @@
 
     
       
-      <a class="wk-nav-link" href="../../..">Home</a>
+      <a class="wk-nav-link" href="../../../../..">Home</a>
       
     
       
@@ -80,15 +80,15 @@
         <summary class="wk-nav-heading">The Journey</summary>
         
           
-          <a class="wk-nav-link" href="../../">Devlog</a>
+          <a class="wk-nav-link is-active" href="../../../../">Devlog</a>
           
         
           
-          <a class="wk-nav-link" href="../../../gallery/">Gallery</a>
+          <a class="wk-nav-link" href="../../../../../gallery/">Gallery</a>
           
         
           
-          <a class="wk-nav-link" href="../../../PROGRESS/">Progress</a>
+          <a class="wk-nav-link" href="../../../../../PROGRESS/">Progress</a>
           
         
         </details>
@@ -99,55 +99,55 @@
         <summary class="wk-nav-heading">Systems</summary>
         
           
-          <a class="wk-nav-link" href="../../../systems/">Overview</a>
+          <a class="wk-nav-link" href="../../../../../systems/">Overview</a>
           
         
           
-          <a class="wk-nav-link" href="../../../systems/boot/">Boot</a>
+          <a class="wk-nav-link" href="../../../../../systems/boot/">Boot</a>
           
         
           
-          <a class="wk-nav-link" href="../../../systems/frame-cycle/">Frame cycle & NMI</a>
+          <a class="wk-nav-link" href="../../../../../systems/frame-cycle/">Frame cycle & NMI</a>
           
         
           
-          <a class="wk-nav-link" href="../../../systems/engine/">Engine core</a>
+          <a class="wk-nav-link" href="../../../../../systems/engine/">Engine core</a>
           
         
           
-          <a class="wk-nav-link" href="../../../systems/field-events/">Field event scripts</a>
+          <a class="wk-nav-link" href="../../../../../systems/field-events/">Field event scripts</a>
           
         
           
-          <a class="wk-nav-link" href="../../../systems/sprites/">Sprites & objects</a>
+          <a class="wk-nav-link" href="../../../../../systems/sprites/">Sprites & objects</a>
           
         
           
-          <a class="wk-nav-link" href="../../../systems/scene-engine/">Scene engine</a>
+          <a class="wk-nav-link" href="../../../../../systems/scene-engine/">Scene engine</a>
           
         
           
-          <a class="wk-nav-link" href="../../../systems/text-windows/">Text windows</a>
+          <a class="wk-nav-link" href="../../../../../systems/text-windows/">Text windows</a>
           
         
           
-          <a class="wk-nav-link" href="../../../systems/battle-engine/">Battle engine</a>
+          <a class="wk-nav-link" href="../../../../../systems/battle-engine/">Battle engine</a>
           
         
           
-          <a class="wk-nav-link" href="../../../systems/battle-actions/">Battle actions</a>
+          <a class="wk-nav-link" href="../../../../../systems/battle-actions/">Battle actions</a>
           
         
           
-          <a class="wk-nav-link" href="../../../systems/battle-menu/">Battle menu</a>
+          <a class="wk-nav-link" href="../../../../../systems/battle-menu/">Battle menu</a>
           
         
           
-          <a class="wk-nav-link" href="../../../systems/battle-targeting/">Battle targeting</a>
+          <a class="wk-nav-link" href="../../../../../systems/battle-targeting/">Battle targeting</a>
           
         
           
-          <a class="wk-nav-link" href="../../../systems/battle-status/">Status bar & text</a>
+          <a class="wk-nav-link" href="../../../../../systems/battle-status/">Status bar & text</a>
           
         
         </details>
@@ -158,19 +158,19 @@
         <summary class="wk-nav-heading">How It Works</summary>
         
           
-          <a class="wk-nav-link" href="../../../ARCHITECTURE/">Architecture</a>
+          <a class="wk-nav-link" href="../../../../../ARCHITECTURE/">Architecture</a>
           
         
           
-          <a class="wk-nav-link" href="../../../ROM_MAP/">ROM Map</a>
+          <a class="wk-nav-link" href="../../../../../ROM_MAP/">ROM Map</a>
           
         
           
-          <a class="wk-nav-link" href="../../../how-sprite-init-works/">Sprite Init Explainer</a>
+          <a class="wk-nav-link" href="../../../../../how-sprite-init-works/">Sprite Init Explainer</a>
           
         
           
-          <a class="wk-nav-link" href="../../../ROM_HASH/">Target ROM</a>
+          <a class="wk-nav-link" href="../../../../../ROM_HASH/">Target ROM</a>
           
         
         </details>
@@ -181,26 +181,26 @@
         <summary class="wk-nav-heading">For Time Travelers</summary>
         
           
-          <a class="wk-nav-link" href="../../../CONTRIBUTING/">Contributing</a>
+          <a class="wk-nav-link" href="../../../../../CONTRIBUTING/">Contributing</a>
           
         
           
-          <a class="wk-nav-link" href="../../../ASAR_QUIRKS/">asar Quirks</a>
+          <a class="wk-nav-link" href="../../../../../ASAR_QUIRKS/">asar Quirks</a>
           
         
           
-          <a class="wk-nav-link" href="../../../glossary/">Glossary</a>
+          <a class="wk-nav-link" href="../../../../../glossary/">Glossary</a>
           
         
           
-          <a class="wk-nav-link" href="../../../CI_SETUP/">CI Setup</a>
+          <a class="wk-nav-link" href="../../../../../CI_SETUP/">CI Setup</a>
           
         
         </details>
       
     
       
-      <a class="wk-nav-link" href="../../../credits/">Credits</a>
+      <a class="wk-nav-link" href="../../../../../credits/">Credits</a>
       
     
 
@@ -232,7 +232,7 @@
         <p class="wk-party-note">functions verified</p>
       </div>
       
-      <p class="wk-stat-link"><a href="../../../PROGRESS/">View full progress →</a></p>
+      <p class="wk-stat-link"><a href="../../../../../PROGRESS/">View full progress →</a></p>
     </div>
   </nav>
 
@@ -241,48 +241,68 @@
     <div class="wk-article">
 
       
-
-<div class="wk-toc wk-blog-toc" id="wk-toc">
-  <div class="wk-toc-header">
-    <b>Sessions</b>
-    <button class="wk-toc-toggle"
-      onclick="var l=document.getElementById('wk-toc-list');l.hidden=!l.hidden;this.textContent=l.hidden?'[show]':'[hide]'">[hide]</button>
-  </div>
-  <ol class="wk-toc-list" id="wk-toc-list">
-    
-    
-    <li><a href="../../2026/08/12/12-august-2026-the-sprite-init-system-closes-and-a-first-look-at-bank-c1/" class="wk-toc-link">12 August 2026: the sprite-init system closes, and a first look at bank C1</a></li>
-    
-  </ol>
-</div>
-
-
+      
+      <div class="wk-toc" id="wk-toc">
+        <div class="wk-toc-header">
+          <b>Contents</b>
+          <button class="wk-toc-toggle"
+            onclick="var l=document.getElementById('wk-toc-list');l.hidden=!l.hidden;this.textContent=l.hidden?'[show]':'[hide]'">[hide]</button>
+        </div>
+        <ol class="wk-toc-list" id="wk-toc-list">
+          
+          <li>
+            <a href="#9-october-2026-the-rest-of-the-event-commands-and-how-battle-effects-run" class="wk-toc-link">9 October 2026: the rest of the event commands, and how battle effects run</a>
+            
+            <ol><li><a href="#event-commands-part-two" class="wk-toc-link">Event commands, part two</a></li><li><a href="#targets-and-effects" class="wk-toc-link">Targets and effects</a></li><li><a href="#housekeeping" class="wk-toc-link">Housekeeping</a></li><li><a href="#next" class="wk-toc-link">Next</a></li></ol>
+            
+          </li>
+          
+        </ol>
+      </div>
+      
+      
 
       <div class="wk-article-body">
       
-<div>
-  <h1 id="oam"><abbr title="Object Attribute Memory — the PPU's 512+32-byte sprite table (up to 128 sprites: X/Y, tile, palette, size).">OAM</abbr></h1>
+<article>
+  
+  <p class="wk-post-meta">
+    <time datetime="2026-10-09 00:00:00+00:00">2026-10-09</time>
+    
+  </p>
   
   
-  <div class="wk-blog-entry">
-    
-    <p class="wk-post-meta"><time datetime="2026-08-12 00:00:00+00:00">2026-08-12</time></p>
-    
-    <div class="wk-blog-excerpt"><h2 id="12-august-2026-the-sprite-init-system-closes-and-a-first-look-at-bank-c1"><a class="toclink" href="../../2026/08/12/12-august-2026-the-sprite-init-system-closes-and-a-first-look-at-bank-c1/">12 August 2026: the sprite-init system closes, and a first look at bank C1</a></h2>
-<p>The triple-slot routines, the dispatcher layer above the sprite-slot cluster and the animation queue that drives it are all <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr>, so the sprite system from <code>$C98A</code> to <code>$E129</code> is one continuous run of <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr> code. Then a scouting pass over bank <code>$C1</code>, the battle engine. 3,509 new bytes in 10 functions (sessions 31 to 33).</p>
-</div>
-    
-    <p class="wk-read-more"><a href="../../2026/08/12/12-august-2026-the-sprite-init-system-closes-and-a-first-look-at-bank-c1/">Continue reading →</a></p>
-    
-  </div>
+  <h1 id="9-october-2026-the-rest-of-the-event-commands-and-how-battle-effects-run">9 October 2026: the rest of the event commands, and how battle effects run</h1>
+<p>Two more batches went through review overnight: the second half of the field's event-script commands in <code>$C0</code>, and the part of the battle engine that resolves an action's targets and runs its effects in <code>$C1</code>. Together 10,245 bytes in 143 routines, all independently verified.</p>
+<!-- more -->
+
+<h2 id="event-commands-part-two">Event commands, part two</h2>
+<p>The field's event scripts drive almost everything that happens outside battle. This batch (<code>$C0</code>, 5,214 bytes) covers the commands that move the party, give and take items and gold, add and remove party members, warp to other locations, play music and sound effects, fade the screen, shake it, and set up characters and sprites. The credits use a few of them too.</p>
+<p>Two finds along the way:</p>
+<ul>
+<li>A block of RAM the code had called <code>Map_Unk7F3700</code> turned out to hold small event scripts: one walks a party member back to the leader, three walk a member to a tile and turn it, and one remembers a script position.</li>
+<li>Several commands hand work to the menu code in bank <code>$C2</code>, and their headers first claimed the Y register came back unchanged. It does not: the menu side never saves it, and a later restore even clears its high byte. Review caught this in twelve headers.</li>
+</ul>
+<h2 id="targets-and-effects">Targets and effects</h2>
+<p>When a tech or an item is used, the battle engine first works out who it hits, then runs its effects one part at a time. This batch (<code>$C1</code>, 5,031 bytes) covers the target resolution, the runner that steps through a tech's parts, the MP check, the first effect types and the table that dispatches them, and a set of fixed-fraction scaling helpers. Five of the eight scalers have no caller at all.</p>
+<p>Review found two quirks worth keeping:</p>
+<ul>
+<li>Two scratch variables in the target routine overlap, so a second entry in an area record would be read from the wrong place. No area record in the game has a second entry, so it never matters.</li>
+<li>On one path the final store reads entry $FF of the target list, well past its end, because a counter is 0 when 1 is subtracted from it.</li>
+</ul>
+<h2 id="housekeeping">Housekeeping</h2>
+<ul>
+<li>CI now really checks the ROM's hash. Before, it looked for a file that does not exist in the repository and quietly skipped the check.</li>
+<li>The function notes in the symbol list now start at the beginning of a sentence instead of halfway through.</li>
+<li>The caller-finding tool's tests were pinned to code that has since been <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr>. They now test the same thing without depending on how much is <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr>.</li>
+<li>Every page of this wiki was checked against the current source and brought up to date, and five new system pages describe the frame cycle, the field event scripts, the scene engine, the text windows and battle actions.</li>
+</ul>
+<p><code>main</code> now stands at 138,463 bytes, 38.54% of the game's code, all 1,858 <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr> routines independently verified.</p>
+<h2 id="next">Next</h2>
+<p>The map view and the dial in the <code>$C2</code> scenes are in review. Matching continues with the last event commands in <code>$C0</code>, the code after the dial in <code>$C2</code>, and the effect arithmetic in <code>$C1</code>.</p>
   
-  
-  <nav class="wk-pagination">
-    
-    
-  </nav>
-  
-</div>
+  <p class="wk-post-back"><a href="../../../../">← Back to devlog</a></p>
+</article>
 
       </div>
 
@@ -380,7 +400,7 @@ var input   = document.getElementById('wk-q');
 var results = document.getElementById('wk-results');
 var docs    = null;
 if (input) {
-  fetch("../../../search/search_index.json")
+  fetch("../../../../../search/search_index.json")
     .then(function (r) { return r.json(); })
     .then(function (d) { docs = d.docs; });
 
@@ -415,7 +435,7 @@ function onSearch() {
     return (d.title + ' ' + d.text).toLowerCase().indexOf(q) !== -1;
   }).slice(0, 8);
   if (!hits.length) { results.hidden = true; return; }
-  var base = "../../..";
+  var base = "../../../../..";
   results.innerHTML = hits.map(function (d) {
     var text  = d.text || '';
     var i     = text.toLowerCase().indexOf(q);

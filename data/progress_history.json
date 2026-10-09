@@ -71,9 +71,16 @@
   },
   {
     "date": "2026-10-08",
-    "matched_bytes": 29032,
-    "matched_functions": 256,
-    "readable_functions": 256,
-    "verified_functions": 23
+    "matched_bytes": 128218,
+    "matched_functions": 1715,
+    "readable_functions": 1715,
+    "verified_functions": 1715
+  },
+  {
+    "date": "2026-10-09",
+    "matched_bytes": 128218,
+    "matched_functions": 1715,
+    "readable_functions": 1715,
+    "verified_functions": 1715
   }
 ]
