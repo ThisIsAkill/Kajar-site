@@ -76,7 +76,7 @@ $C0:1EF7,$C0:1F0D,23,Field_TileInFrontRight,$C0,Engine,code,verified,ed6f862ca3a
 $C0:1F0E,$C0:1F23,22,Field_CheckTileInFront_Start,$C0,Engine,code,verified,2bb777bd7365,Field_CheckTileInFront's tail: A = the TreasureKind_* value.
 $C0:1F24,$C0:1F59,54,Fade_StepBrightness,$C0,Engine,code,verified,9e1d01eb92bd,(was Sub_1F24.) Brightness fade: steps Fade_Brightness one unit toward Fade_BrightnessTarget every Fade_BrightnessDelay+1 frames and clears FadeFlag_Brightness when it gets there (or reaches 0...
 $C0:1F5A,$C0:1F86,45,Fade_StepFixedColor,$C0,Engine,code,verified,6dd52cbfeef6,(was Sub_1F5A.) Fixed-colour fade: steps Fade_FixedColor one unit toward Fade_FixedColorTarget every Fade_FixedColorDelay+1 frames and clears FadeFlag_FixedColor when it gets there.
-$C0:1F87,$C0:20B1,299,Field_Unk1F87,$C0,Engine,code,verified,f40d5b586849,By Field_Unk29 (the message state): - 0: nothing.
+$C0:1F87,$C0:20B1,299,Field_Unk1F87,$C0,Engine,code,verified,18acb37676c0,By Field_Unk29 (the message state): - 0: nothing.
 $C0:20B2,$C0:20F1,64,Field_MsgClearBuf,$C0,Engine,code,verified,994715cc7618,"Zeroes the 1 KB text buffer Field_Unk7EF000 ($7E:F000-$7E:F3FF) as Map_ClearBufC800 does: two MVNs copy the 32 zero bytes at GfxRom_D2 to its first 64 bytes, then each MVN copies the zeroed part..."
 $C0:20F2,$C0:2125,52,Field_MsgStart,$C0,Engine,code,verified,0321b94efb25,Starts the text window on the message: TextWin_StrIndex = Field_Unk2A; the string table TextWin_StrTable = FieldMsg_TreasureStrs ($DE:FF00) while Field54_WatchBox is set in Field_Unk54 (a treasure...
 $C0:2126,$C0:21E0,187,Field_MsgStep,$C0,Engine,code,verified,2c14c61ad7e7,One step of the message text.
@@ -132,7 +132,7 @@ $C0:30B3,$C0:3153,161,Obj_Unk30B3,$C0,Sprites & objects,code,verified,19fb709880
 $C0:3154,$C0:31B0,93,Evt_StartTargetFunc2,$C0,Engine,code,verified,f88dc4f010ea,The touch counterpart of Evt_StartTargetFunc1: starts function 2 of the object in Field_UnkEB.
 $C0:31B1,$C0:326B,187,Evt_PushTarget,$C0,Engine,code,verified,14c34cf506a4,"Moves the object in Field_UnkEB one tile on in the leader's facing, probably a push."
 $C0:326C,$C0:3459,494,Evt_OpD9_PartyWalkToTiles,$C0,Engine,code,verified,686166116192,"Event opcode $D9 (7 bytes: $D9, then column, row for the leader, member 2 and member 3): walks the party members to three tiles."
-$C0:345A,$C0:353E,229,Evt_OpDA_PartyGather,$C0,Engine,code,verified,fe0c1c7bb9c5,Event opcode $DA (1 byte): party members 2 and 3 walk to the leader.
+$C0:345A,$C0:353E,229,Evt_OpDA_PartyGather,$C0,Engine,code,verified,484d3fd34429,Event opcode $DA (1 byte): party members 2 and 3 walk to the leader.
 $C0:353F,$C0:3542,4,Evt_OpB1_Yield,$C0,Engine,code,verified,06ea74569b64,"Event opcode $B1 (1 byte): ends the object's run here: X = Y + 1 (the next opcode, for the next run), C=0."
 $C0:3543,$C0:3545,3,Evt_OpB2_Halt,$C0,Engine,code,verified,620f02ad9463,"Event opcode $B2 (1 byte): stops the object on this opcode for good: X = Y (the opcode again), C=0."
 $C0:3546,$C0:354E,9,Evt_OpB5_FollowObj,$C0,Engine,code,verified,873a33872948,"Event opcode $B5 (2 bytes: $B5, slot): runs Evt_Op94_WalkToObj (a step toward the object in slot) and stays on this opcode for good: X = Y, C=0 whatever the walk returned."
@@ -234,7 +234,7 @@ $C0:448D,$C0:4556,202,Evt_LoadSpriteRec,$C0,Engine,code,verified,9ace7589e4f5,
 $C0:4557,$C0:458F,57,Evt_InitWramSprite,$C0,Engine,code,verified,008bc1d51399,"The common start of Evt_Op82_InitWramSprite and Evt_Op83_InitEnemySprite (A = the Obj_Unk1100 kind, 4 or 5): Obj_Unk1100 = A, Obj_Unk1101 = the operand after the opcode (also left in WRMPYA for..."
 $C0:4590,$C0:46DE,335,Evt_Op82_InitWramSprite,$C0,Engine,code,verified,04c438c416a8,"Event opcode $82 (2 bytes: $82, n): Evt_InitWramSprite with kind 4 (Obj_Unk1100Kind4), then Obj_Unk1B01 = Obj_Unk1B01Solid and sprite record SprRec_FirstNpc + n of RomE4_SprRec loaded as..."
 $C0:46DF,$C0:4866,392,Evt_Op83_InitEnemySprite,$C0,Engine,code,verified,5c92d781cc51,"Event opcode $83 (3 bytes: $83, n, b): Evt_InitWramSprite with kind 5 (Obj_Unk1100Kind5), Obj_Unk1B01 = Obj_Unk1B01Solid, then record n of RomE4_EnemySprRec (EvtSpr_EnemyRecBytes each; its first..."
-$C0:4867,$C0:4875,15,Evt_Op84_SetUnk1B01,$C0,Engine,code,verified,bcdaf4a9f319,"Event opcode $84 (2 bytes: $84, value): Obj_Cur's Obj_Unk1B01 = value (bit 0: the object blocks the leader, Obj_Unk1B01Solid; bit 1: it can be pushed, Obj_Unk1B01Push)."
+$C0:4867,$C0:4875,15,Evt_Op84_SetUnk1B01,$C0,Engine,code,verified,9d2513a62a82,"Event opcode $84 (2 bytes: $84, value): Obj_Cur's Obj_Unk1B01 = value (bit 0: the object blocks the leader, Obj_Unk1B01Solid; bit 1: it can be pushed, Obj_Unk1B01Push)."
 $C0:4876,$C0:4891,28,Evt_Op87_SetScriptPeriod,$C0,Engine,code,verified,4ee7c6ebac7f,"Event opcode $87 (2 bytes: $87, n): Obj_Cur's Obj_Unk1000 = (n + 1) | its old bit 7 (Obj_Unk1000Bit7 kept): the object's script runs every n + 1 frames (Vblank_Unk59D9 reloads Obj_Unk1001 from..."
 $C0:4892,$C0:4A4D,444,Evt_Op88_ObjPalAnim,$C0,Engine,code,verified,4962cdbb4ffd,"Event opcode $88 ($88, kind, ...): palette animations on Obj_Cur's own palette (its colour 0 is EvtPal_Base = Obj_OamAttr x 8 + EvtPal_SpriteColor0: Obj_OamAttr holds the palette slot x 2)."
 $C0:4A4E,$C0:4B2B,222,Evt_Op2E_PalAnim,$C0,Engine,code,verified,e7e417550d23,"Event opcode $2E ($2E, kind, ...): as Evt_Op88_ObjPalAnim's kinds $4x/$5x and $8x, with absolute colour numbers instead of the object's palette."
@@ -251,24 +251,24 @@ $C0:4CE0,$C0:4CE5,6,Evt_Op91_ClearUnk1A81,$C0,Engine,code,verified,5dcd48c6df9c,
 $C0:4CE6,$C0:4CEB,6,Evt_Op7E_SetUnk1A81Bit7,$C0,Engine,code,verified,1fa522bd2788,"Event opcode $7E (1 byte): Obj_Cur's Obj_Unk1A81 = $80 (bit 7 only, FieldBtl_ObjUnk1A81Bit: outside 1..$7F, so no frame build, and the battle hand-off treats the object specially); X = Y + 1, C=0..."
 $C0:4CEC,$C0:4CF8,13,Evt_Op7C_SetObjUnk1A81On,$C0,Engine,code,verified,3bd2fb1b9f6f,"Event opcode $7C (2 bytes: $7C, slot): as Evt_Op90_SetUnk1A81On for the object in slot: Obj_Unk1A81 = Obj_Unk1A81On."
 $C0:4CF9,$C0:4D05,13,Evt_Op7D_ClearObjUnk1A81,$C0,Engine,code,verified,75f0ec883a36,"Event opcode $7D (2 bytes: $7D, slot): as Evt_Op91_ClearUnk1A81 for the object in slot: Obj_Unk1A81 = 0."
-$C0:4D06,$C0:4E24,287,Evt_Op7A_ArcToTile,$C0,Engine,code,verified,dec9d8682463,"Event opcode $7A (4 bytes: $7A, column, row, g): moves Obj_Cur along an arc (Obj_ArcMode, probably a jump) to map tile (column, row)."
+$C0:4D06,$C0:4E24,287,Evt_Op7A_ArcToTile,$C0,Engine,code,verified,e96b736d30d1,"Event opcode $7A (4 bytes: $7A, column, row, g): moves Obj_Cur along an arc (Obj_ArcMode, probably a jump) to map tile (column, row)."
 $C0:4E25,$C0:4E72,78,Evt_Op7B_ArcSteps,$C0,Engine,code,verified,c8b4a7a70205,"Event opcode $7B (5 bytes: $7B, vx, vy, g, frames): as Evt_Op7A_ArcToTile with the arc given directly: first run Obj_VelX = vx, Obj_VelY = vy, Obj_ArcGravity = g, Obj_MoveFrames = frames..."
-$C0:4E73,$C0:4EC6,84,Evt_Op92_WalkDir,$C0,Engine,code,verified,1f89b1a0bf20,"Event opcode $92 (3 bytes: $92, direction, frames): walks Obj_Cur in a direction for a number of frames."
-$C0:4EC7,$C0:4F09,67,Evt_Op9C_MoveDir,$C0,Engine,code,verified,928f19f93687,"Event opcode $9C (3 bytes: $9C, direction, frames): as Evt_Op92_WalkDir without the facing and the animation: Obj_Direction, ObjX_Unk7F0B00 = ObjX_Unk7F0B00Dir, Obj_MoveFrames, Obj_Unk1A80 + 1 and..."
-$C0:4F0A,$C0:4F60,87,Evt_Op9D_MoveDirVar,$C0,Engine,code,verified,cf39b8e9018a,"Event opcode $9D (3 bytes: $9D, a, b): as Evt_Op9C_MoveDir with the direction and the frames taken from the low bytes of the event words Evt_Unk7F0200 + a x 2 and + b x 2."
-$C0:4F61,$C0:4FE9,137,Evt_Op96_WalkToTile,$C0,Engine,code,verified,6689a2e73e8b,"Event opcode $96 (3 bytes: $96, column, row): walks Obj_Cur to a map tile, one step per script run."
-$C0:4FEA,$C0:5083,154,Evt_Op9A_WalkTowardTile,$C0,Engine,code,verified,a31afeac9654,"Event opcode $9A (4 bytes: $9A, column, row, frames): as Evt_Op96_WalkToTile, but a single step of the given frames (Obj_MoveFrames = ObjX_Unk7F0B00 = frames, Obj_Unk1A80 + 1); once Obj_Unk1A80 is..."
-$C0:5084,$C0:5128,165,Evt_Op97_WalkToTileVar,$C0,Engine,code,verified,aae40cb470fd,"Event opcode $97 (3 bytes: $97, a, b): as Evt_Op96_WalkToTile with the column and row from the low bytes of the event words Evt_Unk7F0200 + a x 2 and + b x 2."
-$C0:5129,$C0:5190,104,Evt_OpA0_MoveToTile,$C0,Engine,code,verified,7138e9dc9c33,"Event opcode $A0 (3 bytes: $A0, column, row): as Evt_Op96_WalkToTile without the facing and the animations (no Obj_Facing write, no Obj_SetMoveAnim / Obj_SetStandAnim): arrived (after any..."
-$C0:5191,$C0:5214,132,Evt_OpA1_MoveToTileVar,$C0,Engine,code,verified,4b7db9dbd4ef,"Event opcode $A1 (3 bytes: $A1, a, b): as Evt_OpA0_MoveToTile with the column and row from the low bytes of the event words Evt_Unk7F0200 + a x 2 and + b x 2."
-$C0:5215,$C0:5227,19,Evt_Op94_WalkToObj,$C0,Engine,code,verified,39955ae362c3,"Event opcode $94 (2 bytes: $94, slot): walks Obj_Cur next to the object in slot (object x 2), one step per script run."
+$C0:4E73,$C0:4EC6,84,Evt_Op92_WalkDir,$C0,Engine,code,verified,cf87b312f50f,"Event opcode $92 (3 bytes: $92, direction, frames): walks Obj_Cur in a direction for a number of frames."
+$C0:4EC7,$C0:4F09,67,Evt_Op9C_MoveDir,$C0,Engine,code,verified,2062d9686b91,"Event opcode $9C (3 bytes: $9C, direction, frames): as Evt_Op92_WalkDir without the facing and the animation: Obj_Direction, ObjX_Unk7F0B00 = ObjX_Unk7F0B00Dir, Obj_MoveFrames, Obj_Unk1A80 + 1 and..."
+$C0:4F0A,$C0:4F60,87,Evt_Op9D_MoveDirVar,$C0,Engine,code,verified,20c76273f8e4,"Event opcode $9D (3 bytes: $9D, a, b): as Evt_Op9C_MoveDir with the direction and the frames taken from the low bytes of the event words Evt_Unk7F0200 + a x 2 and + b x 2."
+$C0:4F61,$C0:4FE9,137,Evt_Op96_WalkToTile,$C0,Engine,code,verified,060683c3c187,"Event opcode $96 (3 bytes: $96, column, row): walks Obj_Cur to a map tile, one step per script run."
+$C0:4FEA,$C0:5083,154,Evt_Op9A_WalkTowardTile,$C0,Engine,code,verified,dff2a872f764,"Event opcode $9A (4 bytes: $9A, column, row, frames): as Evt_Op96_WalkToTile, but a single step of the given frames (Obj_MoveFrames = ObjX_Unk7F0B00 = frames, Obj_Unk1A80 + 1); once Obj_Unk1A80 is..."
+$C0:5084,$C0:5128,165,Evt_Op97_WalkToTileVar,$C0,Engine,code,verified,6055c0d5f2f6,"Event opcode $97 (3 bytes: $97, a, b): as Evt_Op96_WalkToTile with the column and row from the low bytes of the event words Evt_Unk7F0200 + a x 2 and + b x 2."
+$C0:5129,$C0:5190,104,Evt_OpA0_MoveToTile,$C0,Engine,code,verified,e047f2711725,"Event opcode $A0 (3 bytes: $A0, column, row): as Evt_Op96_WalkToTile without the facing and the animations (no Obj_Facing write, no Obj_SetMoveAnim / Obj_SetStandAnim): arrived (after any..."
+$C0:5191,$C0:5214,132,Evt_OpA1_MoveToTileVar,$C0,Engine,code,verified,658f78644464,"Event opcode $A1 (3 bytes: $A1, a, b): as Evt_OpA0_MoveToTile with the column and row from the low bytes of the event words Evt_Unk7F0200 + a x 2 and + b x 2."
+$C0:5215,$C0:5227,19,Evt_Op94_WalkToObj,$C0,Engine,code,verified,0d1f31db33b5,"Event opcode $94 (2 bytes: $94, slot): walks Obj_Cur next to the object in slot (object x 2), one step per script run."
 $C0:5228,$C0:52BF,152,Evt_Op94_Body,$C0,Engine,code,verified,1a1dfc7b0fd8,
-$C0:52C0,$C0:52D2,19,Evt_Op9E_MoveToObj,$C0,Engine,code,verified,824d230c7a64,"Event opcode $9E (2 bytes: $9E, slot): as Evt_Op94_WalkToObj without the facing and the animations; Evt_Op9E_Body (X = the target's slot) is also entered by Evt_Op9F_MoveToPc."
+$C0:52C0,$C0:52D2,19,Evt_Op9E_MoveToObj,$C0,Engine,code,verified,4c315291df78,"Event opcode $9E (2 bytes: $9E, slot): as Evt_Op94_WalkToObj without the facing and the animations; Evt_Op9E_Body (X = the target's slot) is also entered by Evt_Op9F_MoveToPc."
 $C0:52D3,$C0:5349,119,Evt_Op9E_Body,$C0,Engine,code,verified,034c4f0f423a,
-$C0:534A,$C0:536A,33,Evt_Op98_WalkTowardObj,$C0,Engine,code,verified,37f7b5288067,"Event opcode $98 (3 bytes: $98, slot, frames): as Evt_Op94_WalkToObj but a single step of the given frames (Obj_MoveFrames = ObjX_Unk7F0B00 = frames, Obj_Unk1A80 + 1); with Obj_Unk1A80 set it..."
+$C0:534A,$C0:536A,33,Evt_Op98_WalkTowardObj,$C0,Engine,code,verified,c0c17954b93a,"Event opcode $98 (3 bytes: $98, slot, frames): as Evt_Op94_WalkToObj but a single step of the given frames (Obj_MoveFrames = ObjX_Unk7F0B00 = frames, Obj_Unk1A80 + 1); with Obj_Unk1A80 set it..."
 $C0:536B,$C0:540F,165,Evt_Op98_Body,$C0,Engine,code,verified,9f7c0911bbb3,
 $C0:5410,$C0:5428,25,Evt_Op95_WalkToPc,$C0,Engine,code,verified,40f11aa8cf2e,"Event opcode $95 (2 bytes: $95, p): Evt_Op94_WalkToObj toward a party member's object (X = Party_ObjSlot + p; p = 0, 2 or 4, the party position x 2) through Evt_Op94_Body; X = the opcode, C=0..."
-$C0:5429,$C0:54F4,204,Evt_Op8F_FollowPc,$C0,Engine,code,verified,5fb4f2b50039,"Event opcode $8F (2 bytes: $8F, p): walks Obj_Cur toward a party member's object (X = Party_ObjSlot + p; p = 0, 2 or 4, the party position x 2), one step per script run, as Evt_Op94_WalkToObj..."
+$C0:5429,$C0:54F4,204,Evt_Op8F_FollowPc,$C0,Engine,code,verified,660f33c2a5aa,"Event opcode $8F (2 bytes: $8F, p): walks Obj_Cur toward a party member's object (X = Party_ObjSlot + p; p = 0, 2 or 4, the party position x 2), one step per script run, as Evt_Op94_WalkToObj..."
 $C0:54F5,$C0:550D,25,Evt_Op9F_MoveToPc,$C0,Engine,code,verified,07bea427eda2,"Event opcode $9F (2 bytes: $9F, p): Evt_Op9E_MoveToObj toward a party member's object (X = Party_ObjSlot + p; p = 0, 2 or 4, the party position x 2) through Evt_Op9E_Body; X = the opcode, C=0..."
 $C0:550E,$C0:5534,39,Evt_Op99_WalkTowardPc,$C0,Engine,code,verified,3434b855aff0,"Event opcode $99 (3 bytes: $99, p, frames): Evt_Op98_WalkTowardObj toward a party member's object (X = Party_ObjSlot + p) through Evt_Op98_Body; with Obj_Unk1A80 set it waits for Obj_MoveFrames =..."
 $C0:5535,$C0:5538,4,Evt_Op0F_FaceUp,$C0,Engine,code,verified,c66b35fb3c3b,Event opcode $0F (1 byte): Obj_Cur faces up (facing 0) through Evt_SetFacing; X = Y + 1.
@@ -638,8 +638,8 @@ $C0:AAC7,$C0:AAFC,54,Obj_MoveStep_Arc,$C0,Sprites & objects,code,verified,d0365c
 $C0:AAFD,$C0:AB44,72,Obj_MoveStepFree,$C0,Sprites & objects,code,verified,f19a74526440,"Movement for objects with Obj_Unk1100 below Obj_Unk1100FreeMove: with Obj_ArcMode set, the arc step (BRA Obj_MoveStep_Arc); otherwise, while Obj_MoveFrames is nonzero (decremented first), the low..."
 $C0:AB45,$C0:ABA1,93,Obj_CalcScreenPos,$C0,Sprites & objects,code,verified,c0928ea8c475,"Screen position of object Obj_Cur from its map position and the layer-1 view: ObjScr_ViewX = Map_TileOriginX (low byte) x 8 + (Map_Unk1D87 & 7), ObjScr_ViewY likewise from Map_TileOriginY and..."
 $C0:ABA2,$C0:AC68,199,Obj_CalcDirection,$C0,Sprites & objects,code,verified,cd42d1a41fbe,"Direction from point (ObjDir_FromX, ObjDir_FromY) to (ObjDir_ToX, ObjDir_ToY), map tiles, as an angle in Obj_Direction: 256 per turn, $00 = +X (right), $40 = +Y (down), $80 = -X, $C0 = -Y."
-$C0:AC69,$C0:ACFC,148,Obj_SetVelocity,$C0,Sprites & objects,code,verified,eaee4b7fbb94,Sets object X's steps from Obj_Direction and Obj_Speed with the hardware multiplier: Obj_VelY = speed x sin / 256 and Obj_VelX = speed x cos / 256 (Rom_SineTable256 at the direction and at the...
-$C0:ACFD,$C0:AE96,410,Obj_SetVelocityChecked,$C0,Sprites & objects,code,verified,5fbaefaa05df,"As Obj_SetVelocity (steps from Obj_Direction and Obj_Speed, the sine into ObjVel_Y and the cosine into ObjVel_X, sign-extended into ObjVel_YHi / ObjVel_XHi), but it looks at the map tile the..."
+$C0:AC69,$C0:ACFC,148,Obj_SetVelocity,$C0,Sprites & objects,code,verified,90114092f82a,Sets object X's steps from Obj_Direction and Obj_Speed with the hardware multiplier: Obj_VelY = speed x sin / 256 and Obj_VelX = speed x cos / 256 (Rom_SineTable256 at the direction and at the...
+$C0:ACFD,$C0:AE96,410,Obj_SetVelocityChecked,$C0,Sprites & objects,code,verified,f80855adf384,"As Obj_SetVelocity (steps from Obj_Direction and Obj_Speed, the sine into ObjVel_Y and the cosine into ObjVel_X, sign-extended into ObjVel_YHi / ObjVel_XHi), but it looks at the map tile the..."
 $C0:AE97,$C0:AF2F,153,Obj_SetVelocityChecked_Probe,$C0,Sprites & objects,code,verified,6e92d67d54af,
 $C0:AF30,$C0:AF4D,30,Obj_SetVelocityAxis,$C0,Sprites & objects,code,verified,bfc0aae06457,"Zeroes one of the two steps in ObjVel_X / ObjVel_Y, then probes and stores them through Obj_SetVelocityChecked_Probe: when |Y step| >= |X step| the Y step goes, else the X step."
 $C0:AF4E,$C0:B095,328,Field_UnkAF4E,$C0,Engine,code,verified,8df6b2ee8b58,Copies the rectangle MapCopy_SrcX..MapCopy_EndX x MapCopy_SrcY..
@@ -660,7 +660,7 @@ $C0:B2DE,$C0:B2ED,16,Oam_HideRange2,$C0,Engine,code,verified,89226c727d92,
 $C0:B2EE,$C0:B2F3,6,Oam_EndRange2,$C0,Engine,code,verified,c858581504a0,
 $C0:B2F4,$C0:B303,16,Oam_HideRange3,$C0,Engine,code,verified,400b703afdbe,
 $C0:B304,$C0:B308,5,Oam_EndRange3,$C0,Engine,code,verified,d6400add219c,
-$C0:B309,$C0:B700,1016,Spr_AppendToOam,$C0,Engine,code,verified,fa79ded62acf,(was Sub_B309.) Appends object Obj_Cur's sprite to the OAM shadow.
+$C0:B309,$C0:B700,1016,Spr_AppendToOam,$C0,Engine,code,verified,88028d5ae59f,(was Sub_B309.) Appends object Obj_Cur's sprite to the OAM shadow.
 $C0:B701,$C0:B787,135,Spr_PrepareTiles,$C0,Engine,code,verified,b5595f7f30c7,(was Sub_B701.) Brings object Obj_Cur's SprTile records up to date before Spr_AppendToOam copies them.
 $C0:B788,$C0:B8C9,322,Spr_Place4,$C0,Engine,code,verified,1b5401c75e9c,"(was Sub_B788.) Re-places a 4-tile (size 0) object: with DB=$7F, each SprTile record's X = Spr_BaseX + OfsX (bit 8 packed into Obj_OamHiA with the large-size bits) and Y = Spr_BaseY + OfsY..."
 $C0:B8CA,$C0:BA64,411,Spr_Load4,$C0,Engine,code,verified,06ae741b005b,"(was Sub_B8CA.) Builds a 4-tile (size 0) object's SprTile records from SprTileSrc (OfsX, OfsY, Tile/Attr), placing them at the object's position as Spr_Place4 does (same three Y clamps)."
@@ -702,7 +702,7 @@ $C0:E97A,$C0:E9A9,48,SprBuf_Alloc2,$C0,Engine,code,verified,644fbe1c0bb3,(was Su
 $C0:E9AA,$C0:E9E1,56,SprBuf_Alloc3,$C0,Engine,code,verified,995419e492ba,(was Sub_E9AA.) As SprBuf_Alloc1 for three adjacent free chunks (start entries 0-1).
 $C0:E9E2,$C0:E9FE,29,SprBuf_Free1,$C0,Engine,code,verified,8d9dd0399fd7,(was Sub_E9E2.) Releases the SprBuf chunk owned by Obj_Cur: finds it among the first 4 SprBuf_Owner entries and marks it free.
 $C0:E9FF,$C0:EA1E,32,SprBuf_Free2,$C0,Engine,code,verified,acb6f197f8ec,(was Sub_E9FF.) As SprBuf_Free1 for a 2-chunk object: the first of the 3 possible start entries owned by Obj_Cur and the one after it are freed.
-$C0:EA1F,$C0:EA41,35,SprBuf_Free3,$C0,Engine,code,verified,68fbba4dc0d6,(was Sub_EA1F.) As SprBuf_Free1 for a 3-chunk object (2 possible start entries).
+$C0:EA1F,$C0:EA41,35,SprBuf_Free3,$C0,Engine,code,verified,b4726fa2fac8,(was Sub_EA1F.) As SprBuf_Free1 for a 3-chunk object (2 possible start entries).
 $C0:EA42,$C0:EA62,33,SprBuf_FreeObj,$C0,Engine,code,verified,69e40246fbb0,"Releases the SprBuf chunks owned by Obj_Cur whatever its size: finds the first of the SprBuf_UsedEntries SprBuf_Owner entries that holds Obj_Cur, frees it ($80 = Obj_None) and goes on freeing the..."
 $C0:EA63,$C0:EC5F,509,NmiHandler,$C0,Engine,code,verified,5f1e16a50339,"The field's vertical-blank interrupt, entered through the RAM trampoline InstallNMI writes (JML NmiHandler at $7E:0500)."
 $C0:EC60,$C0:EC76,23,Field_WaitFrame,$C0,Engine,code,verified,a016ed19e664,"The field's frame wait: counts Field_Unk58 up (16-bit INC, ANDed with Field_Unk58Mask), INCs Nmi_FramePending and spins until NmiHandler has done the frame's uploads and zeroed it."
@@ -729,7 +729,7 @@ $C0:FF14,$C0:FF17,4,IRQ_Stub,$C0,Boot,code,verified,b5957ddd55b8,
 $C0:FF18,$C0:FF1F,8,BRK_Handler,$C0,Boot,code,verified,ee89fcf61b21,native BRK and emulation-mode COP both land here
 $C0:FF20,$C0:FF27,8,BitSet,$C0,Engine,data,verified,95a48f670771,"Bitmask lookup tables ($FF20–$FF2F) BitSet[N] = (1 << N), BitClear[N] = ~(1 << N), for N = 0..7."
 $C0:FF28,$C0:FF2F,8,BitClear,$C0,Engine,data,verified,857413253db5,
-$C0:FF30,$C0:FF6F,64,ScrollWaveA,$C0,Engine,data,verified,f1783f81783b,"Wave tables ($FF30–$FFAF) One period of a sine-like wave between -6 and +6 (32 signed 16-bit entries), stored twice."
+$C0:FF30,$C0:FF6F,64,ScrollWaveA,$C0,Engine,data,verified,75add560f8bb,"Wave tables ($FF30–$FFAF) One period of a sine-like wave between -6 and +6 (32 signed 16-bit entries), stored twice."
 $C0:FF70,$C0:FFAF,64,ScrollWaveB,$C0,Engine,data,verified,9a813dae1c5f,
 $C0:FFB0,$C0:FFBC,13,RomExtHeader,$C0,ROM header,data,verified,397dc2bf4766,"SNES cartridge header ($FFB0–$FFDF), standard layout"
 $C0:FFBD,$C0:FFBD,1,RomExpansionRam,$C0,ROM header,data,verified,96e71d5f3642,
@@ -1149,30 +1149,105 @@ $C1:8B10,$C1:8BB8,169,BattleSys_ListHandler9,$C1,Battle system,code,verified,0eb
 $C1:8BB9,$C1:8C07,79,BattleSys_ListHandler10,$C1,Battle system,code,verified,da5bf8c11ffd,Turn list 10: the usual handler; at the end of its runs it clears bit 2 of the slot's BattlerStats.Unk4C+2 (+$4E).
 $C1:8C08,$C1:8C08,1,BattleSys_ListHandler11,$C1,Battle system,code,verified,5acfa5d988b4,"Turn list 11: does nothing (RTS), like lists 6 and 7."
 $C1:8C09,$C1:8C3D,53,BattleSys_Unk8C09,$C1,Battle system,code,verified,03076075a31d,Runs BattleAi_RunMainPart (probably an enemy's behaviour script: it reads a pointer from the $CC:8B08 table by the id in A) for each enemy entry 0-7 with !Battle_UnkB2B6 0 whose !Battle_UnkAF15...
-$C1:8C3E,$C1:8CF8,187,BattleAi_TestPassed,$C1,Battle engine,code,verified,0d234ab4a709,"Called by a test handler whose test holds (42 JSR sites from $C1:8EA7 to $C1:9803, all in the test handlers): records the test code and runs the block's next action through BattleAi_ChooseTable."
+$C1:8C3E,$C1:8CF8,187,BattleAi_TestPassed,$C1,Battle engine,code,verified,1c53e4e40fd6,"Called by a test handler whose test holds (42 JSR sites from $C1:8EA7 to $C1:9803, all in the test handlers): records the test code and runs the block's next action through BattleAi_ChooseTable."
 $C1:8CF9,$C1:8EA6,430,BattleAi_EnemyTurn,$C1,Battle engine,code,verified,3d7bc193ee6b,"Runs the action an enemy's script chose, on its turn (BattleSys_Unk8461) or as a reaction (!Battle_UnkB2C0 set)."
 $C1:8EA7,$C1:8EAA,4,BattleAi_Test00,$C1,Battle engine,code,verified,ef9d586eb39b,Test code $00: always holds (BattleAi_TestPassed at once).
-$C1:AC14,$C1:AC2B,24,BattleAi_ReadTargets,$C1,Battle engine,code,verified,4788ca14d0df,"Reads the target code of a script record and fills !BattleAi_Targets: BattleAi_ClearTargets first, then !Battle_UnkB1D2 + 1 and the code at that address."
+$C1:8EAB,$C1:8F10,102,BattleAi_TestHpHalfOrLess,$C1,Battle engine,code,verified,5191e7a2385e,BattleAi_TestTable entry $01.
+$C1:8F11,$C1:8F86,118,BattleAi_TestStatusBits,$C1,Battle engine,code,verified,950e6b5720cb,BattleAi_TestTable entry $02.
+$C1:8F87,$C1:8FD9,83,BattleAi_TestTargetId,$C1,Battle engine,code,verified,048e92df2ee1,BattleAi_TestTable entry $03.
+$C1:8FDA,$C1:9012,57,BattleAi_TestEnemyIdPresent,$C1,Battle engine,code,verified,b462388a264a,BattleAi_TestTable entry $04.
+$C1:9013,$C1:9044,50,BattleAi_TestEnemyCountAtMost,$C1,Battle engine,code,verified,8cc3d2c660cc,BattleAi_TestTable entry $05.
+$C1:9045,$C1:9081,61,BattleAi_TestTimeAtLeast,$C1,Battle engine,code,verified,9b1cd03cb882,BattleAi_TestTable entry $06.
+$C1:9082,$C1:90BD,60,BattleAi_TestUnkB320,$C1,Battle engine,code,verified,f4992b6430a9,BattleAi_TestTable entry $07.
+$C1:90BE,$C1:912F,114,BattleAi_TestHpAtMost,$C1,Battle engine,code,verified,032ca67ed7d4,BattleAi_TestTable entry $08.
+$C1:9130,$C1:918D,94,BattleAi_TestStatByteAtLeast,$C1,Battle engine,code,verified,9cf997213a06,BattleAi_TestTable entry $09.
+$C1:918E,$C1:91F8,107,BattleAi_TestStatByteBits,$C1,Battle engine,code,verified,476bf96ad7da,BattleAi_TestTable entry $0A.
+$C1:91F9,$C1:925C,100,BattleAi_TestStatByteAtMost,$C1,Battle engine,code,verified,2655530695e3,BattleAi_TestTable entry $0B.
+$C1:925D,$C1:92A2,70,BattleAi_TestTargetWithin32,$C1,Battle engine,code,verified,b9a1924730d1,BattleAi_TestTable entry $0C.
+$C1:92A3,$C1:9313,113,BattleAi_TestAnySameRow,$C1,Battle engine,code,verified,28fe556a1c47,BattleAi_TestTable entry $0D.
+$C1:9314,$C1:938C,121,BattleAi_TestAnyAboveOrLeft,$C1,Battle engine,code,verified,8881a02d6e0e,BattleAi_TestTable entry $0E.
+$C1:938D,$C1:93E5,89,BattleAi_TestPathClear,$C1,Battle engine,code,verified,ec9dde71bb62,BattleAi_TestTable entry $0F.
+$C1:93E6,$C1:9429,68,BattleAi_TestScreenArea,$C1,Battle engine,code,verified,6bdeb9da890c,BattleAi_TestTable entry $10.
+$C1:942A,$C1:9473,74,BattleAi_TestB19EKind,$C1,Battle engine,code,verified,eb6ce4af72f5,BattleAi_TestTable entry $11.
+$C1:9474,$C1:94D1,94,BattleAi_TestB19EKindAndId,$C1,Battle engine,code,verified,038ba7ae3b77,BattleAi_TestTable entry $12.
+$C1:94D2,$C1:9513,66,BattleAi_TestB19EBit4,$C1,Battle engine,code,verified,737e872c4966,BattleAi_TestTable entry $13.
+$C1:9514,$C1:9599,134,BattleAi_TestB19ESlot,$C1,Battle engine,code,verified,1c75e1e39464,BattleAi_TestTable entry $14.
+$C1:959A,$C1:95D5,60,BattleAi_TestB19EByte2Bits,$C1,Battle engine,code,verified,8da2d421af4b,BattleAi_TestTable entry $15.
+$C1:95D6,$C1:95D9,4,BattleAi_TestAlways16,$C1,Battle engine,code,verified,aa4fd99f738f,"BattleAi_TestTable entry $16: always holds (BattleAi_TestPassed at once), as test $00."
+$C1:95DA,$C1:95F9,32,BattleAi_TestChance,$C1,Battle engine,code,verified,56b5416a6366,BattleAi_TestTable entry $17.
+$C1:95FA,$C1:9651,88,BattleAi_TestStatByteEquals,$C1,Battle engine,code,verified,b8bbcfbbf17b,BattleAi_TestTable entries $18 and $23-$28.
+$C1:9652,$C1:9655,4,BattleAi_TestAlways19,$C1,Battle engine,code,verified,8ab8131f1b12,"BattleAi_TestTable entry $19: always holds (BattleAi_TestPassed at once), as test $00."
+$C1:9656,$C1:96A4,79,BattleAi_TestOtherEnemy,$C1,Battle engine,code,verified,48a6af45b53d,BattleAi_TestTable entry $1A.
+$C1:96A5,$C1:96D3,47,BattleAi_TestPcCountAtMost,$C1,Battle engine,code,verified,0ed665d90a6f,BattleAi_TestTable entry $1B.
+$C1:96D4,$C1:9727,84,BattleAi_TestUnkAF0AMatch,$C1,Battle engine,code,verified,23d0486114b5,BattleAi_TestTable entry $1C.
+$C1:9728,$C1:975B,52,BattleAi_TestTargetGone,$C1,Battle engine,code,verified,6c6a31b93593,BattleAi_TestTable entry $1D.
+$C1:975C,$C1:9764,9,BattleAi_TestChooseAndGoOn,$C1,Battle engine,code,verified,e169777f439f,"BattleAi_TestTable entry $1E: BattleAi_TestPassed (the action is chosen), then !Battle_UnkAF24 = !BattleAi_TestFailed, so the caller still goes on to the next block."
+$C1:9765,$C1:97AA,70,BattleAi_TestTargetWithin48,$C1,Battle engine,code,verified,82dec08fec36,BattleAi_TestTable entry $1F.
+$C1:97AB,$C1:97BF,21,BattleAi_TestUnkAEB3Set,$C1,Battle engine,code,verified,a01628c12f33,BattleAi_TestTable entry $20.
+$C1:97C0,$C1:97D4,21,BattleAi_TestUnkAF15Set,$C1,Battle engine,code,verified,a2a3d1ebdf53,BattleAi_TestTable entry $21.
+$C1:97D5,$C1:980F,59,BattleAi_TestUnkB158,$C1,Battle engine,code,verified,b8581406deaa,BattleAi_TestTable entry $22.
+$C1:9810,$C1:9839,42,BattleAi_ChooseAnimTarget,$C1,Battle engine,code,verified,94a62938fdf9,BattleAi_ChooseTable entry $00.
+$C1:983A,$C1:98C3,138,BattleAi_ChooseTarget,$C1,Battle engine,code,verified,bf1aaf74771e,BattleAi_ChooseTable entries $01 and $02.
+$C1:98C4,$C1:98C4,1,BattleAi_ChooseNop03,$C1,Battle engine,code,verified,14a3257ab3dc,BattleAi_ChooseTable entry $03: does nothing (RTS).
+$C1:98C5,$C1:995F,155,BattleAi_ChooseByChance,$C1,Battle engine,code,verified,cf364ea78511,BattleAi_ChooseTable entry $04 (!BattleAi_ActRestart).
+$C1:9960,$C1:9960,1,BattleAi_ChooseNop05,$C1,Battle engine,code,verified,e49e812b8b1c,BattleAi_ChooseTable entry $05: does nothing (RTS).
+$C1:9961,$C1:9961,1,BattleAi_ChooseNop06,$C1,Battle engine,code,verified,147dfc56a97f,BattleAi_ChooseTable entry $06: does nothing (RTS).
+$C1:9962,$C1:9965,4,BattleAi_ChooseClear07,$C1,Battle engine,code,verified,8efa847d58e1,BattleAi_ChooseTable entry $07: !Battle_UnkAF24 = 0.
+$C1:9966,$C1:9966,1,BattleAi_ChooseNop08,$C1,Battle engine,code,verified,019ef7c32975,BattleAi_ChooseTable entry $08: does nothing (RTS).
+$C1:9967,$C1:9977,17,BattleAi_ChooseActId,$C1,Battle engine,code,verified,9854c7ea131e,BattleAi_ChooseTable entry $09: !BattleAi_ActId = record byte 1.
+$C1:9978,$C1:9978,1,BattleAi_ChooseNop0A,$C1,Battle engine,code,verified,8adae6b7fc87,BattleAi_ChooseTable entry $0A: does nothing (RTS).
+$C1:9979,$C1:997C,4,BattleAi_ChooseClear0B,$C1,Battle engine,code,verified,a3305f89c6ff,BattleAi_ChooseTable entry $0B: !Battle_UnkAF24 = 0.
+$C1:997D,$C1:997D,1,BattleAi_ChooseNop0C,$C1,Battle engine,code,verified,39044a144215,BattleAi_ChooseTable entry $0C: does nothing (RTS).
+$C1:997E,$C1:997E,1,BattleAi_ChooseNop0D,$C1,Battle engine,code,verified,29d054860d47,BattleAi_ChooseTable entry $0D: does nothing (RTS).
+$C1:997F,$C1:997F,1,BattleAi_ChooseNop0E,$C1,Battle engine,code,verified,e422b0c00536,BattleAi_ChooseTable entry $0E: does nothing (RTS).
+$C1:9980,$C1:9980,1,BattleAi_ChooseNop0F,$C1,Battle engine,code,verified,8b06355bc8a1,BattleAi_ChooseTable entry $0F: does nothing (RTS).
+$C1:9981,$C1:99B3,51,BattleAi_ChooseIfGoneEnemy,$C1,Battle engine,code,verified,ad80da855a80,BattleAi_ChooseTable entries $10 and $16.
+$C1:99B4,$C1:99B7,4,BattleAi_ChooseClear11,$C1,Battle engine,code,verified,134e435b089e,BattleAi_ChooseTable entries $11-$15: !Battle_UnkAF24 = 0.
+$C1:99B8,$C1:99BD,6,BattleAi_RunNothing,$C1,Battle engine,code,verified,93eeb7f90ccc,BattleAi_RunTable entry $00: !BattleAi_RunMode = !BattleAi_RunNone (the enemy does nothing this turn; choose handler $00 has only set its animation and target).
+$C1:99BE,$C1:9A38,123,BattleAi_RunAttack,$C1,Battle engine,code,verified,68fdd4283afb,BattleAi_RunTable entry $01.
+$C1:9A39,$C1:9B45,269,BattleAi_RunTech,$C1,Battle engine,code,verified,77a446f3aaf0,BattleAi_RunTable entry $02.
+$C1:9B46,$C1:9B46,1,BattleAi_RunNop03,$C1,Battle engine,code,verified,891ed5610942,BattleAi_RunTable entry $03: RTS; !BattleAi_RunMode is left as it was.
+$C1:9B47,$C1:9B47,1,BattleAi_RunNop04,$C1,Battle engine,code,verified,9e52d374cc0d,BattleAi_RunTable entry $04 (!BattleAi_ActRestart): RTS; !BattleAi_RunMode is left as it was.
+$C1:9B48,$C1:9B8B,68,BattleAi_RunChooseRepeat,$C1,Battle engine,code,verified,0b09a83717a7,BattleAi_RunTable entry $05.
+$C1:9B8C,$C1:9B8C,1,BattleAi_RunNop06,$C1,Battle engine,code,verified,7d072399e42b,BattleAi_RunTable entry $06: RTS; !BattleAi_RunMode is left as it was.
+$C1:9B8D,$C1:9C6D,225,BattleAi_RunSwapInEnemy,$C1,Battle engine,code,verified,c2e9c41c8441,BattleAi_RunTable entry $07.
+$C1:9C6E,$C1:9C6E,1,BattleAi_RunNop08,$C1,Battle engine,code,verified,85b3e5f3d2cc,BattleAi_RunTable entry $08: RTS; !BattleAi_RunMode is left as it was.
+$C1:9C6F,$C1:9CB2,68,BattleAi_RunLeave,$C1,Battle engine,code,verified,ebdab9637674,BattleAi_RunTable entry $09.
+$C1:9CB3,$C1:9D1A,104,BattleAi_RunKoSelf,$C1,Battle engine,code,verified,d6fd9babf2df,BattleAi_RunTable entry $0A.
+$C1:9D1B,$C1:9D71,87,BattleAi_RunSetStatByte,$C1,Battle engine,code,verified,7d2143ba6261,BattleAi_RunTable entry $0B.
+$C1:9D72,$C1:9DCD,92,BattleAi_RunAddStatByte,$C1,Battle engine,code,verified,b9d691e100e7,BattleAi_RunTable entry $0C.
+$C1:9DCE,$C1:9E61,148,BattleAi_RunSetFlags,$C1,Battle engine,code,verified,2943dda6ee67,BattleAi_RunTable entry $0D.
+$C1:9E62,$C1:9E62,1,BattleAi_RunNop0E,$C1,Battle engine,code,verified,e22df0e7c4db,BattleAi_RunTable entry $0E: RTS; !BattleAi_RunMode is left as it was.
+$C1:9E63,$C1:9E77,21,BattleAi_RunMessage,$C1,Battle engine,code,verified,5f48ebb8189d,BattleAi_RunTable entry $0F.
+$C1:9E78,$C1:9F59,226,BattleAi_RunRestoreEnemies,$C1,Battle engine,code,verified,8cba0b0b329b,BattleAi_RunTable entry $10.
+$C1:9F5A,$C1:9FD1,120,BattleAi_RunSetStatBytes,$C1,Battle engine,code,verified,dcb9083de960,BattleAi_RunTable entry $11.
+$C1:9FD2,$C1:A14D,380,BattleAi_RunSetStatsTech,$C1,Battle engine,code,verified,024abcab4157,BattleAi_RunTable entry $12.
+$C1:A14E,$C1:A187,58,BattleAi_RunAddUnkB158,$C1,Battle engine,code,verified,4947b1a428ab,BattleAi_RunTable entry $13.
+$C1:A188,$C1:A20A,131,BattleAi_RunAddStatBytes,$C1,Battle engine,code,verified,65f063614eea,BattleAi_RunTable entry $14.
+$C1:A20B,$C1:A395,395,BattleAi_RunAddStatsTech,$C1,Battle engine,code,verified,c965f616713d,BattleAi_RunTable entry $15.
+$C1:A396,$C1:A3D0,59,BattleAi_RunRestoreAndSetStats,$C1,Battle engine,code,verified,4b41c99556e7,BattleAi_RunTable entry $16.
+$C1:A3D1,$C1:A3F5,37,BattleAi_AddStatByteAtY,$C1,Battle engine,code,verified,8c212d85c9e3,"Adds DP $10 to the byte at (DP $0E),Y (a stat-block byte: DP $0E/$0F = the offset, Y = the block address): bit 7 (!BattleAi_StatDeltaSub) set subtracts the low 7 bits, with 0 as the floor; else..."
+$C1:AC14,$C1:AC2B,24,BattleAi_ReadTargets,$C1,Battle engine,code,verified,985cd4348771,"Reads the target code of a script record and fills !BattleAi_Targets: BattleAi_ClearTargets first, then !Battle_UnkB1D2 + 1 and the code at that address."
 $C1:AC2C,$C1:AC3E,19,BattleAi_ReadTargets_Code,$C1,Battle engine,code,verified,f95c35c70915,
 $C1:AC3F,$C1:AC45,7,BattleAi_ReadTargets_Done,$C1,Battle engine,code,verified,fbfd12c67155,
-$C1:AC46,$C1:AC56,17,BattleAi_ClearTargets,$C1,Battle engine,code,verified,78b4afbbd24e,Sets the 11 bytes of !BattleAi_Targets and of !Battle_UnkAD8E to $FF (empty).
+$C1:AC46,$C1:AC56,17,BattleAi_ClearTargets,$C1,Battle engine,code,verified,a5cdf5d67772,Sets the 11 bytes of !BattleAi_Targets and of !Battle_UnkAD8E to $FF (empty).
 $C1:AC57,$C1:AC5D,7,BattleSys_UnkAC57,$C1,Battle system,code,verified,631b2bfb3424,"BattleSys_UnkBFA4 (it requests service 4, BattleSys_RunAction, which plays the action block), then BattleSys_UnkAC85."
 $C1:AC5E,$C1:AC84,39,BattleSys_UnkAC5E,$C1,Battle system,code,verified,6f764f63ce2c,"If !Battle_UnkAEB2 is set: !Battle_UnkAE85[n] = 1 for each enemy n (0-7) whose !Battle_UnkAEB3 entry is non-zero, then, unless !Battle_Unk2989 has bit 5, service !BattleSys_ServiceUnk6 ($C1:006D..."
 $C1:AC85,$C1:AC88,4,BattleSys_UnkAC85,$C1,Battle system,code,verified,8b6ec032b455,Calls Battle_ApplyHits.
-$C1:AC89,$C1:ACCD,69,BattleAi_SetCmdBits,$C1,Battle engine,code,verified,a4532106d91d,"ORs the slot A + 3 (an enemy entry + 3) into !Battle_UnkB18E and zeroes !Battle_UnkB191, then by !BattleAi_ActCode: 0: !Battle_UnkB18F = 0; 1: !Battle_UnkB18E |= $80, !Battle_UnkB18F = 0..."
-$C1:ACCE,$C1:ACF1,36,BattleAi_ArgToDp0E,$C1,Battle engine,code,verified,8a461e026b21,"DP $0E = !BattleAi_ActArg mapped: 1 and 2 give 4, 3 and 4 give $0D, any other value stays as it is."
-$C1:ACF2,$C1:AD08,23,BattleAi_FillActBlock,$C1,Battle engine,code,verified,1ca776e06307,"Starts the action block for the acting battler: !Battle_UnkAE90 = 0, !Battle_ActCaster = !Battle_UnkB18B, !Battle_ActKind = !BattleAi_ActCode, !Battle_ActId = !BattleAi_ActId."
+$C1:AC89,$C1:ACCD,69,BattleAi_SetCmdBits,$C1,Battle engine,code,verified,465184cca0c7,"ORs the slot A + 3 (an enemy entry + 3) into !Battle_UnkB18E and zeroes !Battle_UnkB191, then by !BattleAi_ActCode: 0: !Battle_UnkB18F = 0; 1: !Battle_UnkB18E |= $80, !Battle_UnkB18F = 0..."
+$C1:ACCE,$C1:ACF1,36,BattleAi_ArgToDp0E,$C1,Battle engine,code,verified,9756aff0f22c,"DP $0E = !BattleAi_ActArg mapped: 1 and 2 give 4, 3 and 4 give $0D, any other value stays as it is."
+$C1:ACF2,$C1:AD08,23,BattleAi_FillActBlock,$C1,Battle engine,code,verified,7bbfa7400ea7,"Starts the action block for the acting battler: !Battle_UnkAE90 = 0, !Battle_ActCaster = !Battle_UnkB18B, !Battle_ActKind = !BattleAi_ActCode, !Battle_ActId = !BattleAi_ActId."
 $C1:AD09,$C1:AD34,44,BattleAi_SetMainMask,$C1,Battle engine,code,verified,e124f065ce8e,"!Battle_ActMainMask = 0, then, if !BattleAi_TargetCount is non-zero and !BattleAi_Targets[0] is a slot (not $FF), the bit of that slot (!BattleAi_MaskSlot0 >> slot, bit 15 = slot 0) is ORed in."
-$C1:AD35,$C1:AD67,51,BattleAi_SetTargetMask,$C1,Battle engine,code,verified,4baa3034c8c7,"!Battle_ActTargetMask = the bits of !BattleAi_Targets entries 1 to !BattleAi_TargetCount - 1 (entry 0 is the main target, see BattleAi_SetMainMask; !BattleAi_MaskSlot0 >> slot, bit 15 = slot 0)."
+$C1:AD35,$C1:AD67,51,BattleAi_SetTargetMask,$C1,Battle engine,code,verified,e5a847fbf660,"!Battle_ActTargetMask = the bits of !BattleAi_Targets entries 1 to !BattleAi_TargetCount - 1 (entry 0 is the main target, see BattleAi_SetMainMask; !BattleAi_MaskSlot0 >> slot, bit 15 = slot 0)."
 $C1:AD68,$C1:ADA0,57,BattleAi_TargetsByPcByte,$C1,Battle engine,code,verified,35bd7937e73e,"Lists each present, not KO'd PC whose stat-block byte at offset DP $0A (from !BattleRom_PcStatBlock) is non-zero, through BattleAi_AddPcByByte for PCs 0, 1, 2 with !BattleAi_PcByteMask = $FF, then..."
 $C1:ADA1,$C1:AE20,128,BattleAi_PickPcTarget,$C1,Battle engine,code,verified,51b1dff7bf99,Cuts a list built by BattleAi_AddPcByByte down to one target: - !BattleAi_TargetCount 0: nothing.
-$C1:AE21,$C1:AE6F,79,BattleAi_PickMarkedTarget,$C1,Battle engine,code,verified,2f0b0984535d,"After a test has marked the entries of !BattleAi_Targets it accepts (!BattleAi_TargetMarked), cuts the list down to one target: - !BattleAi_TargetCount 0: the test fails (!Battle_UnkAF24 + 1)."
+$C1:AE21,$C1:AE6F,79,BattleAi_PickMarkedTarget,$C1,Battle engine,code,verified,852d95773664,"After a test has marked the entries of !BattleAi_Targets it accepts (!BattleAi_TargetMarked), cuts the list down to one target: - !BattleAi_TargetCount 0: the test fails (!Battle_UnkAF24 + 1)."
 $C1:AE70,$C1:AED2,99,BattleAi_AddPcByByte,$C1,Battle engine,code,verified,2fb9fbdbf928,"Adds PC slot !BattleAi_PcSlot to !BattleAi_Targets when it is present (!Battler_UnkAEFF not $FF), the byte at offset DP $0A in its stat block (address from !BattleRom_PcStatBlock[X]) has any of..."
 $C1:AED3,$C1:AEFC,42,BattleAi_UnkAED3,$C1,Battle engine,code,verified,29c8c7ad3ba4,"No caller found (no JSR, JSL or pointer to $AED3 in the ROM; maybe dead)."
-$C1:AEFD,$C1:AF21,37,BattleAi_NoteFirstTest,$C1,Battle engine,code,verified,17bc870f7d61,"Run by a test handler that holds, just before BattleAi_TestPassed: - !Battle_UnkB1CF has !BattleAi_SecondTest (this is the first of a block's two tests): !BattleAi_FirstTarget = the slot (low..."
+$C1:AEFD,$C1:AF21,37,BattleAi_NoteFirstTest,$C1,Battle engine,code,verified,7b2ed21e61a0,"Run by a test handler that holds, just before BattleAi_TestPassed: - !Battle_UnkB1CF has !BattleAi_SecondTest (this is the first of a block's two tests): !BattleAi_FirstTarget = the slot (low..."
 $C1:AF22,$C1:AF78,87,Battle_RandRange,$C1,Battle engine,code,verified,3585dfe59ac3,"A random number from the low bound X (low byte) up to, but not including, the high bound A: low + (RandomTableFD[!Battle_RandIdx] mod (high - low)), then !Battle_RandIdx + 1."
 $C1:AF79,$C1:AFD1,89,Battle_RandRangeAlt,$C1,Battle engine,code,verified,6845c63a373e,"Battle_RandRange with its own index: the same code, but the entry of RandomTableFD is taken at !Battle_UnkB3E6 (not !Battle_RandIdx), and !Battle_UnkB3E6 is the counter stepped."
-$C1:AFD2,$C1:B092,193,BattleAi_RunMainPart,$C1,Battle engine,code,verified,a8859f556f11,Runs the main part of an enemy's script: block after block until one holds or the part ends.
+$C1:AFD2,$C1:B092,193,BattleAi_RunMainPart,$C1,Battle engine,code,verified,99378507c23e,Runs the main part of an enemy's script: block after block until one holds or the part ends.
 $C1:B093,$C1:B0B5,35,BattleSys_UnkB093,$C1,Battle system,code,verified,26296870597a,"BattlerStats.Unk2F bit 0 = (.CurHp <= .MaxHp / 8): set when the HP is down to an eighth or less, cleared otherwise (the bit Battle_PickStatusAnim tests, so probably the low-HP pose)."
 $C1:B0B6,$C1:B222,365,BattleSys_UnkB0B6,$C1,Battle system,code,verified,badafea211bc,"Sets which turn lists battler Y takes part in from its status bits: bit 0 (!Battle_ListPartBit) of its !Battle_ListFlags byte in list n = Status2 bit 7 (list 0), bit 6 (1), bit 5 (2), bit 4 (8)..."
 $C1:B223,$C1:B278,86,BattleSys_UnkB223,$C1,Battle system,code,verified,5dbad8e7e193,"BattleSys_UpdateKo for each slot 0-10 (counter !Battle_UnkB2D3); after it, an enemy slot whose entry is empty ($FF) and whose !Enemy_TargetWanted slot is empty too gets !Battle_UnkB242 = $FF and..."
@@ -1190,9 +1265,9 @@ $C1:B70E,$C1:B724,23,BattleSys_UnkB70E,$C1,Battle system,code,verified,416fc08d9
 $C1:B725,$C1:B761,61,BattleSys_UnkB725,$C1,Battle system,code,verified,c57bba7e3848,"For the !Battle_Unk2989 bit-5 battle: !Battle_CmdQueue[0] = PC 0, !Battle_CmdQueueLen = 1, each !Pc_AtbCur = 0 and !Pc_AtbMax = $30, and the three BattleCmd records (21 bytes) are copied from bank..."
 $C1:B762,$C1:B7F1,144,BattleSys_UnkB762,$C1,Battle system,code,verified,0ee1a7c1e249,"Keeps the 8 !Battle_UnkAEB3 bytes in !Battle_UnkAE65 and zeroes them and !Battle_UnkAEB2, then for each of the 8 entries of !Battle_UnkB3AC (the slots of the last action, per BattleSys_Unk8461)..."
 $C1:B7F2,$C1:B80C,27,BattleSys_UnkB7F2,$C1,Battle system,code,verified,972784af9e7b,"Service !BattleSys_ServiceRemoveReady (BattleMenu_RemoveBattlerFromReady) for PC slots 0, 1 and 2 in turn: takes every PC out of the menu's ready state."
-$C1:B80D,$C1:B85E,82,BattleAi_TestTable,$C1,Battle engine,data,verified,e728f31b28bd,"Handlers of the script's test codes $00-$28, by code * 2: JSR (T,X) in BattleAi_RunMainPart ($C1:B006, $C1:B021) and BattleSys_Unk8461 ($C1:874E, $C1:8769)."
-$C1:B85F,$C1:B88C,46,BattleAi_ChooseTable,$C1,Battle engine,data,verified,110407870049,"Handlers of the action codes $00-$16 as a block is chosen, by code * 2: JSR (T,X) in BattleAi_TestPassed ($C1:8CE7)."
-$C1:B88D,$C1:B8BA,46,BattleAi_RunTable,$C1,Battle engine,data,verified,60b773b423ce,"Handlers of the same action codes $00-$16 on the enemy's turn, by code * 2: JSR (T,X) in BattleAi_EnemyTurn ($C1:8D88)."
+$C1:B80D,$C1:B85E,82,BattleAi_TestTable,$C1,Battle engine,data,verified,c62a863be5cb,"Handlers of the script's test codes $00-$28, by code * 2: JSR (T,X) in BattleAi_RunMainPart ($C1:B006, $C1:B021) and BattleSys_Unk8461 ($C1:874E, $C1:8769)."
+$C1:B85F,$C1:B88C,46,BattleAi_ChooseTable,$C1,Battle engine,data,verified,7c2c556df6b5,"Handlers of the action codes $00-$16 as a block is chosen, by code * 2: JSR (T,X) in BattleAi_TestPassed ($C1:8CE7)."
+$C1:B88D,$C1:B8BA,46,BattleAi_RunTable,$C1,Battle engine,data,verified,9fd73248d4a5,"Handlers of the same action codes $00-$16 on the enemy's turn, by code * 2: JSR (T,X) in BattleAi_EnemyTurn ($C1:8D88)."
 $C1:B8BB,$C1:B92C,114,BattleAi_TargetTable,$C1,Battle engine,data,verified,f505490a18eb,"Handlers of the script's target codes $00-$38, by code * 2: JSR (T,X) in BattleAi_ReadTargets ($C1:AC2E)."
 $C1:B92D,$C1:B946,26,BattleSys_ListHandlerTable,$C1,Battle system,data,verified,1e86489bd301,"Handler of each turn list, indexed by list number * 2: BattleSys_Main runs entry n (JSR (T,X) at $C1:8333) for each list whose !Battle_ListDue bit is set."
 $C1:B947,$C1:B960,26,BattleSys_ListOffsetTable,$C1,Battle system,data,verified,f8b395112504,"Address of each turn list's !Battle_ListFlags bytes (list * 11 past the start), indexed by list number * 2; BattleSys_Main's scan reads it with LDA.l at $C1:82C5."
@@ -1218,7 +1293,7 @@ $C1:C150,$C1:C181,50,Battle_ScaleWord80,$C1,Battle engine,code,verified,d3fbefcc
 $C1:C182,$C1:C1B1,48,Battle_ScaleByte10,$C1,Battle engine,code,verified,3f79b7c9c8c8,"DP $30/$31 = about x / 10: x * 32 - x * 4 - x * 2 - x / 4 (= x * 25.75), / 256."
 $C1:C1B2,$C1:C1DC,43,Battle_ScaleWord10,$C1,Battle engine,code,verified,f9b9e548ed9e,"DP $30/$31 = about x / 10: x / 8 - x / 64 - x / 128 - x / 1024, all 16 bits."
 $C1:C1DD,$C1:C8F6,1818,BattleSys_UnkC1DD,$C1,Battle system,code,verified,6e79023df1cc,"Checks that the users of the action !Battle_UnkB18C (a tech, an item, or an enemy's action) can act and resolves its targets into !Battle_UnkAD8E (slots, $FF-ended) and !Battle_UnkAD8D (their count)."
-$C1:C8F7,$C1:C90A,20,BattleSys_MapEmptyTarget,$C1,Battle system,code,verified,c8209efd5a1a,A battler slot for a target: $FF stays $FF; a slot whose !Battler_UnkAEFF entry is present comes back as it is; an empty one comes back as its !Battle_UnkAE6D entry (BattleFD_UnkB223 fills that...
+$C1:C8F7,$C1:C90A,20,BattleSys_MapEmptyTarget,$C1,Battle system,code,verified,c61849d8afc9,A battler slot for a target: $FF stays $FF; a slot whose !Battler_UnkAEFF entry is present comes back as it is; an empty one comes back as its !Battle_UnkAE6D entry (BattleFD_UnkB223 fills that...
 $C1:C90B,$C1:C929,31,Battle_Mul16,$C1,Battle engine,code,verified,612f61b006df,16 x 16 -> 32-bit unsigned shift-and-add multiply: !Battle_MathHi:MathLo = !Battle_MathA * !Battle_MathB.
 $C1:C92A,$C1:C95B,50,Battle_Div32,$C1,Battle engine,code,verified,88b78fe9eece,"32 / 16-bit unsigned restoring divide of !Battle_MathHi:MathA by !Battle_MathB: !Battle_MathRem = the remainder, !Battle_MathLo = the quotient's low word."
 $C1:C95C,$C1:C969,14,BattleSys_AreaParamTable,$C1,Battle system,data,verified,c1f2aa914cc2,"The area parameter routines of BattleSys_UnkC1DD, by bits 6-0 of an area record entry's byte 1 (JSR (BattleSys_AreaParamTable,X) at $C1:C732)."
@@ -1369,7 +1444,7 @@ $C2:0345,$C2:0345,1,C2Scene_IrqHandler,$C2,Engine,code,verified,ed4a8ea51088,"th
 $C2:0346,$C2:034C,7,C2Scene_WaitFrame,$C2,Engine,code,verified,62f2a7a314a6,Waits until the next NMI: spins until C2Scene_FrameCounter changes.
 $C2:034D,$C2:03EE,162,C2Scene_HideAllSprites,$C2,Engine,code,verified,36e8e0de56b8,"Parks all 128 sprites of the OAM shadow below the screen: Y = Oam_HiddenY in every low-table entry, and the high table zeroed (small size, X bit 8 clear)."
 $C2:03EF,$C2:0404,22,C2Scene_VramQInit,$C2,Engine,code,verified,c2586397c034,"Empties and unlocks the VRAM upload queue: clears C2Scene_VramQLock and C2Scene_VramQEnd, points C2Scene_VramQBufPtr at C2Scene_VramQBuf ($7E:F000) and zeroes all 16 C2Scene_VramQ entries (dp..."
-$C2:0405,$C2:0453,79,C2Scene_VramQFlush,$C2,Engine,code,verified,1b2ac1430b9e,"Runs the queued VRAM uploads: for each 8-byte C2Scene_VramQ entry up to C2Scene_VramQEnd, one DMA on channel 0 (word writes to VMDATAL/H) from .Bank:.Src, .Size bytes, to VRAM word .Dest with..."
+$C2:0405,$C2:0453,79,C2Scene_VramQFlush,$C2,Engine,code,verified,586e0cbaf170,"Runs the queued VRAM uploads: for each 8-byte C2Scene_VramQ entry up to C2Scene_VramQEnd, one DMA on channel 0 (word writes to VMDATAL/H) from .Bank:.Src, .Size bytes, to VRAM word .Dest with..."
 $C2:0454,$C2:046D,26,C2Scene_WaitFrames,$C2,Engine,code,verified,d7a09f3f3892,Waits X frames (C2Scene_WaitFrame each time).
 $C2:046E,$C2:0470,3,C2Scene_WaitOneFrame,$C2,Engine,code,verified,1286b6470cb8,A JMP to C2Scene_WaitFrame: waits for the next NMI without sending a pending sound command.
 $C2:0471,$C2:0489,25,C2Scene_TaskClearAll,$C2,Engine,code,verified,4d3c14cb8f82,"Frees all 64 task records (zeroes each .Handler) and points C2Scene_TaskCur at the first record, so that tasks spawned before any task runs copy their parameters from record 0."
@@ -1391,8 +1466,8 @@ $C2:0811,$C2:0842,50,C2Scene_EdgeColSetup,$C2,Engine,code,verified,e9d2c065e7b8,
 $C2:0843,$C2:088E,76,C2Scene_EdgeRowTop,$C2,Engine,code,verified,692f76cdbe58,"Builds one tile row of a layer edge into the buffer at C2Scene_VramQBufPtr: C2Scene_EdgeRowTiles (34) tiles from the top half of metatile row C2Scene_EdgeRow, starting at metatile column..."
 $C2:088F,$C2:08DA,76,C2Scene_EdgeRowBottom,$C2,Engine,code,verified,44b8636be9b3,C2Scene_EdgeRowTop for the bottom half of the metatiles: .BottomLeft and .BottomRight.
 $C2:08DB,$C2:090C,50,C2Scene_EdgeRowSetup,$C2,Engine,code,verified,a418224c6959,"Sets up a row build: C2Scene_EdgeMapOfs = C2Scene_EdgeCol (the column), C2Scene_EdgeMapPtr = the layer's map + C2Scene_EdgeRow * 96, C2Scene_EdgeBuf = C2Scene_VramQBufPtr's address..."
-$C2:090D,$C2:0960,84,C2Scene_QueueEdgeCol,$C2,Engine,code,verified,67dc05074669,"Queues the column built at C2Scene_VramQBufPtr for VRAM: one C2Scene_VramQ entry of C2Scene_ColBufHalf bytes from bank $7E, VMAIN stepping 32 words, to tile column (C2Scene_EdgeCol / 8) AND 63 of..."
-$C2:0961,$C2:09C4,100,C2Scene_QueueEdgeRow,$C2,Engine,code,verified,8611b6323adb,"Queues the row built at C2Scene_VramQBufPtr for VRAM as two C2Scene_VramQ entries of C2Scene_RowBufHalf bytes from bank $7E, VMAIN stepping one word: the buffer's first half to tile row..."
+$C2:090D,$C2:0960,84,C2Scene_QueueEdgeCol,$C2,Engine,code,verified,1f075907fe00,"Queues the column built at C2Scene_VramQBufPtr for VRAM: one C2Scene_VramQ entry of C2Scene_ColBufHalf bytes from bank $7E, VMAIN stepping 32 words, to tile column (C2Scene_EdgeCol / 8) AND 63 of..."
+$C2:0961,$C2:09C4,100,C2Scene_QueueEdgeRow,$C2,Engine,code,verified,d1d17fd4af79,"Queues the row built at C2Scene_VramQBufPtr for VRAM as two C2Scene_VramQ entries of C2Scene_RowBufHalf bytes from bank $7E, VMAIN stepping one word: the buffer's first half to tile row..."
 $C2:09C5,$C2:0A6B,167,C2Scene_DrawBgLayer,$C2,Engine,code,verified,3e49c96f1f41,Redraws the visible part of BG layer C2Scene_DrawLayer (1 or 2; the value is taken AND C2Scene_LayerMask) from the layer's tile position C2Scene_BgTileX/Y (word (layer - 1)): - the layer's scroll...
 $C2:0A6C,$C2:0AAD,66,C2Scene_BuildBgColumn,$C2,Engine,code,verified,d88a3c6f6556,Builds one tilemap column pair (two tile columns of 32 words) in the buffer at C2Scene_VramQBufPtr: C2Scene_DrawRows metatiles of map column C2Scene_DrawMapCol from row C2Scene_DrawMapRow down...
 $C2:0AAE,$C2:0ADB,46,C2Scene_DrawMetatile,$C2,Engine,code,verified,f45b0ab91b6c,Puts one metatile into the column buffer: the map byte at C2Scene_DrawMapColPtr + C2Scene_DrawMapRowOfs selects an 8-byte C2Scene_Metatile record; its .TopLeft and .BottomLeft go to the left tile...
@@ -2085,9 +2160,9 @@ $C2:8663,$C2:86A8,70,Menu_FlushVramQueue,$C2,Engine,code,verified,d9ae1229eea5,"
 $C2:86A9,$C2:86DC,52,Menu_UploadPalette,$C2,Engine,code,verified,bd1508bdccf4,When Menu_PalDirty is non-zero: zeroes it and sends the 512 bytes of Menu_PalBuf ($7E:9480) to CGRAM from colour 0 by DMA channel 7.
 $C2:86DD,$C2:8770,148,Menu_BuildGradient,$C2,Engine,code,verified,86aeacf9d503,"Builds an HDMA table of colour math lines for channel 0 (direct, two registers: CGADSUB then COLDATA, set here; the table address is set by the menu NMI from Menu_GradBufSel): copies..."
 $C2:8771,$C2:8790,32,Menu_GradientSteps,$C2,Engine,data,verified,52295ff8e0a3,"16 CGADSUB / COLDATA pairs for Menu_BuildGradient: add (CGADSUB $02: BG2) the fixed colour of intensity 8 down to 0 (COLDATA $E8-$E0, all three channels), then subtract ($82) intensity 1 up to 7."
-$C2:8791,$C2:87CC,60,Menu_AddItem,$C2,Engine,code,verified,e2a1a8363e14,"Adds Menu_ItemCount of item Menu_ItemId to the inventory: to its slot (Menu_FindItem) or else to the first empty one (id stored, count 0), the count capped at 99."
+$C2:8791,$C2:87CC,60,Menu_AddItem,$C2,Engine,code,verified,1b17eb043e45,"Adds Menu_ItemCount of item Menu_ItemId to the inventory: to its slot (Menu_FindItem) or else to the first empty one (id stored, count 0), the count capped at 99."
 $C2:87CD,$C2:87D4,8,Menu_ItemSetCount,$C2,Engine,code,verified,0dedc78699ac,
-$C2:87D5,$C2:87F9,37,Menu_RemoveItem,$C2,Engine,code,verified,8088c04b133e,"Takes Menu_ItemCount of item Menu_ItemId from its slot: A = Menu_ItemShort when it has fewer (nothing changed), Menu_InvFull when it is not there; else the new count is stored (Menu_ItemSetCount)..."
+$C2:87D5,$C2:87F9,37,Menu_RemoveItem,$C2,Engine,code,verified,d025153bc364,"Takes Menu_ItemCount of item Menu_ItemId from its slot: A = Menu_ItemShort when it has fewer (nothing changed), Menu_InvFull when it is not there; else the new count is stored (Menu_ItemSetCount)..."
 $C2:87FA,$C2:8815,28,Menu_FindItem,$C2,Engine,code,verified,a3dbbc5d7f61,"Finds the slot of item A with a non-zero count: C=0 with X = the slot and Menu_ItemSlot = X (a word), or C=1 with X = 0 (all 256 slots looked at)."
 $C2:8816,$C2:881F,10,Menu_LoadCharRec,$C2,Engine,code,verified,ef5f8538d246,"Menu_LoadCharRecA for character A, keeping P and X."
 $C2:8820,$C2:8838,25,Menu_LoadPartyCharRec,$C2,Engine,code,verified,302637dc7b98,"Loads the character at Menu_PartyList[Menu_CurMember] (Menu_LoadCharRecA); Menu_CurIsReserve = $FF when that index is past the active members (Menu_PartyActive), else 0."
@@ -2128,7 +2203,7 @@ $CC:F365,$CC:F382,30,Battle_Mul8CC,$CC,Battle engine,code,verified,c491ba6627c5,
 $CF:F9FB,$CF:FA42,72,Battle_SinLookupCF,$CF,Battle engine,code,verified,39075df1547d,Bank $CF's own scaled sine: returns (sin(A) × !BattleCF_SinScale) >> 8 in A.
 $CF:FDAD,$CF:FE1F,115,BattleMsg_FormatNumber4Digits,$CF,Battle text & numbers,code,verified,53f4a2a24f11,"A four-digit, long-call version of BattleMsg_FormatNumberDigits ($C1:011F): the same subtract-and-count loops with one more for the thousands, and the digits looked up in !BattleRom_DigitTilesB..."
 $FD:A982,$FD:A98F,14,BattleFD_UnkA982,$FD,Battle engine,code,verified,b08658efa2bc,"Zeroes $7E:AD89-$B3F4: the battle's working variables from !Battle_UnkAD89 to !Battle_UnkB3F4 (the turn lists, the action block, the reward sums and most of the other !Battle_Unk* bytes this file..."
-$FD:A990,$FD:AA97,264,BattleFD_RestoreEnemies,$FD,Battle engine,code,verified,1f16b6825a18,"Probably a script command that brings removed enemies back: the caller ($C1:A3B6, unmatched) leaves the script read address in !Battle_UnkB1D2 (bank $CC) and the record id in !BattleTmp_12."
+$FD:A990,$FD:AA97,264,BattleFD_RestoreEnemies,$FD,Battle engine,code,verified,1079d7ba6982,"Probably a script command that brings removed enemies back: the caller (BattleAi_RunRestoreAndSetStats, run handler $16, at $C1:A3B6) leaves the script read address in !Battle_UnkB1D2 (bank $CC)..."
 $FD:AA98,$FD:AAAF,24,BattleFD_UnkAA98,$FD,Battle engine,code,verified,b1da0bce10bf,"Sets BattlerStats.Status of all 8 enemy slots (3-10) to !Battle_StatusKo ($80, the other status bits cleared)."
 $FD:AAB0,$FD:AAD1,34,BattleFD_UnkAAB0,$FD,Battle engine,code,verified,325f45253205,Builds !Battle_Unk7F01EE: bit n set for each enemy entry n (0-7) whose !Battle_UnkAE85 byte is non-zero.
 $FD:AAD2,$FD:AB00,47,BattleFD_LoadUnkB18E,$FD,Battle engine,code,verified,be4571a6b6b6,"Fills the 4 bytes !Battle_UnkB18E-B191 from the 11-byte record !Battle_UnkB18C of !BattleRom_UnkCC6FCB: B18E = record byte 0, B18F = the record number, B190 = record byte 1, B191 = 0..."
@@ -2172,14 +2247,45 @@ $FD:C000,$FD:C0D6,215,MainInit,$FD,Boot,code,verified,79b16b235ac4,"Called via: 
 $FD:C0D7,$FD:C123,77,Ppu_SetBgLayout,$FD,Engine,code,verified,30473a455a95,"Sets a fixed background layout through DP=$2100, the way MainInit writes the PPU: mode 1 with BG3 on top, BG1/BG2 tiles at VRAM word $1000 and BG3 tiles at $5000, 64x32 maps at $6800 (BG1), $7000..."
 $FD:C124,$FD:C1ED,202,EngFD_UnkC124,$FD,Engine,code,verified,707b97cc9715,Fills the HDMA data block in bank $7F (DB = $7F while it runs).
 $FD:C1EE,$FD:C2C0,211,Hdma_InitChannelsFD,$FD,Engine,code,verified,5bcfd77624f3,"Sets up all 8 HDMA channels through DP=$4300 (saved and restored): channel 0: indirect, 4 registers from BG1SC (BG1SC-BG4SC); channels 1-3: indirect, 2 registers written twice, from BG1HOFS..."
-$FD:C2C1,$FD:C2DE,30,EngFD_UnkC2C1,$FD,Engine,code,verified,2ab566b0c9cb,Once a frame: runs entry !Field_Unk26 (0-2) of one of two handler tables and flips !Field_Unk53 bit 0.
-$FD:C2DF,$FD:C2E4,6,EngFD_UnkC2C1Table1,$FD,Engine,data,verified,7022117e20c5,EngFD_UnkC2C1's handlers by !Field_Unk26 when !Field_Unk53 bit 0 is set.
-$FD:C2E5,$FD:C2EA,6,EngFD_UnkC2C1Table0,$FD,Engine,data,verified,62ab96a3000d,The same when !Field_Unk53 bit 0 is clear.
+$FD:C2C1,$FD:C2DE,30,EngFD_UnkC2C1,$FD,Engine,code,verified,35a18be24b57,Once a frame: runs entry !Field_Unk26 (0-2) of one of two handler tables and flips !Field_Unk53 bit 0.
+$FD:C2DF,$FD:C2E4,6,EngFD_UnkC2C1Table1,$FD,Engine,data,verified,63d9e090daa7,EngFD_UnkC2C1's handlers by !Field_Unk26 when !Field_Unk53 bit 0 is set.
+$FD:C2E5,$FD:C2EA,6,EngFD_UnkC2C1Table0,$FD,Engine,data,verified,28545e7ed54c,The same when !Field_Unk53 bit 0 is clear.
+$FD:C2EB,$FD:C438,334,FieldHdma_BuildPlainA,$FD,Engine,code,verified,79a5464ab41d,EngFD_UnkC2C1's handler for Field_Unk26 = 0 on the frames Field_Unk53 bit 0 is set; FieldHdma_BuildTopBandA/BottomBandA come here while Field_Unk27 is 0.
+$FD:C439,$FD:C476,62,FieldHdma_SetWin2A,$FD,Engine,code,verified,3d37f63ba5c8,"Writes set A's channel 7 table (WH2 or WH3, one byte a line): repeat runs of 100 and 112 lines from WinFx_TableA + WinFx_Ch7Alt ($E0) when Hdma_Unk7F0351 bit 0 is clear, from WinFx_TableA when it..."
+$FD:C477,$FD:C4B4,62,FieldHdma_SetWin2B,$FD,Engine,code,verified,0f88ef9507b5,"As FieldHdma_SetWin2A for set B's channel 7, with the test inverted: WinFx_TableA + WinFx_Ch7Alt when Hdma_Unk7F0351 bit 0 is set, WinFx_TableA when it is clear (both sets read WinFx_TableA's area)."
+$FD:C4B5,$FD:C52D,121,FieldHdma_SetBg2A,$FD,Engine,code,verified,7463c5a8018a,"Writes set A's channel 2 table (BG2 H/V scroll): Map_Unk1DFD = 0: 100 + 112 lines of Hdma_Bg2Scroll; else 13 repeat runs of 16 lines, each from Hdma_WaveA, so BG2 gets BG3's wave data (Map_Unk1D8F..."
+$FD:C52E,$FD:C5A6,121,FieldHdma_SetBg2B,$FD,Engine,code,verified,9ee757140696,As FieldHdma_SetBg2A for set B: Hdma_Bg2Scroll+4 or Hdma_WaveB.
+$FD:C5A7,$FD:C6F6,336,FieldHdma_FillDataA,$FD,Engine,code,verified,365c93e2eb7b,"Fills the data set A's tables point at: - Hdma_Bg1Scroll = Map_Unk1D87, Map_Unk1D89; Hdma_Bg2Scroll = Map_Unk1D8B, Map_Unk1D8D; - with Field_Unk1DF9 and Map_Unk1DFD both 0 (each tested as a word..."
+$FD:C6F7,$FD:C846,336,FieldHdma_FillDataB,$FD,Engine,code,verified,64083377e09f,"As FieldHdma_FillDataA for set B: Hdma_Bg1Scroll+4, Hdma_Bg2Scroll+4, Hdma_Bg3Scroll+4, Hdma_WaveB (copied to Hdma_WaveBCopy), Hdma_ColorMath+2/+3 and Hdma_Unk7F1530+2; Map_Unk1DFB is stepped here..."
+$FD:C847,$FD:C994,334,FieldHdma_BuildPlainB,$FD,Engine,code,verified,fef3cdcbe21f,"As FieldHdma_BuildPlainA for table set B (Field_Unk26 = 0 on the frames Field_Unk53 bit 0 is clear): Hdma_Bg1Scroll+4, Hdma_Bg3Scroll+4 or Hdma_WaveB, WinFx_TableB for channel 5, Hdma_ColorMath+2..."
+$FD:C995,$FD:CC57,707,FieldHdma_BuildTopBandA,$FD,Engine,code,verified,7684bae45ab1,EngFD_UnkC2C1's handler for Field_Unk26 = 1 on the frames Field_Unk53 bit 0 is set.
+$FD:CC58,$FD:CC5D,6,FieldHdma_WaveRunsStart,$FD,Engine,code,verified,ee1e02fbcee0,"Starts a band builder's BG3 wave table: Y = 0 (offset of the first entry) and HdmaWave_Line = 0 (a 16-bit store, so $01EF too)."
+$FD:CC5E,$FD:CCB1,84,FieldHdma_AddWaveRunA,$FD,Engine,code,verified,1fb573736eba,"Adds A lines (8-bit) of the BG3 wave to set A's channel 3 table at offset Y: while A >= 16, an entry ($90: repeat, 16 lines) from Hdma_WaveA + 4 x (HdmaWave_Line AND $F) with HdmaWave_Line += 16..."
+$FD:CCB2,$FD:CCB7,6,FieldHdma_SkipWaveLines,$FD,Engine,code,verified,01739b556a30,"HdmaWave_Line += A: steps the wave line count over the band's lines, which the band builders write themselves (A and B alike)."
+$FD:CCB8,$FD:CD0B,84,FieldHdma_AddWaveRunB,$FD,Engine,code,verified,43494a540213,"As FieldHdma_AddWaveRunA for set B's channel 3 table, from Hdma_WaveB (and Hdma_WaveBCopy)."
+$FD:CD0C,$FD:CFCE,707,FieldHdma_BuildTopBandB,$FD,Engine,code,verified,229592bd7dea,"As FieldHdma_BuildTopBandA for table set B (Field_Unk26 = 1 on the frames Field_Unk53 bit 0 is clear; n = 0 goes to FieldHdma_BuildPlainB): the set B pairs (Hdma_Bg1Scroll+4, Hdma_Bg3Scroll+4..."
+$FD:CFCF,$FD:D27D,687,FieldHdma_BuildBottomBandA,$FD,Engine,code,verified,8a316233f0fb,EngFD_UnkC2C1's handler for Field_Unk26 = 2 on the frames Field_Unk53 bit 0 is set.
+$FD:D27E,$FD:D52C,687,FieldHdma_BuildBottomBandB,$FD,Engine,code,verified,60bb498f7563,"As FieldHdma_BuildBottomBandA for table set B (Field_Unk26 = 2 on the frames Field_Unk53 bit 0 is clear; n = 0 goes to FieldHdma_BuildPlainB), with the set B data and helpers as in..."
 $FD:D52D,$FD:D5D3,167,EngFD_UnkD52D,$FD,Engine,code,verified,8f252469d19d,"EngFD_UnkC124's helper: builds a table of (CGADSUB, COLDATA) byte pairs at $7F:1538 (channel 6's registers in Hdma_InitChannelsFD), then copies $100 bytes from $7F:1538 to $7F:1600 (MVN; the..."
-$FD:DE98,$FD:E021,394,FieldFD_LoadAnimSetA,$FD,Engine,code,verified,d4b4deef7b96,FdVec_FFFA's routine.
+$FD:DE98,$FD:E021,394,FieldFD_LoadAnimSetA,$FD,Engine,code,verified,465ea0fbc045,FdVec_FFFA's routine.
 $FD:E292,$FD:E39B,266,FieldFD_LoadAnimSetB,$FD,Engine,code,verified,9aaf6ca6255c,FdVec_FFF4's routine.
+$FD:E39C,$FD:E436,155,PalAnim_TickAll,$FD,Engine,code,verified,da5327df5fb8,FdVec_FFF7's routine.
+$FD:E437,$FD:E484,78,PalAnim_CopyRomFrame,$FD,Engine,code,verified,a4fe42779f7e,"Kind 1: copies .Unk2 colours from PalAnimRom + .Unk6 (a word, .Unk6/.Unk7) + .Unk3 x .Unk2 x 2 (frame .Unk3; product by the multiplier) to Pal_CgramBuf from colour .Unk1 (through PalAnim_Dest)."
+$FD:E485,$FD:E4E7,99,PalAnim_CopyListFrame,$FD,Engine,code,verified,c1be239e1aeb,"Kinds 8-15: as PalAnim_CopyRomFrame, but the frame is the byte at .Ptr + .Unk3 (the list FieldFD_LoadAnimSetB points .Ptr at), read through PalAnim_Dest before it is reused for the destination."
+$FD:E4E8,$FD:E531,74,PalAnim_RotateUp,$FD,Engine,code,verified,d5e16b4a3df7,"Kind 3: rotates colours .Unk1 to .Unk1 + .Unk2 (.Unk2 + 1 colours, one more than the other kinds touch) up by one in both Pal_Buf and Pal_CgramBuf: each takes the colour below it, the top one..."
+$FD:E532,$FD:E57B,74,PalAnim_RotateDown,$FD,Engine,code,verified,b640af62f64e,"Kind 2: as PalAnim_RotateUp the other way: each of colours .Unk1 to .Unk1 + .Unk2 takes the colour above it, colour .Unk1 wraps to the top."
+$FD:E57C,$FD:E5A3,40,PalAnim_Pulse,$FD,Engine,code,verified,4b57a8327005,"Kind 7: the phase .Unk7 += .Unk3 (8-bit, wrapping); h = the high byte of 2|.Unk7| x .Unk8 (|$80| stays $80, and 2 x $80 is 0); the level is -h (8-bit), then PalAnim_ApplyLevel scales the colours..."
+$FD:E5A4,$FD:E5E0,61,PalAnim_Fade,$FD,Engine,code,verified,dc64d8994076,Kind 5: steps the level .Unk7 by .Unk3 toward .Unk8 (down when .Unk7 >= .Unk8).
+$FD:E5E1,$FD:E64E,110,PalAnim_ApplyLevel,$FD,Engine,code,verified,90db7f738bb4,
+$FD:E64F,$FD:E6A0,82,PalAnim_ScaleRGB,$FD,Engine,code,verified,ca81c105b924,"PalAnim_ApplyLevel's routine for FieldAnimB.Unk6 = 0: for each of the .Unk2 colours from X, Pal_CgramBuf gets the Pal_Buf colour with red, green and blue scaled by the level in WRMPYA (channel x..."
+$FD:E6A1,$FD:E6D0,48,PalAnim_ScaleB,$FD,Engine,code,verified,65952a8483d3,"PalAnim_ApplyLevel's routine for FieldAnimB.Unk6 = 3: for each of the .Unk2 colours from X, Pal_CgramBuf gets the Pal_Buf colour with blue scaled by the level in WRMPYA (channel x level / 256, by..."
+$FD:E6D1,$FD:E707,55,PalAnim_ScaleG,$FD,Engine,code,verified,cfb107c67487,"PalAnim_ApplyLevel's routine for FieldAnimB.Unk6 = 5: for each of the .Unk2 colours from X, Pal_CgramBuf gets the Pal_Buf colour with green scaled by the level in WRMPYA (channel x level / 256, by..."
+$FD:E708,$FD:E739,50,PalAnim_ScaleR,$FD,Engine,code,verified,63f213c98e5d,"PalAnim_ApplyLevel's routine for FieldAnimB.Unk6 = 6 or more: for each of the .Unk2 colours from X, Pal_CgramBuf gets the Pal_Buf colour with red scaled by the level in WRMPYA (channel x level /..."
+$FD:E73A,$FD:E778,63,PalAnim_ScaleRB,$FD,Engine,code,verified,f1e9df76c23c,"PalAnim_ApplyLevel's routine for FieldAnimB.Unk6 = 2: for each of the .Unk2 colours from X, Pal_CgramBuf gets the Pal_Buf colour with red and blue scaled by the level in WRMPYA (channel x level /..."
+$FD:E779,$FD:E7BF,71,PalAnim_ScaleRG,$FD,Engine,code,verified,459480fbcc2e,"PalAnim_ApplyLevel's routine for FieldAnimB.Unk6 = 4: for each of the .Unk2 colours from X, Pal_CgramBuf gets the Pal_Buf colour with red and green scaled by the level in WRMPYA (channel x level /..."
+$FD:E7C0,$FD:E806,71,PalAnim_ScaleGB,$FD,Engine,code,verified,b8af728e7e82,"PalAnim_ApplyLevel's routine for FieldAnimB.Unk6 = 1: for each of the .Unk2 colours from X, Pal_CgramBuf gets the Pal_Buf colour with green and blue scaled by the level in WRMPYA (channel x level..."
 $FD:FFF4,$FD:FFF6,3,FdVec_FFF4,$FD,Engine,code,verified,f26478b3b778,"The bank's service vectors: three JMPs at fixed addresses near the end of the bank, so code in other banks can JSL them."
-$FD:FFF7,$FD:FFF9,3,FdVec_FFF7,$FD,Engine,code,verified,238149e99e7a,"JMP to EngFD_UnkE39C (not analysed; Field_EndOfFrame runs it every frame, and its header says it ticks the counter table at $0520, the FieldAnimB records)."
+$FD:FFF7,$FD:FFF9,3,FdVec_FFF7,$FD,Engine,code,verified,bfdd0c563a2a,"JMP to PalAnim_TickAll, which runs the 12 FieldAnimB palette animation records at $0520 (Field_EndOfFrame calls it every frame)."
 $FD:FFFA,$FD:FFFC,3,FdVec_FFFA,$FD,Engine,code,verified,f881da582a77,JMP to FieldFD_LoadAnimSetA.
 $FF:F759,$FF:F798,64,ScrollWaveFF_A,$FF,Engine,data,verified,d17d9f59305b,Wave tables ($FF:F759–$FF:F7D8) A byte-identical copy of ScrollWaveA/ScrollWaveB in bank $00 ($C0:FF30–$C0:FFAF): one period of a sine-like wave between -6 and +6 (32 signed 16-bit entries)...
 $FF:F799,$FF:F7D8,64,ScrollWaveFF_B,$FF,Engine,data,verified,bc184cf5dbb3,

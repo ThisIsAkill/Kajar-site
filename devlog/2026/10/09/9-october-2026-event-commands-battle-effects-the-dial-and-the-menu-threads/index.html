@@ -216,21 +216,21 @@
       <div class="wk-party">
         <div class="wk-party-row" title="Bytes matched: the rebuilt ROM is byte-identical here">
           <span class="wk-party-k">HP</span>
-          <span class="wk-party-v">154,931<small>/358,356</small></span>
+          <span class="wk-party-v">166,187<small>/358,356</small></span>
         </div>
-        <div class="wk-stat-track"><div class="wk-stat-fill" style="width:43.23%"></div></div>
-        <p class="wk-party-note">code bytes matched · 43.23% of code · 10,444 B data</p>
+        <div class="wk-stat-track"><div class="wk-stat-fill" style="width:46.37%"></div></div>
+        <p class="wk-party-note">code bytes matched · 46.37% of code · 10,444 B data</p>
 
         <div class="wk-party-row" title="Matched functions that also meet the readability standard">
           <span class="wk-party-k">MP</span>
-          <span class="wk-party-v">2184<small>/2184</small></span>
+          <span class="wk-party-v">2290<small>/2290</small></span>
         </div>
         <div class="wk-stat-track"><div class="wk-stat-fill wk-stat-fill-mp" style="width:100.0%"></div></div>
         <p class="wk-party-note">functions readable</p>
 
         <div class="wk-party-row" title="Readable functions that passed an independent review">
           <span class="wk-party-k">TP</span>
-          <span class="wk-party-v">2184<small>/2184</small></span>
+          <span class="wk-party-v">2290<small>/2290</small></span>
         </div>
         <div class="wk-stat-track"><div class="wk-stat-fill wk-stat-fill-dim" style="width:100.0%"></div></div>
         <p class="wk-party-note">functions verified</p>
@@ -257,7 +257,7 @@
           <li>
             <a href="#9-october-2026-event-commands-battle-effects-the-dial-and-the-menu-threads" class="wk-toc-link">9 October 2026: event commands, battle effects, the dial and the menu threads</a>
             
-            <ol><li><a href="#event-commands-part-two" class="wk-toc-link">Event commands, part two</a></li><li><a href="#targets-and-effects" class="wk-toc-link">Targets and effects</a></li><li><a href="#housekeeping" class="wk-toc-link">Housekeeping</a></li><li><a href="#the-map-view-and-the-dial" class="wk-toc-link">The map view and the dial</a></li><li><a href="#the-effect-arithmetic" class="wk-toc-link">The effect arithmetic</a></li><li><a href="#the-last-event-commands" class="wk-toc-link">The last event commands</a></li><li><a href="#the-menus-threads-and-the-scene-effects" class="wk-toc-link">The menu's threads and the scene effects</a></li><li><a href="#hit-modifiers-experience-and-tech-points" class="wk-toc-link">Hit modifiers, experience and tech points</a></li><li><a href="#bank-c0-is-complete" class="wk-toc-link">Bank $C0 is complete</a></li><li><a href="#counting-code-and-data-separately" class="wk-toc-link">Counting code and data separately</a></li><li><a href="#next" class="wk-toc-link">Next</a></li></ol>
+            <ol><li><a href="#event-commands-part-two" class="wk-toc-link">Event commands, part two</a></li><li><a href="#targets-and-effects" class="wk-toc-link">Targets and effects</a></li><li><a href="#housekeeping" class="wk-toc-link">Housekeeping</a></li><li><a href="#the-map-view-and-the-dial" class="wk-toc-link">The map view and the dial</a></li><li><a href="#the-effect-arithmetic" class="wk-toc-link">The effect arithmetic</a></li><li><a href="#the-last-event-commands" class="wk-toc-link">The last event commands</a></li><li><a href="#the-menus-threads-and-the-scene-effects" class="wk-toc-link">The menu's threads and the scene effects</a></li><li><a href="#hit-modifiers-experience-and-tech-points" class="wk-toc-link">Hit modifiers, experience and tech points</a></li><li><a href="#bank-c0-is-complete" class="wk-toc-link">Bank $C0 is complete</a></li><li><a href="#counting-code-and-data-separately" class="wk-toc-link">Counting code and data separately</a></li><li><a href="#catching-one-kind-of-mistake-for-good" class="wk-toc-link">Catching one kind of mistake for good</a></li><li><a href="#enemy-behaviour-scripts" class="wk-toc-link">Enemy behaviour scripts</a></li><li><a href="#the-message-windows-frame-and-the-palette-animator" class="wk-toc-link">The message window's frame and the palette animator</a></li><li><a href="#next" class="wk-toc-link">Next</a></li></ol>
             
           </li>
           
@@ -337,8 +337,15 @@
 <p>The last 3,234 bytes of <code>$C0</code> are <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr>, so every byte of the bank now comes from source. They hold a routine run from the field's interrupt that draws what is probably the cursor of a message choice, 400 bytes of cut-off code left over from older builds, and four lookup tables: an angle table, a direction-to-facing table and two sine tables, each checked against its formula entry by entry.</p>
 <h2 id="counting-code-and-data-separately">Counting code and data separately</h2>
 <p>With <code>$C0</code> complete, the progress figure showed it as 106% <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr>, because the share counted every <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr> byte, tables and padding included, against a survey of code bytes only. The progress tool now tells code and data apart and measures the share with code alone; data is reported next to it. The survey for <code>$C0</code> also turned out 922 bytes too high. The headline figure is therefore lower than this post's earlier sections give: by the new measure, <code>main</code> now stands at 154,931 of 358,356 code bytes, 43.23%, plus 10,444 bytes of data, all 2,184 <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr> routines independently verified.</p>
+<h2 id="catching-one-kind-of-mistake-for-good">Catching one kind of mistake for good</h2>
+<p>One slip kept coming back in review: a header saying a routine leaves the Y register unchanged, when somewhere along the way (often in a routine it calls) the index registers are switched to 8 bits, which wipes Y's high byte for good. A sweep of all 618 such claims in the source found 23 that were wrong, all fixed and re-reviewed. The lint now checks every claim of this kind itself, following each path through the routine and the routines it calls, so a wrong one cannot get past the checks again. On its first run against the open batches it caught one more.</p>
+<h2 id="enemy-behaviour-scripts">Enemy behaviour scripts</h2>
+<p>Enemies decide what to do with small scripts: a list of tests ("is my HP at most half?", "is a party member in the same row?", a random chance) followed by what to choose and what to run. The handlers for all three are now <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr> in <code>$C1</code> (5,451 bytes): 34 tests, the choose handlers, and 23 actions, from attacking and using a tech to swapping in a waiting enemy, leaving the battle or changing the enemy's own stats. Many of the values they read are still unnamed, so most names are careful guesses, marked as such. A few are real bugs, kept as found: one test reads the knock-out flag from the wrong byte, and two actions skip a check and read from the wrong address when no helper is present.</p>
+<h2 id="the-message-windows-frame-and-the-palette-animator">The message window's frame and the palette animator</h2>
+<p>In <code>$FD</code> (5,805 bytes), the routines that build the field's per-line display tables are <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr>. They draw a band across the screen that opens line by line from the middle of a fixed position, near the top or the bottom depending on where the speaker stands, and it turned out to be the message window: the field's message code opens it by up to four lines a frame, to 40, and closes it again. The other half is the palette animator that runs every frame, copying, rotating, pulsing and fading colours, with a quirk where a pulse goes black for one frame where full brightness was meant.</p>
+<p><code>main</code> now stands at 166,187 of 358,356 code bytes, 46.37%, plus 10,444 bytes of data, all 2,290 <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr> routines independently verified.</p>
 <h2 id="next">Next</h2>
-<p>Matching continues with the menu's command dispatcher and its handlers in <code>$C2</code>. A sweep of every header that says a register comes back unchanged is under way, so the Y-register slip can be fixed everywhere at once and caught by the lint from now on.</p>
+<p>A large <code>$C2</code> batch (the menu's command dispatcher, setup, stat recalculation, save-slot summaries, sprites and the main menu) is in its final review. Matching continues with the enemy scripts' target handlers in <code>$C1</code> and the rest of the palette animator in <code>$FD</code>, while a survey maps the banks no one has started yet.</p>
   
   <p class="wk-post-back"><a href="../../../../">← Back to devlog</a></p>
 </article>
