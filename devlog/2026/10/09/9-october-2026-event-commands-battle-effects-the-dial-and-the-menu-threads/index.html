@@ -6,10 +6,10 @@
   
   
   <meta name="description" content="Byte-exact matching decompilation of Chrono Trigger (SNES, US 1.0)">
-  <link rel="canonical" href="https://thisisakill.github.io/Kajar-site/devlog/2026/10/09/9-october-2026-event-commands-battle-effects-the-map-view-and-the-dial/">
+  <link rel="canonical" href="https://thisisakill.github.io/Kajar-site/devlog/2026/10/09/9-october-2026-event-commands-battle-effects-the-dial-and-the-menu-threads/">
   
   
-  <title>9 October 2026: event commands, battle effects, the map view and the dial — Kajar</title>
+  <title>9 October 2026: event commands, battle effects, the dial and the menu threads — Kajar</title>
   
   
   <link rel="stylesheet" href="../../../../../stylesheets/wiki.css">
@@ -212,21 +212,21 @@
       <div class="wk-party">
         <div class="wk-party-row" title="Bytes matched: the rebuilt ROM is byte-identical here">
           <span class="wk-party-k">HP</span>
-          <span class="wk-party-v">153,271<small>/359,278</small></span>
+          <span class="wk-party-v">158,620<small>/359,278</small></span>
         </div>
-        <div class="wk-stat-track"><div class="wk-stat-fill" style="width:42.66%"></div></div>
-        <p class="wk-party-note">bytes matched · 42.66% of code</p>
+        <div class="wk-stat-track"><div class="wk-stat-fill" style="width:44.15%"></div></div>
+        <p class="wk-party-note">bytes matched · 44.15% of code</p>
 
         <div class="wk-party-row" title="Matched functions that also meet the readability standard">
           <span class="wk-party-k">MP</span>
-          <span class="wk-party-v">2022<small>/2022</small></span>
+          <span class="wk-party-v">2135<small>/2135</small></span>
         </div>
         <div class="wk-stat-track"><div class="wk-stat-fill wk-stat-fill-mp" style="width:100.0%"></div></div>
         <p class="wk-party-note">functions readable</p>
 
         <div class="wk-party-row" title="Readable functions that passed an independent review">
           <span class="wk-party-k">TP</span>
-          <span class="wk-party-v">2022<small>/2022</small></span>
+          <span class="wk-party-v">2135<small>/2135</small></span>
         </div>
         <div class="wk-stat-track"><div class="wk-stat-fill wk-stat-fill-dim" style="width:100.0%"></div></div>
         <p class="wk-party-note">functions verified</p>
@@ -251,9 +251,9 @@
         <ol class="wk-toc-list" id="wk-toc-list">
           
           <li>
-            <a href="#9-october-2026-event-commands-battle-effects-the-map-view-and-the-dial" class="wk-toc-link">9 October 2026: event commands, battle effects, the map view and the dial</a>
+            <a href="#9-october-2026-event-commands-battle-effects-the-dial-and-the-menu-threads" class="wk-toc-link">9 October 2026: event commands, battle effects, the dial and the menu threads</a>
             
-            <ol><li><a href="#event-commands-part-two" class="wk-toc-link">Event commands, part two</a></li><li><a href="#targets-and-effects" class="wk-toc-link">Targets and effects</a></li><li><a href="#housekeeping" class="wk-toc-link">Housekeeping</a></li><li><a href="#the-map-view-and-the-dial" class="wk-toc-link">The map view and the dial</a></li><li><a href="#the-effect-arithmetic" class="wk-toc-link">The effect arithmetic</a></li><li><a href="#the-last-event-commands" class="wk-toc-link">The last event commands</a></li><li><a href="#next" class="wk-toc-link">Next</a></li></ol>
+            <ol><li><a href="#event-commands-part-two" class="wk-toc-link">Event commands, part two</a></li><li><a href="#targets-and-effects" class="wk-toc-link">Targets and effects</a></li><li><a href="#housekeeping" class="wk-toc-link">Housekeeping</a></li><li><a href="#the-map-view-and-the-dial" class="wk-toc-link">The map view and the dial</a></li><li><a href="#the-effect-arithmetic" class="wk-toc-link">The effect arithmetic</a></li><li><a href="#the-last-event-commands" class="wk-toc-link">The last event commands</a></li><li><a href="#the-menus-threads-and-the-scene-effects" class="wk-toc-link">The menu's threads and the scene effects</a></li><li><a href="#next" class="wk-toc-link">Next</a></li></ol>
             
           </li>
           
@@ -272,7 +272,7 @@
   </p>
   
   
-  <h1 id="9-october-2026-event-commands-battle-effects-the-map-view-and-the-dial">9 October 2026: event commands, battle effects, the map view and the dial</h1>
+  <h1 id="9-october-2026-event-commands-battle-effects-the-dial-and-the-menu-threads">9 October 2026: event commands, battle effects, the dial and the menu threads</h1>
 <p>Two more batches went through review overnight: the second half of the field's event-script commands in <code>$C0</code>, and the part of the battle engine that resolves an action's targets and runs its effects in <code>$C1</code>. Together 10,245 bytes in 143 routines, all independently verified.</p>
 <!-- more -->
 
@@ -320,8 +320,14 @@
 <p>The final batch of event-script commands in <code>$C0</code> (5,611 bytes) completed the field's command table: the remaining handlers, the 256-entry table itself (32 of its entries are never used), the party's walking and running animations with their 65-entry table, the message window, the animated map tiles, and the field's interrupt handler, which uploads one tile-animation job each time it runs. A routine that had been called an audio sync turned out to touch no sound at all; it refreshes the HDMA tables and is now named for that.</p>
 <p>Four headers needed fixes, among them an address range that stopped two bytes short and a register claimed to be "any" when a callee needs it zero. All four passed a second review.</p>
 <p><code>main</code> now stands at 153,271 bytes, 42.66% of the game's code, all 2,022 <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr> routines independently verified.</p>
+<h2 id="the-menus-threads-and-the-scene-effects">The menu's threads and the scene effects</h2>
+<p>The last batch of the day was the biggest in <code>$C2</code> so far (5,349 bytes, 540 of them empty <code>$FF</code> fill at the end of the scene code). It covers the scene engine's screen effects (BG3 drifts, waves and slides, window effects, a noise effect, BG2 line waves, saving and restoring the party), the menu's entry point, and the machinery the rest of the menu runs on.</p>
+<p>The menu is built from <strong>cooperative threads</strong>. A scheduler runs up to eight of them, each with its own 64-byte stack. A thread runs until it calls a yield routine, which saves its registers on its own stack and hands over to the next one; it carries on from the same spot a frame (or a set number of frames) later. The cursors, the scrolling-list arrows and the fades are each a thread. One detail the review caught: the scheduler never resets the data bank between threads, so each thread starts with whatever bank the previous one left.</p>
+<p>Quirks kept as found include a block copy that writes one byte past the end of its buffer, a cursor drawn one pixel low because a helper is called in the wrong register width, and a list arrow that can sit nine pixels lower instead of eight.</p>
+<p>Review found 22 header errors, most of them about what a register holds on exit. The most common: an instruction that switches the index registers to 8 bits wipes their high bytes for good, so a header cannot say Y comes back unchanged after calling such a routine. The same slip turned up in three older menu routines, which were fixed too. It took three rounds, but every routine in the batch is now independently verified.</p>
+<p><code>main</code> now stands at 158,620 bytes, 44.15% of the game's code, all 2,135 <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr> routines independently verified.</p>
 <h2 id="next">Next</h2>
-<p>A large <code>$C2</code> batch is in review: the scene screen effects, the menu's entry point and its cooperative thread scheduler, the menu's inventory and equipment helpers, and the cursor threads. After it, <abbr title="Writing assembly source that assembles byte-for-byte identically to the original ROM via asar.">matching</abbr> continues with the menu's command dispatcher and the battle engine's remaining handlers.</p>
+<p>Matching continues with the menu's command dispatcher and its handlers in <code>$C2</code>, the battle engine's remaining handlers in <code>$C1</code>, and the last unmatched stretch at the end of <code>$C0</code>.</p>
   
   <p class="wk-post-back"><a href="../../../../">← Back to devlog</a></p>
 </article>

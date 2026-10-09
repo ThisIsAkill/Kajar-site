@@ -1497,10 +1497,13 @@ $C2:21F8,$C2:2204,13,C2Scene_TaskUnk21F8,$C2,Engine,verified,dcb67a3de693,"Task 
 $C2:2205,$C2:2208,4,C2Scene_MosaicInStates,$C2,Engine,verified,c395d633a7ee,The state handlers of C2Scene_TaskUnk21F8 (X = .State * 2).
 $C2:2209,$C2:2237,47,C2Scene_MosaicInStart,$C2,Engine,verified,8576a6eae1f9,"State 0: as C2Scene_MosaicOutStart (op $2A's arg 1 ORed into C2Scene_MosaicShadow, arg 2 the frames per step), but rate 0 sets the size to the largest (C2Scene_MosaicSizeMask: 16x16 blocks) at once."
 $C2:2238,$C2:2259,34,C2Scene_MosaicInStep,$C2,Engine,verified,ad4db151fae3,"State 1: once .Timer reaches .Rate, .Timer's low byte = 0 and the mosaic size goes up one; when that makes it the largest ($F0) the task ends (C=1)."
-$C2:225A,$C2:225D,4,Trig_Cos1024,$C2,Engine,verified,301fd0f94a66,"Signed sine or cosine of a 16-bit angle with 1024 steps per turn, read from !Rom_SineTable: A = sin(angle) × 255 (−255..+255; the table holds |sin| as one byte per step, negated for the second..."
+$C2:225A,$C2:225D,4,Trig_Cos1024,$C2,Engine,verified,5365e5735f47,"Signed sine or cosine of a 16-bit angle with 1024 steps per turn, read from !Rom_SineTable: A = sin(angle) × 255 (−255..+255; the table holds |sin| as one byte per step, negated for the second..."
 $C2:225E,$C2:2272,21,Trig_Sin1024,$C2,Engine,verified,a4d65ece30bd,
+$C2:2273,$C2:2276,4,C2Scene_Unk2273,$C2,Engine,verified,acda9896e86b,"The cosine of direction A (adds a quarter turn and falls into the sub-entry C2Scene_Unk2277, $C2:2277, the sine)."
+$C2:2277,$C2:229C,38,C2Scene_Unk2277,$C2,Engine,verified,bd85f97b7165,
+$C2:229D,$C2:232C,144,C2Scene_Unk229D,$C2,Engine,verified,a3720914df23,"The direction (0-255) from the point (C2Tmp_08, C2Tmp_0A) to the point (C2Tmp_0C, C2Tmp_0E) on the scene's wrapping map: each difference that is half the map or more (Y 512 of 1024, X 768 of 1536..."
 $C2:232D,$C2:2335,9,C2Scene_ClearUnk1B30,$C2,Engine,verified,ce32f01539c9,"Zeroes the two bytes right after the task records, C2Scene_Unk1B30 and C2Scene_Unk1B31 (their use is not traced)."
-$C2:2336,$C2:2344,15,C2Scene_Random,$C2,Engine,verified,a08f97258544,"Returns the next byte of RandomTable ($C0:FE00): the one at index C2Scene_Unk1B30, which then goes up by one (wrapping at 256)."
+$C2:2336,$C2:2344,15,C2Scene_Random,$C2,Engine,verified,3024636d6d37,"Returns the next byte of RandomTable ($C0:FE00): the one at index C2Scene_Unk1B30, which then goes up by one (wrapping at 256)."
 $C2:2345,$C2:23A7,99,C2Scene_BoxesOverlap,$C2,Engine,verified,96e4271e530f,Tests whether two boxes overlap.
 $C2:23A8,$C2:23CE,39,C2Scene_Main,$C2,Engine,verified,ef1bc3d57070,"The scene mode's main program, entered once from BankC2_SceneBoot."
 $C2:23CF,$C2:23DA,12,C2Scene_MainLoop,$C2,Engine,verified,985761691194,
@@ -1938,30 +1941,140 @@ $C2:74AE,$C2:74B2,5,C2Scene_ScrDialFadeIn,$C2,Engine,verified,f5447eb16503,"Star
 $C2:74B3,$C2:74B7,5,C2Scene_ScrDialFadeOut,$C2,Engine,verified,1cfba7a1b1fa,"Started by C2Scene_Dial when the mode changes: fade out at 1 frame per step, wait 16 frames, end."
 $C2:74B8,$C2:7503,76,C2Scene_ScrDialCentre,$C2,Engine,verified,5cd8d7ef0b03,"Started by C2Scene_DialLoad: a large sprite (.SprTile bit 14: C2Scene_SprTileLarge in the high byte) at (C2Scene_DialCentreX + 4, $60) with priority bits $30 and palette bits 8, animation $36..."
 $C2:7504,$C2:754C,73,C2Scene_ScrDialPalCycle,$C2,Engine,verified,69de13299318,"Started by C2Scene_DialLoad: for good, palette 0 faded (12 frames per step) to the next of seven 32-byte rows of C2Scene_UnkC000 ($7E:C020 to $7E:C0C0, then $7E:C000), 384 frames apart."
+$C2:754D,$C2:7574,40,C2Scene_PlaceBelowView,$C2,Engine,verified,ad6b3e760e2a,"Script routine: puts the task at a random X 64-191 pixels into BG2's view (C2Scene_BgTileX+2 x 8 + a random 0-127 + 64) and 256 pixels below the view's top (C2Scene_BgTileY+2 + 32 tile rows, x 8)..."
+$C2:7575,$C2:7597,35,C2Scene_PlaceBelowViewAt178,$C2,Engine,verified,66dc4ed5b172,"Script routine: as C2Scene_PlaceBelowView, but X is pixel $178 (tile column C2Scene_PlaceFixedCol) + a random 0-255, not relative to the view; Y is again 256 pixels below the top of BG2's view."
+$C2:7598,$C2:75C2,43,C2Scene_RandomVelocity,$C2,Engine,verified,33425bff934b,"Script routine: gives the task one of 16 velocities at random: the four words of entry (random AND 15) of C2SceneRom_RandVelocities go to .XVelFrac, .XVel, .YVelFrac and .YVel."
+$C2:75C3,$C2:75FC,58,C2Scene_TaskBg3Drift,$C2,Engine,verified,a55ff39d2eca,"Task handler (started by op $35 at $C3:8BBD): while object A is not in mode 8, counts frames in .Var22 and moves BG3 one pixel left every 4th frame and one pixel down every 8th; then adds the..."
+$C2:75FD,$C2:7651,85,C2Scene_TaskBg3DriftWave,$C2,Engine,verified,6a845f398dcf,"Task handler (op $35 at $C3:980D, next to C2Scene_TaskBg3Wave's at $C3:9811): as C2Scene_TaskBg3Drift, but BG3 moves one pixel left and one down together every 4th frame, and the leader's Y move..."
+$C2:7652,$C2:7701,176,C2Scene_TaskBg3Wave,$C2,Engine,verified,1b180be25945,Task handler (op $35 at $C3:9811): a horizontal wave on BG3.
+$C2:7702,$C2:7758,87,C2Scene_TaskBg3Slide,$C2,Engine,verified,7bc12c69a6a2,"Task handler (op $35 at $C3:9F92): while object A is not in mode 8, moves BG3 by a fixed velocity, X about -3.46 and Y +2 pixels a frame (set into .XVelFrac-.YVel on the first frame, .State 0 ->..."
+$C2:7759,$C2:77F1,153,C2Scene_TaskBg3LineWave,$C2,Engine,verified,e35af56172a9,Task handler (no reference found; laid out as C2Scene_TaskBg3Wave): in forced blank only turns HDMA channel 1 off; waits while object A is in mode 8.
+$C2:77F2,$C2:7848,87,C2Scene_TaskBg3SlideFast,$C2,Engine,verified,4f85931dc7d3,Task handler (op $35 at $C3:AC92): C2Scene_TaskBg3Slide with the velocity X about -17.32 and Y -10 pixels a frame.
+$C2:7849,$C2:785F,23,C2Scene_TaskBg1Pan,$C2,Engine,verified,5ed918b389ad,"Task handler (no op $35 reference found): counts frames in .Var22 (8-bit) and every 4th frame scrolls layer 1 one pixel (C2Scene_Unk0568 with C2Scene_ScrollLayer = C2Scene_ScrollPx = 1), which..."
+$C2:7860,$C2:786E,15,C2Scene_ClearParty,$C2,Engine,verified,4ed1a1212d38,Script routine: marks all three Party_Members slots empty (C2Scene_PartySlotEmpty).
+$C2:786F,$C2:7887,25,C2Scene_SaveParty,$C2,Engine,verified,37e632541216,Script routine: copies the three Party_Members bytes to C2Scene_PartySave (C2Scene_RestoreParty puts them back).
+$C2:7888,$C2:78A0,25,C2Scene_RestoreParty,$C2,Engine,verified,0b671a136e8e,Script routine: copies C2Scene_PartySave back to Party_Members.
+$C2:78A1,$C2:78E2,66,C2Scene_TaskInView,$C2,Engine,verified,d164b12325f2,"Script routine (op $34 at $C3:8E82, followed by an op $23 test of $0000): C2Tmp_00 = 1 when the task is in BG2's view with a margin, else 0."
+$C2:78E3,$C2:7910,46,C2Scene_Win1Init,$C2,Engine,verified,e456666a8399,"Script routine: sets up C2Scene_HdmaTable[0] (two runs of 112 lines) as HDMA channel 1 to WH0/WH1 (indirect, two registers), turns the channel on, zeroes the buffer toggle .Var24 and falls into..."
+$C2:7911,$C2:7956,70,C2Scene_Win1Step,$C2,Engine,verified,68d3af19affb,
+$C2:7957,$C2:7980,42,C2Scene_Win2Init,$C2,Engine,verified,4291e1ca53e3,"Script routine (op $34 at $C3:A937): sets up C2Scene_HdmaTable[1] (two runs of 112 lines) as HDMA channel 2 to WH2/WH3 (indirect, two registers) and turns the channel on."
+$C2:7981,$C2:79C7,71,C2Scene_Win2Step,$C2,Engine,verified,fd2706c15c46,"Script routine (op $34 at $C3:A93E, right after C2Scene_Win2Init's): adds one to .Var24 and picks C2Scene_SwirlCosB (now odd) or C2Scene_SwirlCosA (even) as WinFx_TablePtr (bank $7E), has..."
+$C2:79C8,$C2:79DF,24,C2Scene_AddGravity,$C2,Engine,verified,c115274e0456,"Script routine: adds 1/8 pixel a frame (C2Scene_GravityFrac) to the task's Y velocity (.YVelFrac, carrying into .YVel)."
+$C2:79E0,$C2:7A0B,44,C2Scene_NudgeXRandom,$C2,Engine,verified,f35c3ac31227,"Script routine (op $34 at $C3:B792 and $C3:CB7E): moves the task right by a random 0-48 pixels: a random byte x C2Scene_NudgeRange / 256 (WRMPYA/B), rounded up when the low byte of the product has..."
+$C2:7A0C,$C2:7A1E,19,C2Scene_RandPosA,$C2,Engine,verified,3c0f0098ffc0,"Script routine: .SprX = $220 + a random 0-255, then falls into the sub-entry C2Scene_RandYA ($C2:7A1F): .SprY = $38 + a random 0-255."
+$C2:7A1F,$C2:7A30,18,C2Scene_RandYA,$C2,Engine,verified,5578613e22bf,
+$C2:7A31,$C2:7A43,19,C2Scene_RandPosB,$C2,Engine,verified,29084b6ef91e,"Script routine: as C2Scene_RandPosA with .SprX = $E0 + a random 0-255, falling into the sub-entry C2Scene_RandYB ($C2:7A44): .SprY = -$48 + a random 0-255."
+$C2:7A44,$C2:7A55,18,C2Scene_RandYB,$C2,Engine,verified,9436a1680c32,
+$C2:7A56,$C2:7AAE,89,C2Scene_NoiseInit,$C2,Engine,verified,6189e4e944b3,"Script routine (op $34 at $C3:C953): sets up C2Scene_HdmaTable[0] (two runs of 112 lines) as both HDMA channel 1 to BG1HOFS and channel 2 to BG2HOFS (indirect, one register twice: both layers get..."
+$C2:7AAF,$C2:7AD9,43,C2Scene_NoiseStep,$C2,Engine,verified,4352806cf9eb,"Script routine: moves both C2Scene_HdmaValues words 0-1 on by 32 lines (C2Scene_NoiseStep bytes), back to C2Scene_HandBufA when they reach its end ($8D16), so the screen shows the next part of the..."
+$C2:7ADA,$C2:7AEA,17,C2Scene_NoiseShow,$C2,Engine,verified,08e0b8cb2775,Script routine (op $34 at $C3:CA30): points C2Scene_HdmaValues words 0-1 at C2Scene_HandBufA and its second half (the noise).
+$C2:7AEB,$C2:7AFB,17,C2Scene_NoiseHide,$C2,Engine,verified,85b45d8bf561,Script routine (no reference found): points C2Scene_HdmaValues words 0-1 at C2Scene_HandBufB and its second half (every line the plain C2Scene_Bg1HScroll that C2Scene_NoiseInit stored).
+$C2:7AFC,$C2:7B1F,36,C2Scene_UnpackBgPack,$C2,Engine,verified,4dd3a11652bf,"Script routine (op $34 at $C3:A130 and $C3:C16E): unpacks the C2SceneRom_BgPacks entry at byte offset C2Tmp_08 (entry x 3, a word set by the script) into C2Scene_DecompBuf."
+$C2:7B20,$C2:7B43,36,C2Scene_UnpackBg3MapPack,$C2,Engine,verified,d8631a479634,Script routine (no op $34 reference found): as C2Scene_UnpackBgPack from C2SceneRom_Bg3MapPacks.
+$C2:7B44,$C2:7B4E,11,C2Scene_SetUnk7F00AABit0,$C2,Engine,verified,ba993e0189c6,Script routine (op $34 at $C3:CCA3): sets bit 0 of C2Scene_Unk7F00AA (a byte of Menu_FlagBlock7F; what it means is not traced).
+$C2:7B4F,$C2:7B59,11,C2Scene_SetUnk7F019ABit3,$C2,Engine,verified,b3421310ad7a,Script routine (op $34 at $C3:9238): sets bit 3 of C2Scene_Unk7F019A (Menu_FlagBlock7F; meaning not traced).
 $C2:7B5A,$C2:7B7E,37,C2Scene_LoadExtraObjPack,$C2,Engine,verified,8aebe7a33dc0,Unpacks entry C2Scene_ExtraObjPack of C2SceneRom_ObjPacks into C2Scene_DecompBuf.
 $C2:7B7F,$C2:7B9E,32,C2Scene_LoadExtraPalette,$C2,Engine,verified,3f78f57b4f1d,Unpacks entry C2Scene_ExtraPalPack of C2SceneRom_PalettePacks to A:X (C2Scene_LoadLocExtraGfx passes bank $00 and an address inside C2Scene_PaletteBuf).
 $C2:7B9F,$C2:7BC3,37,C2Scene_LoadUnkC600,$C2,Engine,verified,d855eaeda59b,Unpacks entry C2Scene_UnkC600Pack of C2SceneRom_PalettePacks into C2Scene_UnkC600 ($7E:C600); what it holds is not traced.
-$C2:8000,$C2:8001,2,BankC2_Entry8000,$C2,Engine,verified,27d4af458a6e,"Three BRAs, the bank's second set of fixed entry points, each reached by JSL from other banks: $8000 BankC2_Entry8000 → BankC2_MenuEntry (A = an argument chosen by the caller; the menu side is not..."
+$C2:7BC4,$C2:7BD0,13,C2Scene_TestUnk7F00F7Bit1,$C2,Engine,verified,475145ce6896,"Script routine (op $34 at $C3:98F4): C2Tmp_00 = 1 when bit 1 of C2Scene_Unk7F00F7 is set, else 0."
+$C2:7BD1,$C2:7BD7,7,C2Scene_SetConfig1E,$C2,Engine,verified,371748d0f571,Script routine (op $34 at $C3:B665 and $C3:C669): Menu_Config1E (the byte LocLoad_AudioSetup keeps the music track in) = C2Tmp_00.
+$C2:7BD8,$C2:7C27,80,C2Scene_BuildPatternTiles,$C2,Engine,verified,6383f375c951,"Script routine (no op $34 reference found): builds ten 4bpp tiles at C2Scene_PatternTiles ($7F:9000, the unpack buffer): zeroes the first eight ($100 bytes) and sets the two after them..."
+$C2:7C28,$C2:7C47,32,C2Scene_PatternRows,$C2,Engine,verified,9789f7cc02a6,"Bit plane 0 rows of the four tile pairs C2Scene_BuildPatternTiles builds, 8 rows per pair, sparse to full."
+$C2:7C48,$C2:7C4E,7,C2Scene_SetUnk7F00CE,$C2,Engine,verified,dc4ea1884575,Script routine (no op $34 reference found): C2Scene_Unk7F00CE = C2Tmp_00.
+$C2:7C4F,$C2:7C55,7,C2Scene_SetUnk7F00DA,$C2,Engine,verified,fc84f66d5f28,Script routine (op $34 at $C3:C448): C2Scene_Unk7F00DA = C2Tmp_00.
+$C2:7C56,$C2:7C96,65,C2Scene_Bg2HWaveInit,$C2,Engine,verified,18c95205242d,"Script routine (op $34 at $C3:C18F): sets up C2Scene_HdmaTable[0] (two runs of 112 lines) as HDMA channel 1 to BG2HOFS (indirect, one register twice) and turns it on, zeroes the buffer toggle..."
+$C2:7C97,$C2:7CD7,65,C2Scene_Bg2VWaveInit,$C2,Engine,verified,8d619df03c97,"Script routine (no op $34 reference found): as C2Scene_Bg2HWaveInit for BG2VOFS: C2Scene_HdmaTable[1] as HDMA channel 2, zeroes .Var26 and $7E:9176-$7E:95D5 (C2Scene_SwirlCosA to the end of..."
+$C2:7CD8,$C2:7D5D,134,C2Scene_Bg2HWaveStep,$C2,Engine,verified,7495541dc20e,"Script routine (op $34 at $C3:C1A1, probably once a frame): one step of a wave that runs up BG2: adds one to .Var26 and, by its parity, shows C2Scene_HandBufA (now even) or C2Scene_HandBufB (odd)..."
+$C2:7D5E,$C2:7DE3,134,C2Scene_Bg2VWaveStep,$C2,Engine,verified,26191f66cfa8,Script routine (no op $34 reference found): C2Scene_Bg2HWaveStep for BG2VOFS: C2Scene_SwirlCosA (even) or C2Scene_SwirlCosB (odd) through C2Scene_HdmaValues words 2-3 (C2Scene_HdmaTable[1]).
+$C2:7DE4,$C2:7FFF,540,BankC2_FreeSpace7DE4,$C2,Engine,verified,145e5b458dca,"$FF fill up to $C2:8000, where the menu part of the bank starts (BankC2_Entry8000)."
+$C2:8000,$C2:8001,2,BankC2_Entry8000,$C2,Engine,verified,6822f9c64169,"Three BRAs, the bank's second set of fixed entry points, each reached by JSL from other banks: $8000 BankC2_Entry8000 → BankC2_MenuEntry (A = an argument chosen by the caller, 0-6: the menu) $8002..."
 $C2:8002,$C2:8003,2,BankC2_Entry8002,$C2,Engine,verified,5ead2804b821,
 $C2:8004,$C2:8005,2,BankC2_Entry8004,$C2,Engine,verified,68661979701b,
 $C2:8006,$C2:8009,4,BankC2_ReadPadLong,$C2,Engine,verified,b911183927db,Menu_ReadPad as a long call (the BankC2_Entry8002 vector).
 $C2:800A,$C2:800D,4,BankC2_CommandLong,$C2,Engine,verified,0e6d4c81c04d,Menu_Unk8C36 as a long call (the BankC2_Entry8004 vector).
-$C2:840E,$C2:8471,100,Menu_Nmi,$C2,Engine,verified,29ba99c63cb8,"The menu's NMI handler: saves DB, X, Y, P, then on its own stack (Menu_NmiStackTop; the old S kept in Menu_NmiSavedSp) A, D and P; DB = $00, DP = Menu_NmiDp."
-$C2:8472,$C2:8472,1,Menu_Irq,$C2,Engine,verified,21cfccc7f04e,"The menu's IRQ handler (through the JML at $C2:840A, not matched): returns at once."
-$C2:8473,$C2:84CF,93,Menu_NmiPad,$C2,Engine,verified,4be875596cd4,The menu NMI's pad step.
+$C2:800E,$C2:808E,129,BankC2_MenuEntry,$C2,Engine,verified,e2245fcda9e4,The menu (reached by BRA from BankC2_Entry8000).
+$C2:808F,$C2:8095,7,Menu_EntryModes,$C2,Engine,verified,1f173930ba17,Menu_Mode for each BankC2_MenuEntry argument 0-6 (an index into Menu_ModeLists).
+$C2:8096,$C2:8169,212,Menu_InitSystems,$C2,Engine,verified,f2150dea3c89,"The menu's setup: DP=$0000; copies Menu_InterruptVectors (JML Menu_Nmi, JML Menu_Irq) over NmiTrampoline/IrqTrampoline ($0500-$0507; the MVN leaves DB=$7E); sends five sound-driver commands..."
+$C2:816A,$C2:818F,38,Menu_BuildPartyLists,$C2,Engine,verified,9707662f2fb1,"Lists the characters of Menu_PartyOrder that are present (bit 7 clear) in Menu_PartyList, with their positions in Menu_PartyListPos, and counts them: Menu_PartyActive (positions 0-2) and..."
+$C2:8190,$C2:81D9,74,Menu_RunThreads,$C2,Engine,verified,711bb6ce1333,The menu's scheduler; never returns.
+$C2:81DA,$C2:8215,60,Menu_RunThreadsNext,$C2,Engine,verified,06441f8298ce,
+$C2:8216,$C2:821D,8,Menu_ThreadEnd,$C2,Engine,verified,79157f2dc9e9,
+$C2:821E,$C2:822A,13,Menu_Yield,$C2,Engine,verified,29b9ed4fa0e7,
+$C2:822B,$C2:8235,11,Menu_YieldFrames,$C2,Engine,verified,eaba6da9951f,
+$C2:8236,$C2:8248,19,Menu_YieldSave,$C2,Engine,verified,43b9f8172dfa,
+$C2:8249,$C2:8254,12,Menu_StartThread,$C2,Engine,verified,9f98e1d6e5e0,"Puts a new thread in the slot at byte offset X: .Entry = A, .State = new and .Wait = 1 (it starts on the scheduler's next pass)."
+$C2:8255,$C2:826B,23,Menu_KillThreads,$C2,Engine,verified,18ebf5043d7e,Frees the slots whose bit is set in A's low byte (bit n: slot n).
+$C2:826C,$C2:826E,3,Menu_MainThread,$C2,Engine,verified,e2e12262fed5,"Thread 1 (Menu_RunThreads starts it at the sub-entry Menu_MainThreadStart, $C2:826F): each frame calls handler Menu_ThreadVar of Menu_Mode's list in Menu_ModeLists (a list of 16-bit addresses in..."
+$C2:826F,$C2:8290,34,Menu_MainThreadStart,$C2,Engine,verified,1cb98cb99789,
+$C2:8291,$C2:8291,1,Menu_ModeNone,$C2,Engine,verified,1adf7cd9c67d,"An RTS that Menu_ModeLists entries 8-10 point at as their list: read as a list it gives handler $CA60 for index 0, so modes 8-10 are probably not used."
+$C2:8292,$C2:82B1,32,Menu_ModeLists,$C2,Engine,verified,53d8a2b94874,One 16-bit address (bank $C2) per Menu_Mode $00-$0F: the list of handler addresses Menu_MainThread indexes by Menu_ThreadVar.
+$C2:82B2,$C2:82E0,47,Menu_Exit,$C2,Engine,verified,c1404d20fd88,"Leaves the menu back to the caller of BankC2_Entry8000: frees every thread (Menu_KillThreads), Menu_Unk834D, fades out (Menu_FadeOut), forced blank, NMI off (auto-joypad on), DMA and HDMA off, S =..."
+$C2:82E1,$C2:831F,63,Menu_Unk82E1,$C2,Engine,verified,c3dd50e91d1d,"Zeroes Menu_Unk2857 (5 bytes), then for each of the 7 Menu_CharRecords whose Menu_CharRec.Unk2A is $AE-$B2: when the Menu_Unk04A4 byte of that value (- $AE) is non-zero, sets the Menu_Unk2857 byte..."
+$C2:8320,$C2:832E,15,Menu_ExitToGame,$C2,Engine,verified,773723968a69,"Leaves the menu for the game loop: frees every thread, Menu_Unk834D, fades out, then the sub-entry Menu_ExitRestart ($C2:832F; also BankC2_MenuEntry's new-game path): forced blank, NMI off..."
+$C2:832F,$C2:834C,30,Menu_ExitRestart,$C2,Engine,verified,b4eaf0c91736,
+$C2:834D,$C2:8384,56,Menu_Unk834D,$C2,Engine,verified,b1dd374383cb,For each active party member (Menu_PartyOrder positions 0-2 not empty) copies the 6 bytes Menu_UnkF5ED picks for it (it returns the MVN's source in bank $D1 and the count - 1) into Menu_Unk21BA...
+$C2:8385,$C2:838D,9,Menu_QueueVramRom,$C2,Engine,verified,8ec262ca638e,"Appends the 8-byte VRAM upload (Menu_VramRec) at $C2:X to Menu_VramQueue (at Menu_VramQueueEnd, which then goes up by 8; Menu_FlushVramQueue sends them); the sub-entry Menu_QueueVramWram..."
+$C2:838E,$C2:8394,7,Menu_QueueVramWram,$C2,Engine,verified,166f2108dbdb,
+$C2:8395,$C2:83A1,13,Menu_QueueVramTail,$C2,Engine,verified,44926a4fca84,
+$C2:83A2,$C2:83B1,16,Menu_VramQueueSlot,$C2,Engine,verified,c95d4f77f02a,Y = Menu_VramQueue + Menu_VramQueueEnd (the next record's address) and A = 7 (the MVN count of 8 bytes).
+$C2:83B2,$C2:83BC,11,Menu_StartFadeIn,$C2,Engine,verified,00f4688a99e7,Starts Menu_FadeInThread in slot 0.
+$C2:83BD,$C2:83C9,13,Menu_FadeInThread,$C2,Engine,verified,5024e9179e38,"Thread: waits a frame, fades the brightness up by 2 a frame (Menu_Fade) and ends."
+$C2:83CA,$C2:83CF,6,Menu_FadeOut,$C2,Engine,verified,4917cf267efd,Menu_Fade with a step of -2 (to black).
+$C2:83D0,$C2:8405,54,Menu_Fade,$C2,Engine,verified,79ba76cf6147,"Fades the screen: Menu_FadeStep = A (signed), Menu_FadeFrames = 1; then repeatedly adds the step to Menu_InidispShadow's brightness (bits 0-3): past 0 or down to it the brightness is left at 0 and..."
+$C2:8406,$C2:840D,8,Menu_InterruptVectors,$C2,Engine,verified,1d045ea19781,"Copied over NmiTrampoline / IrqTrampoline ($0500-$0507) by Menu_InitSystems: JML Menu_Nmi and JML Menu_Irq, the menu's interrupt handlers."
+$C2:840E,$C2:8471,100,Menu_Nmi,$C2,Engine,verified,1562f01dffde,"The menu's NMI handler: saves DB, X, Y, P, then on its own stack (Menu_NmiStackTop; the old S kept in Menu_NmiSavedSp) A, D and P; DB = $00, DP = Menu_NmiDp."
+$C2:8472,$C2:8472,1,Menu_Irq,$C2,Engine,verified,783258f4ae92,The menu's IRQ handler (through the JML at $C2:840A): returns at once.
+$C2:8473,$C2:84CF,93,Menu_NmiPad,$C2,Engine,verified,861a0e094e6f,The menu NMI's pad step.
 $C2:84D0,$C2:84D1,2,Menu_RepeatDelays,$C2,Engine,verified,03cf5a2cc176,Menu_PadRepeatDelay for Menu_RepeatStage 0 and 1.
 $C2:84D2,$C2:84EB,26,Menu_ReadPad,$C2,Engine,verified,6bcb465b0dae,"The pad reader behind BankC2_Entry8002, run once a frame by the scene NMI and by other banks: reads joypad 1 (Menu_PollPad), maps it through the button configuration (Menu_MapButtons) and advances..."
-$C2:84EC,$C2:8544,89,Menu_PollPad,$C2,Engine,verified,307bf0c980c4,"Waits for the auto-joypad read to finish and rebuilds the pad words from JOY1 (layout as Pad_Pressed: low byte A X L R B Y Select Start, high byte Up Down Left Right in bits 3-0)..."
+$C2:84EC,$C2:8544,89,Menu_PollPad,$C2,Engine,verified,cf1e16d70afa,"Waits for the auto-joypad read to finish and rebuilds the pad words from JOY1 (layout as Pad_Pressed: low byte A X L R B Y Select Start, high byte Up Down Left Right in bits 3-0)..."
 $C2:8545,$C2:8554,16,Menu_MapButtons,$C2,Engine,verified,dfcb8f617659,"Turns the three pad words into the game's button bytes through the configured button map (Menu_ButtonMap, 8 JOY1-layout masks): bit n of the result is set when every button of its mask is in the word."
 $C2:8555,$C2:85AD,89,Menu_MapButtonsOne,$C2,Engine,verified,98af51aca1f3,
-$C2:85AE,$C2:85CF,34,Menu_TickPlayTime,$C2,Engine,verified,12ffa637428f,"Adds one frame to the play-time clock unless Menu_PlayTimePaused is set: Menu_PlayTime byte 0 counts up, and each byte that reaches its limit in Menu_PlayTimeLimits goes back to 0 and carries into..."
+$C2:85AE,$C2:85CF,34,Menu_TickPlayTime,$C2,Engine,verified,7592b1b1950f,"Adds one frame to the play-time clock unless Menu_PlayTimePaused is set: Menu_PlayTime byte 0 counts up, and each byte that reaches its limit in Menu_PlayTimeLimits goes back to 0 and carries into..."
 $C2:85D0,$C2:85D5,6,Menu_PlayTimeLimits,$C2,Engine,verified,de9e3e2856e3,"The count at which each Menu_PlayTime byte wraps, lowest first: frames (60), seconds (60), minutes in two digits (10, then 6) and hours in two digits (10, 10)."
-$C2:940D,$C2:950F,259,Menu_InitPpuAndRam,$C2,Engine,verified,32ff23177f97,"Puts the PPU and CPU registers into the menu's starting state, then clears all of VRAM and most of bank $7E with DMA."
+$C2:8663,$C2:86A8,70,Menu_FlushVramQueue,$C2,Engine,verified,d9ae1229eea5,"Sends Menu_VramQueue to VRAM, newest record first, each by DMA channel 7 to VMDATAL/H (two registers): VMADD = .Dest, from .SrcBank:.Src, .Size bytes (the direct page walks the records), then..."
+$C2:86A9,$C2:86DC,52,Menu_UploadPalette,$C2,Engine,verified,bd1508bdccf4,When Menu_PalDirty is non-zero: zeroes it and sends the 512 bytes of Menu_PalBuf ($7E:9480) to CGRAM from colour 0 by DMA channel 7.
+$C2:86DD,$C2:8770,148,Menu_BuildGradient,$C2,Engine,verified,86aeacf9d503,"Builds an HDMA table of colour math lines for channel 0 (direct, two registers: CGADSUB then COLDATA, set here; the table address is set by the menu NMI from Menu_GradBufSel): copies..."
+$C2:8771,$C2:8790,32,Menu_GradientSteps,$C2,Engine,verified,52295ff8e0a3,"16 CGADSUB / COLDATA pairs for Menu_BuildGradient: add (CGADSUB $02: BG2) the fixed colour of intensity 8 down to 0 (COLDATA $E8-$E0, all three channels), then subtract ($82) intensity 1 up to 7."
+$C2:8791,$C2:87CC,60,Menu_AddItem,$C2,Engine,verified,e2a1a8363e14,"Adds Menu_ItemCount of item Menu_ItemId to the inventory: to its slot (Menu_FindItem) or else to the first empty one (id stored, count 0), the count capped at 99."
+$C2:87CD,$C2:87D4,8,Menu_ItemSetCount,$C2,Engine,verified,0dedc78699ac,
+$C2:87D5,$C2:87F9,37,Menu_RemoveItem,$C2,Engine,verified,8088c04b133e,"Takes Menu_ItemCount of item Menu_ItemId from its slot: A = Menu_ItemShort when it has fewer (nothing changed), Menu_InvFull when it is not there; else the new count is stored (Menu_ItemSetCount)..."
+$C2:87FA,$C2:8815,28,Menu_FindItem,$C2,Engine,verified,a3dbbc5d7f61,"Finds the slot of item A with a non-zero count: C=0 with X = the slot and Menu_ItemSlot = X (a word), or C=1 with X = 0 (all 256 slots looked at)."
+$C2:8816,$C2:881F,10,Menu_LoadCharRec,$C2,Engine,verified,ef5f8538d246,"Menu_LoadCharRecA for character A, keeping P and X."
+$C2:8820,$C2:8838,25,Menu_LoadPartyCharRec,$C2,Engine,verified,302637dc7b98,"Loads the character at Menu_PartyList[Menu_CurMember] (Menu_LoadCharRecA); Menu_CurIsReserve = $FF when that index is past the active members (Menu_PartyActive), else 0."
+$C2:8839,$C2:8880,72,Menu_LoadCharRecA,$C2,Engine,verified,7f005aa0bd3e,"Copies the Menu_CharRecords record of character A (A x $50) to Menu_CurCharRec (its address kept in Menu_CurCharRecPtr), then the 6-byte Menu_Unk2C23 entry of the record's first byte AND 7 to..."
+$C2:8881,$C2:88A6,38,Menu_ItemCategory,$C2,Engine,verified,ef12a908827f,"The category of item A by Menu_ItemCategoryBounds (0: below $5A, 1: $5A-$7A, 2: $7B-$93, 3: $94-$BB, 4: from $BC) into Menu_ItemCategory, and its index within the category (A - the category's..."
+$C2:88A7,$C2:88AC,6,Menu_ItemCategoryBounds,$C2,Engine,verified,db684aaa5fd1,"The first item id of categories 0-4, then the end of the ids ($F2, the slot count Menu_ListEquipItems scans; not read by Menu_ItemCategory)."
+$C2:88AD,$C2:88D7,43,Menu_ItemDataPtrA,$C2,Engine,verified,dff74ba94a82,"Menu_ItemCategory for item A, then X = Menu_ItemDataPtr = the address (bank $CC: the callers read the record with LDA $CC0000,X; only the pointer and size tables are in bank $FF) of the item's..."
+$C2:88D8,$C2:88FF,40,Menu_ItemDataPtrB,$C2,Engine,verified,0c8712b2ebc7,"As Menu_ItemDataPtrA for the second set of per-category tables (MenuRom_ItemTablesB, MenuRom_ItemRecSizesB), using the Menu_ItemCategory / Menu_ItemIndex left by an earlier call; result in..."
+$C2:8900,$C2:894E,79,Menu_CountEquippedBy,$C2,Engine,verified,c28dbcaf6394,"For each character of Menu_EquipChars (up to 7, stopping at the first with bit 7 set): Menu_EquipFlags[n] = 1 when the byte of its Menu_CharRecords record at the category's Menu_EquipSlotOffsets..."
+$C2:894F,$C2:8952,4,Menu_EquipSlotOffsets,$C2,Engine,verified,ca95ebc5b7d5,"The Menu_CharRec offset of the equipped item of categories 0-3 ($29, $28, $27, $2A), as Menu_CountEquippedBy reads it (inferred from that use only)."
+$C2:8953,$C2:89DB,137,Menu_ListEquipItems,$C2,Engine,verified,ce7763d59f4a,"Lists the inventory items of Menu_ListKind's id range (Menu_EquipListRanges: 0 $00-$59, 1 $7B-$93, 2 $5A-$7A, 3 $94-$BB) that Menu_Unk93A8 accepts (A non-zero), from slots 0-$F1, into..."
+$C2:89DC,$C2:89E3,8,Menu_EquipListRanges,$C2,Engine,verified,f4fd46eb4287,First id and end id of each Menu_ListKind (Menu_ListEquipItems).
+$C2:89E4,$C2:89F1,14,Menu_StartCursorA,$C2,Engine,verified,f1110cbb048e,Menu_CursorYOfs = 0 and starts Menu_CursorThreadA in slot 6.
+$C2:89F2,$C2:89F9,8,Menu_CursorThreadA,$C2,Engine,verified,c00001a7b610,"Thread: Menu_CursorStepA, wait a frame, for ever."
+$C2:89FA,$C2:8A30,55,Menu_CursorStepA,$C2,Engine,verified,6edf22032503,"One frame of cursor A: blinks (Menu_CursorBlink) and, in the shown phase, when row Menu_Unk0D9D - Menu_Unk0416 + Menu_CursorIndex is below 10 (probably the row on screen of a scrolled list), puts..."
+$C2:8A31,$C2:8A44,20,Menu_StartCursorB,$C2,Engine,verified,b349d6457b19,Menu_CursorTileAttr = Menu_Unk0772 and starts Menu_CursorThreadB in slot 6.
+$C2:8A45,$C2:8A97,83,Menu_CursorThreadB,$C2,Engine,verified,f40f3bebce1d,"Thread: each frame blinks (Menu_CursorBlink) and, in its phase with bit 0 clear, puts sprite 0 at Menu_CursorIndex's Menu_CursorPos (X + 2; Y - 1) with Menu_CursorTileAttr."
+$C2:8A98,$C2:8AB1,26,Menu_StartCursorC,$C2,Engine,verified,17ca165ef89c,"Menu_BlinkMask = $FC, Menu_CursorTileAttr = Menu_Unk0772, and starts Menu_CursorThreadC in slot 6."
+$C2:8AB2,$C2:8AB9,8,Menu_CursorThreadC,$C2,Engine,verified,13be6eb451ca,"Thread: Menu_CursorStepC, wait a frame, for ever."
+$C2:8ABA,$C2:8AD4,27,Menu_CursorStepC,$C2,Engine,verified,edc4a471bf07,"One frame of cursor C: blinks with Menu_BlinkMask (Menu_CursorBlinkMasked) and, in its phase with bit 0 clear, puts sprite 0 at Menu_CursorIndex's Menu_CursorPos (X + 2, Y - 1) with..."
+$C2:8AD5,$C2:8AF4,32,Menu_StartCursorD,$C2,Engine,verified,75ba85bf7944,"Starts Menu_CursorThreadD in slot 6 with the three blink timers at 3, 1 and 2 and Menu_CursorBlink = 2 (sprite 1 starts hidden)."
+$C2:8AF5,$C2:8AFC,8,Menu_CursorThreadD,$C2,Engine,verified,2db9d32a8ef0,"Thread: Menu_CursorStepD, wait a frame, for ever."
+$C2:8AFD,$C2:8B68,108,Menu_CursorStepD,$C2,Engine,verified,9b48be7c7dad,"One frame of cursor D, one blinking cursor per active party member (Menu_PartyActive of them): tiles and attributes $3020 into all three sprites (and $20 into Menu_Unk0D9B); each of the three..."
+$C2:8B69,$C2:8B6D,5,Menu_CursorBlinkMasked,$C2,Engine,verified,ea096326efb3,"Blink timer 0: clears the bits of Menu_BlinkTimers[0] that A has set (Menu_CursorBlinkMasked passes Menu_BlinkMask; the sub-entry Menu_CursorBlink, $C2:8B6E, $FC, leaving a count 0-3), counts it..."
+$C2:8B6E,$C2:8B84,23,Menu_CursorBlink,$C2,Engine,verified,7f70f1f5ea2d,
+$C2:8B85,$C2:8B92,14,Menu_CursorPosAB,$C2,Engine,verified,d764af1f2f44,"The sprite position for cursor index A: with M=1, A = X + 2 and B = Y - 1 of its Menu_CursorPos record (X = the record offset, Menu_CursorRecOffset)."
+$C2:8B93,$C2:8BA5,19,Menu_StartListArrows,$C2,Engine,verified,c5e79a15b537,Menu_ArrowsOff = 0 and starts Menu_ListArrowsThread in slot 4.
+$C2:8BA6,$C2:8BB7,18,Menu_Times4,$C2,Engine,verified,bae949b0aaec,"A = the low byte of A x 4, through the hardware multiplier (two XBAs and a NOP as the wait)."
+$C2:8BB8,$C2:8C35,126,Menu_ListArrowsThread,$C2,Engine,verified,a37eb98d2ef2,Thread (slot 4): each frame counts Menu_ArrowTimer (7..0) and toggles bit 0 of Menu_ArrowBlink when it wraps.
+$C2:940D,$C2:950F,259,Menu_InitPpuAndRam,$C2,Engine,verified,e182f33b12e8,"Puts the PPU and CPU registers into the menu's starting state, then clears all of VRAM and most of bank $7E with DMA."
 $C2:9510,$C2:9511,2,Menu_DmaZeroWord,$C2,Engine,verified,99da86603343,the fixed DMA source of Menu_InitPpuAndRam's VRAM clear and of Menu_DmaClearWram.
 $C2:9512,$C2:9541,48,Menu_DmaClearWram,$C2,Engine,verified,6b26d6c42df6,"Zeroes Y bytes of bank $7E from address X with DMA channel 0 (fixed source Menu_DmaZeroWord, one register: WMDATA)."
 $C2:9542,$C2:956D,44,Menu_DmaCopyFFToWram,$C2,Engine,verified,bb9dac480364,"Copies Y bytes from bank $FF (MenuRom_DmaCopyBank), address A, to bank $7E at address X with DMA channel 0 (stepping source, one register: WMDATA)."
-$C2:956E,$C2:95BA,77,Menu_InitNewGameData,$C2,Engine,verified,23f40abc41e9,Sets up the data of a new game (inferred from what it fills).
+$C2:956E,$C2:95BA,77,Menu_InitNewGameData,$C2,Engine,verified,6ae56988bd29,Sets up the data of a new game (inferred from what it fills).
 $C2:95BB,$C2:960A,80,Menu_ClearConfigAndFlags,$C2,Engine,verified,6281d397f22f,"Zeroes Menu_FlagBlock7F ($7F:0000-$01FF), the page $7E:0400-$04FF (Menu_PlayTime and what follows) and Menu_Config ($2990-$29AF), then copies MenuRom_DefaultConfig (12 B) to Menu_Config and the 9..."
+$C2:EA27,$C2:EA35,15,Menu_CursorRecOffset,$C2,Engine,verified,23ada02f2736,X = (A AND $FF) x 6: the byte offset of a 6-byte Menu_CursorPos record.
 $CC:F365,$CC:F382,30,Battle_Mul8CC,$CC,Battle engine,verified,c491ba6627c5,A byte-identical copy of Battle_Mul8 ($C1:0089): 8×8→16 hardware multiply through WRMPYA/WRMPYB/RDMPYL.
 $CF:F9FB,$CF:FA42,72,Battle_SinLookupCF,$CF,Battle engine,verified,39075df1547d,Bank $CF's own scaled sine: returns (sin(A) × !BattleCF_SinScale) >> 8 in A.
 $CF:FDAD,$CF:FE1F,115,BattleMsg_FormatNumber4Digits,$CF,Battle text & numbers,verified,53f4a2a24f11,"A four-digit, long-call version of BattleMsg_FormatNumberDigits ($C1:011F): the same subtract-and-count loops with one more for the thousands, and the digits looked up in !BattleRom_DigitTilesB..."

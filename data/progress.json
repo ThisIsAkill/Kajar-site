@@ -1,19 +1,19 @@
 {
   "schema": 2,
-  "emitted_bytes": 153271,
+  "emitted_bytes": 158620,
   "code_bytes": 359278,
   "totals": {
     "matched": {
-      "functions": 2022,
-      "bytes": 153271
+      "functions": 2135,
+      "bytes": 158620
     },
     "readable": {
-      "functions": 2022,
-      "bytes": 153271
+      "functions": 2135,
+      "bytes": 158620
     },
     "verified": {
-      "functions": 2022,
-      "bytes": 153271
+      "functions": 2135,
+      "bytes": 158620
     }
   },
   "banks": [
@@ -54,18 +54,18 @@
     {
       "bank": "$C2",
       "code_bytes": null,
-      "emitted_bytes": 30929,
+      "emitted_bytes": 36278,
       "matched": {
-        "functions": 656,
-        "bytes": 30929
+        "functions": 769,
+        "bytes": 36278
       },
       "readable": {
-        "functions": 656,
-        "bytes": 30929
+        "functions": 769,
+        "bytes": 36278
       },
       "verified": {
-        "functions": 656,
-        "bytes": 30929
+        "functions": 769,
+        "bytes": 36278
       }
     },
     {
@@ -1892,7 +1892,7 @@
       "bank": "$C2",
       "start": "$C2:2000",
       "end": "$C2:2FFF",
-      "emitted_bytes": 3910,
+      "emitted_bytes": 4096,
       "functions": [
         "C2Scene_PalFadeStepTable",
         "C2Scene_TaskUnk20A2",
@@ -1915,6 +1915,9 @@
         "C2Scene_MosaicInStep",
         "Trig_Cos1024",
         "Trig_Sin1024",
+        "C2Scene_Unk2273",
+        "C2Scene_Unk2277",
+        "C2Scene_Unk229D",
         "C2Scene_ClearUnk1B30",
         "C2Scene_Random",
         "C2Scene_BoxesOverlap",
@@ -2367,7 +2370,7 @@
       "bank": "$C2",
       "start": "$C2:7000",
       "end": "$C2:7FFF",
-      "emitted_bytes": 1463,
+      "emitted_bytes": 4096,
       "functions": [
         "C2Scene_SwirlStep",
         "C2Scene_TaskDialMark",
@@ -2394,22 +2397,95 @@
         "C2Scene_ScrDialFadeOut",
         "C2Scene_ScrDialCentre",
         "C2Scene_ScrDialPalCycle",
+        "C2Scene_PlaceBelowView",
+        "C2Scene_PlaceBelowViewAt178",
+        "C2Scene_RandomVelocity",
+        "C2Scene_TaskBg3Drift",
+        "C2Scene_TaskBg3DriftWave",
+        "C2Scene_TaskBg3Wave",
+        "C2Scene_TaskBg3Slide",
+        "C2Scene_TaskBg3LineWave",
+        "C2Scene_TaskBg3SlideFast",
+        "C2Scene_TaskBg1Pan",
+        "C2Scene_ClearParty",
+        "C2Scene_SaveParty",
+        "C2Scene_RestoreParty",
+        "C2Scene_TaskInView",
+        "C2Scene_Win1Init",
+        "C2Scene_Win1Step",
+        "C2Scene_Win2Init",
+        "C2Scene_Win2Step",
+        "C2Scene_AddGravity",
+        "C2Scene_NudgeXRandom",
+        "C2Scene_RandPosA",
+        "C2Scene_RandYA",
+        "C2Scene_RandPosB",
+        "C2Scene_RandYB",
+        "C2Scene_NoiseInit",
+        "C2Scene_NoiseStep",
+        "C2Scene_NoiseShow",
+        "C2Scene_NoiseHide",
+        "C2Scene_UnpackBgPack",
+        "C2Scene_UnpackBg3MapPack",
+        "C2Scene_SetUnk7F00AABit0",
+        "C2Scene_SetUnk7F019ABit3",
         "C2Scene_LoadExtraObjPack",
         "C2Scene_LoadExtraPalette",
-        "C2Scene_LoadUnkC600"
+        "C2Scene_LoadUnkC600",
+        "C2Scene_TestUnk7F00F7Bit1",
+        "C2Scene_SetConfig1E",
+        "C2Scene_BuildPatternTiles",
+        "C2Scene_PatternRows",
+        "C2Scene_SetUnk7F00CE",
+        "C2Scene_SetUnk7F00DA",
+        "C2Scene_Bg2HWaveInit",
+        "C2Scene_Bg2VWaveInit",
+        "C2Scene_Bg2HWaveStep",
+        "C2Scene_Bg2VWaveStep",
+        "BankC2_FreeSpace7DE4"
       ]
     },
     {
       "bank": "$C2",
       "start": "$C2:8000",
       "end": "$C2:8FFF",
-      "emitted_bytes": 470,
+      "emitted_bytes": 2985,
       "functions": [
         "BankC2_Entry8000",
         "BankC2_Entry8002",
         "BankC2_Entry8004",
         "BankC2_ReadPadLong",
         "BankC2_CommandLong",
+        "BankC2_MenuEntry",
+        "Menu_EntryModes",
+        "Menu_InitSystems",
+        "Menu_BuildPartyLists",
+        "Menu_RunThreads",
+        "Menu_RunThreadsNext",
+        "Menu_ThreadEnd",
+        "Menu_Yield",
+        "Menu_YieldFrames",
+        "Menu_YieldSave",
+        "Menu_StartThread",
+        "Menu_KillThreads",
+        "Menu_MainThread",
+        "Menu_MainThreadStart",
+        "Menu_ModeNone",
+        "Menu_ModeLists",
+        "Menu_Exit",
+        "Menu_Unk82E1",
+        "Menu_ExitToGame",
+        "Menu_ExitRestart",
+        "Menu_Unk834D",
+        "Menu_QueueVramRom",
+        "Menu_QueueVramWram",
+        "Menu_QueueVramTail",
+        "Menu_VramQueueSlot",
+        "Menu_StartFadeIn",
+        "Menu_FadeInThread",
+        "Menu_FadeOut",
+        "Menu_Fade",
+        "Menu_InterruptVectors",
         "Menu_Nmi",
         "Menu_Irq",
         "Menu_NmiPad",
@@ -2419,7 +2495,43 @@
         "Menu_MapButtons",
         "Menu_MapButtonsOne",
         "Menu_TickPlayTime",
-        "Menu_PlayTimeLimits"
+        "Menu_PlayTimeLimits",
+        "Menu_FlushVramQueue",
+        "Menu_UploadPalette",
+        "Menu_BuildGradient",
+        "Menu_GradientSteps",
+        "Menu_AddItem",
+        "Menu_ItemSetCount",
+        "Menu_RemoveItem",
+        "Menu_FindItem",
+        "Menu_LoadCharRec",
+        "Menu_LoadPartyCharRec",
+        "Menu_LoadCharRecA",
+        "Menu_ItemCategory",
+        "Menu_ItemCategoryBounds",
+        "Menu_ItemDataPtrA",
+        "Menu_ItemDataPtrB",
+        "Menu_CountEquippedBy",
+        "Menu_EquipSlotOffsets",
+        "Menu_ListEquipItems",
+        "Menu_EquipListRanges",
+        "Menu_StartCursorA",
+        "Menu_CursorThreadA",
+        "Menu_CursorStepA",
+        "Menu_StartCursorB",
+        "Menu_CursorThreadB",
+        "Menu_StartCursorC",
+        "Menu_CursorThreadC",
+        "Menu_CursorStepC",
+        "Menu_StartCursorD",
+        "Menu_CursorThreadD",
+        "Menu_CursorStepD",
+        "Menu_CursorBlinkMasked",
+        "Menu_CursorBlink",
+        "Menu_CursorPosAB",
+        "Menu_StartListArrows",
+        "Menu_Times4",
+        "Menu_ListArrowsThread"
       ]
     },
     {
@@ -2468,8 +2580,10 @@
       "bank": "$C2",
       "start": "$C2:E000",
       "end": "$C2:EFFF",
-      "emitted_bytes": 0,
-      "functions": []
+      "emitted_bytes": 15,
+      "functions": [
+        "Menu_CursorRecOffset"
+      ]
     },
     {
       "bank": "$C2",
