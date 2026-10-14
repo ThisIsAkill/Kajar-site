@@ -1,26 +1,26 @@
 {
   "schema": 3,
-  "emitted_bytes": 194044,
-  "code_bytes": 239403,
+  "emitted_bytes": 207874,
+  "code_bytes": 240593,
   "surveyed_code_bytes": 239779,
   "totals": {
     "matched": {
-      "functions": 2664,
-      "bytes": 194044,
-      "code_bytes": 181970,
-      "data_bytes": 12074
+      "functions": 2755,
+      "bytes": 207874,
+      "code_bytes": 188718,
+      "data_bytes": 19156
     },
     "readable": {
-      "functions": 2664,
-      "bytes": 194044,
-      "code_bytes": 181970,
-      "data_bytes": 12074
+      "functions": 2755,
+      "bytes": 207874,
+      "code_bytes": 188718,
+      "data_bytes": 19156
     },
     "verified": {
-      "functions": 2664,
-      "bytes": 194044,
-      "code_bytes": 181970,
-      "data_bytes": 12074
+      "functions": 2755,
+      "bytes": 207874,
+      "code_bytes": 188718,
+      "data_bytes": 19156
     }
   },
   "banks": [
@@ -100,6 +100,56 @@
       }
     },
     {
+      "bank": "$C3",
+      "code_bytes": 4076,
+      "surveyed_code_bytes": 3032,
+      "survey_low": true,
+      "emitted_bytes": 4299,
+      "matched": {
+        "functions": 43,
+        "bytes": 4299,
+        "code_bytes": 4076,
+        "data_bytes": 223
+      },
+      "readable": {
+        "functions": 43,
+        "bytes": 4299,
+        "code_bytes": 4076,
+        "data_bytes": 223
+      },
+      "verified": {
+        "functions": 43,
+        "bytes": 4299,
+        "code_bytes": 4076,
+        "data_bytes": 223
+      }
+    },
+    {
+      "bank": "$C7",
+      "code_bytes": 2672,
+      "surveyed_code_bytes": 2526,
+      "survey_low": true,
+      "emitted_bytes": 3601,
+      "matched": {
+        "functions": 36,
+        "bytes": 3601,
+        "code_bytes": 2672,
+        "data_bytes": 929
+      },
+      "readable": {
+        "functions": 36,
+        "bytes": 3601,
+        "code_bytes": 2672,
+        "data_bytes": 929
+      },
+      "verified": {
+        "functions": 36,
+        "bytes": 3601,
+        "code_bytes": 2672,
+        "data_bytes": 929
+      }
+    },
+    {
       "bank": "$CC",
       "code_bytes": 4440,
       "surveyed_code_bytes": 4440,
@@ -154,24 +204,24 @@
       "code_bytes": 16149,
       "surveyed_code_bytes": 16149,
       "survey_low": false,
-      "emitted_bytes": 16433,
+      "emitted_bytes": 22363,
       "matched": {
-        "functions": 146,
-        "bytes": 16433,
+        "functions": 158,
+        "bytes": 22363,
         "code_bytes": 15668,
-        "data_bytes": 765
+        "data_bytes": 6695
       },
       "readable": {
-        "functions": 146,
-        "bytes": 16433,
+        "functions": 158,
+        "bytes": 22363,
         "code_bytes": 15668,
-        "data_bytes": 765
+        "data_bytes": 6695
       },
       "verified": {
-        "functions": 146,
-        "bytes": 16433,
+        "functions": 158,
+        "bytes": 22363,
         "code_bytes": 15668,
-        "data_bytes": 765
+        "data_bytes": 6695
       }
     },
     {
@@ -3099,6 +3149,312 @@
       ]
     },
     {
+      "bank": "$C3",
+      "start": "$C3:0000",
+      "end": "$C3:0FFF",
+      "emitted_bytes": 4096,
+      "functions": [
+        "BankC3_Entry0000",
+        "Decomp_ToWramVec",
+        "BankC3_Entry0008",
+        "BankC3_Entry000E",
+        "BankC3_Entry0011",
+        "C3_BootModule",
+        "WinFx_BuildCircle",
+        "WinFx_Exit",
+        "WinFx_FillEmpty",
+        "WinFx_FillEmptyFrom",
+        "WinFx_StepWipe",
+        "C3_RandomByte",
+        "C3_ScaleBitmap",
+        "C3_BootIrq",
+        "C3_BootNmi",
+        "Decomp_ToWram",
+        "C3_ModuleNmi",
+        "C3_NmiBusy",
+        "C3_ModuleFrame",
+        "C3_IrqAck",
+        "C3_MulSigned",
+        "C3_CopyFEto7E",
+        "C3_CopyFEto7F",
+        "C3_SongCheck",
+        "C3_CopyCodeOrder",
+        "C3_BuildCopyCode",
+        "C3_ReadPad",
+        "C3_RunScript",
+        "C3_TaskListRemove",
+        "C3_NmiListRemove",
+        "C3_TaskListAdd",
+        "C3_NmiListAdd",
+        "C3_SprListSmall",
+        "C3_SprListLarge",
+        "C3_SprOneSmall",
+        "C3_SprOneLarge",
+        "C3_FindDivisor",
+        "BankC3_StaffText",
+        "WinFx_BuildQuad"
+      ]
+    },
+    {
+      "bank": "$C3",
+      "start": "$C3:1000",
+      "end": "$C3:1FFF",
+      "emitted_bytes": 203,
+      "functions": [
+        "WinFx_QuadEdgeFlat",
+        "WinFx_QuadEdge",
+        "WinFx_QuadExit",
+        "BankC3_EndMarker"
+      ]
+    },
+    {
+      "bank": "$C3",
+      "start": "$C3:2000",
+      "end": "$C3:2FFF",
+      "emitted_bytes": 0,
+      "functions": []
+    },
+    {
+      "bank": "$C3",
+      "start": "$C3:3000",
+      "end": "$C3:3FFF",
+      "emitted_bytes": 0,
+      "functions": []
+    },
+    {
+      "bank": "$C3",
+      "start": "$C3:4000",
+      "end": "$C3:4FFF",
+      "emitted_bytes": 0,
+      "functions": []
+    },
+    {
+      "bank": "$C3",
+      "start": "$C3:5000",
+      "end": "$C3:5FFF",
+      "emitted_bytes": 0,
+      "functions": []
+    },
+    {
+      "bank": "$C3",
+      "start": "$C3:6000",
+      "end": "$C3:6FFF",
+      "emitted_bytes": 0,
+      "functions": []
+    },
+    {
+      "bank": "$C3",
+      "start": "$C3:7000",
+      "end": "$C3:7FFF",
+      "emitted_bytes": 0,
+      "functions": []
+    },
+    {
+      "bank": "$C3",
+      "start": "$C3:8000",
+      "end": "$C3:8FFF",
+      "emitted_bytes": 0,
+      "functions": []
+    },
+    {
+      "bank": "$C3",
+      "start": "$C3:9000",
+      "end": "$C3:9FFF",
+      "emitted_bytes": 0,
+      "functions": []
+    },
+    {
+      "bank": "$C3",
+      "start": "$C3:A000",
+      "end": "$C3:AFFF",
+      "emitted_bytes": 0,
+      "functions": []
+    },
+    {
+      "bank": "$C3",
+      "start": "$C3:B000",
+      "end": "$C3:BFFF",
+      "emitted_bytes": 0,
+      "functions": []
+    },
+    {
+      "bank": "$C3",
+      "start": "$C3:C000",
+      "end": "$C3:CFFF",
+      "emitted_bytes": 0,
+      "functions": []
+    },
+    {
+      "bank": "$C3",
+      "start": "$C3:D000",
+      "end": "$C3:DFFF",
+      "emitted_bytes": 0,
+      "functions": []
+    },
+    {
+      "bank": "$C3",
+      "start": "$C3:E000",
+      "end": "$C3:EFFF",
+      "emitted_bytes": 0,
+      "functions": []
+    },
+    {
+      "bank": "$C3",
+      "start": "$C3:F000",
+      "end": "$C3:FFFF",
+      "emitted_bytes": 0,
+      "functions": []
+    },
+    {
+      "bank": "$C7",
+      "start": "$C7:0000",
+      "end": "$C7:0FFF",
+      "emitted_bytes": 3601,
+      "functions": [
+        "Audio_DriverInit",
+        "Audio_DriverCommand",
+        "Audio_VecLoadNewSamples",
+        "Audio_VecSendSampleDir",
+        "Audio_BootBlockPtrs",
+        "Audio_BootBlockAram",
+        "Audio_TableDirectory",
+        "Audio_Boot",
+        "Audio_RunCommand",
+        "Audio_RunCommand_Dispatch",
+        "Audio_CommandDone",
+        "Audio_CmdLoadSong",
+        "Audio_LoadNewSamples",
+        "Audio_SendSampleDir",
+        "Audio_SendSongData",
+        "Audio_CmdSend",
+        "Audio_UploadSample",
+        "Audio_CmdSongAlias",
+        "Audio_AdjustSongCmd",
+        "Audio_CmdSwapSample",
+        "Audio_CmdBlockVariant",
+        "Audio_UploadBlock2F00",
+        "Audio_SendSeq",
+        "Audio_AbortXfer",
+        "Audio_SetEchoDelay",
+        "Audio_DropEchoSlots",
+        "Audio_StartSong",
+        "Audio_SongAliasTable",
+        "Audio_SongBit2List",
+        "Audio_SongCmdTable",
+        "Audio_SongCount",
+        "Audio_SampleTable",
+        "Audio_SampleLoop",
+        "Audio_SampleParamA",
+        "Audio_SampleParamB",
+        "Audio_SongTable"
+      ]
+    },
+    {
+      "bank": "$C7",
+      "start": "$C7:1000",
+      "end": "$C7:1FFF",
+      "emitted_bytes": 0,
+      "functions": []
+    },
+    {
+      "bank": "$C7",
+      "start": "$C7:2000",
+      "end": "$C7:2FFF",
+      "emitted_bytes": 0,
+      "functions": []
+    },
+    {
+      "bank": "$C7",
+      "start": "$C7:3000",
+      "end": "$C7:3FFF",
+      "emitted_bytes": 0,
+      "functions": []
+    },
+    {
+      "bank": "$C7",
+      "start": "$C7:4000",
+      "end": "$C7:4FFF",
+      "emitted_bytes": 0,
+      "functions": []
+    },
+    {
+      "bank": "$C7",
+      "start": "$C7:5000",
+      "end": "$C7:5FFF",
+      "emitted_bytes": 0,
+      "functions": []
+    },
+    {
+      "bank": "$C7",
+      "start": "$C7:6000",
+      "end": "$C7:6FFF",
+      "emitted_bytes": 0,
+      "functions": []
+    },
+    {
+      "bank": "$C7",
+      "start": "$C7:7000",
+      "end": "$C7:7FFF",
+      "emitted_bytes": 0,
+      "functions": []
+    },
+    {
+      "bank": "$C7",
+      "start": "$C7:8000",
+      "end": "$C7:8FFF",
+      "emitted_bytes": 0,
+      "functions": []
+    },
+    {
+      "bank": "$C7",
+      "start": "$C7:9000",
+      "end": "$C7:9FFF",
+      "emitted_bytes": 0,
+      "functions": []
+    },
+    {
+      "bank": "$C7",
+      "start": "$C7:A000",
+      "end": "$C7:AFFF",
+      "emitted_bytes": 0,
+      "functions": []
+    },
+    {
+      "bank": "$C7",
+      "start": "$C7:B000",
+      "end": "$C7:BFFF",
+      "emitted_bytes": 0,
+      "functions": []
+    },
+    {
+      "bank": "$C7",
+      "start": "$C7:C000",
+      "end": "$C7:CFFF",
+      "emitted_bytes": 0,
+      "functions": []
+    },
+    {
+      "bank": "$C7",
+      "start": "$C7:D000",
+      "end": "$C7:DFFF",
+      "emitted_bytes": 0,
+      "functions": []
+    },
+    {
+      "bank": "$C7",
+      "start": "$C7:E000",
+      "end": "$C7:EFFF",
+      "emitted_bytes": 0,
+      "functions": []
+    },
+    {
+      "bank": "$C7",
+      "start": "$C7:F000",
+      "end": "$C7:FFFF",
+      "emitted_bytes": 0,
+      "functions": []
+    },
+    {
       "bank": "$CC",
       "start": "$CC:0000",
       "end": "$CC:0FFF",
@@ -3432,7 +3788,7 @@
       "bank": "$FD",
       "start": "$FD:B000",
       "end": "$FD:BFFF",
-      "emitted_bytes": 2647,
+      "emitted_bytes": 4096,
       "functions": [
         "BattleFD_AddItemEntry_Skip",
         "BattleFD_ItemRecOffset",
@@ -3456,7 +3812,13 @@
         "BattleFD_UnkB655",
         "BattleFD_UnkB732",
         "BattleFD_UnkB7EB",
-        "RandomTableFD"
+        "BattleFD_FixedCmdPtrs",
+        "BattleFD_FixedCmds",
+        "BattleFD_FixedPartyPtrs",
+        "BattleFD_FixedParty",
+        "BattleFD_AiActLength",
+        "RandomTableFD",
+        "BankFD_RandomTableTail"
       ]
     },
     {
@@ -3493,10 +3855,11 @@
       "bank": "$FD",
       "start": "$FD:D000",
       "end": "$FD:DFFF",
-      "emitted_bytes": 3028,
+      "emitted_bytes": 4096,
       "functions": [
         "FieldHdma_BuildBottomBandB",
         "EngFD_UnkD52D",
+        "FieldHdma_OldBuildLeftovers",
         "M7Scene_Run80",
         "M7Scene_Run81",
         "M7Scene_Run82",
@@ -3567,7 +3930,7 @@
       "bank": "$FD",
       "start": "$FD:F000",
       "end": "$FD:FFFF",
-      "emitted_bytes": 683,
+      "emitted_bytes": 4096,
       "functions": [
         "M7Scene_PalRed",
         "M7Scene_PalBlue",
@@ -3580,6 +3943,11 @@
         "M7Scene_UploadOam",
         "M7Scene_InitOam",
         "M7Scene_UploadPalette",
+        "FieldAnimListAPtrs",
+        "FieldAnimListA",
+        "FieldAnimListBPtrs",
+        "FieldAnimListB",
+        "FieldAnimListBOldTail",
         "FdVec_FFE5",
         "FdVec_FFE8",
         "FdVec_FFEB",

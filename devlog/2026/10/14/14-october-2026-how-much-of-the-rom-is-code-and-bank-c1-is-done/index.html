@@ -216,21 +216,21 @@
       <div class="wk-party">
         <div class="wk-party-row" title="Bytes matched: the rebuilt ROM is byte-identical here">
           <span class="wk-party-k">HP</span>
-          <span class="wk-party-v">181,970<small>/239,403</small></span>
+          <span class="wk-party-v">188,718<small>/240,593</small></span>
         </div>
-        <div class="wk-stat-track"><div class="wk-stat-fill" style="width:76.01%"></div></div>
-        <p class="wk-party-note">code bytes matched · 76.01% of code · 12,074 B data</p>
+        <div class="wk-stat-track"><div class="wk-stat-fill" style="width:78.44%"></div></div>
+        <p class="wk-party-note">code bytes matched · 78.44% of code · 19,156 B data</p>
 
         <div class="wk-party-row" title="Matched functions that also meet the readability standard">
           <span class="wk-party-k">MP</span>
-          <span class="wk-party-v">2664<small>/2664</small></span>
+          <span class="wk-party-v">2755<small>/2755</small></span>
         </div>
         <div class="wk-stat-track"><div class="wk-stat-fill wk-stat-fill-mp" style="width:100.0%"></div></div>
         <p class="wk-party-note">functions readable</p>
 
         <div class="wk-party-row" title="Readable functions that passed an independent review">
           <span class="wk-party-k">TP</span>
-          <span class="wk-party-v">2664<small>/2664</small></span>
+          <span class="wk-party-v">2755<small>/2755</small></span>
         </div>
         <div class="wk-stat-track"><div class="wk-stat-fill wk-stat-fill-dim" style="width:100.0%"></div></div>
         <p class="wk-party-note">functions verified</p>
@@ -257,7 +257,7 @@
           <li>
             <a href="#14-october-2026-how-much-of-the-rom-is-code-and-bank-c1-is-done" class="wk-toc-link">14 October 2026: how much of the ROM is code? And bank $C1 is done</a>
             
-            <ol><li><a href="#what-was-counted-as-code" class="wk-toc-link">What was counted as code</a></li><li><a href="#how-it-is-measured-now" class="wk-toc-link">How it is measured now</a></li><li><a href="#where-the-re-survey-left-things" class="wk-toc-link">Where the re-survey left things</a></li><li><a href="#bank-c1-is-complete" class="wk-toc-link">Bank $C1 is complete</a></li><li><a href="#the-equipment-screen-and-the-menus-drawing-code" class="wk-toc-link">The equipment screen and the menu's drawing code</a></li><li><a href="#a-mode-7-scene-and-the-white-fades" class="wk-toc-link">A Mode 7 scene and the white fades</a></li><li><a href="#where-that-leaves-things" class="wk-toc-link">Where that leaves things</a></li><li><a href="#next" class="wk-toc-link">Next</a></li></ol>
+            <ol><li><a href="#what-was-counted-as-code" class="wk-toc-link">What was counted as code</a></li><li><a href="#how-it-is-measured-now" class="wk-toc-link">How it is measured now</a></li><li><a href="#where-the-re-survey-left-things" class="wk-toc-link">Where the re-survey left things</a></li><li><a href="#bank-c1-is-complete" class="wk-toc-link">Bank $C1 is complete</a></li><li><a href="#the-equipment-screen-and-the-menus-drawing-code" class="wk-toc-link">The equipment screen and the menu's drawing code</a></li><li><a href="#a-mode-7-scene-and-the-white-fades" class="wk-toc-link">A Mode 7 scene and the white fades</a></li><li><a href="#the-decompressor-and-the-jet-bike-race" class="wk-toc-link">The decompressor and the jet bike race</a></li><li><a href="#the-sound-drivers-65816-side" class="wk-toc-link">The sound driver's 65816 side</a></li><li><a href="#the-rest-of-fd" class="wk-toc-link">The rest of $FD</a></li><li><a href="#where-that-leaves-things" class="wk-toc-link">Where that leaves things</a></li><li><a href="#next" class="wk-toc-link">Next</a></li></ol>
             
           </li>
           
@@ -298,10 +298,17 @@
 <p>In <code>$C2</code>, 4,904 bytes: the menu's pad input, cursor and sound requests, and the draw-list interpreter that builds windows, text and numbers (with the play-time clock and item names and descriptions). One of the menu modes turned out to be the equipment screen. A table of slot names sits right next to it in the ROM: "Weapon", "Helmet", "Armor", "Accessory".</p>
 <h2 id="a-mode-7-scene-and-the-white-fades">A Mode 7 scene and the white fades</h2>
 <p>In <code>$FD</code>, 4,515 bytes: two palette animations that fade or pulse colours toward white, a complete Mode 7 scene started by event command <code>$FF $80</code>-<code>$8F</code> (an iris window, a sprite bitmap drawn with rays, palette cycling), and the routine that uploads the field's animated tiles. Which scene in the game it is has not been traced yet. Two of the white fades write only one byte of each colour, so they change one channel and leave the rest of the colour as it was.</p>
+<h2 id="the-decompressor-and-the-jet-bike-race">The decompressor and the jet bike race</h2>
+<p>The first 4,299 bytes of <code>$C3</code> are the bank's kernel. The centrepiece is the decompressor, called from 42 places in the game. Its header now describes the packed format completely, and two reviewers each wrote their own decoder from that description and ran it over the ROM's packs. Every one unpacks cleanly. The largest pack, 26 KB at <code>$C3:1313</code>, unpacks to 34 KB of <abbr title="The 16-bit CPU inside the SNES, an extended 6502 capable of 8-bit emulation and full 16-bit native mode.">65816</abbr> code at <code>$7E:3000</code>. A block of staff text in the same bank reads "JET BIKE RACE", so that module is the race against Johnny. The rest of the kernel is the services that module calls: a script interpreter, task lists, sprite builders, a bitmap scaler, and the window shapes (circles, wipes and four-sided shapes) that the field also uses.</p>
+<p>The module itself is still raw bytes. Matching it would need a packer that rebuilds the exact compressed bytes, which is a project of its own.</p>
+<h2 id="the-sound-drivers-65816-side">The sound driver's <abbr title="The 16-bit CPU inside the SNES, an extended 6502 capable of 8-bit emulation and full 16-bit native mode.">65816</abbr> side</h2>
+<p>Every sound and song request in the game goes through one entry point in <code>$C7</code>. That bank's <abbr title="The 16-bit CPU inside the SNES, an extended 6502 capable of 8-bit emulation and full 16-bit native mode.">65816</abbr> code is now <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr>: 3,601 bytes that boot the sound chip, upload its program, and pass commands to it through four I/O ports. The handshake is written out step by step. The bank also holds a table of 83 songs and 62 instrument samples. The sound chip's own program, which runs on a different processor, is a separate job.</p>
+<h2 id="the-rest-of-fd">The rest of <code>$FD</code></h2>
+<p>From <code>$FD:A8A5</code> to the end of the bank, everything now comes from source: the fixed party and commands for one scripted battle, the animation lists for each location's tiles and palettes, and older copies of two routines that nothing runs. It is all data, so it doesn't move the code figure.</p>
 <h2 id="where-that-leaves-things">Where that leaves things</h2>
-<p><code>main</code> now stands at 181,970 <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr> code bytes: <strong>76.01%</strong> of the surveyed code. The same caveat holds: the survey leans low, so the true share is more likely a little below that. All 2,664 <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr> routines are independently verified.</p>
+<p><code>main</code> now stands at 188,718 <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr> code bytes: <strong>78.44%</strong> of the surveyed code. The same caveat holds: the survey leans low, so the true share is more likely a little below that. All 2,755 <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr> routines are independently verified.</p>
 <h2 id="next">Next</h2>
-<p>The <code>$C3</code> kernel and its decompressor are being <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr> now. Then the rest of <code>$FD</code>, the <abbr title="The 16-bit CPU inside the SNES, an extended 6502 capable of 8-bit emulation and full 16-bit native mode.">65816</abbr> side of the sound interface in <code>$C7</code>, and the battle code in <code>$CF</code> and <code>$CC</code>.</p>
+<p>The battle code in <code>$CF</code> is being <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr> now. After it, the battle tables and code at the end of <code>$CC</code>, the bank-<code>$FF</code> routines the menu calls, and then the larger banks still untouched: <code>$CE</code>, <code>$D1</code> and <code>$CD</code>.</p>
   
   <p class="wk-post-back"><a href="../../../../">← Back to devlog</a></p>
 </article>
