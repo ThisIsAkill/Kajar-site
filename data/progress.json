@@ -1,26 +1,26 @@
 {
   "schema": 3,
-  "emitted_bytes": 227584,
-  "code_bytes": 242044,
+  "emitted_bytes": 233974,
+  "code_bytes": 243169,
   "surveyed_code_bytes": 239779,
   "totals": {
     "matched": {
-      "functions": 2969,
-      "bytes": 227584,
-      "code_bytes": 207809,
-      "data_bytes": 19775
+      "functions": 3036,
+      "bytes": 233974,
+      "code_bytes": 213667,
+      "data_bytes": 20307
     },
     "readable": {
-      "functions": 2969,
-      "bytes": 227584,
-      "code_bytes": 207809,
-      "data_bytes": 19775
+      "functions": 3036,
+      "bytes": 233974,
+      "code_bytes": 213667,
+      "data_bytes": 20307
     },
     "verified": {
-      "functions": 2969,
-      "bytes": 227584,
-      "code_bytes": 207809,
-      "data_bytes": 19775
+      "functions": 3036,
+      "bytes": 233974,
+      "code_bytes": 213667,
+      "data_bytes": 20307
     }
   },
   "banks": [
@@ -222,6 +222,31 @@
         "bytes": 7424,
         "code_bytes": 7013,
         "data_bytes": 411
+      }
+    },
+    {
+      "bank": "$D1",
+      "code_bytes": 5858,
+      "surveyed_code_bytes": 4733,
+      "survey_low": true,
+      "emitted_bytes": 6390,
+      "matched": {
+        "functions": 67,
+        "bytes": 6390,
+        "code_bytes": 5858,
+        "data_bytes": 532
+      },
+      "readable": {
+        "functions": 67,
+        "bytes": 6390,
+        "code_bytes": 5858,
+        "data_bytes": 532
+      },
+      "verified": {
+        "functions": 67,
+        "bytes": 6390,
+        "code_bytes": 5858,
+        "data_bytes": 532
       }
     },
     {
@@ -4012,6 +4037,187 @@
         "BattleCF_RemoveMarkedEnemies",
         "BankCF_EndFill",
         "BattleCF_ActForceBytes"
+      ]
+    },
+    {
+      "bank": "$D1",
+      "start": "$D1:0000",
+      "end": "$D1:0FFF",
+      "emitted_bytes": 0,
+      "functions": []
+    },
+    {
+      "bank": "$D1",
+      "start": "$D1:1000",
+      "end": "$D1:1FFF",
+      "emitted_bytes": 0,
+      "functions": []
+    },
+    {
+      "bank": "$D1",
+      "start": "$D1:2000",
+      "end": "$D1:2FFF",
+      "emitted_bytes": 0,
+      "functions": []
+    },
+    {
+      "bank": "$D1",
+      "start": "$D1:3000",
+      "end": "$D1:3FFF",
+      "emitted_bytes": 0,
+      "functions": []
+    },
+    {
+      "bank": "$D1",
+      "start": "$D1:4000",
+      "end": "$D1:4FFF",
+      "emitted_bytes": 0,
+      "functions": []
+    },
+    {
+      "bank": "$D1",
+      "start": "$D1:5000",
+      "end": "$D1:5FFF",
+      "emitted_bytes": 0,
+      "functions": []
+    },
+    {
+      "bank": "$D1",
+      "start": "$D1:6000",
+      "end": "$D1:6FFF",
+      "emitted_bytes": 0,
+      "functions": []
+    },
+    {
+      "bank": "$D1",
+      "start": "$D1:7000",
+      "end": "$D1:7FFF",
+      "emitted_bytes": 0,
+      "functions": []
+    },
+    {
+      "bank": "$D1",
+      "start": "$D1:8000",
+      "end": "$D1:8FFF",
+      "emitted_bytes": 0,
+      "functions": []
+    },
+    {
+      "bank": "$D1",
+      "start": "$D1:9000",
+      "end": "$D1:9FFF",
+      "emitted_bytes": 0,
+      "functions": []
+    },
+    {
+      "bank": "$D1",
+      "start": "$D1:A000",
+      "end": "$D1:AFFF",
+      "emitted_bytes": 0,
+      "functions": []
+    },
+    {
+      "bank": "$D1",
+      "start": "$D1:B000",
+      "end": "$D1:BFFF",
+      "emitted_bytes": 0,
+      "functions": []
+    },
+    {
+      "bank": "$D1",
+      "start": "$D1:C000",
+      "end": "$D1:CFFF",
+      "emitted_bytes": 0,
+      "functions": []
+    },
+    {
+      "bank": "$D1",
+      "start": "$D1:D000",
+      "end": "$D1:DFFF",
+      "emitted_bytes": 0,
+      "functions": []
+    },
+    {
+      "bank": "$D1",
+      "start": "$D1:E000",
+      "end": "$D1:EFFF",
+      "emitted_bytes": 2294,
+      "functions": [
+        "BattleFx_SwapObjPalettes",
+        "BattleFx_Nmi",
+        "BattleFx_WhitenRows",
+        "BattleFx_WhitenObjRows5To7",
+        "BattleFx_UploadMapBlock",
+        "BattleFx_MoveBgRowsUp",
+        "BattleFx_LoadBgRows2To4",
+        "BattleFx_GradLevelOfs",
+        "BattleFx_FindGradStart",
+        "BattleFx_GradRotA",
+        "BattleFx_GradRotB",
+        "BattleFx_GradRotC",
+        "BattleFx_HpGradientTick",
+        "BattleFx_GradRotation",
+        "BattleFx_GradWriteRow",
+        "BattleFx_SwayQuad",
+        "BattleFx_UnkTableEC5F",
+        "BattleFx_BgSetPalOfs",
+        "BattleFx_BgSetPacks",
+        "BattleFx_LoadBgSet",
+        "BattleFx_GrowBand",
+        "BattleFx_MsgSfx",
+        "BattleFx_RampWin2",
+        "BattleFx_WaveWindowA",
+        "BattleFx_WaveLeftA",
+        "BattleFx_WaveWindowB",
+        "BattleFx_WaveWindowB_ByFrame"
+      ]
+    },
+    {
+      "bank": "$D1",
+      "start": "$D1:F000",
+      "end": "$D1:FFFF",
+      "emitted_bytes": 4096,
+      "functions": [
+        "BattleFx_WaveLeftB",
+        "BattleFx_WaveRight",
+        "BattleFx_AddLineOffsets",
+        "BattleFx_Init",
+        "BattleFx_SaveAnimKinds",
+        "BattleFx_HoldAnimsTick",
+        "BattleFx_RandomByte",
+        "BattleFx_RandomShake",
+        "BattleFx_NmiAlt",
+        "BattleFx_StepBounce",
+        "BattleFx_SaveCalcPoints",
+        "BattleFx_CopyWin1ToWin2",
+        "BattleFx_Op80Dispatch",
+        "BattleFx_Op80Table",
+        "BattleFx_Op80Clear",
+        "BattleFx_Op80Bits8",
+        "BattleFx_Op80BitsHi",
+        "BattleFx_Op80OrA",
+        "BattleFx_Op80OrB",
+        "BattleFx_Op80Kind4",
+        "BattleFx_Op80Kind0",
+        "BattleFx_BuildGradHdma",
+        "BattleFx_SortQuadByY",
+        "BattleFx_QuadSlopes",
+        "BattleFx_EdgeSlope",
+        "BattleFx_DrawQuad",
+        "BattleFx_RasterQuad",
+        "BattleFx_AddBoxInset",
+        "BattleFx_GrowBox",
+        "BattleFx_FillWindow",
+        "BattleFx_FillTable",
+        "BattleFx_FillWin1Full",
+        "BattleFx_FillWin1Empty",
+        "BattleFx_FillWin2Empty",
+        "BattleFx_FillAllEmpty",
+        "BattleFx_MirrorWin1ToWin2",
+        "BattleFx_ReloadCeSet",
+        "BattleFx_RestoreMathRegs",
+        "BattleFx_Irq",
+        "BankD1_EndFill"
       ]
     },
     {
