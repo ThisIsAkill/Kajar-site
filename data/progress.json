@@ -1,26 +1,26 @@
 {
   "schema": 3,
-  "emitted_bytes": 263492,
-  "code_bytes": 245288,
+  "emitted_bytes": 268509,
+  "code_bytes": 246234,
   "surveyed_code_bytes": 239779,
   "totals": {
     "matched": {
-      "functions": 3597,
-      "bytes": 263492,
-      "code_bytes": 241902,
-      "data_bytes": 21590
+      "functions": 3649,
+      "bytes": 268509,
+      "code_bytes": 245521,
+      "data_bytes": 22988
     },
     "readable": {
-      "functions": 3597,
-      "bytes": 263492,
-      "code_bytes": 241902,
-      "data_bytes": 21590
+      "functions": 3649,
+      "bytes": 268509,
+      "code_bytes": 245521,
+      "data_bytes": 22988
     },
     "verified": {
-      "functions": 3597,
-      "bytes": 263492,
-      "code_bytes": 241902,
-      "data_bytes": 21590
+      "functions": 3649,
+      "bytes": 268509,
+      "code_bytes": 245521,
+      "data_bytes": 22988
     }
   },
   "banks": [
@@ -122,6 +122,31 @@
         "bytes": 4299,
         "code_bytes": 4076,
         "data_bytes": 223
+      }
+    },
+    {
+      "bank": "$C6",
+      "code_bytes": 3619,
+      "surveyed_code_bytes": 2673,
+      "survey_low": true,
+      "emitted_bytes": 4096,
+      "matched": {
+        "functions": 51,
+        "bytes": 4096,
+        "code_bytes": 3619,
+        "data_bytes": 477
+      },
+      "readable": {
+        "functions": 51,
+        "bytes": 4096,
+        "code_bytes": 3619,
+        "data_bytes": 477
+      },
+      "verified": {
+        "functions": 51,
+        "bytes": 4096,
+        "code_bytes": 3619,
+        "data_bytes": 477
       }
     },
     {
@@ -304,24 +329,24 @@
       "code_bytes": 1795,
       "surveyed_code_bytes": 1795,
       "survey_low": false,
-      "emitted_bytes": 1823,
+      "emitted_bytes": 2744,
       "matched": {
-        "functions": 26,
-        "bytes": 1823,
+        "functions": 27,
+        "bytes": 2744,
         "code_bytes": 1563,
-        "data_bytes": 260
+        "data_bytes": 1181
       },
       "readable": {
-        "functions": 26,
-        "bytes": 1823,
+        "functions": 27,
+        "bytes": 2744,
         "code_bytes": 1563,
-        "data_bytes": 260
+        "data_bytes": 1181
       },
       "verified": {
-        "functions": 26,
-        "bytes": 1823,
+        "functions": 27,
+        "bytes": 2744,
         "code_bytes": 1563,
-        "data_bytes": 260
+        "data_bytes": 1181
       }
     }
   ],
@@ -3688,6 +3713,170 @@
       "functions": []
     },
     {
+      "bank": "$C6",
+      "start": "$C6:0000",
+      "end": "$C6:0FFF",
+      "emitted_bytes": 0,
+      "functions": []
+    },
+    {
+      "bank": "$C6",
+      "start": "$C6:1000",
+      "end": "$C6:1FFF",
+      "emitted_bytes": 0,
+      "functions": []
+    },
+    {
+      "bank": "$C6",
+      "start": "$C6:2000",
+      "end": "$C6:2FFF",
+      "emitted_bytes": 0,
+      "functions": []
+    },
+    {
+      "bank": "$C6",
+      "start": "$C6:3000",
+      "end": "$C6:3FFF",
+      "emitted_bytes": 0,
+      "functions": []
+    },
+    {
+      "bank": "$C6",
+      "start": "$C6:4000",
+      "end": "$C6:4FFF",
+      "emitted_bytes": 0,
+      "functions": []
+    },
+    {
+      "bank": "$C6",
+      "start": "$C6:5000",
+      "end": "$C6:5FFF",
+      "emitted_bytes": 0,
+      "functions": []
+    },
+    {
+      "bank": "$C6",
+      "start": "$C6:6000",
+      "end": "$C6:6FFF",
+      "emitted_bytes": 0,
+      "functions": []
+    },
+    {
+      "bank": "$C6",
+      "start": "$C6:7000",
+      "end": "$C6:7FFF",
+      "emitted_bytes": 0,
+      "functions": []
+    },
+    {
+      "bank": "$C6",
+      "start": "$C6:8000",
+      "end": "$C6:8FFF",
+      "emitted_bytes": 0,
+      "functions": []
+    },
+    {
+      "bank": "$C6",
+      "start": "$C6:9000",
+      "end": "$C6:9FFF",
+      "emitted_bytes": 0,
+      "functions": []
+    },
+    {
+      "bank": "$C6",
+      "start": "$C6:A000",
+      "end": "$C6:AFFF",
+      "emitted_bytes": 0,
+      "functions": []
+    },
+    {
+      "bank": "$C6",
+      "start": "$C6:B000",
+      "end": "$C6:BFFF",
+      "emitted_bytes": 0,
+      "functions": []
+    },
+    {
+      "bank": "$C6",
+      "start": "$C6:C000",
+      "end": "$C6:CFFF",
+      "emitted_bytes": 0,
+      "functions": []
+    },
+    {
+      "bank": "$C6",
+      "start": "$C6:D000",
+      "end": "$C6:DFFF",
+      "emitted_bytes": 0,
+      "functions": []
+    },
+    {
+      "bank": "$C6",
+      "start": "$C6:E000",
+      "end": "$C6:EFFF",
+      "emitted_bytes": 4096,
+      "functions": [
+        "C6Scene_Win1HdmaOn",
+        "C6Scene_UnpackObjPackA",
+        "C6Scene_UnpackPalPackA",
+        "C6Scene_FadeGradInit",
+        "C6Scene_PlaceOnEdgeRandom",
+        "C6Scene_Grad2Init",
+        "C6Scene_Grad2Ramp",
+        "C6Scene_GetFlagF2Bits",
+        "C6Scene_WipeWinInit",
+        "C6Scene_WipeWinStep",
+        "C6Scene_ClearUnk7F0062",
+        "C6Scene_Bg3Accel",
+        "C6Scene_Win1HdmaOnB",
+        "C6Scene_Win2HdmaOn",
+        "C6Scene_Win1EllipseStep",
+        "C6Scene_Win2EllipseStep",
+        "C6Scene_EllipseBuild",
+        "C6Scene_Win1HdmaOnC",
+        "C6Scene_Win2HdmaOnB",
+        "C6Scene_Win1CapsuleStep",
+        "C6Scene_Win2CapsuleStep",
+        "C6Scene_CapsuleBuild",
+        "C6Scene_FadeGradStep",
+        "C6Scene_Bg2VNudge",
+        "C6Scene_Bg1WaveInit",
+        "C6Scene_Bg1WaveStep",
+        "C6Scene_SetUnk7F01ED",
+        "C6Scene_ClearUnk7F01ED",
+        "C6Scene_UnpackObjPackB",
+        "C6Scene_UnpackPalPackB",
+        "C6Scene_PlaceInViewRandom",
+        "C6Scene_NudgeRandomDir",
+        "BankC6_UnkE74E",
+        "C6Scene_AddYAccel",
+        "BankC6_UnkE797",
+        "C6Scene_MapPicture",
+        "C6Scene_MapCellPixels",
+        "C6Scene_PerspInit",
+        "C6Scene_PerspStep",
+        "C6Scene_PerspQuadrants",
+        "C6Scene_PerspTiltSteps",
+        "C6Scene_PerspQuad0",
+        "C6Scene_PerspQuad1",
+        "C6Scene_PerspQuad2",
+        "C6Scene_PerspQuad3",
+        "C6Scene_PerspTail",
+        "C6Scene_PerspDivide",
+        "C6Scene_AddAngle",
+        "C6Scene_SetUnk7F00CD",
+        "C6Scene_ClearUnk7F01F5Bit0",
+        "BankC6_CodeEndFill"
+      ]
+    },
+    {
+      "bank": "$C6",
+      "start": "$C6:F000",
+      "end": "$C6:FFFF",
+      "emitted_bytes": 0,
+      "functions": []
+    },
+    {
       "bank": "$C7",
       "start": "$C7:0000",
       "end": "$C7:0FFF",
@@ -5307,7 +5496,7 @@
       "bank": "$FF",
       "start": "$FF:F000",
       "end": "$FF:FFFF",
-      "emitted_bytes": 1823,
+      "emitted_bytes": 2744,
       "functions": [
         "BankFF_BuildTileSets",
         "BankFF_LoadE4Palette",
@@ -5334,7 +5523,8 @@
         "BankFF_SlotSramOfs",
         "BankFF_SlotChecksum",
         "BankFF_BuildGradHdma",
-        "BankFF_GradValues"
+        "BankFF_GradValues",
+        "BankFF_OldBuildLeftovers"
       ]
     }
   ]
