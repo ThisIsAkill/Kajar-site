@@ -216,21 +216,21 @@
       <div class="wk-party">
         <div class="wk-party-row" title="Bytes matched: the rebuilt ROM is byte-identical here">
           <span class="wk-party-k">HP</span>
-          <span class="wk-party-v">217,396<small>/243,823</small></span>
+          <span class="wk-party-v">223,204<small>/243,823</small></span>
         </div>
-        <div class="wk-stat-track"><div class="wk-stat-fill" style="width:89.16%"></div></div>
-        <p class="wk-party-note">code bytes matched · 89.16% of code · 20,563 B data</p>
+        <div class="wk-stat-track"><div class="wk-stat-fill" style="width:91.54%"></div></div>
+        <p class="wk-party-note">code bytes matched · 91.54% of code · 20,953 B data</p>
 
         <div class="wk-party-row" title="Matched functions that also meet the readability standard">
           <span class="wk-party-k">MP</span>
-          <span class="wk-party-v">3046<small>/3046</small></span>
+          <span class="wk-party-v">3197<small>/3197</small></span>
         </div>
         <div class="wk-stat-track"><div class="wk-stat-fill wk-stat-fill-mp" style="width:100.0%"></div></div>
         <p class="wk-party-note">functions readable</p>
 
         <div class="wk-party-row" title="Readable functions that passed an independent review">
           <span class="wk-party-k">TP</span>
-          <span class="wk-party-v">3046<small>/3046</small></span>
+          <span class="wk-party-v">3197<small>/3197</small></span>
         </div>
         <div class="wk-stat-track"><div class="wk-stat-fill wk-stat-fill-dim" style="width:100.0%"></div></div>
         <p class="wk-party-note">functions verified</p>
@@ -257,7 +257,7 @@
           <li>
             <a href="#14-october-2026-how-much-of-the-rom-is-code-and-bank-c1-is-done" class="wk-toc-link">14 October 2026: how much of the ROM is code? And bank $C1 is done</a>
             
-            <ol><li><a href="#what-was-counted-as-code" class="wk-toc-link">What was counted as code</a></li><li><a href="#how-it-is-measured-now" class="wk-toc-link">How it is measured now</a></li><li><a href="#where-the-re-survey-left-things" class="wk-toc-link">Where the re-survey left things</a></li><li><a href="#bank-c1-is-complete" class="wk-toc-link">Bank $C1 is complete</a></li><li><a href="#the-equipment-screen-and-the-menus-drawing-code" class="wk-toc-link">The equipment screen and the menu's drawing code</a></li><li><a href="#a-mode-7-scene-and-the-white-fades" class="wk-toc-link">A Mode 7 scene and the white fades</a></li><li><a href="#the-decompressor-and-the-jet-bike-race" class="wk-toc-link">The decompressor and the jet bike race</a></li><li><a href="#the-sound-drivers-65816-side" class="wk-toc-link">The sound driver's 65816 side</a></li><li><a href="#the-rest-of-fd" class="wk-toc-link">The rest of $FD</a></li><li><a href="#how-a-battle-moves-and-draws" class="wk-toc-link">How a battle moves and draws</a></li><li><a href="#setting-up-a-battle-and-the-save-files" class="wk-toc-link">Setting up a battle, and the save files</a></li><li><a href="#the-first-part-of-cd" class="wk-toc-link">The first part of $CD</a></li><li><a href="#battle-effects-in-d1-and-a-lost-palette-upload" class="wk-toc-link">Battle effects in $D1, and a lost palette upload</a></li><li><a href="#the-code-in-ce" class="wk-toc-link">The code in $CE</a></li><li><a href="#where-that-leaves-things" class="wk-toc-link">Where that leaves things</a></li><li><a href="#next" class="wk-toc-link">Next</a></li></ol>
+            <ol><li><a href="#what-was-counted-as-code" class="wk-toc-link">What was counted as code</a></li><li><a href="#how-it-is-measured-now" class="wk-toc-link">How it is measured now</a></li><li><a href="#where-the-re-survey-left-things" class="wk-toc-link">Where the re-survey left things</a></li><li><a href="#bank-c1-is-complete" class="wk-toc-link">Bank $C1 is complete</a></li><li><a href="#the-equipment-screen-and-the-menus-drawing-code" class="wk-toc-link">The equipment screen and the menu's drawing code</a></li><li><a href="#a-mode-7-scene-and-the-white-fades" class="wk-toc-link">A Mode 7 scene and the white fades</a></li><li><a href="#the-decompressor-and-the-jet-bike-race" class="wk-toc-link">The decompressor and the jet bike race</a></li><li><a href="#the-sound-drivers-65816-side" class="wk-toc-link">The sound driver's 65816 side</a></li><li><a href="#the-rest-of-fd" class="wk-toc-link">The rest of $FD</a></li><li><a href="#how-a-battle-moves-and-draws" class="wk-toc-link">How a battle moves and draws</a></li><li><a href="#setting-up-a-battle-and-the-save-files" class="wk-toc-link">Setting up a battle, and the save files</a></li><li><a href="#the-first-part-of-cd" class="wk-toc-link">The first part of $CD</a></li><li><a href="#battle-effects-in-d1-and-a-lost-palette-upload" class="wk-toc-link">Battle effects in $D1, and a lost palette upload</a></li><li><a href="#the-code-in-ce" class="wk-toc-link">The code in $CE</a></li><li><a href="#the-battle-effect-script" class="wk-toc-link">The battle effect script</a></li><li><a href="#where-that-leaves-things" class="wk-toc-link">Where that leaves things</a></li><li><a href="#next" class="wk-toc-link">Next</a></li></ol>
             
           </li>
           
@@ -321,10 +321,13 @@
 <p>Two of the window routines have a quieter side effect. Each 16-bit store to the <abbr title="Work RAM — 128KB of SNES main RAM at $7E:0000–$7F:FFFF, holds all runtime game state.">WRAM</abbr> data port also writes one byte to an address that mirrors a port of the sound chip.</p>
 <h2 id="the-code-in-ce">The code in <code>$CE</code></h2>
 <p><code>$CE</code> holds a little under 4 KB of code among its scripts and tables, and all of it is <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr>. There is a routine that copies one line's window edges into the other window table, a wave that sways the second background layer, and a copier of 256 identical load-and-store pairs that the caller enters part-way in to copy exactly as many words as it needs. There is also an angle routine like the one in <code>$C1</code>, and a routine that fills a window with the half of the screen on one side of a line through the centre. A reviewer checked all 1,024 entries of the angle table it reads against the true angles: none is off by more than about 1.</p>
+<h2 id="the-battle-effect-script">The battle effect script</h2>
+<p>Battle effects are small scripts: a stream of bytes where each <abbr title="The first byte of a CPU instruction, identifying the operation (e.g. $60 = RTS, $78 = SEI).">opcode</abbr> moves something, waits, branches, draws a window shape or sets up a palette cycle. The second part of <code>$CD</code> is the table of 122 <abbr title="First bytes of CPU instructions, identifying operations (e.g. $60 = RTS, $78 = SEI).">opcodes</abbr> and 94 of the routines behind them, plus the helpers the whole bank leans on: divide and multiply, sine products and a 3D rotation for spinning models, frame waits, and the queue that feeds graphics to video memory a piece at a time.</p>
+<p>The <abbr title="First bytes of CPU instructions, identifying operations (e.g. $60 = RTS, $78 = SEI).">opcodes</abbr> have their own oddities. One moves the script pointer a byte short, so the high byte of its address operand is read as the next <abbr title="The first byte of a CPU instruction, identifying the operation (e.g. $60 = RTS, $78 = SEI).">opcode</abbr>. Another reads its points from past the end of the calculation results. Opcodes <code>$FA</code>-<code>$FE</code> have no table entry at all, so a script that used one would jump into whatever code follows the table.</p>
 <h2 id="where-that-leaves-things">Where that leaves things</h2>
-<p><code>main</code> now stands at 217,396 <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr> code bytes: <strong>89.16%</strong> of the surveyed code. The same caveat holds: the survey leans low, so the true share is more likely a little below that. All 3,046 <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr> routines are independently verified.</p>
+<p><code>main</code> now stands at 223,204 <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr> code bytes: <strong>91.54%</strong> of the surveyed code. The same caveat holds: the survey leans low, so the true share is more likely a little below that. All 3,197 <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr> routines are independently verified.</p>
 <h2 id="next">Next</h2>
-<p>The next part of <code>$CD</code>, the battle effect script's <abbr title="First bytes of CPU instructions, identifying operations (e.g. $60 = RTS, $78 = SEI).">opcodes</abbr>, is <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr> and about to go to review. After it come the rest of <code>$CD</code> and the rest of the menu code in <code>$C2</code>.</p>
+<p>Left in <code>$CD</code> are the 27 remaining <abbr title="The first byte of a CPU instruction, identifying the operation (e.g. $60 = RTS, $78 = SEI).">opcode</abbr> handlers and the window-table builders they call. The rest of the menu code in <code>$C2</code> is being <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr> alongside.</p>
   
   <p class="wk-post-back"><a href="../../../../">← Back to devlog</a></p>
 </article>
