@@ -1,8 +1,8 @@
 {
   "schema": 3,
   "emitted_bytes": 272889,
-  "code_bytes": 249964,
-  "surveyed_code_bytes": 239779,
+  "code_bytes": 249251,
+  "surveyed_code_bytes": 249251,
   "totals": {
     "matched": {
       "functions": 3736,
@@ -52,7 +52,7 @@
     {
       "bank": "$C1",
       "code_bytes": 62682,
-      "surveyed_code_bytes": 63058,
+      "surveyed_code_bytes": 62682,
       "survey_low": false,
       "emitted_bytes": 65536,
       "matched": {
@@ -77,8 +77,8 @@
     {
       "bank": "$C2",
       "code_bytes": 60695,
-      "surveyed_code_bytes": 56791,
-      "survey_low": true,
+      "surveyed_code_bytes": 60695,
+      "survey_low": false,
       "emitted_bytes": 65536,
       "matched": {
         "functions": 1396,
@@ -102,8 +102,8 @@
     {
       "bank": "$C3",
       "code_bytes": 4076,
-      "surveyed_code_bytes": 3032,
-      "survey_low": true,
+      "surveyed_code_bytes": 4076,
+      "survey_low": false,
       "emitted_bytes": 4299,
       "matched": {
         "functions": 43,
@@ -127,8 +127,8 @@
     {
       "bank": "$C6",
       "code_bytes": 3619,
-      "surveyed_code_bytes": 2673,
-      "survey_low": true,
+      "surveyed_code_bytes": 3619,
+      "survey_low": false,
       "emitted_bytes": 4096,
       "matched": {
         "functions": 51,
@@ -152,8 +152,8 @@
     {
       "bank": "$C7",
       "code_bytes": 2672,
-      "surveyed_code_bytes": 2526,
-      "survey_low": true,
+      "surveyed_code_bytes": 2672,
+      "survey_low": false,
       "emitted_bytes": 3601,
       "matched": {
         "functions": 36,
@@ -177,8 +177,8 @@
     {
       "bank": "$CC",
       "code_bytes": 4995,
-      "surveyed_code_bytes": 4440,
-      "survey_low": true,
+      "surveyed_code_bytes": 4995,
+      "survey_low": false,
       "emitted_bytes": 4995,
       "matched": {
         "functions": 14,
@@ -202,8 +202,8 @@
     {
       "bank": "$CD",
       "code_bytes": 15824,
-      "surveyed_code_bytes": 14533,
-      "survey_low": true,
+      "surveyed_code_bytes": 15824,
+      "survey_low": false,
       "emitted_bytes": 16384,
       "matched": {
         "functions": 365,
@@ -227,8 +227,8 @@
     {
       "bank": "$CE",
       "code_bytes": 3729,
-      "surveyed_code_bytes": 3075,
-      "survey_low": true,
+      "surveyed_code_bytes": 3729,
+      "survey_low": false,
       "emitted_bytes": 3985,
       "matched": {
         "functions": 10,
@@ -252,8 +252,8 @@
     {
       "bank": "$CF",
       "code_bytes": 7013,
-      "surveyed_code_bytes": 6117,
-      "survey_low": true,
+      "surveyed_code_bytes": 7013,
+      "survey_low": false,
       "emitted_bytes": 7424,
       "matched": {
         "functions": 58,
@@ -277,8 +277,8 @@
     {
       "bank": "$D1",
       "code_bytes": 5858,
-      "surveyed_code_bytes": 4733,
-      "survey_low": true,
+      "surveyed_code_bytes": 5858,
+      "survey_low": false,
       "emitted_bytes": 6390,
       "matched": {
         "functions": 67,
@@ -301,8 +301,8 @@
     },
     {
       "bank": "$FD",
-      "code_bytes": 16149,
-      "surveyed_code_bytes": 16149,
+      "code_bytes": 15668,
+      "surveyed_code_bytes": 15668,
       "survey_low": false,
       "emitted_bytes": 22363,
       "matched": {
@@ -326,8 +326,8 @@
     },
     {
       "bank": "$FF",
-      "code_bytes": 1795,
-      "surveyed_code_bytes": 1795,
+      "code_bytes": 1563,
+      "surveyed_code_bytes": 1563,
       "survey_low": false,
       "emitted_bytes": 2744,
       "matched": {
