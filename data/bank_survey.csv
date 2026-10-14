@@ -1,65 +1,65 @@
-bank,code_bytes,data_bytes,contents
-$C0,60857,4679,"Boot and field engine: game loop, NMI, location loading, map, event scripts, sprites"
-$C1,63904,1632,"Battle engine: main loop, turn lists, enemy scripts, actions, menu, targeting, status bar"
-$C2,55037,10499,"Scene mode (locations $01F0 and up), menu entry points, text decoder"
-$C3,4037,61499,
-$C4,0,65536,
-$C5,0,65536,
-$C6,924,64612,
-$C7,2501,63035,Sound driver interface (the engine calls $C7:0004 for audio commands)
-$C8,0,65536,
-$C9,0,65536,
-$CA,30004,35532,
-$CB,61797,3739,
-$CC,27226,38310,"Item and tech name tables read by the battle menu, plus code"
-$CD,10188,55348,Called every battle frame through $CD:0009
-$CE,1977,63559,
-$CF,7013,58523,Battle bootstrap at $CF:FB65
-$D0,0,65536,
-$D1,4299,61237,Battle window maps (the command window is copied from $D1:5800)
-$D2,0,65536,Tile data read by the sprite tile copy in $C0
-$D3,0,65536,Tile data read by the sprite tile copy in $C0
-$D4,0,65536,Tile data read by the sprite tile copy in $C0
-$D5,0,65536,Tile data read by the sprite tile copy in $C0
-$D6,0,65536,
-$D7,0,65536,
-$D8,0,65536,
-$D9,0,65536,
-$DA,0,65536,
-$DB,0,65536,
-$DC,0,65536,
-$DD,0,65536,
-$DE,290,65246,
-$DF,0,65536,
-$E0,0,65536,
-$E1,0,65536,
-$E2,0,65536,
-$E3,0,65536,
-$E4,1810,63726,Animation frame steps and random seeds read by $C0
-$E5,1026,64510,
-$E6,0,65536,
-$E7,0,65536,
-$E8,0,65536,
-$E9,0,65536,
-$EA,0,65536,
-$EB,0,65536,
-$EC,0,65536,
-$ED,0,65536,
-$EE,0,65536,
-$EF,0,65536,
-$F0,0,65536,
-$F1,0,65536,
-$F2,0,65536,
-$F3,0,65536,
-$F4,0,65536,
-$F5,2022,63514,
-$F6,1728,63808,
-$F7,2016,63520,
-$F8,512,65024,
-$F9,394,65142,
-$FA,0,65536,
-$FB,0,65536,
-$FC,406,65130,
-$FD,16590,48946,"Main init, battle helpers, field HDMA and location animation set-up"
-$FE,218,65318,
-$FF,1580,63956,
+bank,code_bytes,data_bytes,spc700_bytes,compressed_bytes,contents
+$C0,60857,4679,0,0,"Boot and field engine: game loop, NMI, location loading, map, event scripts, sprites"
+$C1,63058,2478,0,0,"Battle engine: main loop, turn lists, enemy scripts, actions, menu, targeting, status bar"
+$C2,56791,8745,0,0,"Scene mode (locations $01F0 and up), menu entry points, text decoder"
+$C3,3032,36121,0,26383,"Kernel of the compressed scene module (its decompressor $C3:0557 is called from many banks); the module itself is packed at $C3:1313"
+$C4,0,65536,0,0,
+$C5,0,65536,0,0,
+$C6,2673,62863,0,0,Scene helper routines ($C6:E000-$EE3F) and scene tables
+$C7,2526,55857,7153,0,"Sound driver interface (the engine calls $C7:0004 for audio commands), the SPC700 sound driver, samples"
+$C8,0,65536,0,0,Sound samples
+$C9,0,65536,0,0,Sound samples
+$CA,0,65536,0,0,"Sound samples, then song data from $CA:8ACC"
+$CB,0,65536,0,0,"Song data to $CB:F163; $CB:F164-$FFFF (3,740 bytes) unexplained"
+$CC,4440,61096,0,0,"Item and tech name tables read by the battle menu, plus code"
+$CD,14533,51003,0,0,Called every battle frame through $CD:0009
+$CE,3075,62461,0,0,Battle routines called from $CD and $D1 ($CE:E000-$F0DF)
+$CF,6117,59419,0,0,Battle bootstrap at $CF:FB65
+$D0,0,65536,0,0,
+$D1,4733,60803,0,0,Battle window maps (the command window is copied from $D1:5800)
+$D2,0,65536,0,0,Tile data read by the sprite tile copy in $C0
+$D3,0,65536,0,0,Tile data read by the sprite tile copy in $C0
+$D4,0,65536,0,0,Tile data read by the sprite tile copy in $C0
+$D5,0,65536,0,0,Tile data read by the sprite tile copy in $C0
+$D6,0,65536,0,0,
+$D7,0,65536,0,0,
+$D8,0,65536,0,0,
+$D9,0,65536,0,0,
+$DA,0,65536,0,0,
+$DB,0,65536,0,0,
+$DC,0,65536,0,0,
+$DD,0,65536,0,0,
+$DE,0,65536,0,0,Data read by the text window code
+$DF,0,65536,0,0,
+$E0,0,65536,0,0,
+$E1,0,65536,0,0,
+$E2,0,65536,0,0,
+$E3,0,65536,0,0,
+$E4,0,65536,0,0,"Animation frame steps and random seeds read by $C0: the word offset table at $E4:0000 (AnimRom, six readers) through which palettes are reached; sprite records"
+$E5,0,65536,0,0,Map tile tables
+$E6,0,65536,0,0,
+$E7,0,65536,0,0,
+$E8,0,65536,0,0,
+$E9,0,65536,0,0,
+$EA,0,65536,0,0,
+$EB,0,65536,0,0,
+$EC,0,65536,0,0,
+$ED,0,65536,0,0,
+$EE,0,65536,0,0,
+$EF,0,65536,0,0,
+$F0,0,65536,0,0,
+$F1,0,65536,0,0,
+$F2,0,65536,0,0,
+$F3,0,65536,0,0,
+$F4,0,65536,0,0,
+$F5,0,65536,0,0,Tile data read by the field code
+$F6,0,65536,0,0,Location tables
+$F7,0,65536,0,0,
+$F8,0,65536,0,0,
+$F9,0,65536,0,0,
+$FA,0,65536,0,0,
+$FB,0,65536,0,0,
+$FC,0,65536,0,0,Pointer tables for packed data
+$FD,16149,49387,0,0,"Main init, battle helpers, field HDMA and location animation set-up"
+$FE,0,65536,0,0,"Packed data, pointer table at $FE:0000"
+$FF,1795,63741,0,0,Menu helper routines ($FF:F540-$FFFF)
