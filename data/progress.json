@@ -1,26 +1,26 @@
 {
   "schema": 3,
-  "emitted_bytes": 215111,
-  "code_bytes": 241489,
+  "emitted_bytes": 221771,
+  "code_bytes": 242044,
   "surveyed_code_bytes": 239779,
   "totals": {
     "matched": {
-      "functions": 2811,
-      "bytes": 215111,
-      "code_bytes": 195544,
-      "data_bytes": 19567
+      "functions": 2848,
+      "bytes": 221771,
+      "code_bytes": 202072,
+      "data_bytes": 19699
     },
     "readable": {
-      "functions": 2811,
-      "bytes": 215111,
-      "code_bytes": 195544,
-      "data_bytes": 19567
+      "functions": 2848,
+      "bytes": 221771,
+      "code_bytes": 202072,
+      "data_bytes": 19699
     },
     "verified": {
-      "functions": 2811,
-      "bytes": 215111,
-      "code_bytes": 195544,
-      "data_bytes": 19567
+      "functions": 2848,
+      "bytes": 221771,
+      "code_bytes": 202072,
+      "data_bytes": 19699
     }
   },
   "banks": [
@@ -151,26 +151,26 @@
     },
     {
       "bank": "$CC",
-      "code_bytes": 4440,
+      "code_bytes": 4995,
       "surveyed_code_bytes": 4440,
-      "survey_low": false,
-      "emitted_bytes": 30,
+      "survey_low": true,
+      "emitted_bytes": 4995,
       "matched": {
-        "functions": 1,
-        "bytes": 30,
-        "code_bytes": 30,
+        "functions": 14,
+        "bytes": 4995,
+        "code_bytes": 4995,
         "data_bytes": 0
       },
       "readable": {
-        "functions": 1,
-        "bytes": 30,
-        "code_bytes": 30,
+        "functions": 14,
+        "bytes": 4995,
+        "code_bytes": 4995,
         "data_bytes": 0
       },
       "verified": {
-        "functions": 1,
-        "bytes": 30,
-        "code_bytes": 30,
+        "functions": 14,
+        "bytes": 4995,
+        "code_bytes": 4995,
         "data_bytes": 0
       }
     },
@@ -229,24 +229,24 @@
       "code_bytes": 1795,
       "surveyed_code_bytes": 1795,
       "survey_low": false,
-      "emitted_bytes": 128,
+      "emitted_bytes": 1823,
       "matched": {
-        "functions": 2,
-        "bytes": 128,
-        "code_bytes": 0,
-        "data_bytes": 128
+        "functions": 26,
+        "bytes": 1823,
+        "code_bytes": 1563,
+        "data_bytes": 260
       },
       "readable": {
-        "functions": 2,
-        "bytes": 128,
-        "code_bytes": 0,
-        "data_bytes": 128
+        "functions": 26,
+        "bytes": 1823,
+        "code_bytes": 1563,
+        "data_bytes": 260
       },
       "verified": {
-        "functions": 2,
-        "bytes": 128,
-        "code_bytes": 0,
-        "data_bytes": 128
+        "functions": 26,
+        "bytes": 1823,
+        "code_bytes": 1563,
+        "data_bytes": 260
       }
     }
   ],
@@ -3556,15 +3556,29 @@
       "bank": "$CC",
       "start": "$CC:E000",
       "end": "$CC:EFFF",
-      "emitted_bytes": 0,
-      "functions": []
+      "emitted_bytes": 4096,
+      "functions": [
+        "Battle_InitUploadStep",
+        "Battle_InitUploadObjTiles",
+        "Battle_InitUploadObjTilesDead",
+        "Battle_InitScene",
+        "Battle_InitSceneGfx"
+      ]
     },
     {
       "bank": "$CC",
       "start": "$CC:F000",
       "end": "$CC:FFFF",
-      "emitted_bytes": 30,
+      "emitted_bytes": 899,
       "functions": [
+        "Battle_ReencodeText",
+        "BattleAct_ResetState",
+        "BattleAct_ResetFxApplied",
+        "Battle_BuildOccupiedCellMap",
+        "BattleAct_BuildBattlerList",
+        "BattleAct_StepPalettes",
+        "BattleAct_TickUnkA1A8",
+        "BattleAct_StepObjAnim",
         "Battle_Mul8CC"
       ]
     },
@@ -4125,10 +4139,34 @@
       "bank": "$FF",
       "start": "$FF:F000",
       "end": "$FF:FFFF",
-      "emitted_bytes": 128,
+      "emitted_bytes": 1823,
       "functions": [
+        "BankFF_BuildTileSets",
+        "BankFF_LoadE4Palette",
+        "BankFF_BuildScreenMap",
+        "BankFF_ScreenMapTiles",
+        "BankFF_ScreenColoursA",
+        "BankFF_ScreenColoursB",
+        "BankFF_StepWave",
         "ScrollWaveFF_A",
-        "ScrollWaveFF_B"
+        "ScrollWaveFF_B",
+        "BankFF_WidenTiles",
+        "BankFF_UnkF813",
+        "BankFF_TechStepLimit",
+        "BankFF_UnkF958",
+        "BankFF_CharBits",
+        "BankFF_UnkF9C4",
+        "BankFF_SaveSlot",
+        "BankFF_SaveRecords",
+        "BankFF_LoadSlot",
+        "BankFF_LoadSlotPart",
+        "BankFF_PartRecords",
+        "BankFF_EquipOffsets",
+        "BankFF_SetSlotOfs",
+        "BankFF_SlotSramOfs",
+        "BankFF_SlotChecksum",
+        "BankFF_BuildGradHdma",
+        "BankFF_GradValues"
       ]
     }
   ]

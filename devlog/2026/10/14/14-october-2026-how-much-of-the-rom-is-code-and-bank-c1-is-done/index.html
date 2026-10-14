@@ -216,21 +216,21 @@
       <div class="wk-party">
         <div class="wk-party-row" title="Bytes matched: the rebuilt ROM is byte-identical here">
           <span class="wk-party-k">HP</span>
-          <span class="wk-party-v">195,544<small>/241,489</small></span>
+          <span class="wk-party-v">202,072<small>/242,044</small></span>
         </div>
-        <div class="wk-stat-track"><div class="wk-stat-fill" style="width:80.97%"></div></div>
-        <p class="wk-party-note">code bytes matched · 80.97% of code · 19,567 B data</p>
+        <div class="wk-stat-track"><div class="wk-stat-fill" style="width:83.49%"></div></div>
+        <p class="wk-party-note">code bytes matched · 83.49% of code · 19,699 B data</p>
 
         <div class="wk-party-row" title="Matched functions that also meet the readability standard">
           <span class="wk-party-k">MP</span>
-          <span class="wk-party-v">2811<small>/2811</small></span>
+          <span class="wk-party-v">2848<small>/2848</small></span>
         </div>
         <div class="wk-stat-track"><div class="wk-stat-fill wk-stat-fill-mp" style="width:100.0%"></div></div>
         <p class="wk-party-note">functions readable</p>
 
         <div class="wk-party-row" title="Readable functions that passed an independent review">
           <span class="wk-party-k">TP</span>
-          <span class="wk-party-v">2811<small>/2811</small></span>
+          <span class="wk-party-v">2848<small>/2848</small></span>
         </div>
         <div class="wk-stat-track"><div class="wk-stat-fill wk-stat-fill-dim" style="width:100.0%"></div></div>
         <p class="wk-party-note">functions verified</p>
@@ -257,7 +257,7 @@
           <li>
             <a href="#14-october-2026-how-much-of-the-rom-is-code-and-bank-c1-is-done" class="wk-toc-link">14 October 2026: how much of the ROM is code? And bank $C1 is done</a>
             
-            <ol><li><a href="#what-was-counted-as-code" class="wk-toc-link">What was counted as code</a></li><li><a href="#how-it-is-measured-now" class="wk-toc-link">How it is measured now</a></li><li><a href="#where-the-re-survey-left-things" class="wk-toc-link">Where the re-survey left things</a></li><li><a href="#bank-c1-is-complete" class="wk-toc-link">Bank $C1 is complete</a></li><li><a href="#the-equipment-screen-and-the-menus-drawing-code" class="wk-toc-link">The equipment screen and the menu's drawing code</a></li><li><a href="#a-mode-7-scene-and-the-white-fades" class="wk-toc-link">A Mode 7 scene and the white fades</a></li><li><a href="#the-decompressor-and-the-jet-bike-race" class="wk-toc-link">The decompressor and the jet bike race</a></li><li><a href="#the-sound-drivers-65816-side" class="wk-toc-link">The sound driver's 65816 side</a></li><li><a href="#the-rest-of-fd" class="wk-toc-link">The rest of $FD</a></li><li><a href="#how-a-battle-moves-and-draws" class="wk-toc-link">How a battle moves and draws</a></li><li><a href="#where-that-leaves-things" class="wk-toc-link">Where that leaves things</a></li><li><a href="#next" class="wk-toc-link">Next</a></li></ol>
+            <ol><li><a href="#what-was-counted-as-code" class="wk-toc-link">What was counted as code</a></li><li><a href="#how-it-is-measured-now" class="wk-toc-link">How it is measured now</a></li><li><a href="#where-the-re-survey-left-things" class="wk-toc-link">Where the re-survey left things</a></li><li><a href="#bank-c1-is-complete" class="wk-toc-link">Bank $C1 is complete</a></li><li><a href="#the-equipment-screen-and-the-menus-drawing-code" class="wk-toc-link">The equipment screen and the menu's drawing code</a></li><li><a href="#a-mode-7-scene-and-the-white-fades" class="wk-toc-link">A Mode 7 scene and the white fades</a></li><li><a href="#the-decompressor-and-the-jet-bike-race" class="wk-toc-link">The decompressor and the jet bike race</a></li><li><a href="#the-sound-drivers-65816-side" class="wk-toc-link">The sound driver's 65816 side</a></li><li><a href="#the-rest-of-fd" class="wk-toc-link">The rest of $FD</a></li><li><a href="#how-a-battle-moves-and-draws" class="wk-toc-link">How a battle moves and draws</a></li><li><a href="#setting-up-a-battle-and-the-save-files" class="wk-toc-link">Setting up a battle, and the save files</a></li><li><a href="#where-that-leaves-things" class="wk-toc-link">Where that leaves things</a></li><li><a href="#next" class="wk-toc-link">Next</a></li></ol>
             
           </li>
           
@@ -308,10 +308,13 @@
 <h2 id="how-a-battle-moves-and-draws">How a battle moves and draws</h2>
 <p>All of bank <code>$CF</code>'s code is <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr>: 7,424 bytes. It is what runs every frame of a battle. One routine uploads graphics during the screen's blanking period, another steps everything else. Then come the movers that carry battlers and effects along lines, curves, arcs, circles and ellipses, or shake them in place. The sprite builder sorts every battler and effect by depth before it draws them, and the damage numbers bounce. When an enemy falls, a routine fades it out and takes it off the field.</p>
 <p>Review found that two of these headers had their logic backwards. The objects that follow other objects are updated from the last one down, so a follower gets the old position of a lower-numbered leader but the new position of a higher one. The rule for hiding sprites at the screen edge doesn't hide them at all in one case: a sprite just off the left edge comes back partly visible. Both are now described as the code really behaves.</p>
+<h2 id="setting-up-a-battle-and-the-save-files">Setting up a battle, and the save files</h2>
+<p>The code at the end of <code>$CC</code> sets a battle up. Over several frames it uploads the battle graphics to video memory in stages, lays out the enemy names, and builds the list of who is fighting next to whom. It also has the helpers that reset an action's state between turns. Among them is a routine that returns before uploading its last two pieces, so the code that would upload them never runs.</p>
+<p>From the end of bank <code>$FF</code> come the menu routines that <code>$C2</code> calls. They build the tile sets for the menu font, step a wave effect, and draw a colour gradient. They also save and load the three save slots in battery-backed memory, with the checksum that guards each one. The check at boot that looks for valid save files writes its answer over the first byte of the play-time counter. The menu clears that counter right after, so nothing breaks.</p>
 <h2 id="where-that-leaves-things">Where that leaves things</h2>
-<p><code>main</code> now stands at 195,544 <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr> code bytes: <strong>80.97%</strong> of the surveyed code. The same caveat holds: the survey leans low, so the true share is more likely a little below that. All 2,811 <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr> routines are independently verified.</p>
+<p><code>main</code> now stands at 202,072 <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr> code bytes: <strong>83.49%</strong> of the surveyed code. The same caveat holds: the survey leans low, so the true share is more likely a little below that. All 2,848 <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr> routines are independently verified.</p>
 <h2 id="next">Next</h2>
-<p>The battle set-up code at the end of <code>$CC</code> and the bank-<code>$FF</code> routines the menu calls are <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr> and about to go to review. After them come the larger banks still untouched: <code>$CE</code>, <code>$D1</code> and <code>$CD</code>.</p>
+<p>The battle code in <code>$CD</code>, the largest piece still untouched at about 14 KB, is being <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr> now. After it come <code>$D1</code> and <code>$CE</code>, and the rest of the menu code in <code>$C2</code>.</p>
   
   <p class="wk-post-back"><a href="../../../../">← Back to devlog</a></p>
 </article>
