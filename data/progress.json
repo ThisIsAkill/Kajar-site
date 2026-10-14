@@ -1,26 +1,26 @@
 {
   "schema": 3,
-  "emitted_bytes": 221771,
+  "emitted_bytes": 227584,
   "code_bytes": 242044,
   "surveyed_code_bytes": 239779,
   "totals": {
     "matched": {
-      "functions": 2848,
-      "bytes": 221771,
-      "code_bytes": 202072,
-      "data_bytes": 19699
+      "functions": 2969,
+      "bytes": 227584,
+      "code_bytes": 207809,
+      "data_bytes": 19775
     },
     "readable": {
-      "functions": 2848,
-      "bytes": 221771,
-      "code_bytes": 202072,
-      "data_bytes": 19699
+      "functions": 2969,
+      "bytes": 227584,
+      "code_bytes": 207809,
+      "data_bytes": 19775
     },
     "verified": {
-      "functions": 2848,
-      "bytes": 221771,
-      "code_bytes": 202072,
-      "data_bytes": 19699
+      "functions": 2969,
+      "bytes": 227584,
+      "code_bytes": 207809,
+      "data_bytes": 19775
     }
   },
   "banks": [
@@ -172,6 +172,31 @@
         "bytes": 4995,
         "code_bytes": 4995,
         "data_bytes": 0
+      }
+    },
+    {
+      "bank": "$CD",
+      "code_bytes": 14533,
+      "surveyed_code_bytes": 14533,
+      "survey_low": false,
+      "emitted_bytes": 5813,
+      "matched": {
+        "functions": 121,
+        "bytes": 5813,
+        "code_bytes": 5737,
+        "data_bytes": 76
+      },
+      "readable": {
+        "functions": 121,
+        "bytes": 5813,
+        "code_bytes": 5737,
+        "data_bytes": 76
+      },
+      "verified": {
+        "functions": 121,
+        "bytes": 5813,
+        "code_bytes": 5737,
+        "data_bytes": 76
       }
     },
     {
@@ -3581,6 +3606,241 @@
         "BattleAct_StepObjAnim",
         "Battle_Mul8CC"
       ]
+    },
+    {
+      "bank": "$CD",
+      "start": "$CD:0000",
+      "end": "$CD:0FFF",
+      "emitted_bytes": 4096,
+      "functions": [
+        "BattleSys_VecCD0000",
+        "BattleSys_VecCD0003",
+        "BattleSys_VecCD0006",
+        "BattleSys_FrameTickVec",
+        "BattleSys_VecCD000C",
+        "BattleSys_VecCD000F",
+        "BattleSys_VecCD0012",
+        "BattleAnim_LoadGfx4Vec",
+        "BattleAnim_UnkVecCD0018",
+        "BattleAct_UnkVecCD001B",
+        "BattleSys_VecCD001E",
+        "BattleSys_UnkVecCD0021",
+        "BattleSys_VecCD0024",
+        "BattleMsg_ShowFromTableCC3A09Vec",
+        "BattleAnim_LoadGfx2Vec",
+        "BattleMsg_ShowMsg0BIfKeyChangedVec",
+        "BattleMsg_UnkVecCD0030",
+        "BattleMsg_UnkVecCD0033",
+        "BattleSys_IdleVecCD0036",
+        "BattleCD_EnterBattle",
+        "BattleCD_ActOp80",
+        "BattleCD_EnemyDissolve",
+        "BattleCD_EnemyDissolveFx",
+        "BattleCD_DissolveStep",
+        "BattleCD_MsgTimeTable",
+        "BattleCD_GetMsgTime",
+        "BattleCD_ShowMessage",
+        "BattleCD_Wait16Frames",
+        "BattleCD_ShowMessageTimed",
+        "BattleCD_ClearTextGfxL",
+        "BattleCD_ClearTextGfx",
+        "BattleCD_StartText",
+        "BattleCD_ShowText",
+        "BattleCD_ShowScriptMessage",
+        "BattleCD_ShowEnemyInfo",
+        "BattleCD_ShowTargetInfo",
+        "BattleCD_ShowTechInfo",
+        "BattleCD_PadRepeat",
+        "BattleCD_SetNmiMode1",
+        "BattleCD_ApuCmd81",
+        "BattleCD_ExitBattle",
+        "BattleCD_WaitNmiAck",
+        "BattleCD_EndLayerFx",
+        "BattleCD_IdleTick",
+        "BattleCD_FrameTick",
+        "BattleCD_StepText",
+        "BattleCD_StartOpenWipe",
+        "BattleCD_StartCloseWipe",
+        "BattleCD_WipeRunning",
+        "BattleCD_WipeStepOpen",
+        "BattleCD_WipeStepClose",
+        "BattleCD_StepWipe",
+        "BattleCD_TileUploadVram",
+        "BattleCD_NmiUploadText",
+        "BattleCD_ZeroWord",
+        "BattleCD_NmiLayerScroll",
+        "BattleCD_ScrollModeTable",
+        "BattleCD_ScrollPlain",
+        "BattleCD_ScrollFill",
+        "BattleCD_ScrollFxBg3",
+        "BattleCD_ScrollWavesBg3",
+        "BattleCD_ScrollWaves",
+        "BattleCD_NmiMain",
+        "BattleCD_UploadCgram",
+        "BattleCD_NmiSetup",
+        "BattleCD_TickCDC9",
+        "BattleCD_SetWh0Table",
+        "BattleCD_RandByte",
+        "BattleCD_ClampPalAnims",
+        "BattleCD_StepShake",
+        "BattleCD_NmiTable",
+        "BattleCD_ScrollStepL",
+        "BattleCD_NmiDispatch",
+        "BattleCD_InitHdmaDataL",
+        "BattleCD_InitHdmaData",
+        "BattleCD_RestoreScreen",
+        "BattleCD_StartLayerFx",
+        "BattleCD_StartFxChannels",
+        "BattleCD_RunEndFx",
+        "BattleCD_LayerFx87",
+        "BattleCD_LayerFx84",
+        "BattleCD_WaitLayerFxIdle",
+        "BattleCD_RunLayerFx",
+        "BattleCD_RestorePalRows",
+        "BattleCD_FxRecSetup",
+        "BattleCD_LoadFxPalA",
+        "BattleCD_LoadFxPalB",
+        "BattleCD_LayerFxSetsScreen",
+        "BattleCD_LoadLayerFx"
+      ]
+    },
+    {
+      "bank": "$CD",
+      "start": "$CD:1000",
+      "end": "$CD:1FFF",
+      "emitted_bytes": 1717,
+      "functions": [
+        "BattleCD_FillFxTilemaps",
+        "BattleCD_BuildFxTilemap",
+        "BattleCD_LoadFxRecord",
+        "BattleCD_LoadFxTiles",
+        "BattleCD_TileHandlers2",
+        "BattleCD_TileVHFlip2",
+        "BattleCD_TileVFlip2",
+        "BattleCD_TileHFlip2",
+        "BattleCD_TileReverse2",
+        "BattleCD_TileCopy2",
+        "BattleCD_PlaneMasks",
+        "BattleCD_FxGfxVram",
+        "BattleCD_LoadFxGfx2",
+        "BattleCD_LoadFxGfx4",
+        "BattleCD_ConvertFxGfx",
+        "BattleCD_PickPlaneBits",
+        "BattleCD_FieldShifts",
+        "BattleCD_ShiftField6",
+        "BattleCD_ShiftField4",
+        "BattleCD_ShiftField2",
+        "BattleCD_ShiftField0",
+        "BattleCD_TileHandlers4",
+        "BattleCD_Tile4VHFlip",
+        "BattleCD_Tile4VFlip",
+        "BattleCD_Tile4HFlip",
+        "BattleCD_TileReverse4",
+        "BattleCD_Tile4Planes",
+        "BattleCD_Tile4Copy",
+        "BattleCD_StartFxChannel",
+        "BattleCD_StepFxChannels",
+        "BattleCD_RunFxScript",
+        "BattleCD_RunFxOp"
+      ]
+    },
+    {
+      "bank": "$CD",
+      "start": "$CD:2000",
+      "end": "$CD:2FFF",
+      "emitted_bytes": 0,
+      "functions": []
+    },
+    {
+      "bank": "$CD",
+      "start": "$CD:3000",
+      "end": "$CD:3FFF",
+      "emitted_bytes": 0,
+      "functions": []
+    },
+    {
+      "bank": "$CD",
+      "start": "$CD:4000",
+      "end": "$CD:4FFF",
+      "emitted_bytes": 0,
+      "functions": []
+    },
+    {
+      "bank": "$CD",
+      "start": "$CD:5000",
+      "end": "$CD:5FFF",
+      "emitted_bytes": 0,
+      "functions": []
+    },
+    {
+      "bank": "$CD",
+      "start": "$CD:6000",
+      "end": "$CD:6FFF",
+      "emitted_bytes": 0,
+      "functions": []
+    },
+    {
+      "bank": "$CD",
+      "start": "$CD:7000",
+      "end": "$CD:7FFF",
+      "emitted_bytes": 0,
+      "functions": []
+    },
+    {
+      "bank": "$CD",
+      "start": "$CD:8000",
+      "end": "$CD:8FFF",
+      "emitted_bytes": 0,
+      "functions": []
+    },
+    {
+      "bank": "$CD",
+      "start": "$CD:9000",
+      "end": "$CD:9FFF",
+      "emitted_bytes": 0,
+      "functions": []
+    },
+    {
+      "bank": "$CD",
+      "start": "$CD:A000",
+      "end": "$CD:AFFF",
+      "emitted_bytes": 0,
+      "functions": []
+    },
+    {
+      "bank": "$CD",
+      "start": "$CD:B000",
+      "end": "$CD:BFFF",
+      "emitted_bytes": 0,
+      "functions": []
+    },
+    {
+      "bank": "$CD",
+      "start": "$CD:C000",
+      "end": "$CD:CFFF",
+      "emitted_bytes": 0,
+      "functions": []
+    },
+    {
+      "bank": "$CD",
+      "start": "$CD:D000",
+      "end": "$CD:DFFF",
+      "emitted_bytes": 0,
+      "functions": []
+    },
+    {
+      "bank": "$CD",
+      "start": "$CD:E000",
+      "end": "$CD:EFFF",
+      "emitted_bytes": 0,
+      "functions": []
+    },
+    {
+      "bank": "$CD",
+      "start": "$CD:F000",
+      "end": "$CD:FFFF",
+      "emitted_bytes": 0,
+      "functions": []
     },
     {
       "bank": "$CF",
