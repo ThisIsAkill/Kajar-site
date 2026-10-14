@@ -1,26 +1,26 @@
 {
   "schema": 3,
-  "emitted_bytes": 244157,
+  "emitted_bytes": 248671,
   "code_bytes": 243823,
   "surveyed_code_bytes": 239779,
   "totals": {
     "matched": {
-      "functions": 3197,
-      "bytes": 244157,
-      "code_bytes": 223204,
-      "data_bytes": 20953
+      "functions": 3281,
+      "bytes": 248671,
+      "code_bytes": 227629,
+      "data_bytes": 21042
     },
     "readable": {
-      "functions": 3197,
-      "bytes": 244157,
-      "code_bytes": 223204,
-      "data_bytes": 20953
+      "functions": 3281,
+      "bytes": 248671,
+      "code_bytes": 227629,
+      "data_bytes": 21042
     },
     "verified": {
-      "functions": 3197,
-      "bytes": 244157,
-      "code_bytes": 223204,
-      "data_bytes": 20953
+      "functions": 3281,
+      "bytes": 248671,
+      "code_bytes": 227629,
+      "data_bytes": 21042
     }
   },
   "banks": [
@@ -79,24 +79,24 @@
       "code_bytes": 56791,
       "surveyed_code_bytes": 56791,
       "survey_low": false,
-      "emitted_bytes": 46194,
+      "emitted_bytes": 50708,
       "matched": {
-        "functions": 1002,
-        "bytes": 46194,
-        "code_bytes": 42546,
-        "data_bytes": 3648
+        "functions": 1086,
+        "bytes": 50708,
+        "code_bytes": 46971,
+        "data_bytes": 3737
       },
       "readable": {
-        "functions": 1002,
-        "bytes": 46194,
-        "code_bytes": 42546,
-        "data_bytes": 3648
+        "functions": 1086,
+        "bytes": 50708,
+        "code_bytes": 46971,
+        "data_bytes": 3737
       },
       "verified": {
-        "functions": 1002,
-        "bytes": 46194,
-        "code_bytes": 42546,
-        "data_bytes": 3648
+        "functions": 1086,
+        "bytes": 50708,
+        "code_bytes": 46971,
+        "data_bytes": 3737
       }
     },
     {
@@ -2842,7 +2842,7 @@
       "bank": "$C2",
       "start": "$C2:8000",
       "end": "$C2:8FFF",
-      "emitted_bytes": 3629,
+      "emitted_bytes": 4096,
       "functions": [
         "BankC2_Entry8000",
         "BankC2_Entry8002",
@@ -2852,6 +2852,7 @@
         "BankC2_MenuEntry",
         "Menu_EntryModes",
         "Menu_InitSystems",
+        "Menu_CalcUnk0D38",
         "Menu_BuildPartyLists",
         "Menu_RunThreads",
         "Menu_RunThreadsNext",
@@ -2946,15 +2947,29 @@
         "Menu_CmdEquip",
         "Menu_EquipNoneIds",
         "Menu_CmdEquipItem",
-        "Menu_CmdItemCount"
+        "Menu_CmdItemCount",
+        "Menu_ApplyHeal",
+        "Menu_HealHp",
+        "Menu_HealMp",
+        "Menu_CalcHealAmounts",
+        "Menu_UseHealOn",
+        "Menu_ShowHealNumbers",
+        "Menu_HealNumberHp",
+        "Menu_HealNumberMp"
       ]
     },
     {
       "bank": "$C2",
       "start": "$C2:9000",
       "end": "$C2:9FFF",
-      "emitted_bytes": 3785,
+      "emitted_bytes": 4096,
       "functions": [
+        "Menu_HealNumbersThread",
+        "Menu_HealBounce",
+        "Menu_HealNumberSprites",
+        "Menu_HealNumberXOfs",
+        "Menu_StashInventory",
+        "Menu_UnstashInventory",
         "Menu_CharRecalc",
         "Menu_CharCalcStats",
         "Menu_AttackFormulas",
@@ -3018,7 +3033,7 @@
       "bank": "$C2",
       "start": "$C2:A000",
       "end": "$C2:AFFF",
-      "emitted_bytes": 1211,
+      "emitted_bytes": 4096,
       "functions": [
         "Menu_MemberPageSwitch",
         "Menu_Icon0Preview",
@@ -3044,15 +3059,84 @@
         "Menu_EquipListRefresh",
         "Menu_EquipListSetup",
         "Menu_EquipSlotRecOfs",
-        "Menu_Mode02List"
+        "Menu_EquipItemsSlideIn",
+        "Menu_EquipItemsSlideStep",
+        "Menu_DrawEquipList",
+        "Menu_DrawEquipItem",
+        "Menu_EquipPreviewItem",
+        "Menu_EquipCompareStats",
+        "Menu_EquipCompareOfs",
+        "Menu_EquipItemsClose",
+        "Menu_EquipItemsSlideOut",
+        "Menu_DrawEquipNames",
+        "Menu_EquipSlotsSlideIn",
+        "Menu_EquipSlotsSlideStep",
+        "Menu_EquipSlotsSlideOut",
+        "Menu_EquipSlotsBackStep",
+        "Menu_MemberListHdma",
+        "Menu_PutHdmaEntry",
+        "Menu_Mode02List",
+        "Menu_Mode02H0",
+        "Menu_Mode02H1",
+        "Menu_Mode02H2",
+        "Menu_Mode02H3",
+        "Menu_Mode02H4",
+        "Menu_SortInventory",
+        "Menu_SortGroup",
+        "Menu_SortGroupFirst",
+        "Menu_SortGroupCount",
+        "Menu_Mode02H5",
+        "Menu_ItemListCursor",
+        "Menu_ShiftInvListMap",
+        "Menu_ItemListSelect",
+        "Menu_Icon1Preview",
+        "Menu_Icon1Redraw",
+        "Menu_Mode02Init",
+        "Menu_RedrawCursorRow",
+        "Menu_DrawItemList",
+        "Menu_DrawItemRow",
+        "Menu_DrawInvSlot",
+        "Menu_ShowEquipInfo",
+        "Menu_ListEquipChars",
+        "Menu_EquipValueLabel",
+        "Menu_EquipLabelPtrs",
+        "Menu_UseTargetsOpen",
+        "Menu_HideCharSprites",
+        "Menu_ShowCharSprites",
+        "Menu_ClearInfoRows",
+        "Menu_PlaceMemberSprites"
       ]
     },
     {
       "bank": "$C2",
       "start": "$C2:B000",
       "end": "$C2:BFFF",
-      "emitted_bytes": 18,
+      "emitted_bytes": 869,
       "functions": [
+        "Menu_MemberSprYX",
+        "Menu_DrawInvEntry",
+        "Menu_UseItem",
+        "Menu_UseItemDone",
+        "Menu_UseKindTable",
+        "Menu_FirstSetBit",
+        "Menu_UseRandomItem",
+        "Menu_RollRandomItem",
+        "Menu_RandomItemOdds",
+        "Menu_RandomItemSets",
+        "Menu_RandomItemSetA",
+        "Menu_RandomItemSetB",
+        "Menu_RandomItemSetC",
+        "Menu_RandomItemSetD",
+        "Menu_UseHealItem",
+        "Menu_UseTargets",
+        "Menu_UseLeave",
+        "Menu_UseFullItem",
+        "Menu_UseStatItem",
+        "Menu_StatTargetCursor",
+        "Menu_StatTargetCheck",
+        "Menu_ApplyStatItem",
+        "Menu_StatCountOfs",
+        "Menu_AfterItemUse",
         "Menu_Mode03List",
         "Menu_Mode04List"
       ]
