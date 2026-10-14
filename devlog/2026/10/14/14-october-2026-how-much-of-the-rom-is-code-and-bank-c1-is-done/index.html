@@ -6,10 +6,10 @@
   
   
   <meta name="description" content="Byte-exact matching decompilation of Chrono Trigger (SNES, US 1.0)">
-  <link rel="canonical" href="https://thisisakill.github.io/Kajar-site/devlog/2026/10/14/14-october-2026-how-much-of-the-rom-is-code/">
+  <link rel="canonical" href="https://thisisakill.github.io/Kajar-site/devlog/2026/10/14/14-october-2026-how-much-of-the-rom-is-code-and-bank-c1-is-done/">
   
   
-  <title>14 October 2026: how much of the ROM is code? — Kajar</title>
+  <title>14 October 2026: how much of the ROM is code? And bank $C1 is done — Kajar</title>
   
   
   <link rel="stylesheet" href="../../../../../stylesheets/wiki.css">
@@ -216,21 +216,21 @@
       <div class="wk-party">
         <div class="wk-party-row" title="Bytes matched: the rebuilt ROM is byte-identical here">
           <span class="wk-party-k">HP</span>
-          <span class="wk-party-v">170,895<small>/239,779</small></span>
+          <span class="wk-party-v">181,970<small>/239,403</small></span>
         </div>
-        <div class="wk-stat-track"><div class="wk-stat-fill" style="width:71.27%"></div></div>
-        <p class="wk-party-note">code bytes matched · 71.27% of code · 10,748 B data</p>
+        <div class="wk-stat-track"><div class="wk-stat-fill" style="width:76.01%"></div></div>
+        <p class="wk-party-note">code bytes matched · 76.01% of code · 12,074 B data</p>
 
         <div class="wk-party-row" title="Matched functions that also meet the readability standard">
           <span class="wk-party-k">MP</span>
-          <span class="wk-party-v">2403<small>/2403</small></span>
+          <span class="wk-party-v">2664<small>/2664</small></span>
         </div>
         <div class="wk-stat-track"><div class="wk-stat-fill wk-stat-fill-mp" style="width:100.0%"></div></div>
         <p class="wk-party-note">functions readable</p>
 
         <div class="wk-party-row" title="Readable functions that passed an independent review">
           <span class="wk-party-k">TP</span>
-          <span class="wk-party-v">2403<small>/2403</small></span>
+          <span class="wk-party-v">2664<small>/2664</small></span>
         </div>
         <div class="wk-stat-track"><div class="wk-stat-fill wk-stat-fill-dim" style="width:100.0%"></div></div>
         <p class="wk-party-note">functions verified</p>
@@ -255,9 +255,9 @@
         <ol class="wk-toc-list" id="wk-toc-list">
           
           <li>
-            <a href="#14-october-2026-how-much-of-the-rom-is-code" class="wk-toc-link">14 October 2026: how much of the ROM is code?</a>
+            <a href="#14-october-2026-how-much-of-the-rom-is-code-and-bank-c1-is-done" class="wk-toc-link">14 October 2026: how much of the ROM is code? And bank $C1 is done</a>
             
-            <ol><li><a href="#what-was-counted-as-code" class="wk-toc-link">What was counted as code</a></li><li><a href="#how-it-is-measured-now" class="wk-toc-link">How it is measured now</a></li><li><a href="#where-that-leaves-things" class="wk-toc-link">Where that leaves things</a></li><li><a href="#next" class="wk-toc-link">Next</a></li></ol>
+            <ol><li><a href="#what-was-counted-as-code" class="wk-toc-link">What was counted as code</a></li><li><a href="#how-it-is-measured-now" class="wk-toc-link">How it is measured now</a></li><li><a href="#where-the-re-survey-left-things" class="wk-toc-link">Where the re-survey left things</a></li><li><a href="#bank-c1-is-complete" class="wk-toc-link">Bank $C1 is complete</a></li><li><a href="#the-equipment-screen-and-the-menus-drawing-code" class="wk-toc-link">The equipment screen and the menu's drawing code</a></li><li><a href="#a-mode-7-scene-and-the-white-fades" class="wk-toc-link">A Mode 7 scene and the white fades</a></li><li><a href="#where-that-leaves-things" class="wk-toc-link">Where that leaves things</a></li><li><a href="#next" class="wk-toc-link">Next</a></li></ol>
             
           </li>
           
@@ -276,7 +276,7 @@
   </p>
   
   
-  <h1 id="14-october-2026-how-much-of-the-rom-is-code">14 October 2026: how much of the ROM is code?</h1>
+  <h1 id="14-october-2026-how-much-of-the-rom-is-code-and-bank-c1-is-done">14 October 2026: how much of the ROM is code? And bank $C1 is done</h1>
 <p>Every progress figure on this site divides the code <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr> so far by the amount of code in the game. Until today that second number, 358,356 bytes, came from a one-off survey done at the start. Now that whole banks are <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr>, it could be checked, and it was wrong by a third.</p>
 <!-- more -->
 
@@ -288,11 +288,20 @@
 <p>For each bank, the count is the <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr> code (exact), plus the unmatched code that can be reached by following jumps and calls from <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr> code and the interrupt vectors, plus an allowance for code that can only be reached through jump tables nobody has decoded yet. The tool that does this was tested by hiding the source of a bank that is already <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr> and seeing how close it got. For <code>$C0</code> and <code>$C1</code> it came within 2–4%. For <code>$C2</code>, which still has a lot of unmatched code mixed in, it came out 17.6% low.</p>
 <p>That last result matters for how to read the new figure. The estimate leans low, and a smaller total makes the percentage bigger. So the honest headline comes with a range.</p>
 <p>An independent check reproduced every number, confirmed the sound tables and the code-free banks from the ROM itself, and asked for exactly that caveat to be stated plainly.</p>
-<h2 id="where-that-leaves-things">Where that leaves things</h2>
-<p>The game has about 240 KB of <abbr title="The 16-bit CPU inside the SNES, an extended 6502 capable of 8-bit emulation and full 16-bit native mode.">65816</abbr> code, not 358 KB. <code>main</code> stands at 170,895 <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr> code bytes: <strong>71.27%</strong>, with a likely range of 65–73% and the true figure more likely below 71% than above it. All 2,403 <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr> routines are independently verified.</p>
+<h2 id="where-the-re-survey-left-things">Where the re-survey left things</h2>
+<p>The game has about 240 KB of <abbr title="The 16-bit CPU inside the SNES, an extended 6502 capable of 8-bit emulation and full 16-bit native mode.">65816</abbr> code, not 358 KB. <code>main</code> stood at 170,895 <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr> code bytes: <strong>71.27%</strong>, with a likely range of 65–73% and the true figure more likely below 71% than above it. All 2,403 <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr> routines were independently verified.</p>
 <p>Nothing was <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr> or unmatched by this change. The work done is the same; the measure is better.</p>
+<h2 id="bank-c1-is-complete">Bank $C1 is complete</h2>
+<p>The last 2,982 bytes of <code>$C1</code> are <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr>, so every byte of the battle engine's bank now comes from source. Most of it is the 57 target handlers that enemy behaviour scripts call to pick who an action hits: the party, the enemies, the enemy itself, the nearest or farthest, the lowest HP, everyone with a given status, a fixed slot, or a random pick. The rest is the bank's entry block (the battle's entry point and its service dispatcher) and a stretch at the end of the bank that holds cut-off copies of code from an older build, never run.</p>
+<p>The handlers have bugs of their own. Target <code>$05</code> can loop forever in one state, <code>$08</code> never compares the first party member's HP, <code>$1F</code> stores its loop counter from the wrong register, and <code>$38</code> stops clearing the list after its second entry. Review also turned up something subtler. Several handlers leave out "self" by comparing against a stored battler slot. On the enemy's own turn that slot is the enemy. In the pass that runs every enemy's script in turn, though, nothing sets it, so "self" there is whoever acted last. It took six review rounds to describe exactly when that slot holds what.</p>
+<h2 id="the-equipment-screen-and-the-menus-drawing-code">The equipment screen and the menu's drawing code</h2>
+<p>In <code>$C2</code>, 4,904 bytes: the menu's pad input, cursor and sound requests, and the draw-list interpreter that builds windows, text and numbers (with the play-time clock and item names and descriptions). One of the menu modes turned out to be the equipment screen. A table of slot names sits right next to it in the ROM: "Weapon", "Helmet", "Armor", "Accessory".</p>
+<h2 id="a-mode-7-scene-and-the-white-fades">A Mode 7 scene and the white fades</h2>
+<p>In <code>$FD</code>, 4,515 bytes: two palette animations that fade or pulse colours toward white, a complete Mode 7 scene started by event command <code>$FF $80</code>-<code>$8F</code> (an iris window, a sprite bitmap drawn with rays, palette cycling), and the routine that uploads the field's animated tiles. Which scene in the game it is has not been traced yet. Two of the white fades write only one byte of each colour, so they change one channel and leave the rest of the colour as it was.</p>
+<h2 id="where-that-leaves-things">Where that leaves things</h2>
+<p><code>main</code> now stands at 181,970 <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr> code bytes: <strong>76.01%</strong> of the surveyed code. The same caveat holds: the survey leans low, so the true share is more likely a little below that. All 2,664 <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr> routines are independently verified.</p>
 <h2 id="next">Next</h2>
-<p>Three batches are in review: the last of <code>$C1</code> (the enemy scripts' target handlers), more of <code>$FD</code> (a Mode 7 scene and the white palette fades), and the equipment screen and menu text drawing in <code>$C2</code>. After those, the new survey sets the order: <code>$C3</code>'s kernel and its decompressor, which is called from 42 places, then the rest of <code>$FD</code>, the <abbr title="The 16-bit CPU inside the SNES, an extended 6502 capable of 8-bit emulation and full 16-bit native mode.">65816</abbr> side of the sound interface, and the battle code in <code>$CC</code> and <code>$CF</code>.</p>
+<p>The <code>$C3</code> kernel and its decompressor are being <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr> now. Then the rest of <code>$FD</code>, the <abbr title="The 16-bit CPU inside the SNES, an extended 6502 capable of 8-bit emulation and full 16-bit native mode.">65816</abbr> side of the sound interface in <code>$C7</code>, and the battle code in <code>$CF</code> and <code>$CC</code>.</p>
   
   <p class="wk-post-back"><a href="../../../../">← Back to devlog</a></p>
 </article>
