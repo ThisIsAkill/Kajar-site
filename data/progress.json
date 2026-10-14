@@ -1,26 +1,26 @@
 {
   "schema": 3,
-  "emitted_bytes": 233974,
-  "code_bytes": 243169,
+  "emitted_bytes": 237959,
+  "code_bytes": 243823,
   "surveyed_code_bytes": 239779,
   "totals": {
     "matched": {
-      "functions": 3036,
-      "bytes": 233974,
-      "code_bytes": 213667,
-      "data_bytes": 20307
+      "functions": 3046,
+      "bytes": 237959,
+      "code_bytes": 217396,
+      "data_bytes": 20563
     },
     "readable": {
-      "functions": 3036,
-      "bytes": 233974,
-      "code_bytes": 213667,
-      "data_bytes": 20307
+      "functions": 3046,
+      "bytes": 237959,
+      "code_bytes": 217396,
+      "data_bytes": 20563
     },
     "verified": {
-      "functions": 3036,
-      "bytes": 233974,
-      "code_bytes": 213667,
-      "data_bytes": 20307
+      "functions": 3046,
+      "bytes": 237959,
+      "code_bytes": 217396,
+      "data_bytes": 20563
     }
   },
   "banks": [
@@ -197,6 +197,31 @@
         "bytes": 5813,
         "code_bytes": 5737,
         "data_bytes": 76
+      }
+    },
+    {
+      "bank": "$CE",
+      "code_bytes": 3729,
+      "surveyed_code_bytes": 3075,
+      "survey_low": true,
+      "emitted_bytes": 3985,
+      "matched": {
+        "functions": 10,
+        "bytes": 3985,
+        "code_bytes": 3729,
+        "data_bytes": 256
+      },
+      "readable": {
+        "functions": 10,
+        "bytes": 3985,
+        "code_bytes": 3729,
+        "data_bytes": 256
+      },
+      "verified": {
+        "functions": 10,
+        "bytes": 3985,
+        "code_bytes": 3729,
+        "data_bytes": 256
       }
     },
     {
@@ -3866,6 +3891,130 @@
       "end": "$CD:FFFF",
       "emitted_bytes": 0,
       "functions": []
+    },
+    {
+      "bank": "$CE",
+      "start": "$CE:0000",
+      "end": "$CE:0FFF",
+      "emitted_bytes": 0,
+      "functions": []
+    },
+    {
+      "bank": "$CE",
+      "start": "$CE:1000",
+      "end": "$CE:1FFF",
+      "emitted_bytes": 0,
+      "functions": []
+    },
+    {
+      "bank": "$CE",
+      "start": "$CE:2000",
+      "end": "$CE:2FFF",
+      "emitted_bytes": 0,
+      "functions": []
+    },
+    {
+      "bank": "$CE",
+      "start": "$CE:3000",
+      "end": "$CE:3FFF",
+      "emitted_bytes": 0,
+      "functions": []
+    },
+    {
+      "bank": "$CE",
+      "start": "$CE:4000",
+      "end": "$CE:4FFF",
+      "emitted_bytes": 0,
+      "functions": []
+    },
+    {
+      "bank": "$CE",
+      "start": "$CE:5000",
+      "end": "$CE:5FFF",
+      "emitted_bytes": 0,
+      "functions": []
+    },
+    {
+      "bank": "$CE",
+      "start": "$CE:6000",
+      "end": "$CE:6FFF",
+      "emitted_bytes": 0,
+      "functions": []
+    },
+    {
+      "bank": "$CE",
+      "start": "$CE:7000",
+      "end": "$CE:7FFF",
+      "emitted_bytes": 0,
+      "functions": []
+    },
+    {
+      "bank": "$CE",
+      "start": "$CE:8000",
+      "end": "$CE:8FFF",
+      "emitted_bytes": 0,
+      "functions": []
+    },
+    {
+      "bank": "$CE",
+      "start": "$CE:9000",
+      "end": "$CE:9FFF",
+      "emitted_bytes": 0,
+      "functions": []
+    },
+    {
+      "bank": "$CE",
+      "start": "$CE:A000",
+      "end": "$CE:AFFF",
+      "emitted_bytes": 0,
+      "functions": []
+    },
+    {
+      "bank": "$CE",
+      "start": "$CE:B000",
+      "end": "$CE:BFFF",
+      "emitted_bytes": 0,
+      "functions": []
+    },
+    {
+      "bank": "$CE",
+      "start": "$CE:C000",
+      "end": "$CE:CFFF",
+      "emitted_bytes": 0,
+      "functions": []
+    },
+    {
+      "bank": "$CE",
+      "start": "$CE:D000",
+      "end": "$CE:DFFF",
+      "emitted_bytes": 0,
+      "functions": []
+    },
+    {
+      "bank": "$CE",
+      "start": "$CE:E000",
+      "end": "$CE:EFFF",
+      "emitted_bytes": 3857,
+      "functions": [
+        "BattleCE_CopyWindowEdges",
+        "BattleCE_WaveTable",
+        "BattleCE_UnkE18E",
+        "BattleCE_CopyWordsToLines",
+        "BattleCE_RunCopyWords",
+        "BattleCE_CalcAngle",
+        "BattleCE_PresetWinEdges",
+        "BattleCE_DrawHalfPlane",
+        "BattleCE_UnkEE6E"
+      ]
+    },
+    {
+      "bank": "$CE",
+      "start": "$CE:F000",
+      "end": "$CE:FFFF",
+      "emitted_bytes": 128,
+      "functions": [
+        "BattleCE_UnkF066"
+      ]
     },
     {
       "bank": "$CF",
