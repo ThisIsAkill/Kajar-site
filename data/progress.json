@@ -1,26 +1,26 @@
 {
   "schema": 3,
-  "emitted_bytes": 207874,
-  "code_bytes": 240593,
+  "emitted_bytes": 215111,
+  "code_bytes": 241489,
   "surveyed_code_bytes": 239779,
   "totals": {
     "matched": {
-      "functions": 2755,
-      "bytes": 207874,
-      "code_bytes": 188718,
-      "data_bytes": 19156
+      "functions": 2811,
+      "bytes": 215111,
+      "code_bytes": 195544,
+      "data_bytes": 19567
     },
     "readable": {
-      "functions": 2755,
-      "bytes": 207874,
-      "code_bytes": 188718,
-      "data_bytes": 19156
+      "functions": 2811,
+      "bytes": 215111,
+      "code_bytes": 195544,
+      "data_bytes": 19567
     },
     "verified": {
-      "functions": 2755,
-      "bytes": 207874,
-      "code_bytes": 188718,
-      "data_bytes": 19156
+      "functions": 2811,
+      "bytes": 215111,
+      "code_bytes": 195544,
+      "data_bytes": 19567
     }
   },
   "banks": [
@@ -176,27 +176,27 @@
     },
     {
       "bank": "$CF",
-      "code_bytes": 6117,
+      "code_bytes": 7013,
       "surveyed_code_bytes": 6117,
-      "survey_low": false,
-      "emitted_bytes": 187,
+      "survey_low": true,
+      "emitted_bytes": 7424,
       "matched": {
-        "functions": 2,
-        "bytes": 187,
-        "code_bytes": 187,
-        "data_bytes": 0
+        "functions": 58,
+        "bytes": 7424,
+        "code_bytes": 7013,
+        "data_bytes": 411
       },
       "readable": {
-        "functions": 2,
-        "bytes": 187,
-        "code_bytes": 187,
-        "data_bytes": 0
+        "functions": 58,
+        "bytes": 7424,
+        "code_bytes": 7013,
+        "data_bytes": 411
       },
       "verified": {
-        "functions": 2,
-        "bytes": 187,
-        "code_bytes": 187,
-        "data_bytes": 0
+        "functions": 58,
+        "bytes": 7424,
+        "code_bytes": 7013,
+        "data_bytes": 411
       }
     },
     {
@@ -3670,17 +3670,74 @@
       "bank": "$CF",
       "start": "$CF:E000",
       "end": "$CF:EFFF",
-      "emitted_bytes": 0,
-      "functions": []
+      "emitted_bytes": 3328,
+      "functions": [
+        "BattleCF_VblankUploads",
+        "BattleCF_FrameUpdate",
+        "BattleCF_BounceHitNumbers",
+        "BattleCF_StepFxColourCycle",
+        "BattleCF_BuildSprites",
+        "BattleCF_DrawPosHistory",
+        "BattleCF_DrawPosHistRecord",
+        "BattleCF_DrawUnkA5D8Sprite",
+        "BattleCF_DrawBattler",
+        "BattleCF_CopySprTiles",
+        "BattleCF_StepPathWalks",
+        "BattleCF_FollowObjects",
+        "BattleCF_RecordPosHistory",
+        "BattleCF_DrawFrontLayer",
+        "BattleCF_DrawBackObjects",
+        "BattleCF_DrawFxOverlay",
+        "BattleCF_DrawHitNumbers",
+        "BattleCF_DrawActObj",
+        "BattleCF_RunMovers"
+      ]
     },
     {
       "bank": "$CF",
       "start": "$CF:F000",
       "end": "$CF:FFFF",
-      "emitted_bytes": 187,
+      "emitted_bytes": 4096,
       "functions": [
+        "BattleCF_MoverTable",
+        "BattleCF_ObjMoverTable",
+        "BattleCF_MoveStraight",
+        "BattleCF_MoveArc",
+        "BattleCF_MoveHeading",
+        "BattleCF_MoveCircle",
+        "BattleCF_MoveKind4",
+        "BattleCF_MoveEllipse",
+        "BattleCF_MoveShake",
+        "BattleCF_ShakeStep",
+        "BattleCF_MoveCurve",
+        "BattleCF_ObjMoveStraight",
+        "BattleCF_ObjMoveArc",
+        "BattleCF_ObjMoveHeading",
+        "BattleCF_ObjMoveCircle",
+        "BattleCF_ObjMoveKind4",
+        "BattleCF_ObjMoveOrbit",
+        "BattleCF_ObjMoveCurve",
+        "BattleCF_PointsNear",
+        "BattleCF_StepEnemies",
+        "BattleCF_PlaceEnemyParts",
+        "BankCF_DeadShift3",
         "Battle_SinLookupCF",
-        "BattleMsg_FormatNumber4Digits"
+        "Battle_Mul8x16CF",
+        "Battle_CalcAngleCF",
+        "BattleCF_PixelToCell",
+        "Battle_MergePendingEntries1580",
+        "BattleCF_EnterBattle",
+        "BattleCF_ExitBattle",
+        "BattleCF_PixelToTile",
+        "BattleCF_WaitFrame",
+        "Battle_QueueVramUpload_0CC0",
+        "Battle_QueueVramUpload_A6E1",
+        "Battle_QueueVramUpload_0E80",
+        "BattleFx_SetPtrA2FromTable",
+        "BattleMsg_FormatNumber4Digits",
+        "BattleCF_RemoveMarkedEnemies",
+        "BankCF_EndFill",
+        "BattleCF_ActForceBytes"
       ]
     },
     {

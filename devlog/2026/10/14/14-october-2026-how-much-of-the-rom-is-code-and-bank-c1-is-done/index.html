@@ -216,21 +216,21 @@
       <div class="wk-party">
         <div class="wk-party-row" title="Bytes matched: the rebuilt ROM is byte-identical here">
           <span class="wk-party-k">HP</span>
-          <span class="wk-party-v">188,718<small>/240,593</small></span>
+          <span class="wk-party-v">195,544<small>/241,489</small></span>
         </div>
-        <div class="wk-stat-track"><div class="wk-stat-fill" style="width:78.44%"></div></div>
-        <p class="wk-party-note">code bytes matched · 78.44% of code · 19,156 B data</p>
+        <div class="wk-stat-track"><div class="wk-stat-fill" style="width:80.97%"></div></div>
+        <p class="wk-party-note">code bytes matched · 80.97% of code · 19,567 B data</p>
 
         <div class="wk-party-row" title="Matched functions that also meet the readability standard">
           <span class="wk-party-k">MP</span>
-          <span class="wk-party-v">2755<small>/2755</small></span>
+          <span class="wk-party-v">2811<small>/2811</small></span>
         </div>
         <div class="wk-stat-track"><div class="wk-stat-fill wk-stat-fill-mp" style="width:100.0%"></div></div>
         <p class="wk-party-note">functions readable</p>
 
         <div class="wk-party-row" title="Readable functions that passed an independent review">
           <span class="wk-party-k">TP</span>
-          <span class="wk-party-v">2755<small>/2755</small></span>
+          <span class="wk-party-v">2811<small>/2811</small></span>
         </div>
         <div class="wk-stat-track"><div class="wk-stat-fill wk-stat-fill-dim" style="width:100.0%"></div></div>
         <p class="wk-party-note">functions verified</p>
@@ -257,7 +257,7 @@
           <li>
             <a href="#14-october-2026-how-much-of-the-rom-is-code-and-bank-c1-is-done" class="wk-toc-link">14 October 2026: how much of the ROM is code? And bank $C1 is done</a>
             
-            <ol><li><a href="#what-was-counted-as-code" class="wk-toc-link">What was counted as code</a></li><li><a href="#how-it-is-measured-now" class="wk-toc-link">How it is measured now</a></li><li><a href="#where-the-re-survey-left-things" class="wk-toc-link">Where the re-survey left things</a></li><li><a href="#bank-c1-is-complete" class="wk-toc-link">Bank $C1 is complete</a></li><li><a href="#the-equipment-screen-and-the-menus-drawing-code" class="wk-toc-link">The equipment screen and the menu's drawing code</a></li><li><a href="#a-mode-7-scene-and-the-white-fades" class="wk-toc-link">A Mode 7 scene and the white fades</a></li><li><a href="#the-decompressor-and-the-jet-bike-race" class="wk-toc-link">The decompressor and the jet bike race</a></li><li><a href="#the-sound-drivers-65816-side" class="wk-toc-link">The sound driver's 65816 side</a></li><li><a href="#the-rest-of-fd" class="wk-toc-link">The rest of $FD</a></li><li><a href="#where-that-leaves-things" class="wk-toc-link">Where that leaves things</a></li><li><a href="#next" class="wk-toc-link">Next</a></li></ol>
+            <ol><li><a href="#what-was-counted-as-code" class="wk-toc-link">What was counted as code</a></li><li><a href="#how-it-is-measured-now" class="wk-toc-link">How it is measured now</a></li><li><a href="#where-the-re-survey-left-things" class="wk-toc-link">Where the re-survey left things</a></li><li><a href="#bank-c1-is-complete" class="wk-toc-link">Bank $C1 is complete</a></li><li><a href="#the-equipment-screen-and-the-menus-drawing-code" class="wk-toc-link">The equipment screen and the menu's drawing code</a></li><li><a href="#a-mode-7-scene-and-the-white-fades" class="wk-toc-link">A Mode 7 scene and the white fades</a></li><li><a href="#the-decompressor-and-the-jet-bike-race" class="wk-toc-link">The decompressor and the jet bike race</a></li><li><a href="#the-sound-drivers-65816-side" class="wk-toc-link">The sound driver's 65816 side</a></li><li><a href="#the-rest-of-fd" class="wk-toc-link">The rest of $FD</a></li><li><a href="#how-a-battle-moves-and-draws" class="wk-toc-link">How a battle moves and draws</a></li><li><a href="#where-that-leaves-things" class="wk-toc-link">Where that leaves things</a></li><li><a href="#next" class="wk-toc-link">Next</a></li></ol>
             
           </li>
           
@@ -305,10 +305,13 @@
 <p>Every sound and song request in the game goes through one entry point in <code>$C7</code>. That bank's <abbr title="The 16-bit CPU inside the SNES, an extended 6502 capable of 8-bit emulation and full 16-bit native mode.">65816</abbr> code is now <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr>: 3,601 bytes that boot the sound chip, upload its program, and pass commands to it through four I/O ports. The handshake is written out step by step. The bank also holds a table of 83 songs and 62 instrument samples. The sound chip's own program, which runs on a different processor, is a separate job.</p>
 <h2 id="the-rest-of-fd">The rest of <code>$FD</code></h2>
 <p>From <code>$FD:A8A5</code> to the end of the bank, everything now comes from source: the fixed party and commands for one scripted battle, the animation lists for each location's tiles and palettes, and older copies of two routines that nothing runs. It is all data, so it doesn't move the code figure.</p>
+<h2 id="how-a-battle-moves-and-draws">How a battle moves and draws</h2>
+<p>All of bank <code>$CF</code>'s code is <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr>: 7,424 bytes. It is what runs every frame of a battle. One routine uploads graphics during the screen's blanking period, another steps everything else. Then come the movers that carry battlers and effects along lines, curves, arcs, circles and ellipses, or shake them in place. The sprite builder sorts every battler and effect by depth before it draws them, and the damage numbers bounce. When an enemy falls, a routine fades it out and takes it off the field.</p>
+<p>Review found that two of these headers had their logic backwards. The objects that follow other objects are updated from the last one down, so a follower gets the old position of a lower-numbered leader but the new position of a higher one. The rule for hiding sprites at the screen edge doesn't hide them at all in one case: a sprite just off the left edge comes back partly visible. Both are now described as the code really behaves.</p>
 <h2 id="where-that-leaves-things">Where that leaves things</h2>
-<p><code>main</code> now stands at 188,718 <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr> code bytes: <strong>78.44%</strong> of the surveyed code. The same caveat holds: the survey leans low, so the true share is more likely a little below that. All 2,755 <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr> routines are independently verified.</p>
+<p><code>main</code> now stands at 195,544 <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr> code bytes: <strong>80.97%</strong> of the surveyed code. The same caveat holds: the survey leans low, so the true share is more likely a little below that. All 2,811 <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr> routines are independently verified.</p>
 <h2 id="next">Next</h2>
-<p>The battle code in <code>$CF</code> is being <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr> now. After it, the battle tables and code at the end of <code>$CC</code>, the bank-<code>$FF</code> routines the menu calls, and then the larger banks still untouched: <code>$CE</code>, <code>$D1</code> and <code>$CD</code>.</p>
+<p>The battle set-up code at the end of <code>$CC</code> and the bank-<code>$FF</code> routines the menu calls are <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr> and about to go to review. After them come the larger banks still untouched: <code>$CE</code>, <code>$D1</code> and <code>$CD</code>.</p>
   
   <p class="wk-post-back"><a href="../../../../">← Back to devlog</a></p>
 </article>
