@@ -352,7 +352,7 @@
 <h2 id="where-that-leaves-things">Where that leaves things</h2>
 <p><code>main</code> now matches 249,251 bytes of <abbr title="The 16-bit CPU inside the SNES, an extended 6502 capable of 8-bit emulation and full 16-bit native mode.">65816</abbr> code: <strong>all of the reachable <abbr title="The 16-bit CPU inside the SNES, an extended 6502 capable of 8-bit emulation and full 16-bit native mode.">65816</abbr> code in the ROM</strong>, with the SPC700 driver and the compressed module counted apart. All 3,736 <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr> routines are independently verified.</p>
 <h2 id="next">Next</h2>
-<p>The SPC700 driver stands at 1,022 of 6,543 code bytes (15.62%), all of it verified; the rest of it is next, and after it the code inside the compressed <code>$C3</code> module.</p>
+<p>The SPC700 driver stands at 2,364 of 6,543 code bytes (36.13%), all of it verified: the second batch added the main CPU's volume, tempo, stop, mute and pause commands and the code that receives song data, which quietly drops any block aimed at the driver's own memory. The track pass is next, and after the driver the code inside the compressed <code>$C3</code> module.</p>
   
   <p class="wk-post-back"><a href="../../../../">← Back to devlog</a></p>
 </article>
