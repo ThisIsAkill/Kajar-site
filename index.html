@@ -269,7 +269,7 @@
       <div class="wk-article-body">
       
       
-      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="October 14, 2026 00:30:31 UTC">October 14, 2026</span></p>
+      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="October 15, 2026 02:00:05 UTC">October 15, 2026</span></p>
       
       <h1 id="kajar">Kajar</h1>
 <div class="wk-hero"><div class="wk-hero-art" aria-hidden="true"></div><div class="wk-hero-text"><p class="wk-hero-title">Chrono Trigger</p><p class="wk-hero-sub">A byte-exact decompilation of the 1995 classic, one matched routine at a time</p><blockquote class="wk-epigraph"><p>But… the future refused to change.</p><cite>Game Over screen</cite></blockquote></div></div>
@@ -314,6 +314,20 @@
 </tr>
 </tbody>
 </table>
+<div class="admonition info">
+<p class="admonition-title">What the 100% covers, and what is left</p>
+<p>The 100% is the game's <strong>65C816 code</strong>: every byte of it that can run is <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr>, readable and
+verified. It is not the whole project. Still to do:</p>
+<ul>
+<li><strong>The packed <code>$C3</code> module</strong> (the jet-bike race), about 34 KB once unpacked, held compressed in
+  the ROM. Its build path and first routines are under review; most of it is still the ROM's bytes.</li>
+<li><strong>The game's data</strong>: graphics, music, maps, text, scripts and tables. The source emits about
+  280 KB of the 4 MB ROM (code plus the data tables around it); the rest is copied from the
+  original ROM when it is built, not yet described by the source.</li>
+<li><strong>A build that needs no original ROM</strong>: today the source is assembled over a copy of the
+  original, which supplies everything the source does not yet cover.</li>
+</ul>
+</div>
 <p>How much of each bank is <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr>, and at which level, is generated on the <a href="ROM_MAP/">ROM Map</a> and <a href="PROGRESS/">Progress</a> pages.</p>
 <hr />
 <h2 id="start-here">Start here</h2>
