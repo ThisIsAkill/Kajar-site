@@ -2918,7 +2918,7 @@ $C3:01C6,$C3:01C9,4,WinFx_FillEmpty,$C3,Engine,code,verified,f8085cacf6db,Fills 
 $C3:01CA,$C3:01E3,26,WinFx_FillEmptyFrom,$C3,Engine,code,verified,5df1bc91b6b6,
 $C3:01E4,$C3:02DC,249,WinFx_StepWipe,$C3,Engine,code,verified,b5919b773be3,"One frame of a per-line wipe, run while WinFx_C3EMode is nonzero (Field_HookWinC3E calls it once a frame through BankC3_Entry000E and uses the result as HDMA data for window 2, probably one window..."
 $C3:02DD,$C3:0306,42,C3_RandomByte,$C3,Engine,code,verified,f2e719e649cb,"Returns a new pseudo-random byte in A and keeps it in C3_RandSeed: A (with C rotated in) plus C3_RandSeed, stored; then X's low byte, the seed, C3_FrameCount, the H counter (OPHCT; the counters..."
-$C3:0307,$C3:0528,546,C3_ScaleBitmap,$C3,Engine,code,verified,aa24db4e378f,"Draws a scaled copy of a bitmap (one byte per pixel, bits 0-3 used, 64-byte source rows from C3Scale_SrcBase) into rows of 4-bitplane bytes, 32 bytes per output row from C3Scale_Dest."
+$C3:0307,$C3:0528,546,C3_ScaleBitmap,$C3,Engine,code,verified,2266def6aee0,"Draws a scaled copy of a bitmap (one byte per pixel, bits 0-3 used, 64-byte source rows from C3Scale_SrcBase) into rows of 4-bitplane bytes, 32 bytes per output row from C3Scale_Dest."
 $C3:0529,$C3:0547,31,C3_BootIrq,$C3,Engine,code,verified,688c162f92b6,"IRQ handler of the bank $C3 module, during its unpacking and after: C3_BootModule points the IRQ trampoline here, and no write to the trampolines ($0500-$0507) was found in the unpacked module..."
 $C3:0548,$C3:0556,15,C3_BootNmi,$C3,Engine,code,verified,2ee47c60d3da,"NMI handler while the module is unpacked: acknowledges the NMI (RDNMI) and sets INIDISP to full brightness, display on, ending the forced blank C3_BootIrq set at line 211 of the frame before."
 $C3:0557,$C3:08B2,860,Decomp_ToWram,$C3,Engine,code,verified,d8bbcb62d2f5,"Unpacks the data at Decomp_SrcBank:Decomp_Src into WRAM from Decomp_Dest, writing through WMDATA, and stores the number of bytes written in Decomp_OutLen."
@@ -2926,7 +2926,7 @@ $C3:08B3,$C3:08C8,22,C3_ModuleNmi,$C3,Engine,code,verified,ff6ef9a972b2,"The mod
 $C3:08C9,$C3:08CF,7,C3_NmiBusy,$C3,Engine,code,verified,0e919b0ead8f,"NMI handler while C3_ModuleFrame runs (it points the NMI trampoline here first): acknowledges the NMI (RDNMI) and returns, so a frame that overruns is not re-entered."
 $C3:08D0,$C3:0944,117,C3_ModuleFrame,$C3,Engine,code,verified,6822cc5c7e5a,"One frame of the module, from its NMI: DP = DB = 0, acknowledges the NMI, HDMA off, the NMI trampoline to C3_NmiBusy, interrupts on again if C3_EntryArg has C3_BootIrqOn, forced blank; then..."
 $C3:0945,$C3:094B,7,C3_IrqAck,$C3,Engine,code,verified,0f641e6ac438,An IRQ handler that only acknowledges the IRQ (TIMEUP) and returns.
-$C3:094C,$C3:099B,80,C3_MulSigned,$C3,Engine,code,verified,eea6a0c53e0b,"Signed multiply with the CPU multiplier: C3_MulA (16-bit) x C3_MulB (8-bit) into C3_MulProduct (32-bit), all signed."
+$C3:094C,$C3:099B,80,C3_MulSigned,$C3,Engine,code,verified,97d8a819537b,"Signed multiply with the CPU multiplier: C3_MulA (16-bit) x C3_MulB (8-bit) into C3_MulProduct, signed."
 $C3:099C,$C3:099F,4,C3_CopyFEto7E,$C3,Engine,code,verified,373c132cb676,"MVN from ROM bank $FE (C3Rom_PackPtrs' bank) to WRAM bank $7E, then RTL: copies A + 1 bytes from $FE:X to $7E:Y."
 $C3:09A0,$C3:09A3,4,C3_CopyFEto7F,$C3,Engine,code,verified,596256a5db3c,"As C3_CopyFEto7E, to WRAM bank $7F."
 $C3:09A4,$C3:09D8,53,C3_SongCheck,$C3,Engine,code,verified,7b48a19a40c4,"Sends a song change to the sound driver: unless C3_SongBusy is set or C3_EntryArg has bit 5 (C3_EntryNoSong), and if C3_SongReq differs from C3_SongCur, it copies the request to C3_SongCur and..."
@@ -2938,9 +2938,9 @@ $C3:0CB8,$C3:0CCC,21,C3_TaskListRemove,$C3,Engine,code,verified,1702e96addfd,Cle
 $C3:0CCD,$C3:0CE1,21,C3_NmiListRemove,$C3,Engine,code,verified,8eabc27d4902,"As C3_TaskListRemove, for C3_NmiTaskList."
 $C3:0CE2,$C3:0CF7,22,C3_TaskListAdd,$C3,Engine,code,verified,1946700471c3,Stores X in the first zero word of C3_TaskList (no bound: a full list is searched past its end).
 $C3:0CF8,$C3:0D0D,22,C3_NmiListAdd,$C3,Engine,code,verified,fd9980fff0f0,"As C3_TaskListAdd, for C3_NmiTaskList (run by C3Mod_RunNmiTasks)."
-$C3:0D0E,$C3:0D5D,80,C3_SprListSmall,$C3,Engine,code,verified,5b0569cc9c8c,"Adds a list of small sprites to the OAM shadow: the list (in bank $7E at A, read through WMDATA) is a byte n + 1, then n records of tile, attribute, X, Y."
-$C3:0D5E,$C3:0DBB,94,C3_SprListLarge,$C3,Engine,code,verified,51514150e35d,"As C3_SprListSmall for large sprites with a 9-bit X: X = byte + C3_SprBaseX (16-bit); from $100 up it is replaced by $101 (off screen, through the word C3_OffscreenX: low byte $01, bit 15 set); a..."
-$C3:0DBC,$C3:0DF2,55,C3_SprOneSmall,$C3,Engine,code,verified,55024f9133a7,"Adds one small sprite from a 4-byte record in bank $7E at X (tile, attribute, X, Y; X and Y + C3_SprBaseX / C3_SprBaseY, 8-bit) at C3_OamPos; its high-table byte (through C3_OamHiPtr) is shifted..."
+$C3:0D0E,$C3:0D5D,80,C3_SprListSmall,$C3,Engine,code,verified,d72f61ec901e,"Adds a list of small sprites to the OAM shadow: the list (in bank $7E at A, read through WMDATA) is a byte n + 1, then n records of tile, attribute, X, Y."
+$C3:0D5E,$C3:0DBB,94,C3_SprListLarge,$C3,Engine,code,verified,3fc6fbaa8892,"As C3_SprListSmall for large sprites with a 9-bit X: X = byte + C3_SprBaseX (16-bit); from $100 up it is replaced by $101 (off screen, through the word C3_OffscreenX: low byte $01, bit 15 set); a..."
+$C3:0DBC,$C3:0DF2,55,C3_SprOneSmall,$C3,Engine,code,verified,7613abe4ffe1,"Adds one small sprite from a 4-byte record in bank $7E at X (tile, attribute, X, Y; X and Y + C3_SprBaseX / C3_SprBaseY, 8-bit) at C3_OamPos; its high-table byte (through C3_OamHiPtr) is shifted..."
 $C3:0DF3,$C3:0E28,54,C3_SprOneLarge,$C3,Engine,code,verified,e0d39f1d21ea,As C3_SprOneSmall for a large sprite: the high-table byte is always shifted right by 2 with size = 1 and X bit 8 = 0.
 $C3:0E29,$C3:0E35,13,C3_FindDivisor,$C3,Engine,code,verified,8cc3e3fe62d7,"Counts the divisor up until the quotient falls below C3_ScratchF4: each pass waits two NOPs, adds 1 to X, reads the quotient of the division running (RDDIVL) and starts the next one with WRDIVB =..."
 $C3:0E36,$C3:0EF9,196,BankC3_StaffText,$C3,Engine,data,verified,e827c5c1f835,"ASCII, lines ended by $0A (the text starts with a $0A, so its first line is empty): the staff of the jet-bike race (the module), as in the ROM (""JONNY"" spelt so)."
@@ -3640,7 +3640,7 @@ $FD:DE15,$FD:DE86,114,M7Scene_Nmi,$FD,Engine,code,verified,0b40e0595b50,"The sce
 $FD:DE87,$FD:DE97,17,M7Scene_Irq,$FD,Engine,code,verified,b885f17744cb,"The scene's IRQ handler (JML from IrqTrampoline, installed by M7Scene_SetVectors): saves and restores A, X, Y, DB and DP and does nothing else (the SEP #$20 is undone by the REP #$30 after it)."
 $FD:DE98,$FD:E021,394,FieldFD_LoadAnimSetA,$FD,Engine,code,verified,623b5552e083,FdVec_FFFA's routine.
 $FD:E022,$FD:E274,595,FieldFD_UploadTileAnims,$FD,Engine,code,verified,bcda4c41c885,"FdVec_FFFD's routine, run from the field's IRQ (IrqHandler, on the frames Field_Unk53 bit 0 is set) to step the FieldAnimA records and send their tiles to VRAM."
-$FD:E275,$FD:E291,29,PalAnim_StopAll,$FD,Engine,code,verified,98ba5e1d78c9,"FdVec_FFEE's routine: sets .Unk0 of all 12 FieldAnimB records to 0 (kind 0: PalAnim_TickAll leaves them alone), so every palette animation stops."
+$FD:E275,$FD:E291,29,PalAnim_StopAll,$FD,Engine,code,verified,dcf1ac9b0011,"FdVec_FFEE's routine: sets .Unk0 of all 12 FieldAnimB records to 0 (kind 0: PalAnim_TickAll still steps their .Unk4 counter but runs no kind for them), so every palette animation stops."
 $FD:E292,$FD:E39B,266,FieldFD_LoadAnimSetB,$FD,Engine,code,verified,9aaf6ca6255c,FdVec_FFF4's routine.
 $FD:E39C,$FD:E436,155,PalAnim_TickAll,$FD,Engine,code,verified,42260882a3c2,FdVec_FFF7's routine.
 $FD:E437,$FD:E484,78,PalAnim_CopyRomFrame,$FD,Engine,code,verified,a4fe42779f7e,"Kind 1: copies .Unk2 colours from PalAnimRom + .Unk6 (a word, .Unk6/.Unk7) + .Unk3 x .Unk2 x 2 (frame .Unk3; product by the multiplier) to Pal_CgramBuf from colour .Unk1 (through PalAnim_Dest)."
@@ -3702,7 +3702,7 @@ $FD:FF29,$FD:FFE4,188,FieldAnimListBOldTail,$FD,Engine,data,verified,a888b200d09
 $FD:FFE5,$FD:FFE7,3,FdVec_FFE5,$FD,Engine,code,verified,b477df6dd3d0,"The bank's service vectors: JMPs at fixed addresses near the end of the bank, so code in other banks can reach them by JSL or JML."
 $FD:FFE8,$FD:FFEA,3,FdVec_FFE8,$FD,Engine,code,verified,e29ea0e03984,JMP to M7Scene_Run82 (event $FF $82; never returns).
 $FD:FFEB,$FD:FFED,3,FdVec_FFEB,$FD,Engine,code,verified,9daa41f6776d,JMP to M7Scene_Run81 (event $FF $81; never returns).
-$FD:FFEE,$FD:FFF0,3,FdVec_FFEE,$FD,Engine,code,verified,4282140d8620,JMP to PalAnim_StopAll.
+$FD:FFEE,$FD:FFF0,3,FdVec_FFEE,$FD,Engine,code,verified,d63b768229e0,JMP to PalAnim_StopAll.
 $FD:FFF1,$FD:FFF3,3,FdVec_FFF1,$FD,Engine,code,verified,ab9af82a3b52,JMP to M7Scene_Run80 (event $FF $80; never returns).
 $FD:FFF4,$FD:FFF6,3,FdVec_FFF4,$FD,Engine,code,verified,bc3478f558c8,"A service vector (see FdVec_FFE5): JMP to FieldFD_LoadAnimSetB, which ends with RTL."
 $FD:FFF7,$FD:FFF9,3,FdVec_FFF7,$FD,Engine,code,verified,bfdd0c563a2a,"JMP to PalAnim_TickAll, which runs the 12 FieldAnimB palette animation records at $0520 (Field_EndOfFrame calls it every frame)."
