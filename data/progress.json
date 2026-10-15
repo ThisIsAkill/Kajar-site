@@ -1,5 +1,6 @@
 {
   "schema": 3,
+  "file_check": "strace",
   "emitted_bytes": 272889,
   "code_bytes": 249251,
   "surveyed_code_bytes": 249251,
@@ -5637,6 +5638,33 @@
         "bytes": 7151,
         "code_bytes": 6543,
         "data_bytes": 608
+      }
+    }
+  },
+  "c3module": {
+    "emitted_bytes": 26393,
+    "unpacked_bytes": 34175,
+    "source_bytes": 763,
+    "code_bytes": 7052,
+    "traced_code_bytes": 7006,
+    "totals": {
+      "matched": {
+        "functions": 21,
+        "bytes": 763,
+        "code_bytes": 731,
+        "data_bytes": 32
+      },
+      "readable": {
+        "functions": 21,
+        "bytes": 763,
+        "code_bytes": 731,
+        "data_bytes": 32
+      },
+      "verified": {
+        "functions": 21,
+        "bytes": 763,
+        "code_bytes": 731,
+        "data_bytes": 32
       }
     }
   }
