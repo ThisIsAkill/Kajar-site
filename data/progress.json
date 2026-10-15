@@ -5616,27 +5616,27 @@
     }
   ],
   "spc700": {
-    "emitted_bytes": 4318,
+    "emitted_bytes": 7153,
     "code_bytes": 6543,
     "data_bytes": 608,
     "totals": {
       "matched": {
-        "functions": 72,
-        "bytes": 4318,
-        "code_bytes": 4318,
-        "data_bytes": 0
+        "functions": 177,
+        "bytes": 7151,
+        "code_bytes": 6543,
+        "data_bytes": 608
       },
       "readable": {
-        "functions": 72,
-        "bytes": 4318,
-        "code_bytes": 4318,
-        "data_bytes": 0
+        "functions": 177,
+        "bytes": 7151,
+        "code_bytes": 6543,
+        "data_bytes": 608
       },
       "verified": {
-        "functions": 72,
-        "bytes": 4318,
-        "code_bytes": 4318,
-        "data_bytes": 0
+        "functions": 177,
+        "bytes": 7151,
+        "code_bytes": 6543,
+        "data_bytes": 608
       }
     }
   }

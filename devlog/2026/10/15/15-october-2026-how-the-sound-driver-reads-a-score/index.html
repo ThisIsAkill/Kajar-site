@@ -257,7 +257,7 @@
           <li>
             <a href="#15-october-2026-how-the-sound-driver-reads-a-score" class="wk-toc-link">15 October 2026: how the sound driver reads a score</a>
             
-            <ol><li><a href="#the-music-format" class="wk-toc-link">The music format</a></li><li><a href="#slides-vibrato-and-a-one-sided-tremolo" class="wk-toc-link">Slides, vibrato and a one-sided tremolo</a></li><li><a href="#where-that-leaves-things" class="wk-toc-link">Where that leaves things</a></li><li><a href="#next" class="wk-toc-link">Next</a></li></ol>
+            <ol><li><a href="#the-music-format" class="wk-toc-link">The music format</a></li><li><a href="#slides-vibrato-and-a-one-sided-tremolo" class="wk-toc-link">Slides, vibrato and a one-sided tremolo</a></li><li><a href="#the-last-part-the-scores-commands" class="wk-toc-link">The last part: the score's commands</a></li><li><a href="#where-that-leaves-things" class="wk-toc-link">Where that leaves things</a></li><li><a href="#next" class="wk-toc-link">Next</a></li></ol>
             
           </li>
           
@@ -277,7 +277,7 @@
   
   
   <h1 id="15-october-2026-how-the-sound-driver-reads-a-score">15 October 2026: how the sound driver reads a score</h1>
-<p>The third batch of the SPC700 sound driver is the part that plays the music: the pass that walks through every voice's track many times a second. With it the driver stands at 4,318 of its 6,543 code bytes, two thirds, all of it verified.</p>
+<p>The third batch of the SPC700 sound driver is the part that plays the music: the pass that walks through every voice's track many times a second. With it the driver stood at two thirds of its 6,543 code bytes. The fourth batch, later the same day, took it the rest of the way: the whole driver is now built from source, and every one of its 177 routines and tables is verified.</p>
 <!-- more -->
 
 <h2 id="the-music-format">The music format</h2>
@@ -286,10 +286,15 @@
 <h2 id="slides-vibrato-and-a-one-sided-tremolo">Slides, vibrato and a one-sided tremolo</h2>
 <p>On top of the notes the driver runs slides of volume, pan and pitch, a pan that sways from side to side, vibrato, and tremolo. The reviews found the tremolo less tidy than it first looked. A phase below <code>$80</code> raises the volume and a phase from <code>$80</code> up lowers it, but the cap that should stop the result passing <code>$7F</code> only applies to some of the ways it can overflow; in the others the volume just wraps to its low byte.</p>
 <p>The look-ahead that checks for a tie has a slip of its own. Most commands it steps over move the read position past their operands, but one, <code>$DC</code>, does not, so its operand is then read as if it were the next note.</p>
+<h2 id="the-last-part-the-scores-commands">The last part: the score's commands</h2>
+<p>The fourth batch is everything a score can ask for besides notes. Commands <code>$C4</code> to <code>$FF</code> set volume, pan, tempo and echo, with a fade for each, and turn vibrato, tremolo, the swaying pan, noise, pitch modulation and echo on and off per voice. Others change octave, transposition, fine tuning, the instrument and its envelope. Each track has four loop slots, and jump addresses are relative to where the song was loaded, so the same song data works wherever it lands in the sound chip's memory.</p>
+<p>Two commands let the game steer the music while it plays. Command <code>$FA</code> jumps only when a condition matches a value the game sets with a separate command, which is how a song can change course in response to what happens on screen. Command <code>$F9</code> puts a marker where the game can read it back, so the game can follow where the song has got to. The driver can also put a song aside and bring it back: it copies the song's state to the top of the sound chip's memory, and on the way back fades the restored song in over sixteen steps.</p>
+<p>The reviews of this batch found one more quirk of the original in the look-ahead. When it meets the branch command it compares the operand as a whole byte, while the command itself only looks at its low four bits, so a branch written with a larger operand can take the jump when played but is never followed by the look-ahead.</p>
+<p>With this batch the separate file of not-yet-<abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr> bytes is gone, and the length word in front of the driver, which tells the upload code how many bytes to send, is now worked out by the assembler from the source itself.</p>
 <h2 id="where-that-leaves-things">Where that leaves things</h2>
-<p>The <abbr title="The 16-bit CPU inside the SNES, an extended 6502 capable of 8-bit emulation and full 16-bit native mode.">65816</abbr> side is unchanged: all of the reachable <abbr title="The 16-bit CPU inside the SNES, an extended 6502 capable of 8-bit emulation and full 16-bit native mode.">65816</abbr> code in the ROM is <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr> and verified. The SPC700 driver is at <strong>4,318 of 6,543 code bytes (65.99%)</strong>, all verified.</p>
+<p>The <abbr title="The 16-bit CPU inside the SNES, an extended 6502 capable of 8-bit emulation and full 16-bit native mode.">65816</abbr> side is unchanged: all of the reachable <abbr title="The 16-bit CPU inside the SNES, an extended 6502 capable of 8-bit emulation and full 16-bit native mode.">65816</abbr> code in the ROM is <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr> and verified. The SPC700 driver is complete: <strong>6,543 of 6,543 code bytes (100%)</strong> and all 608 bytes of its tables, every routine verified by independent review.</p>
 <h2 id="next">Next</h2>
-<p>The last part of the driver: the handlers of the sequence commands, the echo and save-restore code, and the tables, which will leave the whole driver built from source.</p>
+<p>The one stretch of code still outside the source is the compressed module in <code>$C3</code>. It has to be <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr> in its unpacked form and then packed again to the exact bytes in the ROM.</p>
   
   <p class="wk-post-back"><a href="../../../../">← Back to devlog</a></p>
 </article>
