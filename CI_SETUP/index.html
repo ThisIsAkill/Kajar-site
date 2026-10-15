@@ -269,7 +269,7 @@
       <div class="wk-article-body">
       
       
-      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="October 15, 2026 00:20:04 UTC">October 15, 2026</span></p>
+      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="October 15, 2026 00:24:13 UTC">October 15, 2026</span></p>
       
       <h1 id="ci-setup">CI Setup</h1>
 <p>The GitHub Actions workflow at <code>.github/workflows/match.yml</code> in the code repo runs on every pull
@@ -285,7 +285,7 @@ request to <code>main</code> and every push to <code>main</code>. It has two job
 </ol>
 <h2 id="reassemble-and-diff-needs-the-rom">Reassemble and diff (needs the ROM)</h2>
 <ol>
-<li>Restore the ROM from the <code>ROM_B64</code> secret (see below).</li>
+<li>Fetch the ROM from the private <code>ct-rom</code> repository with the <code>ROM_TOKEN</code> secret (see below).</li>
 <li>Build <abbr title="The 65816 assembler used for this project (version 1.91) — patches matched .asm source into a ROM copy for byte-exact verification.">asar</abbr> 1.91 from source and run <code>python3 tools/check_env.py</code>.</li>
 <li><code>make diff</code>: the reassembled ROM must equal the original, byte for byte.</li>
 <li><code>python3 tools/verify.py</code>: every byte the source claims is really emitted by it.</li>
@@ -294,40 +294,38 @@ request to <code>main</code> and every push to <code>main</code>. It has two job
 <li><code>python3 tools/validate_functions.py</code> and <code>python3 tools/progress.py --check</code> again.</li>
 </ol>
 <h2 id="first-time-setup">First-time setup</h2>
-<p>Because the ROM cannot be committed to the repo, CI needs it supplied as a GitHub Actions secret
-encoded in base64.</p>
-<h3 id="1-encode-your-rom">1. Encode your ROM</h3>
-<div class="language-bash highlight"><span class="filename">Shell</span><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1"></a><a href="#__codelineno-0-1"><span class="linenos" data-linenos="1 "></span></a>base64<span class="w"> </span>-w<span class="w"> </span><span class="m">0</span><span class="w"> </span>roms/chrono_trigger.sfc<span class="w"> </span>&gt;<span class="w"> </span>/tmp/rom_b64.txt
-</code></pre></div>
-<h3 id="2-add-it-as-a-repository-secret">2. Add it as a repository secret</h3>
+<p>The ROM cannot be committed to the public repo, and it cannot go in a secret either: GitHub caps
+secrets at 48 KB and the ROM is 4 MB. So it lives in a private repository,
+<code>ThisIsAkill/ct-rom</code>, as <code>Chrono Trigger (USA).sfc</code> at the root, and CI downloads it with a
+read-only token.</p>
+<h3 id="1-create-the-token">1. Create the token</h3>
 <ol>
-<li>Go to <strong>Settings → Secrets and variables → Actions</strong></li>
-<li>Click <strong>New repository secret</strong></li>
-<li>Name: <code>ROM_B64</code></li>
-<li>Value: paste the content of <code>/tmp/rom_b64.txt</code></li>
+<li>GitHub → <strong>Settings → Developer settings → Personal access tokens → Fine-grained tokens →
+   Generate new token</strong></li>
+<li><strong>Repository access:</strong> <em>Only select repositories</em> → <code>ct-rom</code></li>
+<li><strong>Permissions → Repository permissions → Contents:</strong> <em>Read-only</em> (nothing else)</li>
+<li>Pick an expiry, generate, and copy the token.</li>
 </ol>
-<div class="admonition warning">
-<p class="admonition-title">This does not fit as things stand</p>
-<p>GitHub caps a secret at 48 KB. The ROM is 4 MB (4,194,304 bytes), about 5.6 MB once
-base64 encoded, so GitHub refuses it and the second job keeps skipping. Running the
-<abbr title="The assembled output matches the original ROM byte-for-byte — not just equivalent behavior, literally identical bytes.">byte-exact</abbr> check in CI needs a different way in for the ROM, for example a secret that holds
-a private download link or the passphrase for an encrypted copy kept outside the public
-repo. The workflow would have to change to match. Until then the check runs locally
-(<code>make gate</code>) before every merge.</p>
-</div>
-<p>When the ROM is restored, the workflow writes it to <code>roms/chrono_trigger.sfc</code> and checks it
-against <code>rom.sha256</code> in the code repo, failing the job on a mismatch. The expected hash is also on
-<a href="../ROM_HASH/">Target ROM</a>.</p>
+<h3 id="2-add-it-as-a-secret-on-the-code-repo">2. Add it as a secret on the code repo</h3>
+<ol>
+<li>In <code>ChronoRET</code>: <strong>Settings → Secrets and variables → Actions → New repository secret</strong></li>
+<li>Name: <code>ROM_TOKEN</code></li>
+<li>Value: the token</li>
+</ol>
+<p>The job downloads the ROM to <code>roms/chrono_trigger.sfc</code> and checks it against <code>rom.sha256</code> in the
+code repo, failing on a mismatch. The expected hash is also on <a href="../ROM_HASH/">Target ROM</a>. When the
+token expires, the download fails with an error naming <code>ROM_TOKEN</code>; make a new one and replace the
+secret.</p>
 <h3 id="3-verify">3. Verify</h3>
-<p>Open a pull request that touches any <code>.asm</code> file; both checks should appear automatically.</p>
+<p>Re-run the latest <strong>Byte-exact match check</strong> run, or open a pull request; the <em>Reassemble and diff</em> job should now run every step instead of skipping.</p>
 <h2 id="if-the-secret-is-not-set">If the secret is not set</h2>
-<p>The second job degrades gracefully: it emits a warning and skips everything after restoring the
-ROM, so it won't fail. The first job always runs. Contributors without the secret can still run
+<p>The second job degrades gracefully: it emits a warning and skips everything after fetching the
+ROM, so it won't fail. Pull requests from forks never get secrets, so they always skip it. The first job always runs. Contributors without the secret can still run
 everything locally.</p>
 <h2 id="local-workflow-no-ci-needed">Local workflow (no CI needed)</h2>
-<div class="language-bash highlight"><span class="filename">Shell</span><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1"></a><a href="#__codelineno-1-1"><span class="linenos" data-linenos="1 "></span></a>python3<span class="w"> </span>tools/check_env.py<span class="w">   </span><span class="c1"># confirm asar + python3 present</span>
-<a id="__codelineno-1-2" name="__codelineno-1-2"></a><a href="#__codelineno-1-2"><span class="linenos" data-linenos="2 "></span></a>make<span class="w"> </span>gate<span class="w">                    </span><span class="c1"># make diff, make verify and make lint in one go</span>
-<a id="__codelineno-1-3" name="__codelineno-1-3"></a><a href="#__codelineno-1-3"><span class="linenos" data-linenos="3 "></span></a>python3<span class="w"> </span>tools/progress.py<span class="w">    </span><span class="c1"># print the current numbers by level and bank</span>
+<div class="language-bash highlight"><span class="filename">Shell</span><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1"></a><a href="#__codelineno-0-1"><span class="linenos" data-linenos="1 "></span></a>python3<span class="w"> </span>tools/check_env.py<span class="w">   </span><span class="c1"># confirm asar + python3 present</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2"></a><a href="#__codelineno-0-2"><span class="linenos" data-linenos="2 "></span></a>make<span class="w"> </span>gate<span class="w">                    </span><span class="c1"># make diff, make verify and make lint in one go</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3"></a><a href="#__codelineno-0-3"><span class="linenos" data-linenos="3 "></span></a>python3<span class="w"> </span>tools/progress.py<span class="w">    </span><span class="c1"># print the current numbers by level and bank</span>
 </code></pre></div>
       
       </div>
