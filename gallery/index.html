@@ -267,21 +267,25 @@
       <div class="wk-article-body">
       
       
-      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="October 9, 2026 00:09:14 UTC">October 9, 2026</span></p>
+      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="October 15, 2026 03:30:32 UTC">October 15, 2026</span></p>
       
       <h1 id="gallery">Gallery</h1>
-<p>Screenshots and clips from the project's own test runs: the original game next to the rebuilt
-ROM, showing the scenes whose code has been <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr>. Each frame below is an empty slot until a
-capture is added.</p>
+<p>Screenshots from the project's own test runs, showing scenes whose code has been <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr>. Each
+frame was captured from the rebuilt ROM (<code>build/chrono_trigger.built.sfc</code>) in a headless snes9x
+core, driven from power-on by one scripted input sequence. The same inputs on the original
+Chrono Trigger (USA) ROM give an identical frame every time: the two ROMs have the same SHA-256,
+and all 15,574 frames of the run match pixel for pixel. Images are shown at 2x with
+nearest-neighbour scaling; the native 256×224 captures are kept next to them as <code>*-1x.png</code>.</p>
 <div class="wk-gallery">
-<figure class="wk-art-slot"><div class="wk-art-slot-frame">Screenshot slot<br><code>assets/gallery/title.png</code></div><figcaption>The title screen, booted from the rebuilt ROM.</figcaption></figure>
-<figure class="wk-art-slot"><div class="wk-art-slot-frame">Screenshot slot<br><code>assets/gallery/millennial-fair.png</code></div><figcaption>1000 AD: the Millennial Fair.</figcaption></figure>
-<figure class="wk-art-slot"><div class="wk-art-slot-frame">Screenshot slot<br><code>assets/gallery/battle-menu.png</code></div><figcaption>A battle with the command menu open: the battle's main loop, menu, targeting and status bar code is matched.</figcaption></figure>
-<figure class="wk-art-slot"><div class="wk-art-slot-frame">Screenshot slot<br><code>assets/gallery/end-of-time.png</code></div><figcaption>The End of Time.</figcaption></figure>
+<figure class="wk-art-slot"><img src="../assets/gallery/title.png" alt="The Chrono Trigger title screen: the clock-face logo, the pendulum and the 1995 Square credit" width="512" height="448"><figcaption>The title screen, 1,500 frames after power-on. Captured from the rebuilt ROM; identical frame from the original. The boot, the intro and the title screen run entirely on matched 65816 code.</figcaption></figure>
+<figure class="wk-art-slot"><img src="../assets/gallery/millennial-fair.png" alt="Crono standing by the fountain in Leene Square, between market stalls, tents and fairgoers" width="512" height="448"><figcaption>1000 AD: the Millennial Fair. After the new game, name entry, Crono's room and Mom, Crono leaves home in Truce, crosses the world map to Leene Square and walks up to the fountain. Captured from the rebuilt ROM; identical frame from the original. The scene runs entirely on matched 65816 code.</figcaption></figure>
+<figure class="wk-art-slot"><img src="../assets/gallery/battle-menu.png" alt="Battle against Gato at the fair, with Crono's Att./Tech/Item menu open and the HP/MP status bar" width="512" height="448"><figcaption>A battle with the command menu open: Crono and Marle against Gato at the fair, Crono's Att./Tech/Item menu up. Captured from the rebuilt ROM; identical frame from the original. The battle's main loop, menu, targeting and status bar code is matched.</figcaption></figure>
+<figure class="wk-art-slot"><img src="../assets/gallery/cronos-room.png" alt="Crono's bedroom in the morning: Mom at the open window, Crono in bed, and Mom's first line of dialogue in a text box" width="512" height="448"><figcaption>The first morning in Crono's room: Mom opens the curtains and hears Leene's Bell. Captured from the rebuilt ROM; identical frame from the original. The scene runs entirely on matched 65816 code.</figcaption></figure>
 </div>
 
-<p>To add one: save the capture under <code>docs/assets/gallery/</code> and replace its slot with
-<code>![caption](assets/gallery/name.png)</code> inside the figure.</p>
+<p>To add one: save the capture under <code>docs/assets/gallery/</code> and replace a figure's image with
+<code>&lt;img src="../assets/gallery/name.png" alt="..."&gt;</code>. The gallery block is raw HTML, so Markdown
+image syntax is not rendered inside it.</p>
       
       </div>
 
