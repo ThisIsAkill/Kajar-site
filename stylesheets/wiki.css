@@ -1972,8 +1972,10 @@ summary::marker { color: var(--gold); }
 .wk-gallery figure { margin: 0; }
 .wk-gallery img, .wk-art-slot-frame {
   display: block; width: 100%;
+  height: auto;                   /* the width/height attributes only reserve space */
   aspect-ratio: 8 / 7;            /* SNES 256×224 */
-  object-fit: cover;
+  object-fit: contain;            /* never crop a capture */
+  background: #000;
   border: 3px solid var(--win-frame);
   border-radius: 8px;
   box-shadow: var(--win-box);
