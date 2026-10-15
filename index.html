@@ -269,7 +269,7 @@
       <div class="wk-article-body">
       
       
-      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="October 15, 2026 02:22:10 UTC">October 15, 2026</span></p>
+      <p class="wk-page-meta">Last updated: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="October 15, 2026 04:42:34 UTC">October 15, 2026</span></p>
       
       <h1 id="kajar">Kajar</h1>
 <div class="wk-hero"><div class="wk-hero-art" aria-hidden="true"></div><div class="wk-hero-text"><p class="wk-hero-title">Chrono Trigger</p><p class="wk-hero-sub">A byte-exact decompilation of the 1995 classic, one matched routine at a time</p><blockquote class="wk-epigraph"><p>But… the future refused to change.</p><cite>Game Over screen</cite></blockquote></div></div>
@@ -320,14 +320,17 @@
 verified. It is not the whole project. Still to do:</p>
 <ul>
 <li><strong>The packed <code>$C3</code> module</strong> (the jet-bike race), about 34 KB once unpacked, held compressed in
-  the ROM. It is now built from source and packed back to the exact bytes, but only its first
-  routines are <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr>; most of it is still the ROM's bytes.</li>
-<li><strong>The game's data</strong>: graphics, music, maps, text, scripts and tables. The source emits about
-  280 KB of the 4 MB ROM (code plus the data tables around it); the rest is copied from the
-  original ROM when it is built, not yet described by the source.</li>
-<li><strong>A build that needs no original ROM</strong>: today the source is assembled over a copy of the
-  original, which supplies everything the source does not yet cover.</li>
+  the ROM. It is built from source and packed back to the exact bytes, and about 13% of its
+  code is <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr> so far; the rest is still the ROM's bytes.</li>
+<li><strong>The game's data</strong>: graphics, music, maps, text, scripts and tables, about 3.9 MB. Every
+  byte of it is mapped and placed by the source, and the compressed blocks are rebuilt by the
+  project's own packer, but the contents still come from files extracted from the player's
+  own ROM, as binary pieces. Turning them into readable form (text, scripts, graphics) is the
+  long part that remains; see <code>DATA_PLAN.md</code> in the code repository.</li>
 </ul>
+<p>The build no longer starts from a copy of the original: it assembles everything onto a blank
+image, and needs the player's own ROM only to extract the data files. No game data is stored
+in the project.</p>
 </div>
 <p>How much of each bank is <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr>, and at which level, is generated on the <a href="ROM_MAP/">ROM Map</a> and <a href="PROGRESS/">Progress</a> pages.</p>
 <hr />
