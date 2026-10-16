@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 600" width="600" height="600" role="img" aria-labelledby="t d"><title id="t">What CMP then BMI really keeps</title><desc id="d">Two number lines. Top, 16-bit: CMP #$1000 then BMI branches on bit 15 of A - $1000. The difference is positive only for A from $1000 to $8FFF, so "$1000 or more" really means $1000-$8FFF; $9000-$FFFF and $0000-$0FFF both count as below. Bottom, 8-bit, from the stars routine: CMP #$7F then BMI keeps a sum when sum - $7F has bit 7 set, which is true for $00-$7E and for $FF; $7F-$FE are respawned.</desc><defs><linearGradient id="win" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#4157c9"/><stop offset=".48" stop-color="#23318f"/><stop offset="1" stop-color="#121a58"/></linearGradient></defs><rect x="1.5" y="1.5" width="597" height="597" rx="9" fill="url(#win)" stroke="#070b2e" stroke-width="3"/><rect x="4.5" y="4.5" width="591" height="591" rx="7" fill="none" stroke="#eef1ff" stroke-width="3"/><rect x="8" y="8" width="584" height="584" rx="5" fill="none" stroke="#8e9ce6" stroke-width="1" opacity=".7"/><rect x="28" y="23" width="10" height="10" fill="#ffd76e"/>
+<text x="48" y="33" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="17" font-weight="700" fill="#ffd76e" text-anchor="start" dominant-baseline="central" letter-spacing="1">CMP + BMI LOOKS AT ONE BIT</text>
+<text x="40" y="80" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="16" font-weight="400" fill="#cdd5ff" text-anchor="start" >CMP subtracts and keeps only the flags; BMI tests the</text>
+<text x="40" y="104" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="16" font-weight="400" fill="#cdd5ff" text-anchor="start" >top bit of the difference, not a true signed comparison.</text>
+<text x="40" y="146" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="18" font-weight="700" fill="#ffffff" text-anchor="start" >16-bit: "distance $1000 or more"</text>
+<text x="40" y="170" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="15" font-weight="400" fill="#cdd5ff" text-anchor="start" >CMP #$1000 / BMI below</text>
+<rect x="40.0" y="186" width="32.5" height="36" fill="#6b1d1a" stroke="#ff8a80" stroke-width="2"/>
+<rect x="72.5" y="186" width="260.0" height="36" fill="#1d4a26" stroke="#8fe07a" stroke-width="2"/>
+<text x="202.5" y="204" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="15" font-weight="700" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >counts as $1000+</text>
+<rect x="332.5" y="186" width="227.5" height="36" fill="#6b1d1a" stroke="#ff8a80" stroke-width="2"/>
+<text x="446.25" y="204" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="15" font-weight="700" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >counts as below</text>
+<line x1="40.0" y1="222" x2="40.0" y2="230" stroke="#cdd5ff" stroke-width="1.5"/>
+<text x="40.0" y="248" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="14" font-weight="400" fill="#cdd5ff" text-anchor="start" ></text>
+<line x1="72.5" y1="222" x2="72.5" y2="230" stroke="#cdd5ff" stroke-width="1.5"/>
+<text x="72.5" y="248" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="14" font-weight="400" fill="#cdd5ff" text-anchor="start" >$1000</text>
+<line x1="332.5" y1="222" x2="332.5" y2="230" stroke="#cdd5ff" stroke-width="1.5"/>
+<text x="332.5" y="248" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="14" font-weight="400" fill="#cdd5ff" text-anchor="middle" >$9000</text>
+<line x1="560.0" y1="222" x2="560.0" y2="230" stroke="#cdd5ff" stroke-width="1.5"/>
+<text x="560.0" y="248" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="14" font-weight="400" fill="#cdd5ff" text-anchor="end" >$FFFF</text>
+<text x="40" y="312" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="18" font-weight="700" fill="#ffffff" text-anchor="start" >8-bit: a star's depth + speed</text>
+<text x="40" y="336" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="15" font-weight="400" fill="#cdd5ff" text-anchor="start" >speed bit 7 clear: CMP #$7F / BMI keep</text>
+<rect x="40.0" y="352" width="258.0" height="36" fill="#1d4a26" stroke="#8fe07a" stroke-width="2"/>
+<text x="168.984375" y="370" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="15" font-weight="700" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >kept</text>
+<rect x="298.0" y="352" width="260.0" height="36" fill="#6b1d1a" stroke="#ff8a80" stroke-width="2"/>
+<text x="427.96875" y="370" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="15" font-weight="700" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >respawned</text>
+<rect x="558.0" y="352" width="4.0" height="36" fill="#1d4a26" stroke="#8fe07a" stroke-width="2"/>
+<line x1="40.0" y1="388" x2="40.0" y2="396" stroke="#cdd5ff" stroke-width="1.5"/>
+<text x="40.0" y="414" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="14" font-weight="400" fill="#cdd5ff" text-anchor="start" >$00</text>
+<line x1="297.96875" y1="388" x2="297.96875" y2="396" stroke="#cdd5ff" stroke-width="1.5"/>
+<text x="297.96875" y="414" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="14" font-weight="400" fill="#cdd5ff" text-anchor="middle" >$7F</text>
+<line x1="560.0" y1="388" x2="560.0" y2="396" stroke="#cdd5ff" stroke-width="1.5"/>
+<text x="560.0" y="414" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="14" font-weight="400" fill="#cdd5ff" text-anchor="end" ></text>
+<path d="M557,466 L557,398" fill="none" stroke="#8fe07a" stroke-width="2" stroke-linejoin="miter"/>
+<path d="M557.0,398.0 L564.0,410.0 L550.0,410.0 Z" fill="#8fe07a"/>
+<text x="550" y="482" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="15" font-weight="700" fill="#8fe07a" text-anchor="end" >$FF is kept too: $FF - $7F = $80</text>
+<text x="40" y="540" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="16" font-weight="400" fill="#ffd76e" text-anchor="start" >The race headers now state each test as the code</text>
+<text x="40" y="564" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="16" font-weight="400" fill="#ffd76e" text-anchor="start" >branches on it, not as the intent it seems to have.</text></svg>

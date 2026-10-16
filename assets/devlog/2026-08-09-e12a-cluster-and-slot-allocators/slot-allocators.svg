@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 520" width="600" height="520" role="img" aria-labelledby="t d"><title id="t">Where the three slot allocators may claim</title><desc id="d">The table at $0BC0 has eight one-byte entries; $80 marks an entry free. Each allocator scans from entry 0 and claims the first run of free entries it finds. Sub_E952 tries one entry at positions 0 to 3, Sub_E97A two adjacent entries starting at 0 to 2, and Sub_E9AA three starting at 0 or 1, so all three stay inside entries 0 to 3. Entry n is the $200-byte WRAM chunk at $7F:3800 + n x $200.</desc><defs><linearGradient id="win" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#4157c9"/><stop offset=".48" stop-color="#23318f"/><stop offset="1" stop-color="#121a58"/></linearGradient></defs><rect x="1.5" y="1.5" width="597" height="517" rx="9" fill="url(#win)" stroke="#070b2e" stroke-width="3"/><rect x="4.5" y="4.5" width="591" height="511" rx="7" fill="none" stroke="#eef1ff" stroke-width="3"/><rect x="8" y="8" width="584" height="504" rx="5" fill="none" stroke="#8e9ce6" stroke-width="1" opacity=".7"/><rect x="28" y="23" width="10" height="10" fill="#ffd76e"/>
+<text x="48" y="33" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="17" font-weight="700" fill="#ffd76e" text-anchor="start" dominant-baseline="central" letter-spacing="1">$0BC0: OWNER OF EACH $200-BYTE CHUNK</text>
+<rect x="54" y="82" width="56" height="46" rx="3" fill="#173f78" stroke="#93b6ff" stroke-width="2" />
+<text x="82.0" y="105" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="19" font-weight="700" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >0</text>
+<text x="82.0" y="72" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="14" font-weight="400" fill="#cdd5ff" text-anchor="middle" >C0</text>
+<rect x="116" y="82" width="56" height="46" rx="3" fill="#173f78" stroke="#93b6ff" stroke-width="2" />
+<text x="144.0" y="105" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="19" font-weight="700" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >1</text>
+<text x="144.0" y="72" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="14" font-weight="400" fill="#cdd5ff" text-anchor="middle" >C1</text>
+<rect x="178" y="82" width="56" height="46" rx="3" fill="#173f78" stroke="#93b6ff" stroke-width="2" />
+<text x="206.0" y="105" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="19" font-weight="700" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >2</text>
+<text x="206.0" y="72" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="14" font-weight="400" fill="#cdd5ff" text-anchor="middle" >C2</text>
+<rect x="240" y="82" width="56" height="46" rx="3" fill="#173f78" stroke="#93b6ff" stroke-width="2" />
+<text x="268.0" y="105" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="19" font-weight="700" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >3</text>
+<text x="268.0" y="72" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="14" font-weight="400" fill="#cdd5ff" text-anchor="middle" >C3</text>
+<rect x="302" y="82" width="56" height="46" rx="3" fill="#0b1145" stroke="#59609a" stroke-width="2" />
+<text x="330.0" y="105" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="19" font-weight="700" fill="#cdd5ff" text-anchor="middle" dominant-baseline="central" >4</text>
+<text x="330.0" y="72" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="14" font-weight="400" fill="#cdd5ff" text-anchor="middle" >C4</text>
+<rect x="364" y="82" width="56" height="46" rx="3" fill="#0b1145" stroke="#59609a" stroke-width="2" />
+<text x="392.0" y="105" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="19" font-weight="700" fill="#cdd5ff" text-anchor="middle" dominant-baseline="central" >5</text>
+<text x="392.0" y="72" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="14" font-weight="400" fill="#cdd5ff" text-anchor="middle" >C5</text>
+<rect x="426" y="82" width="56" height="46" rx="3" fill="#0b1145" stroke="#59609a" stroke-width="2" />
+<text x="454.0" y="105" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="19" font-weight="700" fill="#cdd5ff" text-anchor="middle" dominant-baseline="central" >6</text>
+<text x="454.0" y="72" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="14" font-weight="400" fill="#cdd5ff" text-anchor="middle" >C6</text>
+<rect x="488" y="82" width="56" height="46" rx="3" fill="#0b1145" stroke="#59609a" stroke-width="2" />
+<text x="516.0" y="105" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="19" font-weight="700" fill="#cdd5ff" text-anchor="middle" dominant-baseline="central" >7</text>
+<text x="516.0" y="72" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="14" font-weight="400" fill="#cdd5ff" text-anchor="middle" >C7</text>
+<text x="304" y="152" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="15" font-weight="400" fill="#cdd5ff" text-anchor="start" >entries 4-7: not used by these three</text>
+<text x="54" y="182" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="17" font-weight="700" fill="#ffd76e" text-anchor="start" >Sub_E952, 1 entry</text>
+<text x="304" y="182" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="15" font-weight="400" fill="#cdd5ff" text-anchor="start" >starts 0-3</text>
+<rect x="58" y="194" width="48" height="10" rx="2" fill="#ffd76e"/>
+<rect x="120" y="210" width="48" height="10" rx="2" fill="#ffd76e"/>
+<rect x="182" y="226" width="48" height="10" rx="2" fill="#ffd76e"/>
+<rect x="244" y="242" width="48" height="10" rx="2" fill="#ffd76e"/>
+<text x="54" y="298" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="17" font-weight="700" fill="#ffb784" text-anchor="start" >Sub_E97A, 2 entries</text>
+<text x="304" y="298" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="15" font-weight="400" fill="#cdd5ff" text-anchor="start" >starts 0-2</text>
+<rect x="58" y="310" width="110" height="10" rx="2" fill="#ffb784"/>
+<rect x="120" y="326" width="110" height="10" rx="2" fill="#ffb784"/>
+<rect x="182" y="342" width="110" height="10" rx="2" fill="#ffb784"/>
+<text x="54" y="398" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="17" font-weight="700" fill="#8fe07a" text-anchor="start" >Sub_E9AA, 3 entries</text>
+<text x="304" y="398" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="15" font-weight="400" fill="#cdd5ff" text-anchor="start" >starts 0-1</text>
+<rect x="58" y="410" width="172" height="10" rx="2" fill="#8fe07a"/>
+<rect x="120" y="426" width="172" height="10" rx="2" fill="#8fe07a"/>
+<text x="54" y="470" font-size="17" text-anchor="start"><tspan font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" fill="#cdd5ff" font-weight="400">chunk n = </tspan><tspan font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" fill="#ffd76e" font-weight="700">$7F:3800 + n x $200</tspan></text>
+<text x="54" y="498" font-size="16" text-anchor="start"><tspan font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" fill="#ffd76e" font-weight="700">$80</tspan><tspan font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" fill="#cdd5ff" font-weight="400"> = free. Owned entries have bit 7 clear (BPL skips).</tspan></text></svg>

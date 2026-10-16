@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 430" width="600" height="430" role="img" aria-labelledby="t d"><title id="t">Why SEP #$10 loses Y's high byte for good</title><desc id="d">Y holds $1234 with 16-bit index registers. SEP #$10 switches X and Y to 8 bits and the CPU clears their high bytes, so Y becomes $0034. REP #$10 switches back to 16 bits, but the high byte is not restored: Y is still $0034. A routine that does this, or calls something that does, cannot promise that Y comes back unchanged.</desc><defs><linearGradient id="win" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#4157c9"/><stop offset=".48" stop-color="#23318f"/><stop offset="1" stop-color="#121a58"/></linearGradient></defs><rect x="1.5" y="1.5" width="597" height="427" rx="9" fill="url(#win)" stroke="#070b2e" stroke-width="3"/><rect x="4.5" y="4.5" width="591" height="421" rx="7" fill="none" stroke="#eef1ff" stroke-width="3"/><rect x="8" y="8" width="584" height="414" rx="5" fill="none" stroke="#8e9ce6" stroke-width="1" opacity=".7"/><rect x="28" y="23" width="10" height="10" fill="#ffd76e"/>
+<text x="48" y="33" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="17" font-weight="700" fill="#ffd76e" text-anchor="start" dominant-baseline="central" letter-spacing="1">THE INDEX-WIDTH TRAP</text>
+<text x="270" y="72" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="14" font-weight="400" fill="#cdd5ff" text-anchor="middle" >high</text>
+<text x="376" y="72" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="14" font-weight="400" fill="#cdd5ff" text-anchor="middle" >low</text>
+<text x="40" y="110" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="17" font-weight="700" fill="#ffffff" text-anchor="start" dominant-baseline="central" >Y (16-bit)</text>
+<rect x="220" y="84" width="100" height="52" rx="3" fill="#173f78" stroke="#93b6ff" stroke-width="2" />
+<rect x="326" y="84" width="100" height="52" rx="3" fill="#173f78" stroke="#93b6ff" stroke-width="2" />
+<text x="270" y="110" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="22" font-weight="700" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >$12</text>
+<text x="376" y="110" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="22" font-weight="700" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >$34</text>
+<text x="440" y="110" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="15" font-weight="400" fill="#cdd5ff" text-anchor="start" dominant-baseline="central" ></text>
+<text x="40" y="196" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="17" font-weight="700" fill="#ffffff" text-anchor="start" dominant-baseline="central" >SEP #$10</text>
+<rect x="220" y="170" width="100" height="52" rx="3" fill="#0b1145" stroke="#ff8a80" stroke-width="2" />
+<rect x="326" y="170" width="100" height="52" rx="3" fill="#173f78" stroke="#93b6ff" stroke-width="2" />
+<text x="270" y="196" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="22" font-weight="700" fill="#ff8a80" text-anchor="middle" dominant-baseline="central" >$00</text>
+<text x="376" y="196" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="22" font-weight="700" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >$34</text>
+<text x="440" y="196" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="15" font-weight="400" fill="#cdd5ff" text-anchor="start" dominant-baseline="central" >cleared</text>
+<text x="40" y="282" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="17" font-weight="700" fill="#ffffff" text-anchor="start" dominant-baseline="central" >REP #$10</text>
+<rect x="220" y="256" width="100" height="52" rx="3" fill="#0b1145" stroke="#ff8a80" stroke-width="2" />
+<rect x="326" y="256" width="100" height="52" rx="3" fill="#173f78" stroke="#93b6ff" stroke-width="2" />
+<text x="270" y="282" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="22" font-weight="700" fill="#ff8a80" text-anchor="middle" dominant-baseline="central" >$00</text>
+<text x="376" y="282" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="22" font-weight="700" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >$34</text>
+<text x="440" y="282" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="15" font-weight="400" fill="#cdd5ff" text-anchor="start" dominant-baseline="central" >still gone</text>
+<path d="M270,140 L270,166" fill="none" stroke="#ffd76e" stroke-width="2" stroke-linejoin="miter"/>
+<path d="M270.0,166.0 L263.0,154.0 L277.0,154.0 Z" fill="#ffd76e"/>
+<path d="M270,226 L270,252" fill="none" stroke="#ffd76e" stroke-width="2" stroke-linejoin="miter"/>
+<path d="M270.0,252.0 L263.0,240.0 L277.0,240.0 Z" fill="#ffd76e"/>
+<text x="40" y="356" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="16" font-weight="400" fill="#ffffff" text-anchor="start" >So an Exit line cannot say "Y unchanged" if any path,</text>
+<text x="40" y="382" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="16" font-weight="400" fill="#ffffff" text-anchor="start" >callees included, switches X to 8 bits. The lint now checks.</text></svg>

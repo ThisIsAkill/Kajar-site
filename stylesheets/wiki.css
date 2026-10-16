@@ -2079,3 +2079,38 @@ summary::marker { color: var(--gold); }
   .wk-nav .wk-stats { display: none; }
 }
 .wk-emblem-caption { white-space: nowrap; font-size: 8px; letter-spacing: .03em; }
+
+/* ── Devlog figures (diagrams and captures in posts) ────────
+   Each diagram carries its own menu-window panel, so it reads the same
+   in both themes; captures get the gallery's frame. A figure is linked
+   to its own file so it can be opened full size on a phone. */
+.wk-article-body p:has(> a > img.wk-fig) { margin: 1.6em 0 .5em; }
+.wk-article-body a.wk-fig-link { display: block; text-decoration: none; }
+.wk-article-body a.wk-fig-link:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; border-radius: 10px; }
+.wk-article-body img.wk-fig {
+  display: block;
+  width: 100%;
+  max-width: 680px;
+  height: auto;
+  margin: 0 auto;
+}
+.wk-article-body img.wk-shot {
+  max-width: 512px;
+  aspect-ratio: 8 / 7;
+  object-fit: contain;
+  background: #000;
+  border: 3px solid var(--win-frame);
+  border-radius: 8px;
+  box-shadow: var(--win-box);
+  image-rendering: pixelated;
+}
+.wk-article-body p.wk-figcap {
+  font-family: var(--font-ui);
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--text-d);
+  max-width: 640px;
+  margin: 0 auto 1.8em;
+  text-align: center;
+}
+.wk-article-body p.wk-figcap code { font-size: 12px; }

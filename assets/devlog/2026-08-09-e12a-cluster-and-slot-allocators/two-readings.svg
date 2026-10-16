@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 400" width="600" height="400" role="img" aria-labelledby="t d"><title id="t">Ten bytes that decode two ways</title><desc id="d">The bytes 29 FF 07 0A 0A 0A 0A 0A 84 C5 open both Sub_E534 and Sub_E687. With M=1 they read AND #$FF, ORA [$0A], four ASLs and STY $C5. With M=0 they read AND #$07FF, five ASLs and STY $C5. Both readings are ten bytes long and end on the same instruction.</desc><defs><linearGradient id="win" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#4157c9"/><stop offset=".48" stop-color="#23318f"/><stop offset="1" stop-color="#121a58"/></linearGradient></defs><rect x="1.5" y="1.5" width="597" height="397" rx="9" fill="url(#win)" stroke="#070b2e" stroke-width="3"/><rect x="4.5" y="4.5" width="591" height="391" rx="7" fill="none" stroke="#eef1ff" stroke-width="3"/><rect x="8" y="8" width="584" height="384" rx="5" fill="none" stroke="#8e9ce6" stroke-width="1" opacity=".7"/><rect x="28" y="23" width="10" height="10" fill="#ffd76e"/>
+<text x="48" y="33" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="17" font-weight="700" fill="#ffd76e" text-anchor="start" dominant-baseline="central" letter-spacing="1">$C0:E534 AND $C0:E687</text>
+<rect x="44" y="70" width="46" height="42" rx="3" fill="#0b1145" stroke="#eef1ff" stroke-width="2" />
+<text x="67.0" y="91" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="18" font-weight="700" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >29</text>
+<rect x="96" y="70" width="46" height="42" rx="3" fill="#0b1145" stroke="#eef1ff" stroke-width="2" />
+<text x="119.0" y="91" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="18" font-weight="700" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >FF</text>
+<rect x="148" y="70" width="46" height="42" rx="3" fill="#0b1145" stroke="#eef1ff" stroke-width="2" />
+<text x="171.0" y="91" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="18" font-weight="700" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >07</text>
+<rect x="200" y="70" width="46" height="42" rx="3" fill="#0b1145" stroke="#eef1ff" stroke-width="2" />
+<text x="223.0" y="91" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="18" font-weight="700" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >0A</text>
+<rect x="252" y="70" width="46" height="42" rx="3" fill="#0b1145" stroke="#eef1ff" stroke-width="2" />
+<text x="275.0" y="91" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="18" font-weight="700" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >0A</text>
+<rect x="304" y="70" width="46" height="42" rx="3" fill="#0b1145" stroke="#eef1ff" stroke-width="2" />
+<text x="327.0" y="91" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="18" font-weight="700" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >0A</text>
+<rect x="356" y="70" width="46" height="42" rx="3" fill="#0b1145" stroke="#eef1ff" stroke-width="2" />
+<text x="379.0" y="91" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="18" font-weight="700" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >0A</text>
+<rect x="408" y="70" width="46" height="42" rx="3" fill="#0b1145" stroke="#eef1ff" stroke-width="2" />
+<text x="431.0" y="91" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="18" font-weight="700" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >0A</text>
+<rect x="460" y="70" width="46" height="42" rx="3" fill="#0b1145" stroke="#eef1ff" stroke-width="2" />
+<text x="483.0" y="91" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="18" font-weight="700" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >84</text>
+<rect x="512" y="70" width="46" height="42" rx="3" fill="#0b1145" stroke="#eef1ff" stroke-width="2" />
+<text x="535.0" y="91" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="18" font-weight="700" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >C5</text>
+<text x="44" y="156" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="18" font-weight="700" fill="#8fe07a" text-anchor="start" >M=1  (Sub_E534's entry)</text>
+<rect x="44" y="168" width="98" height="40" rx="3" fill="#1d4a26" stroke="#8fe07a" stroke-width="2" />
+<text x="93.0" y="188" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="14" font-weight="400" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >AND #$FF</text>
+<rect x="148" y="168" width="98" height="40" rx="3" fill="#1d4a26" stroke="#8fe07a" stroke-width="2" />
+<text x="197.0" y="188" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="14" font-weight="400" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >ORA [$0A]</text>
+<rect x="252" y="168" width="46" height="40" rx="3" fill="#1d4a26" stroke="#8fe07a" stroke-width="2" />
+<text x="275.0" y="188" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="14" font-weight="400" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >ASL</text>
+<rect x="304" y="168" width="46" height="40" rx="3" fill="#1d4a26" stroke="#8fe07a" stroke-width="2" />
+<text x="327.0" y="188" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="14" font-weight="400" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >ASL</text>
+<rect x="356" y="168" width="46" height="40" rx="3" fill="#1d4a26" stroke="#8fe07a" stroke-width="2" />
+<text x="379.0" y="188" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="14" font-weight="400" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >ASL</text>
+<rect x="408" y="168" width="46" height="40" rx="3" fill="#1d4a26" stroke="#8fe07a" stroke-width="2" />
+<text x="431.0" y="188" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="14" font-weight="400" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >ASL</text>
+<rect x="460" y="168" width="98" height="40" rx="3" fill="#1d4a26" stroke="#8fe07a" stroke-width="2" />
+<text x="509.0" y="188" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="14" font-weight="400" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >STY $C5</text>
+<text x="44" y="250" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="18" font-weight="700" fill="#93b6ff" text-anchor="start" >M=0  (Sub_E687's entry)</text>
+<rect x="44" y="262" width="150" height="40" rx="3" fill="#173f78" stroke="#93b6ff" stroke-width="2" />
+<text x="119.0" y="282" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="14" font-weight="400" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >AND #$07FF</text>
+<rect x="200" y="262" width="46" height="40" rx="3" fill="#173f78" stroke="#93b6ff" stroke-width="2" />
+<text x="223.0" y="282" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="14" font-weight="400" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >ASL</text>
+<rect x="252" y="262" width="46" height="40" rx="3" fill="#173f78" stroke="#93b6ff" stroke-width="2" />
+<text x="275.0" y="282" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="14" font-weight="400" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >ASL</text>
+<rect x="304" y="262" width="46" height="40" rx="3" fill="#173f78" stroke="#93b6ff" stroke-width="2" />
+<text x="327.0" y="282" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="14" font-weight="400" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >ASL</text>
+<rect x="356" y="262" width="46" height="40" rx="3" fill="#173f78" stroke="#93b6ff" stroke-width="2" />
+<text x="379.0" y="282" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="14" font-weight="400" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >ASL</text>
+<rect x="408" y="262" width="46" height="40" rx="3" fill="#173f78" stroke="#93b6ff" stroke-width="2" />
+<text x="431.0" y="282" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="14" font-weight="400" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >ASL</text>
+<rect x="460" y="262" width="98" height="40" rx="3" fill="#173f78" stroke="#93b6ff" stroke-width="2" />
+<text x="509.0" y="282" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="14" font-weight="400" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >STY $C5</text>
+<text x="300" y="360" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="18" font-weight="700" fill="#ffd76e" text-anchor="middle" >Same 10 bytes, same end point, two programs.</text></svg>

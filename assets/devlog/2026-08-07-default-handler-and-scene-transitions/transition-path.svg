@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 746" width="600" height="746" role="img" aria-labelledby="t d"><title id="t">The screen transition path, step by step</title><desc id="d">Sub_18D9's long path in order: fade out; InitHW; Sub_011B saves the scene (MVN $00:0920 to $7F:2000 and scroll positions to $7F:1Dxx); JSL $C28000 calls into bank $C2; InitHW, InstallNMI and InstallIRQ; Sub_01A5 restores the scene; Sub_1A03 restores colours and scene tables; Sub_B192 clears the $1Bxx table and tail-calls Sub_E935, which marks $0BC0-$0BC7 free; Sub_2824 fades back in over 15 VBlanks.</desc><defs><linearGradient id="win" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#4157c9"/><stop offset=".48" stop-color="#23318f"/><stop offset="1" stop-color="#121a58"/></linearGradient></defs><rect x="1.5" y="1.5" width="597" height="743" rx="9" fill="url(#win)" stroke="#070b2e" stroke-width="3"/><rect x="4.5" y="4.5" width="591" height="737" rx="7" fill="none" stroke="#eef1ff" stroke-width="3"/><rect x="8" y="8" width="584" height="730" rx="5" fill="none" stroke="#8e9ce6" stroke-width="1" opacity=".7"/><rect x="28" y="23" width="10" height="10" fill="#ffd76e"/>
+<text x="48" y="33" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="17" font-weight="700" fill="#ffd76e" text-anchor="start" dominant-baseline="central" letter-spacing="1">SUB_18D9'S LONG PATH</text>
+<rect x="64" y="66" width="480" height="56" rx="3" fill="#070b2e" opacity=".55"/>
+<rect x="60" y="62" width="480" height="56" rx="3" fill="#0b1145" stroke="#eef1ff" stroke-width="2" />
+<text x="300.0" y="79.0" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="18" font-weight="700" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >Fade out</text>
+<text x="300.0" y="101.0" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="16" font-weight="400" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >dp $19 down, one step per VBlank</text>
+<text x="42" y="90" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="16" font-weight="700" fill="#ffd76e" text-anchor="middle" dominant-baseline="central" >1</text>
+<path d="M300,120 L300,134" fill="none" stroke="#ffd76e" stroke-width="2.5" stroke-linejoin="miter"/>
+<path d="M300.0,134.0 L293.0,122.0 L307.0,122.0 Z" fill="#ffd76e"/>
+<rect x="64" y="140" width="480" height="56" rx="3" fill="#070b2e" opacity=".55"/>
+<rect x="60" y="136" width="480" height="56" rx="3" fill="#0b1145" stroke="#8e9ce6" stroke-width="2" />
+<text x="300.0" y="153.0" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="18" font-weight="700" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >InitHW</text>
+<text x="300.0" y="175.0" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="16" font-weight="400" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >$C0:0B4E  forced blank, no NMI/DMA</text>
+<text x="42" y="164" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="16" font-weight="700" fill="#ffd76e" text-anchor="middle" dominant-baseline="central" >2</text>
+<path d="M300,194 L300,208" fill="none" stroke="#ffd76e" stroke-width="2.5" stroke-linejoin="miter"/>
+<path d="M300.0,208.0 L293.0,196.0 L307.0,196.0 Z" fill="#ffd76e"/>
+<rect x="64" y="214" width="480" height="56" rx="3" fill="#070b2e" opacity=".55"/>
+<rect x="60" y="210" width="480" height="56" rx="3" fill="#6a3a12" stroke="#ffb784" stroke-width="2" />
+<text x="300.0" y="227.0" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="18" font-weight="700" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >Sub_011B: save the scene</text>
+<text x="300.0" y="249.0" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="16" font-weight="400" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >MVN $00:0920 -&gt; $7F:2000, scroll -&gt; $7F:1Dxx</text>
+<text x="42" y="238" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="16" font-weight="700" fill="#ffd76e" text-anchor="middle" dominant-baseline="central" >3</text>
+<path d="M300,268 L300,282" fill="none" stroke="#ffd76e" stroke-width="2.5" stroke-linejoin="miter"/>
+<path d="M300.0,282.0 L293.0,270.0 L307.0,270.0 Z" fill="#ffd76e"/>
+<rect x="64" y="288" width="480" height="56" rx="3" fill="#070b2e" opacity=".55"/>
+<rect x="60" y="284" width="480" height="56" rx="3" fill="#3d2477" stroke="#c7a6ff" stroke-width="2" />
+<text x="300.0" y="301.0" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="18" font-weight="700" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >JSL $C28000</text>
+<text x="300.0" y="323.0" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="16" font-weight="400" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >a call into bank $C2</text>
+<text x="42" y="312" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="16" font-weight="700" fill="#ffd76e" text-anchor="middle" dominant-baseline="central" >4</text>
+<path d="M300,342 L300,356" fill="none" stroke="#ffd76e" stroke-width="2.5" stroke-linejoin="miter"/>
+<path d="M300.0,356.0 L293.0,344.0 L307.0,344.0 Z" fill="#ffd76e"/>
+<rect x="64" y="362" width="480" height="56" rx="3" fill="#070b2e" opacity=".55"/>
+<rect x="60" y="358" width="480" height="56" rx="3" fill="#0b1145" stroke="#8e9ce6" stroke-width="2" />
+<text x="300.0" y="375.0" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="18" font-weight="700" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >InitHW, InstallNMI, InstallIRQ</text>
+<text x="300.0" y="397.0" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="16" font-weight="400" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >$0B4E, $0B64, $0B75</text>
+<text x="42" y="386" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="16" font-weight="700" fill="#ffd76e" text-anchor="middle" dominant-baseline="central" >5</text>
+<path d="M300,416 L300,430" fill="none" stroke="#ffd76e" stroke-width="2.5" stroke-linejoin="miter"/>
+<path d="M300.0,430.0 L293.0,418.0 L307.0,418.0 Z" fill="#ffd76e"/>
+<rect x="64" y="436" width="480" height="56" rx="3" fill="#070b2e" opacity=".55"/>
+<rect x="60" y="432" width="480" height="56" rx="3" fill="#6a3a12" stroke="#ffb784" stroke-width="2" />
+<text x="300.0" y="449.0" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="18" font-weight="700" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >Sub_01A5: restore the scene</text>
+<text x="300.0" y="471.0" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="16" font-weight="400" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >MVN $7F:2000 -&gt; $00:0920, location init</text>
+<text x="42" y="460" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="16" font-weight="700" fill="#ffd76e" text-anchor="middle" dominant-baseline="central" >6</text>
+<path d="M300,490 L300,504" fill="none" stroke="#ffd76e" stroke-width="2.5" stroke-linejoin="miter"/>
+<path d="M300.0,504.0 L293.0,492.0 L307.0,492.0 Z" fill="#ffd76e"/>
+<rect x="64" y="510" width="480" height="56" rx="3" fill="#070b2e" opacity=".55"/>
+<rect x="60" y="506" width="480" height="56" rx="3" fill="#0b1145" stroke="#8e9ce6" stroke-width="2" />
+<text x="300.0" y="523.0" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="18" font-weight="700" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >Sub_1A03</text>
+<text x="300.0" y="545.0" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="16" font-weight="400" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >palette cache, scene tables from $7F:1Dxx</text>
+<text x="42" y="534" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="16" font-weight="700" fill="#ffd76e" text-anchor="middle" dominant-baseline="central" >7</text>
+<path d="M300,564 L300,578" fill="none" stroke="#ffd76e" stroke-width="2.5" stroke-linejoin="miter"/>
+<path d="M300.0,578.0 L293.0,566.0 L307.0,566.0 Z" fill="#ffd76e"/>
+<rect x="64" y="584" width="480" height="56" rx="3" fill="#070b2e" opacity=".55"/>
+<rect x="60" y="580" width="480" height="56" rx="3" fill="#0b1145" stroke="#8e9ce6" stroke-width="2" />
+<text x="300.0" y="597.0" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="18" font-weight="700" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >Sub_B192 -&gt; Sub_E935</text>
+<text x="300.0" y="619.0" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="16" font-weight="400" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >clear $1Bxx, mark $0BC0-$0BC7 = $80</text>
+<text x="42" y="608" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="16" font-weight="700" fill="#ffd76e" text-anchor="middle" dominant-baseline="central" >8</text>
+<path d="M300,638 L300,652" fill="none" stroke="#ffd76e" stroke-width="2.5" stroke-linejoin="miter"/>
+<path d="M300.0,652.0 L293.0,640.0 L307.0,640.0 Z" fill="#ffd76e"/>
+<rect x="64" y="658" width="480" height="56" rx="3" fill="#070b2e" opacity=".55"/>
+<rect x="60" y="654" width="480" height="56" rx="3" fill="#1d4a26" stroke="#8fe07a" stroke-width="2" />
+<text x="300.0" y="671.0" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="18" font-weight="700" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >Sub_2824: fade in</text>
+<text x="300.0" y="693.0" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="16" font-weight="400" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >15 VBlanks</text>
+<text x="42" y="682" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="16" font-weight="700" fill="#ffd76e" text-anchor="middle" dominant-baseline="central" >9</text></svg>

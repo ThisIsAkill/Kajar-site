@@ -1,0 +1,89 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 710" width="600" height="710" role="img" aria-labelledby="t d"><title id="t">The sprite-init system as a call tree</title><desc id="d">Field_ProcessAnimQueue ($C0:CA76) runs during blanking and calls Obj_BuildSpriteFrameStep ($C0:CAD9) for the queued object. Bits 0-1 of $1201,X pick the builder: type 0, Sub_CBDC with one slot; type 1, Sub_CEF5, which splits into Sub_D28A and Sub_D30D; type 2, Sub_D4F7, which picks one of six pass routines by pass number (0, 1, 2+) and whether $0D00,X is $68. A second dispatcher, Sub_CB0A, only rewrites the OAM layout through Sub_CDC8, Sub_D124 or Sub_DD28.</desc><defs><linearGradient id="win" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#4157c9"/><stop offset=".48" stop-color="#23318f"/><stop offset="1" stop-color="#121a58"/></linearGradient></defs><rect x="1.5" y="1.5" width="597" height="707" rx="9" fill="url(#win)" stroke="#070b2e" stroke-width="3"/><rect x="4.5" y="4.5" width="591" height="701" rx="7" fill="none" stroke="#eef1ff" stroke-width="3"/><rect x="8" y="8" width="584" height="694" rx="5" fill="none" stroke="#8e9ce6" stroke-width="1" opacity=".7"/><rect x="28" y="23" width="10" height="10" fill="#ffd76e"/>
+<text x="48" y="33" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="17" font-weight="700" fill="#ffd76e" text-anchor="start" dominant-baseline="central" letter-spacing="1">WHO CALLS WHOM</text>
+<rect x="154" y="64" width="300" height="58" rx="3" fill="#070b2e" opacity=".55"/>
+<rect x="150" y="60" width="300" height="58" rx="3" fill="#0b1145" stroke="#eef1ff" stroke-width="2" />
+<text x="300.0" y="78.0" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="17" font-weight="700" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >Field_ProcessAnimQueue</text>
+<text x="300.0" y="100.0" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="15" font-weight="400" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >$CA76, while the window is open</text>
+<path d="M300,122 L300,140" fill="none" stroke="#ffd76e" stroke-width="2.5" stroke-linejoin="miter"/>
+<path d="M300.0,140.0 L293.0,128.0 L307.0,128.0 Z" fill="#ffd76e"/>
+<rect x="154" y="148" width="300" height="58" rx="3" fill="#070b2e" opacity=".55"/>
+<rect x="150" y="144" width="300" height="58" rx="3" fill="#0b1145" stroke="#eef1ff" stroke-width="2" />
+<text x="300.0" y="162.0" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="17" font-weight="700" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >Obj_BuildSpriteFrameStep</text>
+<text x="300.0" y="184.0" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="15" font-weight="400" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >$CAD9, type = $1201,X &amp; 3</text>
+<path d="M240,206 L100,240" fill="none" stroke="#ffd76e" stroke-width="2.5" stroke-linejoin="miter"/>
+<path d="M100.0,240.0 L110.0,230.4 L113.3,244.0 Z" fill="#ffd76e"/>
+<text x="84" y="232" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="16" font-weight="700" fill="#ffd76e" text-anchor="start" >0</text>
+<path d="M300,206 L300,240" fill="none" stroke="#ffd76e" stroke-width="2.5" stroke-linejoin="miter"/>
+<path d="M300.0,240.0 L293.0,228.0 L307.0,228.0 Z" fill="#ffd76e"/>
+<text x="310" y="232" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="16" font-weight="700" fill="#ffd76e" text-anchor="start" >1</text>
+<path d="M360,206 L500,240" fill="none" stroke="#ffd76e" stroke-width="2.5" stroke-linejoin="miter"/>
+<path d="M500.0,240.0 L486.7,244.0 L490.0,230.4 Z" fill="#ffd76e"/>
+<text x="510" y="232" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="16" font-weight="700" fill="#ffd76e" text-anchor="start" >2</text>
+<rect x="34" y="248" width="140" height="64" rx="3" fill="#070b2e" opacity=".55"/>
+<rect x="30" y="244" width="140" height="64" rx="3" fill="#173f78" stroke="#93b6ff" stroke-width="2" />
+<text x="100.0" y="265.0" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="18" font-weight="700" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >Sub_CBDC</text>
+<text x="100.0" y="287.0" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="16" font-weight="400" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >1 slot</text>
+<rect x="224" y="248" width="160" height="64" rx="3" fill="#070b2e" opacity=".55"/>
+<rect x="220" y="244" width="160" height="64" rx="3" fill="#173f78" stroke="#93b6ff" stroke-width="2" />
+<text x="300.0" y="265.0" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="18" font-weight="700" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >Sub_CEF5</text>
+<text x="300.0" y="287.0" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="16" font-weight="400" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >2 slots</text>
+<rect x="434" y="248" width="140" height="64" rx="3" fill="#070b2e" opacity=".55"/>
+<rect x="430" y="244" width="140" height="64" rx="3" fill="#173f78" stroke="#93b6ff" stroke-width="2" />
+<text x="500.0" y="265.0" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="18" font-weight="700" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >Sub_D4F7</text>
+<text x="500.0" y="287.0" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="16" font-weight="400" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >3 slots</text>
+<path d="M270,312 L250,338" fill="none" stroke="#ffd76e" stroke-width="2" stroke-linejoin="miter"/>
+<path d="M250.0,338.0 L251.8,324.2 L262.9,332.8 Z" fill="#ffd76e"/>
+<path d="M330,312 L350,338" fill="none" stroke="#ffd76e" stroke-width="2" stroke-linejoin="miter"/>
+<path d="M350.0,338.0 L337.1,332.8 L348.2,324.2 Z" fill="#ffd76e"/>
+<rect x="200" y="346" width="100" height="50" rx="3" fill="#070b2e" opacity=".55"/>
+<rect x="196" y="342" width="100" height="50" rx="3" fill="#0b1145" stroke="#93b6ff" stroke-width="2" />
+<text x="246.0" y="357.0" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="16" font-weight="700" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >D28A</text>
+<text x="246.0" y="377.0" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="14" font-weight="400" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >pass 0</text>
+<rect x="310" y="346" width="100" height="50" rx="3" fill="#070b2e" opacity=".55"/>
+<rect x="306" y="342" width="100" height="50" rx="3" fill="#0b1145" stroke="#93b6ff" stroke-width="2" />
+<text x="356.0" y="357.0" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="16" font-weight="700" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >D30D</text>
+<text x="356.0" y="377.0" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="14" font-weight="400" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >pass 1</text>
+<text x="492" y="348" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="10" font-weight="400" fill="#ffffff" text-anchor="start" ></text>
+<path d="M500,312 L500,336" fill="none" stroke="#ffd76e" stroke-width="2" stroke-linejoin="miter"/>
+<path d="M500.0,336.0 L493.0,324.0 L507.0,324.0 Z" fill="#ffd76e"/>
+<text x="473" y="360" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="13" font-weight="400" fill="#cdd5ff" text-anchor="middle" >not $68</text>
+<text x="543" y="360" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="13" font-weight="400" fill="#cdd5ff" text-anchor="middle" >$68</text>
+<text x="432" y="386" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="14" font-weight="400" fill="#ffd76e" text-anchor="end" dominant-baseline="central" >0</text>
+<rect x="440" y="370" width="66" height="30" rx="3" fill="#0b1145" stroke="#93b6ff" stroke-width="1.5" />
+<text x="473.0" y="385.0" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="14" font-weight="400" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >D546</text>
+<rect x="510" y="370" width="66" height="30" rx="3" fill="#0b1145" stroke="#93b6ff" stroke-width="1.5" />
+<text x="543.0" y="385.0" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="14" font-weight="400" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >D608</text>
+<text x="432" y="422" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="14" font-weight="400" fill="#ffd76e" text-anchor="end" dominant-baseline="central" >1</text>
+<rect x="440" y="406" width="66" height="30" rx="3" fill="#0b1145" stroke="#93b6ff" stroke-width="1.5" />
+<text x="473.0" y="421.0" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="14" font-weight="400" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >D68B</text>
+<rect x="510" y="406" width="66" height="30" rx="3" fill="#0b1145" stroke="#93b6ff" stroke-width="1.5" />
+<text x="543.0" y="421.0" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="14" font-weight="400" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >D738</text>
+<text x="432" y="458" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="14" font-weight="400" fill="#ffd76e" text-anchor="end" dominant-baseline="central" >2+</text>
+<rect x="440" y="442" width="66" height="30" rx="3" fill="#0b1145" stroke="#93b6ff" stroke-width="1.5" />
+<text x="473.0" y="457.0" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="14" font-weight="400" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >D7E5</text>
+<rect x="510" y="442" width="66" height="30" rx="3" fill="#0b1145" stroke="#93b6ff" stroke-width="1.5" />
+<text x="543.0" y="457.0" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="14" font-weight="400" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >DA69</text>
+<text x="406" y="492" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="13" font-weight="400" fill="#ffd76e" text-anchor="start" >pass</text>
+<line x1="30" y1="506" x2="570" y2="506" stroke="#8e9ce6" stroke-width="1" stroke-dasharray="4 4"/>
+<text x="30" y="534" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="16" font-weight="400" fill="#cdd5ff" text-anchor="start" >Layout only, tiles already in VRAM:</text>
+<rect x="34" y="556" width="160" height="58" rx="3" fill="#070b2e" opacity=".55"/>
+<rect x="30" y="552" width="160" height="58" rx="3" fill="#0b1145" stroke="#eef1ff" stroke-width="2" />
+<text x="110.0" y="571.0" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="16" font-weight="700" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >Sub_CB0A</text>
+<text x="110.0" y="591.0" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="14" font-weight="400" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >type = $1201,X &amp; 3</text>
+<rect x="244" y="556" width="100" height="58" rx="3" fill="#070b2e" opacity=".55"/>
+<rect x="240" y="552" width="100" height="58" rx="3" fill="#1d4a26" stroke="#8fe07a" stroke-width="2" />
+<text x="290.0" y="571.0" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="16" font-weight="700" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >CDC8</text>
+<text x="290.0" y="591.0" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="14" font-weight="400" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >1 group</text>
+<rect x="356" y="556" width="100" height="58" rx="3" fill="#070b2e" opacity=".55"/>
+<rect x="352" y="552" width="100" height="58" rx="3" fill="#1d4a26" stroke="#8fe07a" stroke-width="2" />
+<text x="402.0" y="571.0" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="16" font-weight="700" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >D124</text>
+<text x="402.0" y="591.0" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="14" font-weight="400" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >8 groups</text>
+<rect x="468" y="556" width="100" height="58" rx="3" fill="#070b2e" opacity=".55"/>
+<rect x="464" y="552" width="100" height="58" rx="3" fill="#1d4a26" stroke="#8fe07a" stroke-width="2" />
+<text x="514.0" y="571.0" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="16" font-weight="700" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >DD28</text>
+<text x="514.0" y="591.0" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="14" font-weight="400" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >12 groups</text>
+<rect x="228" y="540" width="348" height="82" rx="6" fill="none" stroke="#8fe07a" stroke-width="1.5" stroke-dasharray="5 4"/>
+<path d="M194,581 L226,581" fill="none" stroke="#ffd76e" stroke-width="2" stroke-linejoin="miter"/>
+<path d="M226.0,581.0 L214.0,588.0 L214.0,574.0 Z" fill="#ffd76e"/>
+<text x="402" y="640" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="14" font-weight="400" fill="#8fe07a" text-anchor="middle" >one of the three, by type</text>
+<text x="300" y="676" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="16" font-weight="400" fill="#ffd76e" text-anchor="middle" >Every builder claims slots, copies tiles, stages OAM.</text></svg>

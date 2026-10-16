@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 520" width="600" height="520" role="img" aria-labelledby="t d"><title id="t">What each byte of a track means</title><desc id="d">A bar over the byte values $00 to $FF. $00-$A7 are notes, $A8-$B5 ties, $B6-$C3 rests and $C4-$FF commands; $EB, a command, ends the track. For a note, byte / 14 is the step above the track's base note (0-11) and byte mod 14 picks one of 14 lengths from the duration table; ties and rests use byte mod 14 for their length too. Example: $2D is 45, so step 3 and length entry 3.</desc><defs><linearGradient id="win" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#4157c9"/><stop offset=".48" stop-color="#23318f"/><stop offset="1" stop-color="#121a58"/></linearGradient></defs><rect x="1.5" y="1.5" width="597" height="517" rx="9" fill="url(#win)" stroke="#070b2e" stroke-width="3"/><rect x="4.5" y="4.5" width="591" height="511" rx="7" fill="none" stroke="#eef1ff" stroke-width="3"/><rect x="8" y="8" width="584" height="504" rx="5" fill="none" stroke="#8e9ce6" stroke-width="1" opacity=".7"/><rect x="28" y="23" width="10" height="10" fill="#ffd76e"/>
+<text x="48" y="33" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="17" font-weight="700" fill="#ffd76e" text-anchor="start" dominant-baseline="central" letter-spacing="1">SEQUENCE BYTES, $00-$FF</text>
+<rect x="30.0" y="74" width="354.4" height="56" fill="#173f78" stroke="#93b6ff" stroke-width="2"/>
+<text x="207.1875" y="102" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="15" font-weight="700" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >notes</text>
+<rect x="384.4" y="74" width="29.5" height="56" fill="#14505a" stroke="#7fd8f0" stroke-width="2"/>
+<rect x="413.9" y="74" width="29.5" height="56" fill="#2a3170" stroke="#b9c1ec" stroke-width="2"/>
+<rect x="443.4" y="74" width="126.6" height="56" fill="#3d2477" stroke="#c7a6ff" stroke-width="2"/>
+<text x="479.296875" y="102" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="15" font-weight="700" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >commands</text>
+<rect x="525.7" y="74" width="2.1" height="56" fill="#ff8a80"/>
+<text x="30.0" y="150" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="14" font-weight="400" fill="#cdd5ff" text-anchor="start" >$00</text>
+<text x="207.1875" y="150" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="14" font-weight="400" fill="#93b6ff" text-anchor="middle" >$00-$A7</text>
+<text x="475.078125" y="150" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="14" font-weight="400" fill="#c7a6ff" text-anchor="middle" >$C4-$FF</text>
+<path d="M397.03125,182 L397.03125,134" fill="none" stroke="#7fd8f0" stroke-width="2" stroke-linejoin="miter"/>
+<path d="M397.0,134.0 L404.0,146.0 L390.0,146.0 Z" fill="#7fd8f0"/>
+<text x="389.03125" y="182" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="15" font-weight="700" fill="#7fd8f0" text-anchor="end" >ties $A8-$B5</text>
+<path d="M426.5625,210 L426.5625,134" fill="none" stroke="#b9c1ec" stroke-width="2" stroke-linejoin="miter"/>
+<path d="M426.6,134.0 L433.6,146.0 L419.6,146.0 Z" fill="#b9c1ec"/>
+<text x="418.5625" y="210" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="15" font-weight="700" fill="#b9c1ec" text-anchor="end" >rests $B6-$C3</text>
+<path d="M525.703125,238 L525.703125,134" fill="none" stroke="#ff8a80" stroke-width="2" stroke-linejoin="miter"/>
+<path d="M525.7,134.0 L532.7,146.0 L518.7,146.0 Z" fill="#ff8a80"/>
+<text x="517.703125" y="238" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="15" font-weight="700" fill="#ff8a80" text-anchor="end" >$EB ends a track</text>
+<text x="40" y="282" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="18" font-weight="700" fill="#ffd76e" text-anchor="start" >A note byte carries two numbers:</text>
+<rect x="44" y="304" width="250" height="74" rx="3" fill="#070b2e" opacity=".55"/>
+<rect x="40" y="300" width="250" height="74" rx="3" fill="#173f78" stroke="#93b6ff" stroke-width="2" />
+<text x="165.0" y="324.0" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="18" font-weight="700" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >byte / 14</text>
+<text x="165.0" y="350.0" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="16" font-weight="400" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >step above the base note, 0-11</text>
+<rect x="314" y="304" width="250" height="74" rx="3" fill="#070b2e" opacity=".55"/>
+<rect x="310" y="300" width="250" height="74" rx="3" fill="#173f78" stroke="#93b6ff" stroke-width="2" />
+<text x="435.0" y="324.0" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="18" font-weight="700" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >byte mod 14</text>
+<text x="435.0" y="350.0" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="16" font-weight="400" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >which of 14 lengths</text>
+<text x="40" y="420" font-size="17" text-anchor="start"><tspan font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" fill="#cdd5ff" font-weight="400">Example: </tspan><tspan font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" fill="#ffd76e" font-weight="700">$2D</tspan><tspan font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" fill="#ffffff" font-weight="400"> = 45 = 3 x 14 + 3</tspan></text>
+<text x="40" y="448" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="17" font-weight="400" fill="#ffffff" text-anchor="start" >-&gt; step 3, length entry 3</text>
+<text x="40" y="488" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="15" font-weight="400" fill="#cdd5ff" text-anchor="start" >Ties and rests also take their length from byte mod 14.</text></svg>

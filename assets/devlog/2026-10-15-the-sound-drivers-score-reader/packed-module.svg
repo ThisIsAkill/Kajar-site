@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 640" width="600" height="640" role="img" aria-labelledby="t d"><title id="t">The packed $C3 module, at run time and in the build</title><desc id="d">At run time C3_BootModule calls Decomp_ToWram, which unpacks the 26,393 bytes at $C3:1313-$C3:7A2B into WRAM $7E:3000-$7E:B57E, 34,175 bytes, and the game jumps there. In the build the direction is reversed: asm/bankC3/packed/module.asm is assembled on its own with base $7E:3000, tools/c3pack.py packs the result with the rebuilt 1989-style packer, and the 26,393 packed bytes are placed back at $C3:1313. They must be the cartridge's bytes exactly.</desc><defs><linearGradient id="win" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#4157c9"/><stop offset=".48" stop-color="#23318f"/><stop offset="1" stop-color="#121a58"/></linearGradient></defs><rect x="1.5" y="1.5" width="597" height="637" rx="9" fill="url(#win)" stroke="#070b2e" stroke-width="3"/><rect x="4.5" y="4.5" width="591" height="631" rx="7" fill="none" stroke="#eef1ff" stroke-width="3"/><rect x="8" y="8" width="584" height="624" rx="5" fill="none" stroke="#8e9ce6" stroke-width="1" opacity=".7"/><rect x="28" y="23" width="10" height="10" fill="#ffd76e"/>
+<text x="48" y="33" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="17" font-weight="700" fill="#ffd76e" text-anchor="start" dominant-baseline="central" letter-spacing="1">$C3:1313 &lt;-&gt; $7E:3000</text>
+<text x="40" y="82" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="18" font-weight="700" fill="#ffd76e" text-anchor="start" >In the game</text>
+<rect x="44" y="102" width="230" height="84" rx="3" fill="#070b2e" opacity=".55"/>
+<rect x="40" y="98" width="230" height="84" rx="3" fill="#0b1145" stroke="#eef1ff" stroke-width="2" />
+<text x="155.0" y="127.0" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="18" font-weight="700" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >ROM $C3:1313</text>
+<text x="155.0" y="153.0" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="16" font-weight="400" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >26,393 bytes packed</text>
+<rect x="334" y="102" width="230" height="84" rx="3" fill="#070b2e" opacity=".55"/>
+<rect x="330" y="98" width="230" height="84" rx="3" fill="#1d4a26" stroke="#8fe07a" stroke-width="2" />
+<text x="445.0" y="127.0" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="18" font-weight="700" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >WRAM $7E:3000</text>
+<text x="445.0" y="153.0" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="16" font-weight="400" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >34,175 bytes of code</text>
+<path d="M274,140 L326,140" fill="none" stroke="#ffd76e" stroke-width="3" stroke-linejoin="miter"/>
+<path d="M326.0,140.0 L314.0,147.0 L314.0,133.0 Z" fill="#ffd76e"/>
+<text x="300" y="206" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="15" font-weight="400" fill="#cdd5ff" text-anchor="middle" >Decomp_ToWram, then jump to $7E:3000</text>
+<line x1="30" y1="236" x2="570" y2="236" stroke="#8e9ce6" stroke-width="1" stroke-dasharray="4 4"/>
+<text x="40" y="270" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="18" font-weight="700" fill="#ffd76e" text-anchor="start" >In the build</text>
+<rect x="114" y="292" width="380" height="62" rx="3" fill="#070b2e" opacity=".55"/>
+<rect x="110" y="288" width="380" height="62" rx="3" fill="#1d4a26" stroke="#8fe07a" stroke-width="2" />
+<text x="300.0" y="307.0" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="18" font-weight="700" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >module.asm</text>
+<text x="300.0" y="331.0" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="16" font-weight="400" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >source, base $7E:3000</text>
+<path d="M300,352 L300,370" fill="none" stroke="#ffd76e" stroke-width="2.5" stroke-linejoin="miter"/>
+<path d="M300.0,370.0 L293.0,358.0 L307.0,358.0 Z" fill="#ffd76e"/>
+<rect x="114" y="378" width="380" height="62" rx="3" fill="#070b2e" opacity=".55"/>
+<rect x="110" y="374" width="380" height="62" rx="3" fill="#3d2477" stroke="#c7a6ff" stroke-width="2" />
+<text x="300.0" y="393.0" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="18" font-weight="700" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >asar</text>
+<text x="300.0" y="417.0" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="16" font-weight="400" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >module.bin, 34,175 bytes</text>
+<path d="M300,438 L300,456" fill="none" stroke="#ffd76e" stroke-width="2.5" stroke-linejoin="miter"/>
+<path d="M300.0,456.0 L293.0,444.0 L307.0,444.0 Z" fill="#ffd76e"/>
+<rect x="114" y="464" width="380" height="62" rx="3" fill="#070b2e" opacity=".55"/>
+<rect x="110" y="460" width="380" height="62" rx="3" fill="#6a3a12" stroke="#ffb784" stroke-width="2" />
+<text x="300.0" y="479.0" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="18" font-weight="700" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >tools/c3pack.py</text>
+<text x="300.0" y="503.0" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="16" font-weight="400" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >LZSS, 1989-style + 3 changes</text>
+<path d="M300,524 L300,542" fill="none" stroke="#ffd76e" stroke-width="2.5" stroke-linejoin="miter"/>
+<path d="M300.0,542.0 L293.0,530.0 L307.0,530.0 Z" fill="#ffd76e"/>
+<rect x="114" y="550" width="380" height="62" rx="3" fill="#070b2e" opacity=".55"/>
+<rect x="110" y="546" width="380" height="62" rx="3" fill="#0b1145" stroke="#eef1ff" stroke-width="2" />
+<text x="300.0" y="565.0" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="18" font-weight="700" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >$C3:1313</text>
+<text x="300.0" y="589.0" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="16" font-weight="400" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >26,393 bytes, same as the ROM</text></svg>

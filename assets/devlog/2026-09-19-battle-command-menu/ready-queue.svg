@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 470" width="600" height="470" role="img" aria-labelledby="t d"><title id="t">Taking the next character off the ready queue</title><desc id="d">The ready queue is four bytes at $95D6 with a count at $95DA. Example: slots 0, 1 and 2 are waiting, the fourth byte is $FF and the count is 3. DequeueReadyBattler moves slot 0 into the roster, then copies $95D7 to $95D6, $95D8 to $95D7, and $95D8 again to $95D9, and decrements the count to 2. The queue now reads 1, 2, 2, 2: the last byte gets $95D8's value instead of $95D9's, but only the first two count.</desc><defs><linearGradient id="win" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#4157c9"/><stop offset=".48" stop-color="#23318f"/><stop offset="1" stop-color="#121a58"/></linearGradient></defs><rect x="1.5" y="1.5" width="597" height="467" rx="9" fill="url(#win)" stroke="#070b2e" stroke-width="3"/><rect x="4.5" y="4.5" width="591" height="461" rx="7" fill="none" stroke="#eef1ff" stroke-width="3"/><rect x="8" y="8" width="584" height="454" rx="5" fill="none" stroke="#8e9ce6" stroke-width="1" opacity=".7"/><rect x="28" y="23" width="10" height="10" fill="#ffd76e"/>
+<text x="48" y="33" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="17" font-weight="700" fill="#ffd76e" text-anchor="start" dominant-baseline="central" letter-spacing="1">DEQUEUEREADYBATTLER</text>
+<text x="40" y="80" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="17" font-weight="700" fill="#ffffff" text-anchor="start" >Before</text>
+<rect x="150" y="96" width="80" height="50" rx="3" fill="#173f78" stroke="#93b6ff" stroke-width="2" />
+<text x="190" y="121" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="20" font-weight="700" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >0</text>
+<text x="190" y="166" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="14" font-weight="400" fill="#cdd5ff" text-anchor="middle" >$95D6</text>
+<rect x="242" y="96" width="80" height="50" rx="3" fill="#173f78" stroke="#93b6ff" stroke-width="2" />
+<text x="282" y="121" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="20" font-weight="700" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >1</text>
+<text x="282" y="166" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="14" font-weight="400" fill="#cdd5ff" text-anchor="middle" >$95D7</text>
+<rect x="334" y="96" width="80" height="50" rx="3" fill="#173f78" stroke="#93b6ff" stroke-width="2" />
+<text x="374" y="121" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="20" font-weight="700" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >2</text>
+<text x="374" y="166" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="14" font-weight="400" fill="#cdd5ff" text-anchor="middle" >$95D8</text>
+<rect x="426" y="96" width="80" height="50" rx="3" fill="#0b1145" stroke="#59609a" stroke-width="2" />
+<text x="466" y="121" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="20" font-weight="700" fill="#cdd5ff" text-anchor="middle" dominant-baseline="central" >$FF</text>
+<text x="466" y="166" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="14" font-weight="400" fill="#cdd5ff" text-anchor="middle" >$95D9</text>
+<text x="40" y="121" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="15" font-weight="400" fill="#ffd76e" text-anchor="start" dominant-baseline="central" >count 3</text>
+<text x="40" y="240" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="17" font-weight="700" fill="#ffffff" text-anchor="start" >After</text>
+<rect x="150" y="256" width="80" height="50" rx="3" fill="#173f78" stroke="#93b6ff" stroke-width="2" />
+<text x="190" y="281" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="20" font-weight="700" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >1</text>
+<text x="190" y="326" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="14" font-weight="400" fill="#cdd5ff" text-anchor="middle" >$95D6</text>
+<rect x="242" y="256" width="80" height="50" rx="3" fill="#173f78" stroke="#93b6ff" stroke-width="2" />
+<text x="282" y="281" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="20" font-weight="700" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >2</text>
+<text x="282" y="326" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="14" font-weight="400" fill="#cdd5ff" text-anchor="middle" >$95D7</text>
+<rect x="334" y="256" width="80" height="50" rx="3" fill="#0b1145" stroke="#59609a" stroke-width="2" />
+<text x="374" y="281" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="20" font-weight="700" fill="#cdd5ff" text-anchor="middle" dominant-baseline="central" >2</text>
+<text x="374" y="326" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="14" font-weight="400" fill="#cdd5ff" text-anchor="middle" >$95D8</text>
+<rect x="426" y="256" width="80" height="50" rx="3" fill="#0b1145" stroke="#59609a" stroke-width="2" />
+<text x="466" y="281" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="20" font-weight="700" fill="#cdd5ff" text-anchor="middle" dominant-baseline="central" >2</text>
+<text x="466" y="326" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="14" font-weight="400" fill="#cdd5ff" text-anchor="middle" >$95D9</text>
+<text x="40" y="281" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="15" font-weight="400" fill="#ffd76e" text-anchor="start" dominant-baseline="central" >count 2</text>
+<path d="M282,186 L190,250" fill="none" stroke="#ffd76e" stroke-width="2.5" stroke-linejoin="miter"/>
+<path d="M190.0,250.0 L195.9,237.4 L203.8,248.9 Z" fill="#ffd76e"/>
+<path d="M374,186 L282,250" fill="none" stroke="#ffd76e" stroke-width="2.5" stroke-linejoin="miter"/>
+<path d="M282.0,250.0 L287.9,237.4 L295.8,248.9 Z" fill="#ffd76e"/>
+<path d="M374,186 L466,250" fill="none" stroke="#ff8a80" stroke-width="2.5" stroke-linejoin="miter"/>
+<path d="M466.0,250.0 L452.2,248.9 L460.1,237.4 Z" fill="#ff8a80"/>
+<text x="190" y="214" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="10" font-weight="400" fill="#ffffff" text-anchor="start" ></text>
+<rect x="40" y="370" width="520" height="70" rx="3" fill="#0b1145" stroke="#8e9ce6" stroke-width="2" />
+<text x="300.0" y="393.0" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="16" font-weight="700" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >slot 0 goes to the roster and gets the menu</text>
+<text x="300.0" y="417.0" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="14" font-weight="400" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >red: $95D9 is copied from $95D8, not from $95D9</text></svg>

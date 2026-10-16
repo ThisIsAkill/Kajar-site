@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 520" width="600" height="520" role="img" aria-labelledby="t d"><title id="t">How an NMI reaches the real handler</title><desc id="d">When the NMI fires in native mode, the CPU reads the vector at $00:FFEA, which holds $FF10. The ROM stub at $00:FF10 is JML $000500. At $7E:0500 in WRAM, InstallNMI has written the four bytes 5C 63 EA C0, which is JML $C0:EA63, the NMI handler. The game can repoint the handler by rewriting those four bytes. IRQ works the same way through $FFEE, $00:FF14 and $7E:0504.</desc><defs><linearGradient id="win" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#4157c9"/><stop offset=".48" stop-color="#23318f"/><stop offset="1" stop-color="#121a58"/></linearGradient></defs><rect x="1.5" y="1.5" width="597" height="517" rx="9" fill="url(#win)" stroke="#070b2e" stroke-width="3"/><rect x="4.5" y="4.5" width="591" height="511" rx="7" fill="none" stroke="#eef1ff" stroke-width="3"/><rect x="8" y="8" width="584" height="504" rx="5" fill="none" stroke="#8e9ce6" stroke-width="1" opacity=".7"/><rect x="28" y="23" width="10" height="10" fill="#ffd76e"/>
+<text x="48" y="33" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="17" font-weight="700" fill="#ffd76e" text-anchor="start" dominant-baseline="central" letter-spacing="1">NMI: ROM VECTOR TO RAM TRAMPOLINE</text>
+<rect x="114" y="70" width="380" height="72" rx="3" fill="#070b2e" opacity=".55"/>
+<rect x="110" y="66" width="380" height="72" rx="3" fill="#14505a" stroke="#7fd8f0" stroke-width="2" />
+<text x="300.0" y="89.65" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="19" font-weight="700" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >Native NMI vector</text>
+<text x="300.0" y="114.35000000000001" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="17" font-weight="400" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >$00:FFEA = $FF10</text>
+<text x="64" y="102" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="16" font-weight="700" fill="#7fd8f0" text-anchor="middle" dominant-baseline="central" >ROM</text>
+<path d="M300,142 L300,166" fill="none" stroke="#ffd76e" stroke-width="3" stroke-linejoin="miter"/>
+<path d="M300.0,166.0 L293.0,154.0 L307.0,154.0 Z" fill="#ffd76e"/>
+<rect x="114" y="174" width="380" height="72" rx="3" fill="#070b2e" opacity=".55"/>
+<rect x="110" y="170" width="380" height="72" rx="3" fill="#5a420c" stroke="#ffd76e" stroke-width="2" />
+<text x="300.0" y="193.65" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="19" font-weight="700" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >NMI_Stub</text>
+<text x="300.0" y="218.35" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="17" font-weight="400" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >$00:FF10  JML $000500</text>
+<text x="64" y="206" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="16" font-weight="700" fill="#ffd76e" text-anchor="middle" dominant-baseline="central" >ROM</text>
+<path d="M300,246 L300,270" fill="none" stroke="#ffd76e" stroke-width="3" stroke-linejoin="miter"/>
+<path d="M300.0,270.0 L293.0,258.0 L307.0,258.0 Z" fill="#ffd76e"/>
+<rect x="114" y="278" width="380" height="72" rx="3" fill="#070b2e" opacity=".55"/>
+<rect x="110" y="274" width="380" height="72" rx="3" fill="#6a3a12" stroke="#ffb784" stroke-width="2" />
+<text x="300.0" y="297.65" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="19" font-weight="700" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >Trampoline in WRAM</text>
+<text x="300.0" y="322.34999999999997" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="17" font-weight="400" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >$7E:0500  5C 63 EA C0</text>
+<text x="64" y="310" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="16" font-weight="700" fill="#ffb784" text-anchor="middle" dominant-baseline="central" >RAM</text>
+<path d="M300,350 L300,374" fill="none" stroke="#ffd76e" stroke-width="3" stroke-linejoin="miter"/>
+<path d="M300.0,374.0 L293.0,362.0 L307.0,362.0 Z" fill="#ffd76e"/>
+<rect x="114" y="382" width="380" height="72" rx="3" fill="#070b2e" opacity=".55"/>
+<rect x="110" y="378" width="380" height="72" rx="3" fill="#1d4a26" stroke="#8fe07a" stroke-width="2" />
+<text x="300.0" y="401.65" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="19" font-weight="700" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >NMI handler</text>
+<text x="300.0" y="426.34999999999997" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="17" font-weight="400" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >$C0:EA63</text>
+<text x="64" y="414" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="16" font-weight="700" fill="#8fe07a" text-anchor="middle" dominant-baseline="central" >ROM</text>
+<text x="500" y="374" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="10" font-weight="400" fill="#ffffff" text-anchor="start" ></text>
+<text x="300" y="478" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="16" font-weight="400" fill="#cdd5ff" text-anchor="middle" >InstallNMI writes JML $C0:EA63 there at run time,</text>
+<text x="300" y="502" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="16" font-weight="400" fill="#cdd5ff" text-anchor="middle" >so the game can swap handlers by changing 4 bytes.</text></svg>

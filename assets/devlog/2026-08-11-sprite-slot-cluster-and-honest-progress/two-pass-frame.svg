@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 560" width="600" height="560" role="img" aria-labelledby="t d"><title id="t">An 8-tile frame built in two calls</title><desc id="d">Sub_CEF5 dispatches on the pass counter in $1B00,X. First call, counter 0: Sub_D28A looks the frame up, claims two slots, copies tiles 0-15, increments the counter and returns C=1. C=1 means call again, so the queue runs it again when there is time, in the same blanking period or a later one. Second call, counter 1: Sub_D30D copies tiles 16-31 into the second slot at base + $200, writes the eight OAM records, increments the counter and returns C=0, done.</desc><defs><linearGradient id="win" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#4157c9"/><stop offset=".48" stop-color="#23318f"/><stop offset="1" stop-color="#121a58"/></linearGradient></defs><rect x="1.5" y="1.5" width="597" height="557" rx="9" fill="url(#win)" stroke="#070b2e" stroke-width="3"/><rect x="4.5" y="4.5" width="591" height="551" rx="7" fill="none" stroke="#eef1ff" stroke-width="3"/><rect x="8" y="8" width="584" height="544" rx="5" fill="none" stroke="#8e9ce6" stroke-width="1" opacity=".7"/><rect x="28" y="23" width="10" height="10" fill="#ffd76e"/>
+<text x="48" y="33" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="17" font-weight="700" fill="#ffd76e" text-anchor="start" dominant-baseline="central" letter-spacing="1">SUB_CEF5: ONE FRAME, TWO PASSES</text>
+<rect x="154" y="68" width="300" height="64" rx="3" fill="#070b2e" opacity=".55"/>
+<rect x="150" y="64" width="300" height="64" rx="3" fill="#0b1145" stroke="#eef1ff" stroke-width="2" />
+<text x="300.0" y="83.65" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="19" font-weight="700" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >Sub_CEF5</text>
+<text x="300.0" y="108.35000000000001" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="17" font-weight="400" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >$1B00,X &amp; $7F = ?</text>
+<path d="M220,132 L170,180" fill="none" stroke="#ffd76e" stroke-width="3" stroke-linejoin="miter"/>
+<path d="M170.0,180.0 L173.8,166.6 L183.5,176.7 Z" fill="#ffd76e"/>
+<path d="M380,132 L430,180" fill="none" stroke="#ffd76e" stroke-width="3" stroke-linejoin="miter"/>
+<path d="M430.0,180.0 L416.5,176.7 L426.2,166.6 Z" fill="#ffd76e"/>
+<text x="160" y="160" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="18" font-weight="700" fill="#ffd76e" text-anchor="end" >0</text>
+<text x="442" y="160" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="18" font-weight="700" fill="#ffd76e" text-anchor="start" >1</text>
+<rect x="34" y="188" width="260" height="200" rx="3" fill="#070b2e" opacity=".55"/>
+<rect x="30" y="184" width="260" height="200" rx="3" fill="#173f78" stroke="#93b6ff" stroke-width="2" />
+<text x="160.0" y="224.0" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="18" font-weight="700" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >Sub_D28A, pass 0</text>
+<text x="160.0" y="254.0" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="16" font-weight="400" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >frame lookup</text>
+<text x="160.0" y="284.0" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="16" font-weight="400" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >claim 2 slots</text>
+<text x="160.0" y="314.0" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="16" font-weight="400" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >tiles 0-15 -&gt; slot</text>
+<text x="160.0" y="344.0" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="16" font-weight="400" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >INC $1B00,X</text>
+<rect x="314" y="188" width="260" height="200" rx="3" fill="#070b2e" opacity=".55"/>
+<rect x="310" y="184" width="260" height="200" rx="3" fill="#1d4a26" stroke="#8fe07a" stroke-width="2" />
+<text x="440.0" y="224.0" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="18" font-weight="700" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >Sub_D30D, pass 1</text>
+<text x="440.0" y="254.0" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="16" font-weight="400" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >tiles 16-31</text>
+<text x="440.0" y="284.0" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="16" font-weight="400" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >-&gt; slot + $200</text>
+<text x="440.0" y="314.0" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="16" font-weight="400" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >8 OAM records</text>
+<text x="440.0" y="344.0" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="16" font-weight="400" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >INC $1B00,X</text>
+<rect x="60" y="404" width="200" height="50" rx="3" fill="#0b1145" stroke="#ffd76e" stroke-width="2" />
+<text x="160.0" y="429.0" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="18" font-weight="400" fill="#ffd76e" text-anchor="middle" dominant-baseline="central" >returns C=1</text>
+<rect x="340" y="404" width="200" height="50" rx="3" fill="#0b1145" stroke="#ffd76e" stroke-width="2" />
+<text x="440.0" y="429.0" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="18" font-weight="400" fill="#ffd76e" text-anchor="middle" dominant-baseline="central" >returns C=0</text>
+<text x="160" y="486" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="16" font-weight="400" fill="#cdd5ff" text-anchor="middle" >"call me again"</text>
+<text x="440" y="486" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="16" font-weight="400" fill="#cdd5ff" text-anchor="middle" >"done"</text>
+<path d="M56,429 L16,429 L16,96 L146,96" fill="none" stroke="#cdd5ff" stroke-width="2" stroke-linejoin="miter" stroke-dasharray="6 5"/>
+<path d="M146.0,96.0 L134.0,103.0 L134.0,89.0 Z" fill="#cdd5ff"/>
+<text x="300" y="530" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="15" font-weight="400" fill="#cdd5ff" text-anchor="middle" >The second call can come in the same blanking period or a later one.</text></svg>

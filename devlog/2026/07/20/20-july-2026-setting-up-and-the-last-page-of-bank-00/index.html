@@ -295,12 +295,14 @@
 <li>the reset stub</li>
 <li><abbr title="Non-Maskable Interrupt — fires at the start of VBlank each frame; the safe window for PPU updates.">NMI</abbr> and IRQ stubs, which jump to RAM-resident handlers (not installed yet at boot)</li>
 <li>a BRK handler, an infinite loop that acts as a crash handler</li>
-<li>two 64-byte lookup tables, <code>BitSet</code> and <code>BitClear</code>: precomputed (1&lt;&lt;N) and ~(1&lt;&lt;N) for N=0..7</li>
+<li>two 8-byte lookup tables, <code>BitSet</code> and <code>BitClear</code>: precomputed (1&lt;&lt;N) and ~(1&lt;&lt;N) for N=0..7</li>
 <li>two 64-byte sine-wave tables, <code>ScrollWaveA</code> and <code>ScrollWaveB</code></li>
 <li>the 80-byte SNES ROM header (title, memory map type, checksum and so on)</li>
 <li>the native-mode interrupt vectors</li>
 </ul>
 <p>All 256 bytes fit in one page, and all of them match.</p>
+<p><a class="wk-fig-link" href="../../../../../assets/devlog/2026-07-20-setup-and-bank-00/bank00-last-page.svg"><img alt="A 16 by 16 grid of the 256 bytes from $00:FF00 to $00:FFFF, coloured by region" class="wk-fig" loading="lazy" src="../../../../../assets/devlog/2026-07-20-setup-and-bank-00/bank00-last-page.svg" /></a></p>
+<p class="wk-figcap">The last page of bank <code>$00</code>, one cell per byte: the reset stub, the interrupt stubs, the BRK handler, the two 8-byte bit tables, the two 64-byte wave tables, the cartridge header and the vectors. The RESET vector at <code>$FFFC</code> points back at the stub in the top-left corner.</p>
 <h2 id="the-toolchain">The toolchain</h2>
 <p>The build uses:</p>
 <ul>
@@ -309,9 +311,13 @@
 <li><strong>make</strong> to tie it together</li>
 </ul>
 <p>The build copies the original ROM, runs <abbr title="The 65816 assembler used for this project (version 1.91) — patches matched .asm source into a ROM copy for byte-exact verification.">asar</abbr> to patch in the <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr> assembly, and compares the result with the original byte for byte. "0 bytes differ" means a good match.</p>
+<p><a class="wk-fig-link" href="../../../../../assets/devlog/2026-07-20-setup-and-bank-00/build-and-compare.svg"><img alt="Flow diagram: the original ROM is copied, asar writes the matched source over the copy, and diff_rom.py compares the result with the original" class="wk-fig" loading="lazy" src="../../../../../assets/devlog/2026-07-20-setup-and-bank-00/build-and-compare.svg" /></a></p>
+<p class="wk-figcap">How the July build checked a match: copy the ROM, let <abbr title="The 65816 assembler used for this project (version 1.91) — patches matched .asm source into a ROM copy for byte-exact verification.">asar</abbr> write the <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr> source over the copy, then compare every byte with the original. (The build stopped copying the ROM in October; see 15 October.)</p>
 <p>One flag matters: <code>--fix-checksum=off</code>. Without it <abbr title="The 65816 assembler used for this project (version 1.91) — patches matched .asm source into a ROM copy for byte-exact verification.">asar</abbr> recalculates the ROM checksum, and the output differs from the original by 4 bytes. Always pass it.</p>
 <h2 id="what-i-learned">What I learned</h2>
 <p><strong><abbr title="SNES ROM mapping where each bank is a full 64KB of ROM — bank $C0 = first 64KB of the ROM file.">HiROM</abbr> addressing.</strong> Bank <code>$C0</code> maps directly to the first 64 KB of the ROM file. Bank <code>$FD</code> is at file offset <code>($FD - $C0) × $10000 = $3D0000</code>. The reset vector at <code>$FFFC</code> is in bank <code>$00</code>, which mirrors bank <code>$C0</code> for addresses <code>$8000</code>–<code>$FFFF</code> in <abbr title="SNES ROM mapping where each bank is a full 64KB of ROM — bank $C0 = first 64KB of the ROM file.">HiROM</abbr>. Since <code>$FF00</code> is in the upper half, bank <code>$00</code> works as expected here.</p>
+<p><a class="wk-fig-link" href="../../../../../assets/devlog/2026-07-20-setup-and-bank-00/hirom-map.svg"><img alt="Diagram of HiROM mapping: CPU banks $C0 to $FF map one to one onto the 64 banks of the ROM file" class="wk-fig" loading="lazy" src="../../../../../assets/devlog/2026-07-20-setup-and-bank-00/hirom-map.svg" /></a></p>
+<p class="wk-figcap"><abbr title="SNES ROM mapping where each bank is a full 64KB of ROM — bank $C0 = first 64KB of the ROM file.">HiROM</abbr> in one picture: each CPU bank from <code>$C0</code> to <code>$FF</code> is a whole 64 KB bank of the file, and banks <code>$00</code>-<code>$3F</code> show the upper half of the same banks, which is how the reset vector at <code>$00:FFFC</code> lands at file offset <code>$00FFFC</code>.</p>
 <p><strong>The ROM header.</strong> The 80-byte header at <code>$00:FFB0</code> holds the title ("CHRONO TRIGGER"), the memory map type (<code>$31</code> = <abbr title="SNES ROM mapping where each bank is a full 64KB of ROM — bank $C0 = first 64KB of the ROM file.">HiROM</abbr> FastROM), ROM size, SRAM size and the checksum that <abbr title="The 65816 assembler used for this project (version 1.91) — patches matched .asm source into a ROM copy for byte-exact verification.">asar</abbr> would otherwise overwrite.</p>
 <p><strong>Wave tables.</strong> The two 64-byte sine-wave tables at <code>$FF30</code> and <code>$FF70</code> are not audio. They are scroll-effect tables that make backgrounds wobble. Each is a 32-entry signed 16-bit table with values in the range ±6.</p>
 <h2 id="next">Next</h2>

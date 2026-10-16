@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 770" width="600" height="770" role="img" aria-labelledby="t d"><title id="t">Where every byte of the built ROM comes from</title><desc id="d">Top: the build. Your own ROM is read once by tools/extract_data.py, which checks its hash and writes assets that stay on your machine. The build repacks the compressed blocks, encodes the text and the records, then assembles the source and the data onto a blank 4 MB image filled with $00 and again onto one filled with $FF; the two must be identical. Bottom: tools/verify.py's count of the 4,194,304 bytes on main: packed 2,349,626; extracted 1,248,980; code from source 306,435; text 202,895; fill 65,391; records 15,933; pointer tables 5,044.</desc><defs><linearGradient id="win" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#4157c9"/><stop offset=".48" stop-color="#23318f"/><stop offset="1" stop-color="#121a58"/></linearGradient></defs><rect x="1.5" y="1.5" width="597" height="767" rx="9" fill="url(#win)" stroke="#070b2e" stroke-width="3"/><rect x="4.5" y="4.5" width="591" height="761" rx="7" fill="none" stroke="#eef1ff" stroke-width="3"/><rect x="8" y="8" width="584" height="754" rx="5" fill="none" stroke="#8e9ce6" stroke-width="1" opacity=".7"/><rect x="28" y="23" width="10" height="10" fill="#ffd76e"/>
+<text x="48" y="33" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="17" font-weight="700" fill="#ffd76e" text-anchor="start" dominant-baseline="central" letter-spacing="1">MAKE BUILD, NO COPY OF THE ROM</text>
+<rect x="44" y="68" width="520" height="58" rx="3" fill="#070b2e" opacity=".55"/>
+<rect x="40" y="64" width="520" height="58" rx="3" fill="#0b1145" stroke="#eef1ff" stroke-width="2" />
+<text x="300.0" y="82.0" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="17" font-weight="700" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >your ROM -&gt; extract_data.py (hash checked)</text>
+<text x="300.0" y="104.0" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="15" font-weight="400" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >assets in build/assets/, never committed</text>
+<path d="M300,126 L300,146" fill="none" stroke="#ffd76e" stroke-width="2.5" stroke-linejoin="miter"/>
+<path d="M300.0,146.0 L293.0,134.0 L307.0,134.0 Z" fill="#ffd76e"/>
+<rect x="44" y="154" width="168" height="58" rx="3" fill="#070b2e" opacity=".55"/>
+<rect x="40" y="150" width="168" height="58" rx="3" fill="#3d2477" stroke="#c7a6ff" stroke-width="2" />
+<text x="124.0" y="168.0" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="17" font-weight="700" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >repack</text>
+<text x="124.0" y="190.0" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="15" font-weight="400" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >1,515 blocks</text>
+<rect x="220" y="154" width="168" height="58" rx="3" fill="#070b2e" opacity=".55"/>
+<rect x="216" y="150" width="168" height="58" rx="3" fill="#3d2477" stroke="#c7a6ff" stroke-width="2" />
+<text x="300.0" y="168.0" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="17" font-weight="700" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >encode</text>
+<text x="300.0" y="190.0" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="15" font-weight="400" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >text, records</text>
+<rect x="396" y="154" width="168" height="58" rx="3" fill="#070b2e" opacity=".55"/>
+<rect x="392" y="150" width="168" height="58" rx="3" fill="#1d4a26" stroke="#8fe07a" stroke-width="2" />
+<text x="476.0" y="168.0" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="17" font-weight="700" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >assemble</text>
+<text x="476.0" y="190.0" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="15" font-weight="400" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >asm/rom.asm</text>
+<path d="M300,212 L300,232" fill="none" stroke="#ffd76e" stroke-width="2.5" stroke-linejoin="miter"/>
+<path d="M300.0,232.0 L293.0,220.0 L307.0,220.0 Z" fill="#ffd76e"/>
+<rect x="44" y="240" width="250" height="58" rx="3" fill="#070b2e" opacity=".55"/>
+<rect x="40" y="236" width="250" height="58" rx="3" fill="#0b1145" stroke="#8e9ce6" stroke-width="2" />
+<text x="165.0" y="254.0" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="16" font-weight="700" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >onto a blank image</text>
+<text x="165.0" y="276.0" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="14" font-weight="400" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >filled with $00</text>
+<rect x="314" y="240" width="250" height="58" rx="3" fill="#070b2e" opacity=".55"/>
+<rect x="310" y="236" width="250" height="58" rx="3" fill="#0b1145" stroke="#8e9ce6" stroke-width="2" />
+<text x="435.0" y="254.0" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="16" font-weight="700" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >onto a blank image</text>
+<text x="435.0" y="276.0" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="14" font-weight="400" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >filled with $FF</text>
+<text x="300" y="322" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="16" font-weight="700" fill="#ffd76e" text-anchor="middle" >identical -&gt; every byte was written</text>
+<line x1="30" y1="344" x2="570" y2="344" stroke="#8e9ce6" stroke-width="1" stroke-dasharray="4 4"/>
+<rect x="28" y="367" width="10" height="10" fill="#ffd76e"/>
+<text x="48" y="377" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="17" font-weight="700" fill="#ffd76e" text-anchor="start" dominant-baseline="central" letter-spacing="1">VERIFY.PY: THE 4,194,304 BYTES</text>
+<text x="218" y="417" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="16" font-weight="400" fill="#ffffff" text-anchor="end" dominant-baseline="central" >packed by the build</text>
+<rect x="230" y="404" width="250.0" height="26" rx="1" fill="#93b6ff"/>
+<text x="488.0" y="417" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="15" font-weight="400" fill="#ffffff" text-anchor="start" dominant-baseline="central" >2,349,626</text>
+<text x="218" y="457" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="16" font-weight="400" fill="#ffffff" text-anchor="end" dominant-baseline="central" >extracted</text>
+<rect x="230" y="444" width="132.9" height="26" rx="1" fill="#93b6ff"/>
+<text x="370.89136228489133" y="457" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="15" font-weight="400" fill="#ffffff" text-anchor="start" dominant-baseline="central" >1,248,980</text>
+<text x="218" y="497" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="16" font-weight="700" fill="#ffd76e" text-anchor="end" dominant-baseline="central" >code, from source</text>
+<rect x="230" y="484" width="32.6" height="26" rx="1" fill="#ffd76e"/>
+<text x="270.6046570815951" y="497" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="15" font-weight="400" fill="#ffffff" text-anchor="start" dominant-baseline="central" >306,435</text>
+<text x="218" y="537" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="16" font-weight="400" fill="#ffffff" text-anchor="end" dominant-baseline="central" >text, encoded</text>
+<rect x="230" y="524" width="21.6" height="26" rx="1" fill="#93b6ff"/>
+<text x="259.58801017693884" y="537" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="15" font-weight="400" fill="#ffffff" text-anchor="start" dominant-baseline="central" >202,895</text>
+<text x="218" y="577" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="16" font-weight="400" fill="#ffffff" text-anchor="end" dominant-baseline="central" >fill, from source</text>
+<rect x="230" y="564" width="7.0" height="26" rx="1" fill="#93b6ff"/>
+<text x="244.9575966558082" y="577" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="15" font-weight="400" fill="#ffffff" text-anchor="start" dominant-baseline="central" >65,391</text>
+<text x="218" y="617" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="16" font-weight="400" fill="#ffffff" text-anchor="end" dominant-baseline="central" >records, encoded</text>
+<rect x="230" y="604" width="2.0" height="26" rx="1" fill="#93b6ff"/>
+<text x="240" y="617" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="15" font-weight="400" fill="#ffffff" text-anchor="start" dominant-baseline="central" >15,933</text>
+<text x="218" y="657" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="16" font-weight="400" fill="#ffffff" text-anchor="end" dominant-baseline="central" >pointer tables</text>
+<rect x="230" y="644" width="2.0" height="26" rx="1" fill="#93b6ff"/>
+<text x="240" y="657" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="15" font-weight="400" fill="#ffffff" text-anchor="start" dominant-baseline="central" >5,044</text>
+<text x="40" y="706" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="15" font-weight="400" fill="#cdd5ff" text-anchor="start" >Code includes the $C3 module's 26,393 packed bytes.</text>
+<text x="40" y="730" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="15" font-weight="400" fill="#cdd5ff" text-anchor="start" >Fill and pointer tables are written by the source too.</text></svg>

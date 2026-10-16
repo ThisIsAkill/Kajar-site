@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 480" width="600" height="480" role="img" aria-labelledby="t d"><title id="t">How the July build checks a match</title><desc id="d">The original ROM is copied to build/chrono_trigger.built.sfc; asar assembles asm/main.asm with --fix-checksum=off over that copy; tools/diff_rom.py then compares the built file with the original byte by byte and prints MATCH when all 4,194,304 bytes are identical.</desc><defs><linearGradient id="win" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#4157c9"/><stop offset=".48" stop-color="#23318f"/><stop offset="1" stop-color="#121a58"/></linearGradient></defs><rect x="1.5" y="1.5" width="597" height="477" rx="9" fill="url(#win)" stroke="#070b2e" stroke-width="3"/><rect x="4.5" y="4.5" width="591" height="471" rx="7" fill="none" stroke="#eef1ff" stroke-width="3"/><rect x="8" y="8" width="584" height="464" rx="5" fill="none" stroke="#8e9ce6" stroke-width="1" opacity=".7"/><rect x="28" y="23" width="10" height="10" fill="#ffd76e"/>
+<text x="48" y="33" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="17" font-weight="700" fill="#ffd76e" text-anchor="start" dominant-baseline="central" letter-spacing="1">MAKE DIFF, JULY 2026</text>
+<rect x="38" y="70" width="250" height="78" rx="3" fill="#070b2e" opacity=".55"/>
+<rect x="34" y="66" width="250" height="78" rx="3" fill="#0b1145" stroke="#eef1ff" stroke-width="2" />
+<text x="159.0" y="92.65" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="19" font-weight="700" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >Original ROM</text>
+<text x="159.0" y="117.35000000000001" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="17" font-weight="400" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >your own dump</text>
+<rect x="320" y="70" width="250" height="78" rx="3" fill="#070b2e" opacity=".55"/>
+<rect x="316" y="66" width="250" height="78" rx="3" fill="#1d4a26" stroke="#8fe07a" stroke-width="2" />
+<text x="441.0" y="92.65" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="19" font-weight="700" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >Matched source</text>
+<text x="441.0" y="117.35000000000001" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="17" font-weight="400" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >asm/main.asm</text>
+<rect x="38" y="208" width="250" height="78" rx="3" fill="#070b2e" opacity=".55"/>
+<rect x="34" y="204" width="250" height="78" rx="3" fill="#0b1145" stroke="#eef1ff" stroke-width="2" />
+<text x="159.0" y="230.65" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="19" font-weight="700" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >Copy of the ROM</text>
+<text x="159.0" y="255.35" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="17" font-weight="400" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >build/…built.sfc</text>
+<rect x="320" y="208" width="250" height="78" rx="3" fill="#070b2e" opacity=".55"/>
+<rect x="316" y="204" width="250" height="78" rx="3" fill="#3d2477" stroke="#c7a6ff" stroke-width="2" />
+<text x="441.0" y="230.65" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="19" font-weight="700" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >asar 1.91</text>
+<text x="441.0" y="255.35" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="17" font-weight="400" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >--fix-checksum=off</text>
+<path d="M159,148 L159,200" fill="none" stroke="#ffd76e" stroke-width="3" stroke-linejoin="miter"/>
+<path d="M159.0,200.0 L152.0,188.0 L166.0,188.0 Z" fill="#ffd76e"/>
+<text x="171" y="176" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="18" font-weight="400" fill="#ffd76e" text-anchor="start" dominant-baseline="central" >cp</text>
+<path d="M441,148 L441,200" fill="none" stroke="#ffd76e" stroke-width="3" stroke-linejoin="miter"/>
+<path d="M441.0,200.0 L434.0,188.0 L448.0,188.0 Z" fill="#ffd76e"/>
+<path d="M312,243 L288,243" fill="none" stroke="#ffd76e" stroke-width="3" stroke-linejoin="miter"/>
+<path d="M288.0,243.0 L300.0,236.0 L300.0,250.0 Z" fill="#ffd76e"/>
+<text x="441" y="304" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="17" font-weight="400" fill="#cdd5ff" text-anchor="middle" >writes the matched</text>
+<text x="441" y="326" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="17" font-weight="400" fill="#cdd5ff" text-anchor="middle" >ranges over the copy</text>
+<rect x="114" y="356" width="380" height="66" rx="3" fill="#070b2e" opacity=".55"/>
+<rect x="110" y="352" width="380" height="66" rx="3" fill="#173f78" stroke="#93b6ff" stroke-width="2" />
+<text x="300.0" y="372.65" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="19" font-weight="700" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >tools/diff_rom.py</text>
+<text x="300.0" y="397.34999999999997" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="17" font-weight="400" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >every byte vs the original</text>
+<path d="M159,286 L159,348" fill="none" stroke="#ffd76e" stroke-width="3" stroke-linejoin="miter"/>
+<path d="M159.0,348.0 L152.0,336.0 L166.0,336.0 Z" fill="#ffd76e"/>
+<path d="M34,105 L20,105 L20,385 L106,385" fill="none" stroke="#cdd5ff" stroke-width="2" stroke-linejoin="miter" stroke-dasharray="6 5"/>
+<path d="M106.0,385.0 L94.0,392.0 L94.0,378.0 Z" fill="#cdd5ff"/>
+<text x="300" y="450" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="19" font-weight="700" fill="#ffd76e" text-anchor="middle" >MATCH: 4194304 bytes identical.</text></svg>

@@ -321,6 +321,8 @@
 </ul>
 <h2 id="a-better-check">A better check</h2>
 <p>Building on top of the original ROM has one blind spot: if a routine somehow didn't get written at all, the original bytes would still be there and <code>make diff</code> would report a match. So I also rebuilt over a copy of the ROM with every newly <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr> range zeroed first, and compared again. All 1,033 bytes came back from source.</p>
+<p><a class="wk-fig-link" href="../../../../../assets/devlog/2026-10-08-target-modes/zeroed-rebuild.svg"><img alt="Rows of cells: the ROM copy with new ranges zeroed, the rebuild filling them, and the failure case" class="wk-fig" loading="lazy" src="../../../../../assets/devlog/2026-10-08-target-modes/zeroed-rebuild.svg" /></a></p>
+<p class="wk-figcap">The zeroed-range check: if a routine is not emitted, its bytes stay <code>$00</code> and the diff fails instead of quietly passing.</p>
 <h2 id="the-day-in-numbers">The day in numbers</h2>
 <table>
 <thead>
@@ -371,6 +373,8 @@
 <li><strong>Readable</strong>: the source passes <code>tools/lint_readability.py</code>. Named structures instead of raw offsets (<code>SprTile[3].OfsY</code> or <code>!Pc_MenuRow,X</code>, not a bare address), named calls instead of addresses, named constants for anything that isn't obviously a count, an explicit <code>.b</code>/<code>.w</code>/<code>.l</code> width wherever <abbr title="The 65816 assembler used for this project (version 1.91) — patches matched .asm source into a ROM copy for byte-exact verification.">asar</abbr> can't know it, and no test plumbing inside the game's code.</li>
 <li><strong>Verified</strong>: someone other than the author read the routine against the ROM and approved it. The approval is tied to a hash of the routine's source, header comments included, so editing a single comment sends the routine back for review.</li>
 </ol>
+<p><a class="wk-fig-link" href="../../../../../assets/devlog/2026-10-08-target-modes/levels-pipeline.svg"><img alt="Pipeline from matched to readable to independent review to verified, with a loop back for changes" class="wk-fig" loading="lazy" src="../../../../../assets/devlog/2026-10-08-target-modes/levels-pipeline.svg" /></a></p>
+<p class="wk-figcap">The three levels. A review verdict is tied to a hash of the routine's source, so any later edit sends it back.</p>
 <p>The gate went into the pre-commit hook the same evening. Then every routine written so far was brought up to it: bank <code>$C0</code>, bank <code>$C1</code>, the boot code in <code>$FD</code> and the vectors in <code>$00</code>. All 256 routines (29,032 bytes) are now readable, and the readability baseline file, which listed the routines still waiting, is empty.</p>
 <p>Review is the slow part, and that's how it should be. Each reviewer gets only the source, the ROM and the style guide, and checks every comment against the bytes. The first two rounds turned up real mistakes:</p>
 <ul>

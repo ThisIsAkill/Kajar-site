@@ -294,6 +294,8 @@
 <li><strong>Finish.</strong> <code>INC $1B00,X</code> (mark the slot active); <code>RTS</code>.</li>
 </ol>
 <p>All the callees (<code>Sub_CB3A</code>, <code>Sub_E952</code>, <code>Sub_E97A</code>, <code>Sub_E9AA</code>, <code>Sub_E534</code>, <code>Sub_E687</code>) are now <abbr title="Assembly source that assembles byte-for-byte identically to the original ROM region.">matched</abbr>.</p>
+<p><a class="wk-fig-link" href="../../../../../assets/devlog/2026-08-10-animation-frame-gate/slot-init-template.svg"><img alt="Six-step flow: gate, same-frame check, claim slots, copy tiles, stage OAM, mark the slot, with early exits" class="wk-fig" loading="lazy" src="../../../../../assets/devlog/2026-08-10-animation-frame-gate/slot-init-template.svg" /></a></p>
+<p class="wk-figcap">The template every sprite-slot init routine follows. The first three steps can each end the call with carry clear; the rest always run once a slot is claimed.</p>
 <h2 id="sub_cb3a-the-animation-frame-gate">Sub_CB3A: the animation-frame gate</h2>
 <p><code>Sub_CB3A</code> at <code>$CB3A–$CBDB</code> (162 bytes) is the shared first step. It computes <abbr title="Direct Page mode — 2-byte instruction using an 8-bit offset added to the D register.">dp</abbr> <code>$D6</code>, a pointer into a frame-data table in bank <code>$E4</code>, from three entity fields:</p>
 <table>

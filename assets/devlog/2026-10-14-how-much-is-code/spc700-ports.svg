@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 560" width="600" height="560" role="img" aria-labelledby="t d"><title id="t">How the sound driver reaches the SPC700</title><desc id="d">Bank $C7 holds the driver block at $C7:24C3: a length word, $1BEF, then the program at $C7:24C5-$40B3. At boot Audio_Boot sends it through the four I/O ports, $2140-$2143 on the main CPU side, to the sound chip's boot ROM, which writes it to audio RAM $0200-$1DEE and starts it at $0200. After that, every sound and song request goes through the same four ports.</desc><defs><linearGradient id="win" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#4157c9"/><stop offset=".48" stop-color="#23318f"/><stop offset="1" stop-color="#121a58"/></linearGradient></defs><rect x="1.5" y="1.5" width="597" height="557" rx="9" fill="url(#win)" stroke="#070b2e" stroke-width="3"/><rect x="4.5" y="4.5" width="591" height="551" rx="7" fill="none" stroke="#eef1ff" stroke-width="3"/><rect x="8" y="8" width="584" height="544" rx="5" fill="none" stroke="#8e9ce6" stroke-width="1" opacity=".7"/><rect x="28" y="23" width="10" height="10" fill="#ffd76e"/>
+<text x="48" y="33" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="17" font-weight="700" fill="#ffd76e" text-anchor="start" dominant-baseline="central" letter-spacing="1">TWO PROCESSORS, FOUR PORTS</text>
+<rect x="34" y="74" width="230" height="150" rx="3" fill="#070b2e" opacity=".55"/>
+<rect x="30" y="70" width="230" height="150" rx="3" fill="#0b1145" stroke="#eef1ff" stroke-width="2" />
+<text x="145.0" y="106.0" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="18" font-weight="700" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >65816 (main CPU)</text>
+<text x="145.0" y="132.0" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="16" font-weight="400" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >ROM $C7:24C3</text>
+<text x="145.0" y="158.0" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="16" font-weight="400" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >length $1BEF</text>
+<text x="145.0" y="184.0" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="16" font-weight="400" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >+ $C7:24C5-$40B3</text>
+<rect x="344" y="74" width="230" height="150" rx="3" fill="#070b2e" opacity=".55"/>
+<rect x="340" y="70" width="230" height="150" rx="3" fill="#1d4a26" stroke="#8fe07a" stroke-width="2" />
+<text x="455.0" y="106.0" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="18" font-weight="700" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >SPC700 (sound)</text>
+<text x="455.0" y="132.0" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="16" font-weight="400" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >audio RAM</text>
+<text x="455.0" y="158.0" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="16" font-weight="400" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >$0200-$1DEE</text>
+<text x="455.0" y="184.0" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="16" font-weight="400" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >starts at $0200</text>
+<rect x="272" y="92" width="56" height="22" rx="3" fill="#5a420c" stroke="#ffd76e" stroke-width="1.5" />
+<text x="300" y="103" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="12" font-weight="400" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >port 0</text>
+<rect x="272" y="122" width="56" height="22" rx="3" fill="#5a420c" stroke="#ffd76e" stroke-width="1.5" />
+<text x="300" y="133" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="12" font-weight="400" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >port 1</text>
+<rect x="272" y="152" width="56" height="22" rx="3" fill="#5a420c" stroke="#ffd76e" stroke-width="1.5" />
+<text x="300" y="163" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="12" font-weight="400" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >port 2</text>
+<rect x="272" y="182" width="56" height="22" rx="3" fill="#5a420c" stroke="#ffd76e" stroke-width="1.5" />
+<text x="300" y="193" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="12" font-weight="400" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >port 3</text>
+<text x="300" y="82" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="10" font-weight="400" fill="#ffffff" text-anchor="start" ></text>
+<text x="145" y="246" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="16" font-weight="400" fill="#ffd76e" text-anchor="middle" >$2140-$2143</text>
+<text x="455" y="246" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="16" font-weight="400" fill="#ffd76e" text-anchor="middle" >$F4-$F7</text>
+<text x="40" y="300" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="18" font-weight="700" fill="#ffffff" text-anchor="start" >1. Boot (Audio_Boot)</text>
+<text x="40" y="326" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="16" font-weight="400" fill="#cdd5ff" text-anchor="start" >the SPC700's boot ROM receives the block</text>
+<text x="40" y="350" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="16" font-weight="400" fill="#cdd5ff" text-anchor="start" >through the ports, then starts it at $0200</text>
+<path d="M40,372 L560,372" fill="none" stroke="#ffd76e" stroke-width="2.5" stroke-linejoin="miter"/>
+<path d="M560.0,372.0 L548.0,379.0 L548.0,365.0 Z" fill="#ffd76e"/>
+<text x="40" y="412" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="18" font-weight="700" fill="#ffffff" text-anchor="start" >2. Every request after that</text>
+<text x="40" y="438" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="16" font-weight="400" fill="#cdd5ff" text-anchor="start" >one entry point in $C7 writes a command and its</text>
+<text x="40" y="462" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="16" font-weight="400" fill="#cdd5ff" text-anchor="start" >arguments to the ports; the driver's main loop reads them</text>
+<path d="M40,484 L560,484" fill="none" stroke="#ffd76e" stroke-width="2.5" stroke-linejoin="miter"/>
+<path d="M560.0,484.0 L548.0,491.0 L548.0,477.0 Z" fill="#ffd76e"/>
+<path d="M560,500 L40,500" fill="none" stroke="#8fe07a" stroke-width="2" stroke-linejoin="miter"/>
+<path d="M40.0,500.0 L52.0,493.0 L52.0,507.0 Z" fill="#8fe07a"/>
+<text x="300" y="532" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="15" font-weight="400" fill="#8fe07a" text-anchor="middle" >the driver answers through the same ports</text></svg>

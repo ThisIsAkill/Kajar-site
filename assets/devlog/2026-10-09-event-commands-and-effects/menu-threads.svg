@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 640" width="600" height="640" role="img" aria-labelledby="t d"><title id="t">The menu's eight cooperative threads</title><desc id="d">Eight thread slots, each with its own 64-byte stack from $0A00: slot 0 at $0A00-$0A3F up to slot 7 at $0BC0-$0BFF. Once a frame, after the menu's NMI upload, Menu_RunThreads walks the slots in order. A slot in use counts its wait down; at zero the thread runs until it calls Menu_Yield (wait one frame), Menu_YieldFrames (wait A frames) or Menu_ThreadEnd (free the slot). A yield saves X, Y, P and D on the thread's own stack and the next slot runs. The data bank is set only at the start of the frame, so each thread starts with whatever bank the one before it left.</desc><defs><linearGradient id="win" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#4157c9"/><stop offset=".48" stop-color="#23318f"/><stop offset="1" stop-color="#121a58"/></linearGradient></defs><rect x="1.5" y="1.5" width="597" height="637" rx="9" fill="url(#win)" stroke="#070b2e" stroke-width="3"/><rect x="4.5" y="4.5" width="591" height="631" rx="7" fill="none" stroke="#eef1ff" stroke-width="3"/><rect x="8" y="8" width="584" height="624" rx="5" fill="none" stroke="#8e9ce6" stroke-width="1" opacity=".7"/><rect x="28" y="23" width="10" height="10" fill="#ffd76e"/>
+<text x="48" y="33" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="17" font-weight="700" fill="#ffd76e" text-anchor="start" dominant-baseline="central" letter-spacing="1">MENU_RUNTHREADS, ONCE A FRAME</text>
+<rect x="40" y="74" width="58" height="120" rx="3" fill="#173f78" stroke="#93b6ff" stroke-width="2" />
+<text x="69" y="94" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="14" font-weight="700" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >slot 0</text>
+<text x="69" y="150" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="12" font-weight="400" fill="#cdd5ff" text-anchor="middle" >$0A00</text>
+<rect x="52" y="108" width="34" height="24" fill="none" stroke="#cdd5ff" stroke-width="1" stroke-dasharray="2 2"/>
+<text x="69" y="172" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="12" font-weight="400" fill="#cdd5ff" text-anchor="middle" >64 B</text>
+<rect x="106" y="74" width="58" height="120" rx="3" fill="#173f78" stroke="#93b6ff" stroke-width="2" />
+<text x="135" y="94" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="14" font-weight="700" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >slot 1</text>
+<text x="135" y="150" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="12" font-weight="400" fill="#cdd5ff" text-anchor="middle" >$0A40</text>
+<rect x="118" y="108" width="34" height="24" fill="none" stroke="#cdd5ff" stroke-width="1" stroke-dasharray="2 2"/>
+<text x="135" y="172" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="12" font-weight="400" fill="#cdd5ff" text-anchor="middle" >64 B</text>
+<rect x="172" y="74" width="58" height="120" rx="3" fill="#0b1145" stroke="#59609a" stroke-width="2" />
+<text x="201" y="94" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="14" font-weight="700" fill="#cdd5ff" text-anchor="middle" dominant-baseline="central" >slot 2</text>
+<text x="201" y="150" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="12" font-weight="400" fill="#cdd5ff" text-anchor="middle" >$0A80</text>
+<rect x="184" y="108" width="34" height="24" fill="none" stroke="#cdd5ff" stroke-width="1" stroke-dasharray="2 2"/>
+<text x="201" y="172" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="12" font-weight="400" fill="#cdd5ff" text-anchor="middle" >64 B</text>
+<rect x="238" y="74" width="58" height="120" rx="3" fill="#173f78" stroke="#93b6ff" stroke-width="2" />
+<text x="267" y="94" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="14" font-weight="700" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >slot 3</text>
+<text x="267" y="150" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="12" font-weight="400" fill="#cdd5ff" text-anchor="middle" >$0AC0</text>
+<rect x="250" y="108" width="34" height="24" fill="none" stroke="#cdd5ff" stroke-width="1" stroke-dasharray="2 2"/>
+<text x="267" y="172" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="12" font-weight="400" fill="#cdd5ff" text-anchor="middle" >64 B</text>
+<rect x="304" y="74" width="58" height="120" rx="3" fill="#0b1145" stroke="#59609a" stroke-width="2" />
+<text x="333" y="94" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="14" font-weight="700" fill="#cdd5ff" text-anchor="middle" dominant-baseline="central" >slot 4</text>
+<text x="333" y="150" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="12" font-weight="400" fill="#cdd5ff" text-anchor="middle" >$0B00</text>
+<rect x="316" y="108" width="34" height="24" fill="none" stroke="#cdd5ff" stroke-width="1" stroke-dasharray="2 2"/>
+<text x="333" y="172" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="12" font-weight="400" fill="#cdd5ff" text-anchor="middle" >64 B</text>
+<rect x="370" y="74" width="58" height="120" rx="3" fill="#0b1145" stroke="#59609a" stroke-width="2" />
+<text x="399" y="94" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="14" font-weight="700" fill="#cdd5ff" text-anchor="middle" dominant-baseline="central" >slot 5</text>
+<text x="399" y="150" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="12" font-weight="400" fill="#cdd5ff" text-anchor="middle" >$0B40</text>
+<rect x="382" y="108" width="34" height="24" fill="none" stroke="#cdd5ff" stroke-width="1" stroke-dasharray="2 2"/>
+<text x="399" y="172" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="12" font-weight="400" fill="#cdd5ff" text-anchor="middle" >64 B</text>
+<rect x="436" y="74" width="58" height="120" rx="3" fill="#0b1145" stroke="#59609a" stroke-width="2" />
+<text x="465" y="94" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="14" font-weight="700" fill="#cdd5ff" text-anchor="middle" dominant-baseline="central" >slot 6</text>
+<text x="465" y="150" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="12" font-weight="400" fill="#cdd5ff" text-anchor="middle" >$0B80</text>
+<rect x="448" y="108" width="34" height="24" fill="none" stroke="#cdd5ff" stroke-width="1" stroke-dasharray="2 2"/>
+<text x="465" y="172" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="12" font-weight="400" fill="#cdd5ff" text-anchor="middle" >64 B</text>
+<rect x="502" y="74" width="58" height="120" rx="3" fill="#0b1145" stroke="#59609a" stroke-width="2" />
+<text x="531" y="94" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="14" font-weight="700" fill="#cdd5ff" text-anchor="middle" dominant-baseline="central" >slot 7</text>
+<text x="531" y="150" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="12" font-weight="400" fill="#cdd5ff" text-anchor="middle" >$0BC0</text>
+<rect x="514" y="108" width="34" height="24" fill="none" stroke="#cdd5ff" stroke-width="1" stroke-dasharray="2 2"/>
+<text x="531" y="172" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="12" font-weight="400" fill="#cdd5ff" text-anchor="middle" >64 B</text>
+<text x="40" y="218" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="15" font-weight="400" fill="#cdd5ff" text-anchor="start" >Each slot: a state, a wait count, an entry point, a saved S,</text>
+<text x="40" y="240" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="15" font-weight="400" fill="#cdd5ff" text-anchor="start" >and a 64-byte stack. (Slots 0, 1 and 3 drawn in use.)</text>
+<path d="M73,270 L533,270" fill="none" stroke="#ffd76e" stroke-width="2.5" stroke-linejoin="miter"/>
+<path d="M533.0,270.0 L521.0,277.0 L521.0,263.0 Z" fill="#ffd76e"/>
+<text x="300" y="292" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="15" font-weight="400" fill="#ffd76e" text-anchor="middle" >slot 0 -&gt; 7, then wait for the next frame</text>
+<rect x="44" y="320" width="520" height="56" rx="3" fill="#070b2e" opacity=".55"/>
+<rect x="40" y="316" width="520" height="56" rx="3" fill="#0b1145" stroke="#eef1ff" stroke-width="2" />
+<text x="300.0" y="344.0" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="17" font-weight="400" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >in use? count .Wait down; at 0, run it</text>
+<path d="M300,376 L300,396" fill="none" stroke="#ffd76e" stroke-width="3" stroke-linejoin="miter"/>
+<path d="M300.0,396.0 L293.0,384.0 L307.0,384.0 Z" fill="#ffd76e"/>
+<text x="300" y="418" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="16" font-weight="400" fill="#ffffff" text-anchor="middle" >the thread runs until it gives the CPU back:</text>
+<rect x="44" y="440" width="168" height="66" rx="3" fill="#070b2e" opacity=".55"/>
+<rect x="40" y="436" width="168" height="66" rx="3" fill="#3d2477" stroke="#c7a6ff" stroke-width="2" />
+<text x="124.0" y="458.0" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="15" font-weight="700" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >Menu_Yield</text>
+<text x="124.0" y="480.0" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="13" font-weight="400" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >wait 1 frame</text>
+<rect x="220" y="440" width="168" height="66" rx="3" fill="#070b2e" opacity=".55"/>
+<rect x="216" y="436" width="168" height="66" rx="3" fill="#3d2477" stroke="#c7a6ff" stroke-width="2" />
+<text x="300.0" y="458.0" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="15" font-weight="700" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >Menu_YieldFrames</text>
+<text x="300.0" y="480.0" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="13" font-weight="400" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >wait A frames</text>
+<rect x="396" y="440" width="168" height="66" rx="3" fill="#070b2e" opacity=".55"/>
+<rect x="392" y="436" width="168" height="66" rx="3" fill="#6b1d1a" stroke="#ff8a80" stroke-width="2" />
+<text x="476.0" y="458.0" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="15" font-weight="700" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >Menu_ThreadEnd</text>
+<text x="476.0" y="480.0" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="13" font-weight="400" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >free the slot</text>
+<text x="40" y="538" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="15" font-weight="400" fill="#cdd5ff" text-anchor="start" >A yield pushes X, Y, P and D on the thread's own stack;</text>
+<text x="40" y="560" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="15" font-weight="400" fill="#cdd5ff" text-anchor="start" >next frame the scheduler restores S and RTSes back in.</text>
+<text x="40" y="600" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="16" font-weight="700" fill="#ffd76e" text-anchor="start" >DB is set once a frame, not per thread.</text></svg>

@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 470" width="600" height="470" role="img" aria-labelledby="t d"><title id="t">Old and new estimates of the game's code</title><desc id="d">Paired bars, old survey against the re-survey of 14 October. Total: 358,356 bytes before, 239,779 after. Bank $CB: 61,797 before, 0 after, because it is song data. Bank $CA: 30,004 before, 0 after, also song data. Bank $CC: 27,226 before, 4,440 after, because most of it is tables the battle code reads.</desc><defs><linearGradient id="win" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#4157c9"/><stop offset=".48" stop-color="#23318f"/><stop offset="1" stop-color="#121a58"/></linearGradient></defs><rect x="1.5" y="1.5" width="597" height="467" rx="9" fill="url(#win)" stroke="#070b2e" stroke-width="3"/><rect x="4.5" y="4.5" width="591" height="461" rx="7" fill="none" stroke="#eef1ff" stroke-width="3"/><rect x="8" y="8" width="584" height="454" rx="5" fill="none" stroke="#8e9ce6" stroke-width="1" opacity=".7"/><rect x="28" y="23" width="10" height="10" fill="#ffd76e"/>
+<text x="48" y="33" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="17" font-weight="700" fill="#ffd76e" text-anchor="start" dominant-baseline="central" letter-spacing="1">CODE BYTES: OLD SURVEY VS RE-SURVEY</text>
+<text x="126" y="103" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="17" font-weight="700" fill="#ffffff" text-anchor="end" dominant-baseline="central" >all banks</text>
+<rect x="140" y="80" width="330.0" height="22" fill="#9aa1cc"/>
+<text x="478.0" y="91" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="15" font-weight="400" fill="#ffffff" text-anchor="start" dominant-baseline="central" >358,356</text>
+<rect x="140" y="106" width="220.8" height="22" fill="#ffd76e"/>
+<text x="368.8057629842949" y="117" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="15" font-weight="400" fill="#ffffff" text-anchor="start" dominant-baseline="central" >239,779</text>
+<line x1="30" y1="150" x2="570" y2="150" stroke="#8e9ce6" stroke-width="1" stroke-dasharray="4 4"/>
+<text x="140" y="172" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="14" font-weight="400" fill="#cdd5ff" text-anchor="start" >per bank (scale x5.8):</text>
+<text x="126" y="215" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="17" font-weight="700" fill="#ffffff" text-anchor="end" dominant-baseline="central" >$CB</text>
+<rect x="140" y="192" width="330.0" height="22" fill="#9aa1cc"/>
+<text x="478.0" y="203" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="15" font-weight="400" fill="#ffffff" text-anchor="start" dominant-baseline="central" >61,797</text>
+<text x="148.0" y="229" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="15" font-weight="400" fill="#ffffff" text-anchor="start" dominant-baseline="central" >0</text>
+<text x="126" y="289" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="17" font-weight="700" fill="#ffffff" text-anchor="end" dominant-baseline="central" >$CA</text>
+<rect x="140" y="266" width="160.2" height="22" fill="#9aa1cc"/>
+<text x="308.223311811253" y="277" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="15" font-weight="400" fill="#ffffff" text-anchor="start" dominant-baseline="central" >30,004</text>
+<text x="148.0" y="303" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="15" font-weight="400" fill="#ffffff" text-anchor="start" dominant-baseline="central" >0</text>
+<text x="126" y="363" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="17" font-weight="700" fill="#ffffff" text-anchor="end" dominant-baseline="central" >$CC</text>
+<rect x="140" y="340" width="145.4" height="22" fill="#9aa1cc"/>
+<text x="293.3886110976261" y="351" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="15" font-weight="400" fill="#ffffff" text-anchor="start" dominant-baseline="central" >27,226</text>
+<rect x="140" y="366" width="23.7" height="22" fill="#ffd76e"/>
+<text x="171.70988882955484" y="377" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="15" font-weight="400" fill="#ffffff" text-anchor="start" dominant-baseline="central" >4,440</text>
+<rect x="140" y="420" width="16" height="16" fill="#9aa1cc"/>
+<text x="164" y="428" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="15" font-weight="400" fill="#ffffff" text-anchor="start" dominant-baseline="central" >old survey</text>
+<rect x="290" y="420" width="16" height="16" fill="#ffd76e"/>
+<text x="314" y="428" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="15" font-weight="400" fill="#ffffff" text-anchor="start" dominant-baseline="central" >re-survey, 14 Oct</text></svg>

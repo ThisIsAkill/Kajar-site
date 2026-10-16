@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 470" width="600" height="470" role="img" aria-labelledby="t d"><title id="t">Matched bytes over time</title><desc id="d">Line chart of the matched-byte total from the progress history, 12 entries from 6 August to 9 October 2026. It climbs slowly from 10,013 bytes on 6 August to 26,828 on 24 September, then jumps to 128,218 on 8 October, when matching ran in parallel batches, and reaches 165,375 on 9 October.</desc><defs><linearGradient id="win" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#4157c9"/><stop offset=".48" stop-color="#23318f"/><stop offset="1" stop-color="#121a58"/></linearGradient></defs><rect x="1.5" y="1.5" width="597" height="467" rx="9" fill="url(#win)" stroke="#070b2e" stroke-width="3"/><rect x="4.5" y="4.5" width="591" height="461" rx="7" fill="none" stroke="#eef1ff" stroke-width="3"/><rect x="8" y="8" width="584" height="454" rx="5" fill="none" stroke="#8e9ce6" stroke-width="1" opacity=".7"/><rect x="28" y="23" width="10" height="10" fill="#ffd76e"/>
+<text x="48" y="33" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="17" font-weight="700" fill="#ffd76e" text-anchor="start" dominant-baseline="central" letter-spacing="1">MATCHED BYTES, 6 AUG - 9 OCT</text>
+<line x1="96" y1="370.0" x2="566" y2="370.0" stroke="#8e9ce6" stroke-width="1"/>
+<text x="88" y="370.0" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="14" font-weight="400" fill="#cdd5ff" text-anchor="end" dominant-baseline="central" >0k</text>
+<line x1="96" y1="320.0" x2="566" y2="320.0" stroke="#8e9ce6" stroke-width="1" stroke-dasharray="2 4"/>
+<text x="88" y="320.0" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="14" font-weight="400" fill="#cdd5ff" text-anchor="end" dominant-baseline="central" >30k</text>
+<line x1="96" y1="270.0" x2="566" y2="270.0" stroke="#8e9ce6" stroke-width="1" stroke-dasharray="2 4"/>
+<text x="88" y="270.0" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="14" font-weight="400" fill="#cdd5ff" text-anchor="end" dominant-baseline="central" >60k</text>
+<line x1="96" y1="220.0" x2="566" y2="220.0" stroke="#8e9ce6" stroke-width="1" stroke-dasharray="2 4"/>
+<text x="88" y="220.0" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="14" font-weight="400" fill="#cdd5ff" text-anchor="end" dominant-baseline="central" >90k</text>
+<line x1="96" y1="170.0" x2="566" y2="170.0" stroke="#8e9ce6" stroke-width="1" stroke-dasharray="2 4"/>
+<text x="88" y="170.0" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="14" font-weight="400" fill="#cdd5ff" text-anchor="end" dominant-baseline="central" >120k</text>
+<line x1="96" y1="120.0" x2="566" y2="120.0" stroke="#8e9ce6" stroke-width="1" stroke-dasharray="2 4"/>
+<text x="88" y="120.0" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="14" font-weight="400" fill="#cdd5ff" text-anchor="end" dominant-baseline="central" >150k</text>
+<line x1="96" y1="70.0" x2="566" y2="70.0" stroke="#8e9ce6" stroke-width="1" stroke-dasharray="2 4"/>
+<text x="88" y="70.0" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="14" font-weight="400" fill="#cdd5ff" text-anchor="end" dominant-baseline="central" >180k</text>
+<line x1="96.0" y1="370" x2="96.0" y2="376" stroke="#cdd5ff" stroke-width="1"/>
+<text x="96.0" y="394" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="14" font-weight="400" fill="#cdd5ff" text-anchor="middle" >6 Aug</text>
+<line x1="286.9375" y1="370" x2="286.9375" y2="376" stroke="#cdd5ff" stroke-width="1"/>
+<text x="286.9375" y="394" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="14" font-weight="400" fill="#cdd5ff" text-anchor="middle" >1 Sep</text>
+<line x1="507.25" y1="370" x2="507.25" y2="376" stroke="#cdd5ff" stroke-width="1"/>
+<text x="507.25" y="394" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="14" font-weight="400" fill="#cdd5ff" text-anchor="middle" >1 Oct</text>
+<line x1="566.0" y1="370" x2="566.0" y2="376" stroke="#cdd5ff" stroke-width="1"/>
+<text x="566.0" y="394" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="14" font-weight="400" fill="#cdd5ff" text-anchor="middle" >9 Oct</text>
+<path d="M96.0,353.3 L103.3,349.0 L118.0,347.1 L125.4,346.8 L132.7,342.8 L140.1,337.0 L154.8,330.2 L419.1,327.7 L441.2,326.7 L455.8,325.3 L558.7,156.3 L566.0,94.4" fill="none" stroke="#ffd76e" stroke-width="2.5" stroke-linejoin="round"/>
+<rect x="92.0" y="349.3" width="8" height="8" fill="#ffd76e" stroke="#070b2e" stroke-width="1.5"/>
+<rect x="99.3" y="345.0" width="8" height="8" fill="#ffd76e" stroke="#070b2e" stroke-width="1.5"/>
+<rect x="114.0" y="343.1" width="8" height="8" fill="#ffd76e" stroke="#070b2e" stroke-width="1.5"/>
+<rect x="121.4" y="342.8" width="8" height="8" fill="#ffd76e" stroke="#070b2e" stroke-width="1.5"/>
+<rect x="128.7" y="338.8" width="8" height="8" fill="#ffd76e" stroke="#070b2e" stroke-width="1.5"/>
+<rect x="136.1" y="333.0" width="8" height="8" fill="#ffd76e" stroke="#070b2e" stroke-width="1.5"/>
+<rect x="150.8" y="326.2" width="8" height="8" fill="#ffd76e" stroke="#070b2e" stroke-width="1.5"/>
+<rect x="415.1" y="323.7" width="8" height="8" fill="#ffd76e" stroke="#070b2e" stroke-width="1.5"/>
+<rect x="437.2" y="322.7" width="8" height="8" fill="#ffd76e" stroke="#070b2e" stroke-width="1.5"/>
+<rect x="451.8" y="321.3" width="8" height="8" fill="#ffd76e" stroke="#070b2e" stroke-width="1.5"/>
+<rect x="554.7" y="152.3" width="8" height="8" fill="#ffd76e" stroke="#070b2e" stroke-width="1.5"/>
+<rect x="562.0" y="90.4" width="8" height="8" fill="#ffd76e" stroke="#070b2e" stroke-width="1.5"/>
+<text x="447.84375" y="311.2866666666667" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="14" font-weight="400" fill="#ffffff" text-anchor="end" >26,828 (24 Sep)</text>
+<text x="548.65625" y="156.30333333333334" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="14" font-weight="400" fill="#ffffff" text-anchor="end" dominant-baseline="central" >128,218 (8 Oct)</text>
+<text x="556.0" y="88.375" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="14" font-weight="400" fill="#ffffff" text-anchor="end" >165,375</text>
+<text x="96" y="426" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="14" font-weight="400" fill="#cdd5ff" text-anchor="start" >source: docs/data/progress_history.json (all matched bytes)</text>
+<text x="96" y="448" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="14" font-weight="400" fill="#cdd5ff" text-anchor="start" >8 Oct: three matchers in parallel, review by subsystem</text></svg>

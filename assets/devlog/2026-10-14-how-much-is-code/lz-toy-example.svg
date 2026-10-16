@@ -1,0 +1,71 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 560" width="600" height="560" role="img" aria-labelledby="t d"><title id="t">How a packed stream unpacks</title><desc id="d">A made-up example of the packed format. A control byte $08 says, from bit 0 up, literal, literal, literal, reference, literal. The literals A, B and C are copied out. The reference is the 16-bit value $3003, stored 03 30: in 12-bit mode the low 12 bits are the distance, 3, and the top 4 bits plus 3 the length, 6. Copying 6 bytes from 3 back, one byte at a time, repeats ABC twice, because the copy reads bytes it has just written. Then the literal D. Seven input bytes give ten output bytes.</desc><defs><linearGradient id="win" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#4157c9"/><stop offset=".48" stop-color="#23318f"/><stop offset="1" stop-color="#121a58"/></linearGradient></defs><rect x="1.5" y="1.5" width="597" height="557" rx="9" fill="url(#win)" stroke="#070b2e" stroke-width="3"/><rect x="4.5" y="4.5" width="591" height="551" rx="7" fill="none" stroke="#eef1ff" stroke-width="3"/><rect x="8" y="8" width="584" height="544" rx="5" fill="none" stroke="#8e9ce6" stroke-width="1" opacity=".7"/><rect x="28" y="23" width="10" height="10" fill="#ffd76e"/>
+<text x="48" y="33" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="17" font-weight="700" fill="#ffd76e" text-anchor="start" dominant-baseline="central" letter-spacing="1">LITERALS AND BACK-REFERENCES (TOY DATA)</text>
+<text x="40" y="80" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="17" font-weight="700" fill="#ffd76e" text-anchor="start" >Packed input</text>
+<rect x="40" y="94" width="60" height="44" rx="3" fill="#3d2477" stroke="#c7a6ff" stroke-width="2" />
+<text x="70" y="116" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="19" font-weight="700" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >08</text>
+<text x="70" y="158" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="14" font-weight="400" fill="#cdd5ff" text-anchor="middle" >ctrl</text>
+<rect x="106" y="94" width="60" height="44" rx="3" fill="#173f78" stroke="#93b6ff" stroke-width="2" />
+<text x="136" y="116" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="19" font-weight="700" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >41</text>
+<text x="136" y="158" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="14" font-weight="400" fill="#cdd5ff" text-anchor="middle" >'A'</text>
+<rect x="172" y="94" width="60" height="44" rx="3" fill="#173f78" stroke="#93b6ff" stroke-width="2" />
+<text x="202" y="116" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="19" font-weight="700" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >42</text>
+<text x="202" y="158" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="14" font-weight="400" fill="#cdd5ff" text-anchor="middle" >'B'</text>
+<rect x="238" y="94" width="60" height="44" rx="3" fill="#173f78" stroke="#93b6ff" stroke-width="2" />
+<text x="268" y="116" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="19" font-weight="700" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >43</text>
+<text x="268" y="158" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="14" font-weight="400" fill="#cdd5ff" text-anchor="middle" >'C'</text>
+<rect x="304" y="94" width="60" height="44" rx="3" fill="#6a3a12" stroke="#ffb784" stroke-width="2" />
+<text x="334" y="116" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="19" font-weight="700" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >03</text>
+<text x="367" y="158" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="14" font-weight="400" fill="#cdd5ff" text-anchor="middle" >ref</text>
+<rect x="370" y="94" width="60" height="44" rx="3" fill="#6a3a12" stroke="#ffb784" stroke-width="2" />
+<text x="400" y="116" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="19" font-weight="700" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >30</text>
+<rect x="436" y="94" width="60" height="44" rx="3" fill="#173f78" stroke="#93b6ff" stroke-width="2" />
+<text x="466" y="116" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="19" font-weight="700" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >44</text>
+<text x="466" y="158" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="14" font-weight="400" fill="#cdd5ff" text-anchor="middle" >'D'</text>
+<text x="40" y="204" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="16" font-weight="400" fill="#ffffff" text-anchor="start" >Control byte $08 = 0000 1000, read from bit 0:</text>
+<rect x="40" y="218" width="42" height="34" rx="3" fill="#173f78" stroke="#93b6ff" stroke-width="2" />
+<text x="61" y="235" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="17" font-weight="700" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >L</text>
+<text x="61" y="270" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="13" font-weight="400" fill="#cdd5ff" text-anchor="middle" >bit 0</text>
+<rect x="90" y="218" width="42" height="34" rx="3" fill="#173f78" stroke="#93b6ff" stroke-width="2" />
+<text x="111" y="235" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="17" font-weight="700" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >L</text>
+<text x="111" y="270" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="13" font-weight="400" fill="#cdd5ff" text-anchor="middle" >bit 1</text>
+<rect x="140" y="218" width="42" height="34" rx="3" fill="#173f78" stroke="#93b6ff" stroke-width="2" />
+<text x="161" y="235" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="17" font-weight="700" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >L</text>
+<text x="161" y="270" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="13" font-weight="400" fill="#cdd5ff" text-anchor="middle" >bit 2</text>
+<rect x="190" y="218" width="42" height="34" rx="3" fill="#6a3a12" stroke="#ffb784" stroke-width="2" />
+<text x="211" y="235" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="17" font-weight="700" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >R</text>
+<text x="211" y="270" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="13" font-weight="400" fill="#cdd5ff" text-anchor="middle" >bit 3</text>
+<rect x="240" y="218" width="42" height="34" rx="3" fill="#173f78" stroke="#93b6ff" stroke-width="2" />
+<text x="261" y="235" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="17" font-weight="700" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >L</text>
+<text x="261" y="270" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="13" font-weight="400" fill="#cdd5ff" text-anchor="middle" >bit 4</text>
+<text x="300" y="236" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="15" font-weight="400" fill="#cdd5ff" text-anchor="start" dominant-baseline="central" >L = literal byte, R = reference</text>
+<text x="40" y="312" font-size="16" text-anchor="start"><tspan font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" fill="#ffb784" font-weight="700">$3003</tspan><tspan font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" fill="#ffffff" font-weight="400">: distance = $003 (low 12 bits),</tspan></text>
+<text x="40" y="336" font-size="15" text-anchor="start"><tspan font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" fill="#ffffff" font-weight="400">       length = 3 + 3 (top 4 bits + 3) = 6</tspan></text>
+<text x="40" y="380" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="17" font-weight="700" fill="#ffd76e" text-anchor="start" >Unpacked output</text>
+<rect x="40" y="394" width="46" height="44" rx="3" fill="#173f78" stroke="#93b6ff" stroke-width="2" />
+<text x="63" y="416" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="20" font-weight="700" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >A</text>
+<rect x="92" y="394" width="46" height="44" rx="3" fill="#173f78" stroke="#93b6ff" stroke-width="2" />
+<text x="115" y="416" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="20" font-weight="700" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >B</text>
+<rect x="144" y="394" width="46" height="44" rx="3" fill="#173f78" stroke="#93b6ff" stroke-width="2" />
+<text x="167" y="416" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="20" font-weight="700" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >C</text>
+<rect x="196" y="394" width="46" height="44" rx="3" fill="#6a3a12" stroke="#ffb784" stroke-width="2" />
+<text x="219" y="416" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="20" font-weight="700" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >A</text>
+<rect x="248" y="394" width="46" height="44" rx="3" fill="#6a3a12" stroke="#ffb784" stroke-width="2" />
+<text x="271" y="416" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="20" font-weight="700" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >B</text>
+<rect x="300" y="394" width="46" height="44" rx="3" fill="#6a3a12" stroke="#ffb784" stroke-width="2" />
+<text x="323" y="416" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="20" font-weight="700" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >C</text>
+<rect x="352" y="394" width="46" height="44" rx="3" fill="#6a3a12" stroke="#ffb784" stroke-width="2" />
+<text x="375" y="416" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="20" font-weight="700" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >A</text>
+<rect x="404" y="394" width="46" height="44" rx="3" fill="#6a3a12" stroke="#ffb784" stroke-width="2" />
+<text x="427" y="416" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="20" font-weight="700" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >B</text>
+<rect x="456" y="394" width="46" height="44" rx="3" fill="#6a3a12" stroke="#ffb784" stroke-width="2" />
+<text x="479" y="416" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="20" font-weight="700" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >C</text>
+<rect x="508" y="394" width="46" height="44" rx="3" fill="#173f78" stroke="#93b6ff" stroke-width="2" />
+<text x="531" y="416" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="20" font-weight="700" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >D</text>
+<path d="M63,442 Q141.0,478 219,442" fill="none" stroke="#ffb784" stroke-width="1.5"/>
+<path d="M115,442 Q193.0,478 271,442" fill="none" stroke="#ffb784" stroke-width="1.5"/>
+<path d="M167,442 Q245.0,478 323,442" fill="none" stroke="#ffb784" stroke-width="1.5"/>
+<path d="M219,442 Q297.0,478 375,442" fill="none" stroke="#ffb784" stroke-width="1.5"/>
+<path d="M271,442 Q349.0,478 427,442" fill="none" stroke="#ffb784" stroke-width="1.5"/>
+<path d="M323,442 Q401.0,478 479,442" fill="none" stroke="#ffb784" stroke-width="1.5"/>
+<text x="40" y="508" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="15" font-weight="400" fill="#cdd5ff" text-anchor="start" >Each copied byte comes from 3 back, even one written</text>
+<text x="40" y="530" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="15" font-weight="400" fill="#cdd5ff" text-anchor="start" >a moment ago: a short distance repeats a pattern.</text></svg>

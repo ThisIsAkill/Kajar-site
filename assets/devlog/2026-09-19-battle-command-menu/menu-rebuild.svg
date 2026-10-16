@@ -1,0 +1,76 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 900" width="600" height="900" role="img" aria-labelledby="t d"><title id="t">The battle command menu, from dirty flag to committed action</title><desc id="d">Top: the gate. If the flag at $993A is clear, nothing runs; if set, it is cleared and four routines run: DequeueReadyBattler, UpdateWindows, ProcessInput and UpdateCursorOverlay. ProcessInput decides by state: no active character, return; target selection running ($9609 non-zero), TargetSelectInput; the tech or item list open ($95DB), that list's input handler; otherwise the main menu, where left and right change character, up and down move the row, and confirm runs ConfirmCommand. Row 0 Attack sets target mode $07, builds the target list and starts target selection; row 1 opens the tech list; row 2 the item list. Confirming a target runs CommitAction, which writes the 8-byte action record.</desc><defs><linearGradient id="win" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#4157c9"/><stop offset=".48" stop-color="#23318f"/><stop offset="1" stop-color="#121a58"/></linearGradient></defs><rect x="1.5" y="1.5" width="597" height="897" rx="9" fill="url(#win)" stroke="#070b2e" stroke-width="3"/><rect x="4.5" y="4.5" width="591" height="891" rx="7" fill="none" stroke="#eef1ff" stroke-width="3"/><rect x="8" y="8" width="584" height="884" rx="5" fill="none" stroke="#8e9ce6" stroke-width="1" opacity=".7"/><rect x="28" y="23" width="10" height="10" fill="#ffd76e"/>
+<text x="48" y="33" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="17" font-weight="700" fill="#ffd76e" text-anchor="start" dominant-baseline="central" letter-spacing="1">ONE MENU REBUILD</text>
+<rect x="154" y="64" width="300" height="60" rx="3" fill="#070b2e" opacity=".55"/>
+<rect x="150" y="60" width="300" height="60" rx="3" fill="#0b1145" stroke="#eef1ff" stroke-width="2" />
+<text x="300.0" y="79.0" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="18" font-weight="700" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >$993A set?</text>
+<text x="300.0" y="101.0" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="16" font-weight="400" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >the dirty flag</text>
+<path d="M454,90 L478,90" fill="none" stroke="#ff8a80" stroke-width="2.5" stroke-linejoin="miter"/>
+<path d="M478.0,90.0 L466.0,97.0 L466.0,83.0 Z" fill="#ff8a80"/>
+<text x="484" y="90" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="15" font-weight="400" fill="#ff8a80" text-anchor="start" dominant-baseline="central" >no: return</text>
+<path d="M300,124 L300,148" fill="none" stroke="#ffd76e" stroke-width="2.5" stroke-linejoin="miter"/>
+<path d="M300.0,148.0 L293.0,136.0 L307.0,136.0 Z" fill="#ffd76e"/>
+<text x="312" y="138" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="14" font-weight="400" fill="#cdd5ff" text-anchor="start" dominant-baseline="central" >yes: clear it</text>
+<rect x="40" y="152" width="256" height="44" rx="3" fill="#173f78" stroke="#93b6ff" stroke-width="2" />
+<text x="168.0" y="174.0" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="15" font-weight="400" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >1 DequeueReadyBattler</text>
+<rect x="304" y="152" width="256" height="44" rx="3" fill="#173f78" stroke="#93b6ff" stroke-width="2" />
+<text x="432.0" y="174.0" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="15" font-weight="400" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >2 UpdateWindows</text>
+<rect x="40" y="204" width="256" height="44" rx="3" fill="#5a420c" stroke="#ffd76e" stroke-width="2" />
+<text x="168.0" y="226.0" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="15" font-weight="400" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >3 ProcessInput</text>
+<rect x="304" y="204" width="256" height="44" rx="3" fill="#173f78" stroke="#93b6ff" stroke-width="2" />
+<text x="432.0" y="226.0" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="15" font-weight="400" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >4 UpdateCursorOverlay</text>
+<path d="M168,248 L168,262" stroke="#ffd76e" stroke-width="2.5" stroke-dasharray="5 4"/>
+<rect x="24" y="266" width="552" height="600" rx="6" fill="none" stroke="#ffd76e" stroke-width="1.5" stroke-dasharray="6 5"/>
+<text x="40" y="292" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="17" font-weight="700" fill="#ffd76e" text-anchor="start" >Inside ProcessInput</text>
+<rect x="40" y="310" width="220" height="44" rx="3" fill="#0b1145" stroke="#eef1ff" stroke-width="2" />
+<text x="150.0" y="332.0" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="15" font-weight="400" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >active character?</text>
+<path d="M264,332 L296,332" fill="none" stroke="#ffd76e" stroke-width="2" stroke-linejoin="miter"/>
+<path d="M296.0,332.0 L284.0,339.0 L284.0,325.0 Z" fill="#ffd76e"/>
+<text x="304" y="332" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="15" font-weight="400" fill="#ffffff" text-anchor="start" dominant-baseline="central" >no -&gt; return</text>
+<path d="M150,356 L150,370" fill="none" stroke="#ffd76e" stroke-width="2" stroke-linejoin="miter"/>
+<path d="M150.0,370.0 L143.0,358.0 L157.0,358.0 Z" fill="#ffd76e"/>
+<rect x="40" y="372" width="220" height="44" rx="3" fill="#0b1145" stroke="#eef1ff" stroke-width="2" />
+<text x="150.0" y="394.0" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="15" font-weight="400" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >$9609 targeting?</text>
+<path d="M264,394 L296,394" fill="none" stroke="#ffd76e" stroke-width="2" stroke-linejoin="miter"/>
+<path d="M296.0,394.0 L284.0,401.0 L284.0,387.0 Z" fill="#ffd76e"/>
+<text x="304" y="394" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="15" font-weight="400" fill="#ffffff" text-anchor="start" dominant-baseline="central" >yes -&gt; TargetSelectInput</text>
+<path d="M150,418 L150,432" fill="none" stroke="#ffd76e" stroke-width="2" stroke-linejoin="miter"/>
+<path d="M150.0,432.0 L143.0,420.0 L157.0,420.0 Z" fill="#ffd76e"/>
+<rect x="40" y="434" width="220" height="44" rx="3" fill="#0b1145" stroke="#eef1ff" stroke-width="2" />
+<text x="150.0" y="456.0" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="15" font-weight="400" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >$95DB = 1 or 2?</text>
+<path d="M264,456 L296,456" fill="none" stroke="#ffd76e" stroke-width="2" stroke-linejoin="miter"/>
+<path d="M296.0,456.0 L284.0,463.0 L284.0,449.0 Z" fill="#ffd76e"/>
+<text x="304" y="456" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="15" font-weight="400" fill="#ffffff" text-anchor="start" dominant-baseline="central" >yes -&gt; tech or item list input</text>
+<path d="M150,480 L150,494" fill="none" stroke="#ffd76e" stroke-width="2" stroke-linejoin="miter"/>
+<path d="M150.0,494.0 L143.0,482.0 L157.0,482.0 Z" fill="#ffd76e"/>
+<rect x="40" y="496" width="520" height="50" rx="3" fill="#0b1145" stroke="#eef1ff" stroke-width="2" />
+<text x="300.0" y="521.0" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="16" font-weight="400" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >main menu: read the pad edges</text>
+<path d="M150,550 L150,566" fill="none" stroke="#ffd76e" stroke-width="2" stroke-linejoin="miter"/>
+<path d="M150.0,566.0 L143.0,554.0 L157.0,554.0 Z" fill="#ffd76e"/>
+<path d="M450,550 L450,566" fill="none" stroke="#ffd76e" stroke-width="2" stroke-linejoin="miter"/>
+<path d="M450.0,566.0 L443.0,554.0 L457.0,554.0 Z" fill="#ffd76e"/>
+<rect x="40" y="570" width="220" height="64" rx="3" fill="#0b1145" stroke="#8e9ce6" stroke-width="2" />
+<text x="150.0" y="591.0" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="16" font-weight="700" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >left / right</text>
+<text x="150.0" y="613.0" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="14" font-weight="400" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >change character</text>
+<rect x="340" y="570" width="220" height="64" rx="3" fill="#5a420c" stroke="#ffd76e" stroke-width="2" />
+<text x="450.0" y="591.0" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="16" font-weight="700" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >confirm</text>
+<text x="450.0" y="613.0" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="14" font-weight="400" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >ConfirmCommand</text>
+<text x="150" y="658" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="14" font-weight="400" fill="#cdd5ff" text-anchor="middle" >up / down: move the row, $95DC</text>
+<rect x="40" y="694" width="168" height="82" rx="3" fill="#3d2477" stroke="#c7a6ff" stroke-width="2" />
+<text x="124.0" y="714.0" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="16" font-weight="700" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >row 0: Att.</text>
+<text x="124.0" y="735.0" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="14" font-weight="400" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >mode $07, target list,</text>
+<text x="124.0" y="756.0" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="14" font-weight="400" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >start targeting</text>
+<rect x="216" y="694" width="168" height="82" rx="3" fill="#3d2477" stroke="#c7a6ff" stroke-width="2" />
+<text x="300.0" y="724.5" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="16" font-weight="700" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >row 1: Tech</text>
+<text x="300.0" y="745.5" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="14" font-weight="400" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >OpenTechList</text>
+<rect x="392" y="694" width="168" height="82" rx="3" fill="#3d2477" stroke="#c7a6ff" stroke-width="2" />
+<text x="476.0" y="724.5" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="16" font-weight="700" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >row 2: Item</text>
+<text x="476.0" y="745.5" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="14" font-weight="400" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >OpenItemList</text>
+<path d="M450,636 L450,686 L124,686 L124,692" fill="none" stroke="#ffd76e" stroke-width="2" stroke-linejoin="miter"/>
+<path d="M124.0,692.0 L117.0,680.0 L131.0,680.0 Z" fill="#ffd76e"/>
+<path d="M450,686 L300,686 L300,692" fill="none" stroke="#ffd76e" stroke-width="2" stroke-linejoin="miter"/>
+<path d="M300.0,692.0 L293.0,680.0 L307.0,680.0 Z" fill="#ffd76e"/>
+<path d="M450,686 L476,686 L476,692" fill="none" stroke="#ffd76e" stroke-width="2" stroke-linejoin="miter"/>
+<path d="M476.0,692.0 L469.0,680.0 L483.0,680.0 Z" fill="#ffd76e"/>
+<rect x="40" y="798" width="520" height="54" rx="3" fill="#1d4a26" stroke="#8fe07a" stroke-width="2" />
+<text x="300.0" y="814.0" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="16" font-weight="700" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >confirm a target -&gt; CommitAction</text>
+<text x="300.0" y="836.0" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="14" font-weight="400" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >writes the 8-byte action record</text></svg>

@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 620" width="600" height="620" role="img" aria-labelledby="t d"><title id="t">Which Y results the sprite code keeps</title><desc id="d">Three number lines over the 8-bit sum of a tile's Y offset and the sprite's base Y, from $00 to $FF, for the three Y paths in Sub_BCDC. Base Y below $80 (BPL, CMP #$E0, BCS): $00-$7F and $E0-$FF are kept, $80-$DF become $E0. Base Y $80 or more (CMP #$E0, BCC): $00-$DF are kept, $E0-$FF become $E0. Base Y bit 8 set (BCC, CMP #$E0, BCS): only a sum that carried and lands in $E0-$FF is kept; everything else becomes $E0, which hides the tile below the screen.</desc><defs><linearGradient id="win" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#4157c9"/><stop offset=".48" stop-color="#23318f"/><stop offset="1" stop-color="#121a58"/></linearGradient></defs><rect x="1.5" y="1.5" width="597" height="617" rx="9" fill="url(#win)" stroke="#070b2e" stroke-width="3"/><rect x="4.5" y="4.5" width="591" height="611" rx="7" fill="none" stroke="#eef1ff" stroke-width="3"/><rect x="8" y="8" width="584" height="604" rx="5" fill="none" stroke="#8e9ce6" stroke-width="1" opacity=".7"/><rect x="28" y="23" width="10" height="10" fill="#ffd76e"/>
+<text x="48" y="33" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="17" font-weight="700" fill="#ffd76e" text-anchor="start" dominant-baseline="central" letter-spacing="1">Y = OFFSET + BASE Y, THEN CLAMP</text>
+<text x="40" y="90" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="18" font-weight="700" fill="#ffffff" text-anchor="start" >Base Y below $80</text>
+<text x="40" y="114" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="15" font-weight="400" fill="#cdd5ff" text-anchor="start" >BPL keep / CMP #$E0 / BCS keep / else $E0</text>
+<rect x="40.0" y="130" width="260.0" height="34" fill="#1d4a26" stroke="#8fe07a" stroke-width="2"/>
+<text x="170.0" y="147" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="15" font-weight="700" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >kept</text>
+<rect x="300.0" y="130" width="195.0" height="34" fill="#6b1d1a" stroke="#ff8a80" stroke-width="2"/>
+<text x="397.5" y="147" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="15" font-weight="700" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >-&gt; $E0</text>
+<rect x="495.0" y="130" width="65.0" height="34" fill="#1d4a26" stroke="#8fe07a" stroke-width="2"/>
+<text x="527.5" y="147" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="15" font-weight="700" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >kept</text>
+<line x1="40.0" y1="164" x2="40.0" y2="172" stroke="#cdd5ff" stroke-width="1.5"/>
+<text x="40.0" y="188" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="14" font-weight="400" fill="#cdd5ff" text-anchor="start" >$00</text>
+<line x1="300.0" y1="164" x2="300.0" y2="172" stroke="#cdd5ff" stroke-width="1.5"/>
+<text x="300.0" y="188" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="14" font-weight="400" fill="#cdd5ff" text-anchor="middle" >$80</text>
+<line x1="495.0" y1="164" x2="495.0" y2="172" stroke="#cdd5ff" stroke-width="1.5"/>
+<text x="495.0" y="188" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="14" font-weight="400" fill="#cdd5ff" text-anchor="middle" >$E0</text>
+<line x1="560.0" y1="164" x2="560.0" y2="172" stroke="#cdd5ff" stroke-width="1.5"/>
+<text x="560.0" y="188" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="14" font-weight="400" fill="#cdd5ff" text-anchor="end" >$FF</text>
+<text x="40" y="240" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="18" font-weight="700" fill="#ffffff" text-anchor="start" >Base Y $80 or more</text>
+<text x="40" y="264" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="15" font-weight="400" fill="#cdd5ff" text-anchor="start" >CMP #$E0 / BCC keep / else $E0</text>
+<rect x="40.0" y="280" width="455.0" height="34" fill="#1d4a26" stroke="#8fe07a" stroke-width="2"/>
+<text x="267.5" y="297" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="15" font-weight="700" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >kept</text>
+<rect x="495.0" y="280" width="65.0" height="34" fill="#6b1d1a" stroke="#ff8a80" stroke-width="2"/>
+<text x="527.5" y="297" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="15" font-weight="700" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >-&gt; $E0</text>
+<line x1="40.0" y1="314" x2="40.0" y2="322" stroke="#cdd5ff" stroke-width="1.5"/>
+<text x="40.0" y="338" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="14" font-weight="400" fill="#cdd5ff" text-anchor="start" >$00</text>
+<line x1="300.0" y1="314" x2="300.0" y2="322" stroke="#cdd5ff" stroke-width="1.5"/>
+<text x="300.0" y="338" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="14" font-weight="400" fill="#cdd5ff" text-anchor="middle" >$80</text>
+<line x1="495.0" y1="314" x2="495.0" y2="322" stroke="#cdd5ff" stroke-width="1.5"/>
+<text x="495.0" y="338" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="14" font-weight="400" fill="#cdd5ff" text-anchor="middle" >$E0</text>
+<line x1="560.0" y1="314" x2="560.0" y2="322" stroke="#cdd5ff" stroke-width="1.5"/>
+<text x="560.0" y="338" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="14" font-weight="400" fill="#cdd5ff" text-anchor="end" >$FF</text>
+<text x="40" y="390" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="18" font-weight="700" fill="#ffffff" text-anchor="start" >Base Y bit 8 set</text>
+<text x="40" y="414" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="15" font-weight="400" fill="#cdd5ff" text-anchor="start" >BCC -&gt; $E0 / CMP #$E0 / BCS keep / else $E0</text>
+<rect x="40.0" y="430" width="455.0" height="34" fill="#6b1d1a" stroke="#ff8a80" stroke-width="2"/>
+<text x="267.5" y="447" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="15" font-weight="700" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >-&gt; $E0</text>
+<rect x="495.0" y="430" width="65.0" height="34" fill="#1d4a26" stroke="#8fe07a" stroke-width="2"/>
+<text x="527.5" y="447" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="15" font-weight="700" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >kept*</text>
+<line x1="40.0" y1="464" x2="40.0" y2="472" stroke="#cdd5ff" stroke-width="1.5"/>
+<text x="40.0" y="488" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="14" font-weight="400" fill="#cdd5ff" text-anchor="start" >$00</text>
+<line x1="300.0" y1="464" x2="300.0" y2="472" stroke="#cdd5ff" stroke-width="1.5"/>
+<text x="300.0" y="488" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="14" font-weight="400" fill="#cdd5ff" text-anchor="middle" >$80</text>
+<line x1="495.0" y1="464" x2="495.0" y2="472" stroke="#cdd5ff" stroke-width="1.5"/>
+<text x="495.0" y="488" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="14" font-weight="400" fill="#cdd5ff" text-anchor="middle" >$E0</text>
+<line x1="560.0" y1="464" x2="560.0" y2="472" stroke="#cdd5ff" stroke-width="1.5"/>
+<text x="560.0" y="488" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="14" font-weight="400" fill="#cdd5ff" text-anchor="end" >$FF</text>
+<text x="40" y="548" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="15" font-weight="400" fill="#ffd76e" text-anchor="start" >* only if the add carried; without a carry every sum is $E0.</text>
+<text x="40" y="576" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="15" font-weight="400" fill="#cdd5ff" text-anchor="start" >Y = $E0 parks a tile below the 224-line screen.</text></svg>

@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 620" width="600" height="620" role="img" aria-labelledby="t d"><title id="t">How the game's text is compressed</title><desc id="d">Top: what a text byte means in the message decoder. $00-$20 are control codes, $21-$9F are the 127 dictionary entries, and $A0-$FF are glyphs of the font. Bottom: a made-up example of the greedy rule with a toy dictionary (the, he, ri, ing, in). At each position the encoder takes the longest entry that fits: 'the', then ' ri', then no entry fits so 'n' and 'g' are single glyphs. Eight characters become four bytes. The game's own encoder skips three entries that no string uses.</desc><defs><linearGradient id="win" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#4157c9"/><stop offset=".48" stop-color="#23318f"/><stop offset="1" stop-color="#121a58"/></linearGradient></defs><rect x="1.5" y="1.5" width="597" height="617" rx="9" fill="url(#win)" stroke="#070b2e" stroke-width="3"/><rect x="4.5" y="4.5" width="591" height="611" rx="7" fill="none" stroke="#eef1ff" stroke-width="3"/><rect x="8" y="8" width="584" height="604" rx="5" fill="none" stroke="#8e9ce6" stroke-width="1" opacity=".7"/><rect x="28" y="23" width="10" height="10" fill="#ffd76e"/>
+<text x="48" y="33" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="17" font-weight="700" fill="#ffd76e" text-anchor="start" dominant-baseline="central" letter-spacing="1">TEXT BYTES</text>
+<rect x="30.0" y="66" width="69.6" height="52" fill="#2a3170" stroke="#b9c1ec" stroke-width="2"/>
+<text x="64.8046875" y="92" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="15" font-weight="700" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >control</text>
+<rect x="99.6" y="66" width="267.9" height="52" fill="#6a3a12" stroke="#ffb784" stroke-width="2"/>
+<text x="233.5546875" y="92" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="17" font-weight="700" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >dictionary: 127 entries</text>
+<rect x="367.5" y="66" width="202.5" height="52" fill="#173f78" stroke="#93b6ff" stroke-width="2"/>
+<text x="468.75" y="92" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="17" font-weight="700" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >glyphs</text>
+<text x="30.0" y="140" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="14" font-weight="400" fill="#cdd5ff" text-anchor="start" >$00</text>
+<text x="99.609375" y="140" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="14" font-weight="400" fill="#cdd5ff" text-anchor="middle" >$21</text>
+<text x="367.5" y="140" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="14" font-weight="400" fill="#cdd5ff" text-anchor="middle" >$A0</text>
+<text x="570.0" y="140" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="14" font-weight="400" fill="#cdd5ff" text-anchor="end" >$FF</text>
+<line x1="30" y1="166" x2="570" y2="166" stroke="#8e9ce6" stroke-width="1" stroke-dasharray="4 4"/>
+<rect x="28" y="189" width="10" height="10" fill="#ffd76e"/>
+<text x="48" y="199" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="17" font-weight="700" fill="#ffd76e" text-anchor="start" dominant-baseline="central" letter-spacing="1">GREEDY, LONGEST FIRST (TOY DATA)</text>
+<text x="40" y="236" font-size="16" text-anchor="start"><tspan font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" fill="#cdd5ff" font-weight="400">toy dictionary: </tspan><tspan font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" fill="#ffb784" font-weight="700">the  he   ri  ing  in</tspan></text>
+<rect x="60" y="262" width="54" height="48" rx="3" fill="#0b1145" stroke="#eef1ff" stroke-width="2" />
+<text x="87" y="286" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="22" font-weight="700" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >t</text>
+<rect x="120" y="262" width="54" height="48" rx="3" fill="#0b1145" stroke="#eef1ff" stroke-width="2" />
+<text x="147" y="286" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="22" font-weight="700" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >h</text>
+<rect x="180" y="262" width="54" height="48" rx="3" fill="#0b1145" stroke="#eef1ff" stroke-width="2" />
+<text x="207" y="286" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="22" font-weight="700" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >e</text>
+<rect x="240" y="262" width="54" height="48" rx="3" fill="#0b1145" stroke="#eef1ff" stroke-width="2" />
+<text x="267" y="286" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="22" font-weight="700" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >·</text>
+<rect x="300" y="262" width="54" height="48" rx="3" fill="#0b1145" stroke="#eef1ff" stroke-width="2" />
+<text x="327" y="286" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="22" font-weight="700" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >r</text>
+<rect x="360" y="262" width="54" height="48" rx="3" fill="#0b1145" stroke="#eef1ff" stroke-width="2" />
+<text x="387" y="286" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="22" font-weight="700" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >i</text>
+<rect x="420" y="262" width="54" height="48" rx="3" fill="#0b1145" stroke="#eef1ff" stroke-width="2" />
+<text x="447" y="286" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="22" font-weight="700" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >n</text>
+<rect x="480" y="262" width="54" height="48" rx="3" fill="#0b1145" stroke="#eef1ff" stroke-width="2" />
+<text x="507" y="286" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="22" font-weight="700" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >g</text>
+<path d="M60,322 v10 H234 v-10" fill="none" stroke="#ffb784" stroke-width="3"/>
+<text x="147.0" y="356" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="16" font-weight="700" fill="#ffb784" text-anchor="middle" >[the]</text>
+<text x="147.0" y="380" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="13" font-weight="400" fill="#cdd5ff" text-anchor="middle" >byte 1</text>
+<path d="M240,322 v10 H414 v-10" fill="none" stroke="#ffb784" stroke-width="3"/>
+<text x="327.0" y="356" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="16" font-weight="700" fill="#ffb784" text-anchor="middle" >[·ri]</text>
+<text x="327.0" y="380" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="13" font-weight="400" fill="#cdd5ff" text-anchor="middle" >byte 2</text>
+<path d="M420,322 v10 H474 v-10" fill="none" stroke="#93b6ff" stroke-width="3"/>
+<text x="447.0" y="356" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="16" font-weight="700" fill="#93b6ff" text-anchor="middle" >n</text>
+<text x="447.0" y="380" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="13" font-weight="400" fill="#cdd5ff" text-anchor="middle" >byte 3</text>
+<path d="M480,322 v10 H534 v-10" fill="none" stroke="#93b6ff" stroke-width="3"/>
+<text x="507.0" y="356" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="16" font-weight="700" fill="#93b6ff" text-anchor="middle" >g</text>
+<text x="507.0" y="380" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="13" font-weight="400" fill="#cdd5ff" text-anchor="middle" >byte 4</text>
+<text x="40" y="424" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="16" font-weight="400" fill="#ffffff" text-anchor="start" >1. 'the' is the longest entry at the start (not 'he').</text>
+<text x="40" y="452" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="16" font-weight="400" fill="#ffffff" text-anchor="start" >2. ' ri' next. That uses the i, so 'ing' can't match.</text>
+<text x="40" y="480" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="16" font-weight="400" fill="#ffffff" text-anchor="start" >3. Nothing fits 'n' or 'g': one glyph byte each.</text>
+<text x="40" y="520" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="16" font-weight="400" fill="#ffd76e" text-anchor="start" >8 characters -&gt; 4 bytes. The rule needs no stored choices,</text>
+<text x="40" y="546" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="16" font-weight="400" fill="#ffd76e" text-anchor="start" >so the text can be kept spelled out and re-encoded exactly.</text>
+<text x="40" y="586" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="15" font-weight="400" fill="#cdd5ff" text-anchor="start" >(The game's encoder skips 3 entries no string uses.)</text></svg>

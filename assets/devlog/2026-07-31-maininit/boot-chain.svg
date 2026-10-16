@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 500" width="600" height="500" role="img" aria-labelledby="t d"><title id="t">From power-on to GameLoop</title><desc id="d">At power-on the CPU reads the RESET vector at $00:FFFC, which holds $FF00. The reset stub at $00:FF00 (SEI, CLC, XCE, JML) switches to native mode and jumps to MainInit at $FD:C000. MainInit's 215 bytes, $FD:C000 to $FD:C0D6, set up the CPU and PPU and end with JML $C0:000E at $FD:C0D3, which enters GameLoop.</desc><defs><linearGradient id="win" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#4157c9"/><stop offset=".48" stop-color="#23318f"/><stop offset="1" stop-color="#121a58"/></linearGradient></defs><rect x="1.5" y="1.5" width="597" height="497" rx="9" fill="url(#win)" stroke="#070b2e" stroke-width="3"/><rect x="4.5" y="4.5" width="591" height="491" rx="7" fill="none" stroke="#eef1ff" stroke-width="3"/><rect x="8" y="8" width="584" height="484" rx="5" fill="none" stroke="#8e9ce6" stroke-width="1" opacity=".7"/><rect x="28" y="23" width="10" height="10" fill="#ffd76e"/>
+<text x="48" y="33" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="17" font-weight="700" fill="#ffd76e" text-anchor="start" dominant-baseline="central" letter-spacing="1">POWER-ON TO GAMELOOP</text>
+<rect x="94" y="70" width="420" height="74" rx="3" fill="#070b2e" opacity=".55"/>
+<rect x="90" y="66" width="420" height="74" rx="3" fill="#14505a" stroke="#7fd8f0" stroke-width="2" />
+<text x="300.0" y="90.65" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="19" font-weight="700" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >RESET vector</text>
+<text x="300.0" y="115.35000000000001" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="17" font-weight="400" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >$00:FFFC holds $FF00</text>
+<path d="M300,144 L300,174" fill="none" stroke="#ffd76e" stroke-width="3" stroke-linejoin="miter"/>
+<path d="M300.0,174.0 L293.0,162.0 L307.0,162.0 Z" fill="#ffd76e"/>
+<rect x="94" y="180" width="420" height="74" rx="3" fill="#070b2e" opacity=".55"/>
+<rect x="90" y="176" width="420" height="74" rx="3" fill="#5a420c" stroke="#ffd76e" stroke-width="2" />
+<text x="300.0" y="200.65" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="19" font-weight="700" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >Reset stub, 7 bytes</text>
+<text x="300.0" y="225.35" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="17" font-weight="400" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >$00:FF00  SEI CLC XCE JML</text>
+<path d="M300,254 L300,284" fill="none" stroke="#ffd76e" stroke-width="3" stroke-linejoin="miter"/>
+<path d="M300.0,284.0 L293.0,272.0 L307.0,272.0 Z" fill="#ffd76e"/>
+<rect x="94" y="290" width="420" height="74" rx="3" fill="#070b2e" opacity=".55"/>
+<rect x="90" y="286" width="420" height="74" rx="3" fill="#3d2477" stroke="#c7a6ff" stroke-width="2" />
+<text x="300.0" y="310.65" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="19" font-weight="700" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >MainInit, 215 bytes</text>
+<text x="300.0" y="335.34999999999997" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="17" font-weight="400" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >$FD:C000-$C0D6  CPU + PPU setup</text>
+<path d="M300,364 L300,394" fill="none" stroke="#ffd76e" stroke-width="3" stroke-linejoin="miter"/>
+<path d="M300.0,394.0 L293.0,382.0 L307.0,382.0 Z" fill="#ffd76e"/>
+<rect x="94" y="400" width="420" height="74" rx="3" fill="#070b2e" opacity=".55"/>
+<rect x="90" y="396" width="420" height="74" rx="3" fill="#1d4a26" stroke="#8fe07a" stroke-width="2" />
+<text x="300.0" y="420.65" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="19" font-weight="700" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >GameLoop</text>
+<text x="300.0" y="445.34999999999997" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="17" font-weight="400" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >$C0:000E</text>
+<text x="318" y="162" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="15" font-weight="400" fill="#cdd5ff" text-anchor="start" >jump to $00:FF00</text>
+<text x="318" y="272" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="15" font-weight="400" fill="#cdd5ff" text-anchor="start" >JML $FDC000</text>
+<text x="318" y="382" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="15" font-weight="400" fill="#cdd5ff" text-anchor="start" >JML $C0000E (at $FD:C0D3)</text></svg>

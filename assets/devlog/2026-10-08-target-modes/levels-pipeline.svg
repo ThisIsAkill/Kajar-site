@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 700" width="600" height="700" role="img" aria-labelledby="t d"><title id="t">Matched, readable, verified</title><desc id="d">Three levels, top to bottom. Matched: the source assembles to the ROM's exact bytes (make diff, tools/verify.py). Readable: tools/lint_readability.py passes, checked in the pre-commit hook: named structures, calls and constants, explicit widths, Entry and Exit lines, a complete callers list. Verified: a reviewer who did not write the routine reads it against the ROM with only the source, the ROM and the style guide, and records a verdict tied to a hash of the routine's source. A verdict of changes goes back to the author for a fix and another round; any later edit to the routine, comments included, sends it back for review.</desc><defs><linearGradient id="win" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#4157c9"/><stop offset=".48" stop-color="#23318f"/><stop offset="1" stop-color="#121a58"/></linearGradient></defs><rect x="1.5" y="1.5" width="597" height="697" rx="9" fill="url(#win)" stroke="#070b2e" stroke-width="3"/><rect x="4.5" y="4.5" width="591" height="691" rx="7" fill="none" stroke="#eef1ff" stroke-width="3"/><rect x="8" y="8" width="584" height="684" rx="5" fill="none" stroke="#8e9ce6" stroke-width="1" opacity=".7"/><rect x="28" y="23" width="10" height="10" fill="#ffd76e"/>
+<text x="48" y="33" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="17" font-weight="700" fill="#ffd76e" text-anchor="start" dominant-baseline="central" letter-spacing="1">THREE LEVELS, ONE COUNTS</text>
+<rect x="40" y="68" width="410" height="96" rx="3" fill="#070b2e" opacity=".55"/>
+<rect x="36" y="64" width="410" height="96" rx="3" fill="#0b1145" stroke="#eef1ff" stroke-width="2" />
+<text x="241.0" y="88.0" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="19" font-weight="700" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >1  Matched</text>
+<text x="241.0" y="112.0" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="17" font-weight="400" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >assembles to the ROM's bytes</text>
+<text x="241.0" y="136.0" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="17" font-weight="400" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >make diff, tools/verify.py</text>
+<path d="M241,164 L241,190" fill="none" stroke="#ffd76e" stroke-width="3" stroke-linejoin="miter"/>
+<path d="M241.0,190.0 L234.0,178.0 L248.0,178.0 Z" fill="#ffd76e"/>
+<rect x="40" y="198" width="410" height="120" rx="3" fill="#070b2e" opacity=".55"/>
+<rect x="36" y="194" width="410" height="120" rx="3" fill="#173f78" stroke="#93b6ff" stroke-width="2" />
+<text x="241.0" y="218.0" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="19" font-weight="700" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >2  Readable</text>
+<text x="241.0" y="242.0" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="17" font-weight="400" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >lint_readability.py (pre-commit):</text>
+<text x="241.0" y="266.0" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="17" font-weight="400" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >names, not raw offsets; .b/.w/.l widths;</text>
+<text x="241.0" y="290.0" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="17" font-weight="400" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >Entry/Exit lines, every caller</text>
+<path d="M241,318 L241,344" fill="none" stroke="#ffd76e" stroke-width="3" stroke-linejoin="miter"/>
+<path d="M241.0,344.0 L234.0,332.0 L248.0,332.0 Z" fill="#ffd76e"/>
+<rect x="40" y="352" width="410" height="120" rx="3" fill="#070b2e" opacity=".55"/>
+<rect x="36" y="348" width="410" height="120" rx="3" fill="#3d2477" stroke="#c7a6ff" stroke-width="2" />
+<text x="241.0" y="372.0" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="19" font-weight="700" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >3  Independent review</text>
+<text x="241.0" y="396.0" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="17" font-weight="400" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >someone else; only source, ROM</text>
+<text x="241.0" y="420.0" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="17" font-weight="400" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >and STYLE.md; every claim</text>
+<text x="241.0" y="444.0" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="17" font-weight="400" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >checked against the bytes</text>
+<path d="M241,472 L241,498" fill="none" stroke="#ffd76e" stroke-width="3" stroke-linejoin="miter"/>
+<path d="M241.0,498.0 L234.0,486.0 L248.0,486.0 Z" fill="#ffd76e"/>
+<rect x="40" y="506" width="410" height="96" rx="3" fill="#070b2e" opacity=".55"/>
+<rect x="36" y="502" width="410" height="96" rx="3" fill="#5a420c" stroke="#ffd76e" stroke-width="2" />
+<text x="241.0" y="526.0" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="19" font-weight="700" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >Verified</text>
+<text x="241.0" y="550.0" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="17" font-weight="400" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >verdict row + source_hash</text>
+<text x="241.0" y="574.0" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="17" font-weight="400" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >in symbols/reviews/</text>
+<path d="M450,408 L480,408 L480,254 L450,254" fill="none" stroke="#ff8a80" stroke-width="2.5" stroke-linejoin="miter"/>
+<path d="M450.0,254.0 L462.0,247.0 L462.0,261.0 Z" fill="#ff8a80"/>
+<text x="490" y="310" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="15" font-weight="400" fill="#ff8a80" text-anchor="start" >changes:</text>
+<text x="490" y="332" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="15" font-weight="400" fill="#ff8a80" text-anchor="start" >fix, then</text>
+<text x="490" y="354" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="15" font-weight="400" fill="#ff8a80" text-anchor="start" >next round</text>
+<path d="M450,560 L540,560 L540,430 L452,430" fill="none" stroke="#ffb784" stroke-width="2" stroke-linejoin="miter" stroke-dasharray="6 4"/>
+<path d="M452.0,430.0 L464.0,423.0 L464.0,437.0 Z" fill="#ffb784"/>
+<text x="300" y="636" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="16" font-weight="400" fill="#cdd5ff" text-anchor="middle" >Edit the routine later, even one comment, and the</text>
+<text x="300" y="660" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="16" font-weight="400" fill="#cdd5ff" text-anchor="middle" >hash no longer matches: it goes back to review.</text></svg>
