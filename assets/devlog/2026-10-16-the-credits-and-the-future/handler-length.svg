@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 600" width="600" height="600" role="img" aria-labelledby="t d"><title id="t">Asking a handler how long its opcode is</title><desc id="d">A toy script and a toy handler. The interpreter runs the handler with the script bytes known and everything else unknown, records which script bytes it read and where it leaves the script position, and so derives the operands, the length and the exit.</desc><defs><linearGradient id="win" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#4157c9"/><stop offset=".48" stop-color="#23318f"/><stop offset="1" stop-color="#121a58"/></linearGradient></defs><rect x="1.5" y="1.5" width="597" height="597" rx="9" fill="url(#win)" stroke="#070b2e" stroke-width="3"/><rect x="4.5" y="4.5" width="591" height="591" rx="7" fill="none" stroke="#eef1ff" stroke-width="3"/><rect x="8" y="8" width="584" height="584" rx="5" fill="none" stroke="#8e9ce6" stroke-width="1" opacity=".7"/><rect x="28" y="23" width="10" height="10" fill="#ffd76e"/>
+<text x="48" y="33" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="17" font-weight="700" fill="#ffd76e" text-anchor="start" dominant-baseline="central" letter-spacing="1">A HANDLER, RUN ON SYMBOLS</text>
+<text x="40" y="84" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="17" font-weight="700" fill="#ffd76e" text-anchor="start" >The script (toy bytes)</text>
+<rect x="40" y="100" width="62" height="46" rx="3" fill="#3d2477" stroke="#8e9ce6" stroke-width="2" />
+<text x="71.0" y="123.0" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="19" font-weight="400" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >$12</text>
+<rect x="110" y="100" width="62" height="46" rx="3" fill="#1d4a26" stroke="#8e9ce6" stroke-width="2" />
+<text x="141.0" y="123.0" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="19" font-weight="400" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >$05</text>
+<rect x="180" y="100" width="62" height="46" rx="3" fill="#1d4a26" stroke="#8e9ce6" stroke-width="2" />
+<text x="211.0" y="123.0" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="19" font-weight="400" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >$40</text>
+<rect x="250" y="100" width="62" height="46" rx="3" fill="#3d2477" stroke="#8e9ce6" stroke-width="2" />
+<text x="281.0" y="123.0" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="19" font-weight="400" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >$12</text>
+<rect x="320" y="100" width="62" height="46" rx="3" fill="#0b1145" stroke="#8e9ce6" stroke-width="2" />
+<text x="351.0" y="123.0" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="19" font-weight="400" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >$00</text>
+<text x="71.0" y="176" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="16" font-weight="700" fill="#ffd76e" text-anchor="middle" >Y</text>
+<path d="M71.0,160 L71.0,150" fill="none" stroke="#ffd76e" stroke-width="2" stroke-linejoin="miter"/>
+<path d="M71.0,150.0 L78.0,162.0 L64.0,162.0 Z" fill="#ffd76e"/>
+<text x="281.0" y="176" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="16" font-weight="700" fill="#ffd76e" text-anchor="middle" >Y + 3</text>
+<path d="M281.0,160 L281.0,150" fill="none" stroke="#ffd76e" stroke-width="2" stroke-linejoin="miter"/>
+<path d="M281.0,150.0 L288.0,162.0 L274.0,162.0 Z" fill="#ffd76e"/>
+<text x="40" y="214" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="17" font-weight="700" fill="#ffd76e" text-anchor="start" >The handler for $12 (toy code)</text>
+<rect x="40" y="228" width="520" height="200" rx="3" fill="#0b1145" stroke="#8e9ce6" stroke-width="2" />
+<text x="56" y="256" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="15" font-weight="400" fill="#cdd5ff" text-anchor="start" xml:space="preserve">LDA script+1,Y   ; reads Y+1</text>
+<text x="56" y="282" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="15" font-weight="400" fill="#ffffff" text-anchor="start" xml:space="preserve">STA delay</text>
+<text x="56" y="308" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="15" font-weight="400" fill="#cdd5ff" text-anchor="start" xml:space="preserve">LDA script+2,Y   ; reads Y+2</text>
+<text x="56" y="334" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="15" font-weight="400" fill="#cdd5ff" text-anchor="start" xml:space="preserve">BEQ .stay        ; unknown: both ways</text>
+<text x="56" y="360" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="15" font-weight="400" fill="#ffffff" text-anchor="start" xml:space="preserve">STA target</text>
+<text x="56" y="386" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="15" font-weight="400" fill="#ffffff" text-anchor="start" xml:space="preserve">TYA : CLC : ADC #3 : TAY</text>
+<text x="56" y="412" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="15" font-weight="400" fill="#cdd5ff" text-anchor="start" xml:space="preserve">RTS              ; Y moved by 3: next</text>
+<text x="40" y="466" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="17" font-weight="700" fill="#ffd76e" text-anchor="start" >What the interpreter learns</text>
+<text x="56" y="498" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="17" font-weight="700" fill="#ffffff" text-anchor="start" >operands</text>
+<text x="170" y="498" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="17" font-weight="400" fill="#cdd5ff" text-anchor="start" >Y+1 and Y+2 (green)</text>
+<text x="56" y="528" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="17" font-weight="700" fill="#ffffff" text-anchor="start" >length</text>
+<text x="170" y="528" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="17" font-weight="400" fill="#cdd5ff" text-anchor="start" >3: Y is left on the next opcode</text>
+<text x="56" y="558" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="17" font-weight="700" fill="#ffffff" text-anchor="start" >exits</text>
+<text x="170" y="558" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="17" font-weight="400" fill="#cdd5ff" text-anchor="start" >next, or stay on the BEQ</text></svg>
