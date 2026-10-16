@@ -5644,27 +5644,27 @@
   "c3module": {
     "emitted_bytes": 26393,
     "unpacked_bytes": 34175,
-    "source_bytes": 16758,
+    "source_bytes": 19932,
     "code_bytes": 21017,
     "traced_code_bytes": 20615,
     "totals": {
       "matched": {
-        "functions": 213,
-        "bytes": 16758,
-        "code_bytes": 10305,
-        "data_bytes": 6453
+        "functions": 278,
+        "bytes": 19932,
+        "code_bytes": 12472,
+        "data_bytes": 7460
       },
       "readable": {
-        "functions": 213,
-        "bytes": 16758,
-        "code_bytes": 10305,
-        "data_bytes": 6453
+        "functions": 278,
+        "bytes": 19932,
+        "code_bytes": 12472,
+        "data_bytes": 7460
       },
       "verified": {
-        "functions": 213,
-        "bytes": 16758,
-        "code_bytes": 10305,
-        "data_bytes": 6453
+        "functions": 278,
+        "bytes": 19932,
+        "code_bytes": 12472,
+        "data_bytes": 7460
       }
     }
   }
