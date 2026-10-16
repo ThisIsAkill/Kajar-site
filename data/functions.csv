@@ -2912,7 +2912,7 @@ $C3:0008,$C3:000D,6,BankC3_Entry0008,$C3,Engine,code,verified,7f51016709c1,
 $C3:000E,$C3:0010,3,BankC3_Entry000E,$C3,Engine,code,verified,af222d28b647,
 $C3:0011,$C3:0013,3,BankC3_Entry0011,$C3,Engine,code,verified,291a04fa7f4f,
 $C3:0014,$C3:0076,99,C3_BootModule,$C3,Engine,code,verified,5c893917eb7e,"Leaves the field for the program packed at $C3:1313 (the bank $C3 module): points the NMI and IRQ trampolines at C3_BootNmi and C3_BootIrq, keeps the caller's A in C3_EntryArg, unpacks the module..."
-$C3:0077,$C3:01BC,326,WinFx_BuildCircle,$C3,Engine,code,verified,fa694f980c92,"Writes a window table for a circle: one 2-byte entry per line (left edge, right edge; WinFx_EmptyEntry = nothing on that line) at WinFx_TablePtr, in bank $7F if WinFx_TableBank bit 0 is set, else $7E."
+$C3:0077,$C3:01BC,326,WinFx_BuildCircle,$C3,Engine,code,verified,f06e91eab8ec,"Writes a window table for a circle: one 2-byte entry per line (left edge, right edge; WinFx_EmptyEntry = nothing on that line) at WinFx_TablePtr, in bank $7F if WinFx_TableBank bit 0 is set, else $7E."
 $C3:01BD,$C3:01C5,9,WinFx_Exit,$C3,Engine,code,verified,c37df87dad73,
 $C3:01C6,$C3:01C9,4,WinFx_FillEmpty,$C3,Engine,code,verified,f8085cacf6db,Fills window-table entries with WinFx_EmptyEntry: stores it at X and copies it forward with an MVN of WinFx_Tmp + 1 bytes into X + 2 on (the bank by WinFx_TableBank bit 0).
 $C3:01CA,$C3:01E3,26,WinFx_FillEmptyFrom,$C3,Engine,code,verified,5df1bc91b6b6,
