@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 470" width="600" height="470" role="img" aria-labelledby="t d"><title id="t">How a battle action script's header names its threads</title><desc id="d">A toy header: two mask bytes, high byte first, then one two-byte offset for each set bit. Three bits are set, so three offsets follow, each pointing at the start of a thread of opcodes further on.</desc><defs><linearGradient id="win" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#4157c9"/><stop offset=".48" stop-color="#23318f"/><stop offset="1" stop-color="#121a58"/></linearGradient></defs><rect x="1.5" y="1.5" width="597" height="467" rx="9" fill="url(#win)" stroke="#070b2e" stroke-width="3"/><rect x="4.5" y="4.5" width="591" height="461" rx="7" fill="none" stroke="#eef1ff" stroke-width="3"/><rect x="8" y="8" width="584" height="454" rx="5" fill="none" stroke="#8e9ce6" stroke-width="1" opacity=".7"/><rect x="28" y="23" width="10" height="10" fill="#ffd76e"/>
+<text x="48" y="33" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="17" font-weight="700" fill="#ffd76e" text-anchor="start" dominant-baseline="central" letter-spacing="1">A HEADER, THEN ONE THREAD PER SET BIT</text>
+<text x="40" y="84" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="17" font-weight="700" fill="#ffd76e" text-anchor="start" >The header (toy values)</text>
+<rect x="40" y="100" width="64" height="40" rx="3" fill="#3d2477" stroke="#8e9ce6" stroke-width="2" />
+<text x="72.0" y="120.0" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="17" font-weight="400" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >$01</text>
+<rect x="112" y="100" width="64" height="40" rx="3" fill="#3d2477" stroke="#8e9ce6" stroke-width="2" />
+<text x="144.0" y="120.0" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="17" font-weight="400" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >$05</text>
+<rect x="184" y="100" width="86" height="40" rx="3" fill="#1d4a26" stroke="#8e9ce6" stroke-width="2" />
+<text x="227.0" y="120.0" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="17" font-weight="400" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >+$08</text>
+<rect x="278" y="100" width="86" height="40" rx="3" fill="#1d4a26" stroke="#8e9ce6" stroke-width="2" />
+<text x="321.0" y="120.0" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="17" font-weight="400" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >+$12</text>
+<rect x="372" y="100" width="86" height="40" rx="3" fill="#1d4a26" stroke="#8e9ce6" stroke-width="2" />
+<text x="415.0" y="120.0" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="17" font-weight="400" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >+$1C</text>
+<text x="40" y="164" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="14" font-weight="400" fill="#cdd5ff" text-anchor="start" >violet: thread masks, high byte first</text>
+<text x="40" y="184" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="14" font-weight="400" fill="#cdd5ff" text-anchor="start" >green: one offset per set bit of $0105 (bits 0, 2, 8)</text>
+<text x="40" y="226" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="17" font-weight="700" fill="#ffd76e" text-anchor="start" >The threads</text>
+<rect x="40" y="244" width="90" height="40" rx="3" fill="#173f78" stroke="#8e9ce6" stroke-width="2" />
+<text x="85.0" y="264.0" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="16" font-weight="400" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >bit 0</text>
+<rect x="140" y="244" width="80" height="40" rx="3" fill="#1d4a26" stroke="#8e9ce6" stroke-width="2" />
+<text x="180.0" y="264.0" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="16" font-weight="400" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >+$08</text>
+<text x="236" y="264" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="15" font-weight="400" fill="#ffffff" text-anchor="start" dominant-baseline="central" >battler thread: moves, sounds, waits</text>
+<rect x="40" y="300" width="90" height="40" rx="3" fill="#173f78" stroke="#8e9ce6" stroke-width="2" />
+<text x="85.0" y="320.0" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="16" font-weight="400" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >bit 2</text>
+<rect x="140" y="300" width="80" height="40" rx="3" fill="#1d4a26" stroke="#8e9ce6" stroke-width="2" />
+<text x="180.0" y="320.0" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="16" font-weight="400" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >+$12</text>
+<text x="236" y="320" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="15" font-weight="400" fill="#ffffff" text-anchor="start" dominant-baseline="central" >battler thread: a second battler</text>
+<rect x="40" y="356" width="90" height="40" rx="3" fill="#173f78" stroke="#8e9ce6" stroke-width="2" />
+<text x="85.0" y="376.0" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="16" font-weight="400" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >bit 8</text>
+<rect x="140" y="356" width="80" height="40" rx="3" fill="#1d4a26" stroke="#8e9ce6" stroke-width="2" />
+<text x="180.0" y="376.0" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="16" font-weight="400" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >+$1C</text>
+<text x="236" y="376" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="15" font-weight="400" fill="#ffffff" text-anchor="start" dominant-baseline="central" >object thread: a sprite of the effect</text>
+<text x="40" y="430" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="15" font-weight="400" fill="#cdd5ff" text-anchor="start" >Each thread runs its opcodes until a return; the tools</text>
+<text x="40" y="452" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="15" font-weight="400" fill="#cdd5ff" text-anchor="start" >derived every opcode's length from the code that runs it.</text></svg>
