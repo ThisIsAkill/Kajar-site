@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 540" width="600" height="540" role="img" aria-labelledby="t d"><title id="t">How a map's attribute triples are packed into runs</title><desc id="d">A toy row of eight cells, each with three attribute bytes. Five equal cells become a run: the first byte with bit 7 set, the other two, then a count. A single cell is written as a plain entry of three bytes. Two equal cells again make a run. Twenty-four bytes of attributes become eleven.</desc><defs><linearGradient id="win" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#4157c9"/><stop offset=".48" stop-color="#23318f"/><stop offset="1" stop-color="#121a58"/></linearGradient></defs><rect x="1.5" y="1.5" width="597" height="537" rx="9" fill="url(#win)" stroke="#070b2e" stroke-width="3"/><rect x="4.5" y="4.5" width="591" height="531" rx="7" fill="none" stroke="#eef1ff" stroke-width="3"/><rect x="8" y="8" width="584" height="524" rx="5" fill="none" stroke="#8e9ce6" stroke-width="1" opacity=".7"/><rect x="28" y="23" width="10" height="10" fill="#ffd76e"/>
+<text x="48" y="33" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="17" font-weight="700" fill="#ffd76e" text-anchor="start" dominant-baseline="central" letter-spacing="1">THREE BYTES PER CELL, REPEATS AS RUNS</text>
+<text x="40" y="84" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="17" font-weight="700" fill="#ffd76e" text-anchor="start" >Attributes of eight cells (toy values)</text>
+<rect x="40" y="100" width="62" height="40" rx="2" fill="#173f78" stroke="#93b6ff" stroke-width="1.5" />
+<text x="71" y="120" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="14" font-weight="400" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >000000</text>
+<rect x="106" y="100" width="62" height="40" rx="2" fill="#173f78" stroke="#93b6ff" stroke-width="1.5" />
+<text x="137" y="120" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="14" font-weight="400" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >000000</text>
+<rect x="172" y="100" width="62" height="40" rx="2" fill="#173f78" stroke="#93b6ff" stroke-width="1.5" />
+<text x="203" y="120" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="14" font-weight="400" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >000000</text>
+<rect x="238" y="100" width="62" height="40" rx="2" fill="#173f78" stroke="#93b6ff" stroke-width="1.5" />
+<text x="269" y="120" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="14" font-weight="400" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >000000</text>
+<rect x="304" y="100" width="62" height="40" rx="2" fill="#173f78" stroke="#93b6ff" stroke-width="1.5" />
+<text x="335" y="120" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="14" font-weight="400" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >000000</text>
+<rect x="370" y="100" width="62" height="40" rx="2" fill="#1d4a26" stroke="#8fe07a" stroke-width="1.5" />
+<text x="401" y="120" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="14" font-weight="400" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >010400</text>
+<rect x="436" y="100" width="62" height="40" rx="2" fill="#6a3a12" stroke="#ffb784" stroke-width="1.5" />
+<text x="467" y="120" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="14" font-weight="400" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >000080</text>
+<rect x="502" y="100" width="62" height="40" rx="2" fill="#6a3a12" stroke="#ffb784" stroke-width="1.5" />
+<text x="533" y="120" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="14" font-weight="400" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >000080</text>
+<text x="40" y="164" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="14" font-weight="400" fill="#cdd5ff" text-anchor="start" >each cell: HiBits, AttrA, AttrB (one byte each)</text>
+<text x="40" y="214" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="17" font-weight="700" fill="#ffd76e" text-anchor="start" >Packed stream</text>
+<rect x="40" y="230" width="40" height="40" rx="2" fill="#173f78" stroke="#ffd76e" stroke-width="3" />
+<text x="60" y="250" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="16" font-weight="700" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >80</text>
+<rect x="84" y="230" width="40" height="40" rx="2" fill="#173f78" stroke="#93b6ff" stroke-width="1.5" />
+<text x="104" y="250" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="16" font-weight="700" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >00</text>
+<rect x="128" y="230" width="40" height="40" rx="2" fill="#173f78" stroke="#93b6ff" stroke-width="1.5" />
+<text x="148" y="250" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="16" font-weight="700" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >00</text>
+<rect x="172" y="230" width="40" height="40" rx="2" fill="#173f78" stroke="#93b6ff" stroke-width="1.5" />
+<text x="192" y="250" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="16" font-weight="700" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >05</text>
+<text x="126.0" y="292" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="14" font-weight="400" fill="#93b6ff" text-anchor="middle" >run: 5 cells</text>
+<rect x="228" y="230" width="40" height="40" rx="2" fill="#1d4a26" stroke="#8fe07a" stroke-width="1.5" />
+<text x="248" y="250" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="16" font-weight="700" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >01</text>
+<rect x="272" y="230" width="40" height="40" rx="2" fill="#1d4a26" stroke="#8fe07a" stroke-width="1.5" />
+<text x="292" y="250" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="16" font-weight="700" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >04</text>
+<rect x="316" y="230" width="40" height="40" rx="2" fill="#1d4a26" stroke="#8fe07a" stroke-width="1.5" />
+<text x="336" y="250" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="16" font-weight="700" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >00</text>
+<text x="292.0" y="292" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="14" font-weight="400" fill="#8fe07a" text-anchor="middle" >entry: 1 cell</text>
+<rect x="372" y="230" width="40" height="40" rx="2" fill="#6a3a12" stroke="#ffd76e" stroke-width="3" />
+<text x="392" y="250" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="16" font-weight="700" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >80</text>
+<rect x="416" y="230" width="40" height="40" rx="2" fill="#6a3a12" stroke="#ffb784" stroke-width="1.5" />
+<text x="436" y="250" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="16" font-weight="700" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >00</text>
+<rect x="460" y="230" width="40" height="40" rx="2" fill="#6a3a12" stroke="#ffb784" stroke-width="1.5" />
+<text x="480" y="250" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="16" font-weight="700" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >80</text>
+<rect x="504" y="230" width="40" height="40" rx="2" fill="#6a3a12" stroke="#ffb784" stroke-width="1.5" />
+<text x="524" y="250" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="16" font-weight="700" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >02</text>
+<text x="458.0" y="292" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="14" font-weight="400" fill="#ffb784" text-anchor="middle" >run: 2 cells</text>
+<text x="40" y="340" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="15" font-weight="700" fill="#ffffff" text-anchor="start" >First byte has bit 7 set?</text>
+<text x="40" y="362" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="15" font-weight="400" fill="#cdd5ff" text-anchor="start" >yes: a run. The byte AND $7F, the next two bytes,</text>
+<text x="40" y="384" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="15" font-weight="400" fill="#cdd5ff" text-anchor="start" >then a count of cells that all get them (0 = 256).</text>
+<text x="40" y="406" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="15" font-weight="400" fill="#cdd5ff" text-anchor="start" >no: one cell's three bytes.</text>
+<text x="40" y="428" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="15" font-weight="400" fill="#cdd5ff" text-anchor="start" ></text>
+<text x="40" y="450" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="15" font-weight="700" fill="#ffffff" text-anchor="start" >Runs carry on past the end of a row.</text>
+<text x="40" y="472" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="15" font-weight="400" fill="#cdd5ff" text-anchor="start" >Every one of the 197 maps is written the same way: any repeat of</text>
+<text x="40" y="494" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="15" font-weight="400" fill="#cdd5ff" text-anchor="start" >two or more is a run. So the text keeps only the grid of cells,</text>
+<text x="40" y="516" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="15" font-weight="400" fill="#cdd5ff" text-anchor="start" >and the assembler makes the runs again, byte for byte.</text></svg>

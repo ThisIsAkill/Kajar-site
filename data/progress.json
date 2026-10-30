@@ -18,9 +18,9 @@
       "data_bytes": 23638
     },
     "verified": {
-      "functions": 3736,
-      "bytes": 272889,
-      "code_bytes": 249251,
+      "functions": 3734,
+      "bytes": 272687,
+      "code_bytes": 249049,
       "data_bytes": 23638
     }
   },
@@ -44,9 +44,9 @@
         "data_bytes": 4679
       },
       "verified": {
-        "functions": 747,
-        "bytes": 65536,
-        "code_bytes": 60857,
+        "functions": 746,
+        "bytes": 65411,
+        "code_bytes": 60732,
         "data_bytes": 4679
       }
     },
@@ -319,9 +319,9 @@
         "data_bytes": 6695
       },
       "verified": {
-        "functions": 158,
-        "bytes": 22363,
-        "code_bytes": 15668,
+        "functions": 157,
+        "bytes": 22286,
+        "code_bytes": 15591,
         "data_bytes": 6695
       }
     },

@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 560" width="600" height="560" role="img" aria-labelledby="t d"><title id="t">Where the ROM's 4,194,304 bytes come from in the build</title><desc id="d">A bar for the 4,194,304-byte ROM split by what the build makes each byte from: code source, 306,435 bytes; fill, pointers, 70,435 bytes; text, records, 225,266 bytes; scripts, 437,966 bytes; graphics, 1,493,093 bytes; maps, 555,262 bytes; still bytes, 1,105,847 bytes. Packed data is counted at its packed size in the ROM.</desc><defs><linearGradient id="win" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#4157c9"/><stop offset=".48" stop-color="#23318f"/><stop offset="1" stop-color="#121a58"/></linearGradient></defs><rect x="1.5" y="1.5" width="597" height="557" rx="9" fill="url(#win)" stroke="#070b2e" stroke-width="3"/><rect x="4.5" y="4.5" width="591" height="551" rx="7" fill="none" stroke="#eef1ff" stroke-width="3"/><rect x="8" y="8" width="584" height="544" rx="5" fill="none" stroke="#8e9ce6" stroke-width="1" opacity=".7"/><rect x="28" y="23" width="10" height="10" fill="#ffd76e"/>
+<text x="48" y="33" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="17" font-weight="700" fill="#ffd76e" text-anchor="start" dominant-baseline="central" letter-spacing="1">THE ROM'S 4 MB, BY WHAT BUILDS IT</text>
+<rect x="40.0" y="76" width="38.0" height="54" fill="#5a420c" stroke="#ffd76e" stroke-width="1.5"/>
+<rect x="78.0" y="76" width="8.7" height="54" fill="#2a3170" stroke="#b9c1ec" stroke-width="1.5"/>
+<rect x="86.7" y="76" width="27.9" height="54" fill="#14505a" stroke="#7fd8f0" stroke-width="1.5"/>
+<rect x="114.7" y="76" width="54.3" height="54" fill="#3d2477" stroke="#c7a6ff" stroke-width="1.5"/>
+<rect x="168.9" y="76" width="185.1" height="54" fill="#1d4a26" stroke="#8fe07a" stroke-width="1.5"/>
+<rect x="354.1" y="76" width="68.8" height="54" fill="#173f78" stroke="#93b6ff" stroke-width="1.5"/>
+<rect x="422.9" y="76" width="137.1" height="54" fill="#6b1d1a" stroke="#ff8a80" stroke-width="1.5"/>
+<rect x="40" y="76" width="520" height="54" rx="0" fill="none" stroke="#eef1ff" stroke-width="2" />
+<line x1="86.72346115112305" y1="140" x2="422.8996753692627" y2="140" stroke="#ffffff" stroke-width="2"/>
+<line x1="86.72346115112305" y1="134" x2="86.72346115112305" y2="146" stroke="#ffffff" stroke-width="2"/>
+<line x1="422.8996753692627" y1="134" x2="422.8996753692627" y2="146" stroke="#ffffff" stroke-width="2"/>
+<text x="254.81156826019287" y="164" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="15" font-weight="700" fill="#ffffff" text-anchor="middle" >data in readable form: 2,711,587 B (64.6%)</text>
+<rect x="40" y="196" width="18" height="18" rx="2" fill="#5a420c" stroke="#ffd76e" stroke-width="1.5" />
+<text x="70" y="205" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="16" font-weight="700" fill="#ffffff" text-anchor="start" dominant-baseline="central" >code source</text>
+<text x="70" y="224" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="13" font-weight="400" fill="#cdd5ff" text-anchor="start" dominant-baseline="central" >65816 code, its tables, the $C3 module</text>
+<text x="470" y="205" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="15" font-weight="400" fill="#ffffff" text-anchor="end" dominant-baseline="central" >306,435</text>
+<text x="560" y="205" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="15" font-weight="400" fill="#ffd76e" text-anchor="end" dominant-baseline="central" >7.3%</text>
+<rect x="40" y="238" width="18" height="18" rx="2" fill="#2a3170" stroke="#b9c1ec" stroke-width="1.5" />
+<text x="70" y="247" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="16" font-weight="700" fill="#ffffff" text-anchor="start" dominant-baseline="central" >fill, pointers</text>
+<text x="70" y="266" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="13" font-weight="400" fill="#cdd5ff" text-anchor="start" dominant-baseline="central" >padding and pointer tables in source</text>
+<text x="470" y="247" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="15" font-weight="400" fill="#ffffff" text-anchor="end" dominant-baseline="central" >70,435</text>
+<text x="560" y="247" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="15" font-weight="400" fill="#b9c1ec" text-anchor="end" dominant-baseline="central" >1.7%</text>
+<rect x="40" y="280" width="18" height="18" rx="2" fill="#14505a" stroke="#7fd8f0" stroke-width="1.5" />
+<text x="70" y="289" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="16" font-weight="700" fill="#ffffff" text-anchor="start" dominant-baseline="central" >text, records</text>
+<text x="70" y="308" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="13" font-weight="400" fill="#cdd5ff" text-anchor="start" dominant-baseline="central" >text; tables, palettes, exits, treasures</text>
+<text x="470" y="289" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="15" font-weight="400" fill="#ffffff" text-anchor="end" dominant-baseline="central" >225,266</text>
+<text x="560" y="289" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="15" font-weight="400" fill="#7fd8f0" text-anchor="end" dominant-baseline="central" >5.4%</text>
+<rect x="40" y="322" width="18" height="18" rx="2" fill="#3d2477" stroke="#c7a6ff" stroke-width="1.5" />
+<text x="70" y="331" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="16" font-weight="700" fill="#ffffff" text-anchor="start" dominant-baseline="central" >scripts</text>
+<text x="70" y="350" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="13" font-weight="400" fill="#cdd5ff" text-anchor="start" dominant-baseline="central" >event, battle, scene, layer-effect</text>
+<text x="470" y="331" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="15" font-weight="400" fill="#ffffff" text-anchor="end" dominant-baseline="central" >437,966</text>
+<text x="560" y="331" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="15" font-weight="400" fill="#c7a6ff" text-anchor="end" dominant-baseline="central" >10.4%</text>
+<rect x="40" y="364" width="18" height="18" rx="2" fill="#1d4a26" stroke="#8fe07a" stroke-width="1.5" />
+<text x="70" y="373" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="16" font-weight="700" fill="#ffffff" text-anchor="start" dominant-baseline="central" >graphics</text>
+<text x="70" y="392" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="13" font-weight="400" fill="#cdd5ff" text-anchor="start" dominant-baseline="central" >22 raw regions, 484 packs, as images</text>
+<text x="470" y="373" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="15" font-weight="400" fill="#ffffff" text-anchor="end" dominant-baseline="central" >1,493,093</text>
+<text x="560" y="373" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="15" font-weight="400" fill="#8fe07a" text-anchor="end" dominant-baseline="central" >35.6%</text>
+<rect x="40" y="406" width="18" height="18" rx="2" fill="#173f78" stroke="#93b6ff" stroke-width="1.5" />
+<text x="70" y="415" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="16" font-weight="700" fill="#ffffff" text-anchor="start" dominant-baseline="central" >maps</text>
+<text x="70" y="434" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="13" font-weight="400" fill="#cdd5ff" text-anchor="start" dominant-baseline="central" >197 maps, 71 metatile tables, as text</text>
+<text x="470" y="415" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="15" font-weight="400" fill="#ffffff" text-anchor="end" dominant-baseline="central" >555,262</text>
+<text x="560" y="415" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="15" font-weight="400" fill="#93b6ff" text-anchor="end" dominant-baseline="central" >13.2%</text>
+<rect x="40" y="448" width="18" height="18" rx="2" fill="#6b1d1a" stroke="#ff8a80" stroke-width="1.5" />
+<text x="70" y="457" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="16" font-weight="700" fill="#ffffff" text-anchor="start" dominant-baseline="central" >still bytes</text>
+<text x="70" y="476" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="13" font-weight="400" fill="#cdd5ff" text-anchor="start" dominant-baseline="central" >extracted or packed as they are</text>
+<text x="470" y="457" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="15" font-weight="400" fill="#ffffff" text-anchor="end" dominant-baseline="central" >1,105,847</text>
+<text x="560" y="457" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="15" font-weight="400" fill="#ff8a80" text-anchor="end" dominant-baseline="central" >26.4%</text>
+<text x="40" y="508" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="14" font-weight="400" fill="#cdd5ff" text-anchor="start" >Compressed data counts at its size in the ROM. Every byte</text>
+<text x="40" y="528" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="14" font-weight="400" fill="#cdd5ff" text-anchor="start" >is one of these: python3 tools/verify.py, 30 October.</text></svg>

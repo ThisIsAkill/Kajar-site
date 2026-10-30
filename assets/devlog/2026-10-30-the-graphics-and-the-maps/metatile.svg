@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 560" width="600" height="560" role="img" aria-labelledby="t d"><title id="t">A map cell is a metatile, and a metatile is four tilemap words</title><desc id="d">A toy map grid of metatile numbers. Cell 2A points into the metatile table, where entry 2A is four tilemap words: top-left, top-right, bottom-left, bottom-right. Each word names an 8 by 8 tile, so one map cell covers 16 by 16 pixels. The game copies the four words unchanged into the background's tilemap.</desc><defs><linearGradient id="win" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#4157c9"/><stop offset=".48" stop-color="#23318f"/><stop offset="1" stop-color="#121a58"/></linearGradient></defs><rect x="1.5" y="1.5" width="597" height="557" rx="9" fill="url(#win)" stroke="#070b2e" stroke-width="3"/><rect x="4.5" y="4.5" width="591" height="551" rx="7" fill="none" stroke="#eef1ff" stroke-width="3"/><rect x="8" y="8" width="584" height="544" rx="5" fill="none" stroke="#8e9ce6" stroke-width="1" opacity=".7"/><rect x="28" y="23" width="10" height="10" fill="#ffd76e"/>
+<text x="48" y="33" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="17" font-weight="700" fill="#ffd76e" text-anchor="start" dominant-baseline="central" letter-spacing="1">MAP CELL, METATILE, FOUR WORDS</text>
+<text x="40" y="84" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="17" font-weight="700" fill="#ffd76e" text-anchor="start" >The map (toy numbers)</text>
+<rect x="40" y="100" width="48" height="48" rx="2" fill="#0b1145" stroke="#8e9ce6" stroke-width="1.5" />
+<text x="64" y="124" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="17" font-weight="400" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >07</text>
+<rect x="92" y="100" width="48" height="48" rx="2" fill="#0b1145" stroke="#8e9ce6" stroke-width="1.5" />
+<text x="116" y="124" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="17" font-weight="400" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >07</text>
+<rect x="144" y="100" width="48" height="48" rx="2" fill="#0b1145" stroke="#8e9ce6" stroke-width="1.5" />
+<text x="168" y="124" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="17" font-weight="400" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >07</text>
+<rect x="196" y="100" width="48" height="48" rx="2" fill="#0b1145" stroke="#8e9ce6" stroke-width="1.5" />
+<text x="220" y="124" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="17" font-weight="400" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >07</text>
+<rect x="40" y="152" width="48" height="48" rx="2" fill="#0b1145" stroke="#8e9ce6" stroke-width="1.5" />
+<text x="64" y="176" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="17" font-weight="400" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >07</text>
+<rect x="92" y="152" width="48" height="48" rx="2" fill="#6a3a12" stroke="#ffb784" stroke-width="2" />
+<text x="116" y="176" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="17" font-weight="700" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >2A</text>
+<rect x="144" y="152" width="48" height="48" rx="2" fill="#0b1145" stroke="#8e9ce6" stroke-width="1.5" />
+<text x="168" y="176" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="17" font-weight="400" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >2A</text>
+<rect x="196" y="152" width="48" height="48" rx="2" fill="#0b1145" stroke="#8e9ce6" stroke-width="1.5" />
+<text x="220" y="176" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="17" font-weight="400" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >07</text>
+<rect x="40" y="204" width="48" height="48" rx="2" fill="#0b1145" stroke="#8e9ce6" stroke-width="1.5" />
+<text x="64" y="228" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="17" font-weight="400" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >11</text>
+<rect x="92" y="204" width="48" height="48" rx="2" fill="#0b1145" stroke="#8e9ce6" stroke-width="1.5" />
+<text x="116" y="228" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="17" font-weight="400" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >11</text>
+<rect x="144" y="204" width="48" height="48" rx="2" fill="#0b1145" stroke="#8e9ce6" stroke-width="1.5" />
+<text x="168" y="228" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="17" font-weight="400" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >11</text>
+<rect x="196" y="204" width="48" height="48" rx="2" fill="#0b1145" stroke="#8e9ce6" stroke-width="1.5" />
+<text x="220" y="228" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="17" font-weight="400" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >11</text>
+<text x="40" y="284" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="14" font-weight="400" fill="#cdd5ff" text-anchor="start" >one byte per cell (plus a ninth bit</text>
+<text x="40" y="304" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="14" font-weight="400" fill="#cdd5ff" text-anchor="start" >kept with the cell's attributes)</text>
+<text x="300" y="84" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="17" font-weight="700" fill="#ffd76e" text-anchor="start" >Metatile $2A (toy words)</text>
+<rect x="300" y="100" width="124" height="64" rx="3" fill="#173f78" stroke="#93b6ff" stroke-width="2" />
+<text x="362.0" y="120.0" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="16" font-weight="700" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >TL</text>
+<text x="362.0" y="144.0" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="14" font-weight="400" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >040/2</text>
+<rect x="432" y="100" width="124" height="64" rx="3" fill="#173f78" stroke="#93b6ff" stroke-width="2" />
+<text x="494.0" y="120.0" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="16" font-weight="700" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >TR</text>
+<text x="494.0" y="144.0" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="14" font-weight="400" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >041/2</text>
+<rect x="300" y="176" width="124" height="64" rx="3" fill="#173f78" stroke="#93b6ff" stroke-width="2" />
+<text x="362.0" y="196.0" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="16" font-weight="700" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >BL</text>
+<text x="362.0" y="220.0" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="14" font-weight="400" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >050/2</text>
+<rect x="432" y="176" width="124" height="64" rx="3" fill="#173f78" stroke="#93b6ff" stroke-width="2" />
+<text x="494.0" y="196.0" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="16" font-weight="700" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >BR</text>
+<text x="494.0" y="220.0" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="14" font-weight="400" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >040/2hv</text>
+<path d="M140,152 L296,152" fill="none" stroke="#ffb784" stroke-width="2.5" stroke-linejoin="miter"/>
+<path d="M296.0,152.0 L284.0,159.0 L284.0,145.0 Z" fill="#ffb784"/>
+<text x="300" y="276" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="14" font-weight="400" fill="#cdd5ff" text-anchor="start" >8 bytes: four 16-bit words,</text>
+<text x="300" y="296" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="14" font-weight="400" fill="#cdd5ff" text-anchor="start" >in the order TL, TR, BL, BR</text>
+<text x="40" y="350" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="17" font-weight="700" fill="#ffd76e" text-anchor="start" >On screen</text>
+<rect x="40" y="366" width="54" height="54" rx="0" fill="#2a3170" stroke="#b9c1ec" stroke-width="1.5" />
+<text x="67.0" y="393.0" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="13" font-weight="400" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >040</text>
+<rect x="96" y="366" width="54" height="54" rx="0" fill="#2a3170" stroke="#b9c1ec" stroke-width="1.5" />
+<text x="123.0" y="393.0" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="13" font-weight="400" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >041</text>
+<rect x="40" y="422" width="54" height="54" rx="0" fill="#2a3170" stroke="#b9c1ec" stroke-width="1.5" />
+<text x="67.0" y="449.0" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="13" font-weight="400" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >050</text>
+<rect x="96" y="422" width="54" height="54" rx="0" fill="#2a3170" stroke="#b9c1ec" stroke-width="1.5" />
+<text x="123.0" y="449.0" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="13" font-weight="400" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >040 hv</text>
+<text x="96" y="500" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="14" font-weight="400" fill="#cdd5ff" text-anchor="middle" >16 x 16 pixels</text>
+<text x="180" y="384" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="15" font-weight="400" fill="#ffffff" text-anchor="start" >Each word is one 8x8 tile, with its own palette,</text>
+<text x="180" y="408" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="15" font-weight="400" fill="#ffffff" text-anchor="start" >priority and flips. The row and column writers</text>
+<text x="180" y="432" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="15" font-weight="400" fill="#ffffff" text-anchor="start" >copy the four words unchanged into the layer's</text>
+<text x="180" y="456" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="15" font-weight="400" fill="#ffffff" text-anchor="start" >tilemap, which is how the tools know they are</text>
+<text x="180" y="480" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="15" font-weight="400" fill="#ffffff" text-anchor="start" >SNES tilemap words.</text>
+<text x="180" y="516" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="15" font-weight="400" fill="#cdd5ff" text-anchor="start" >A map stores one byte per 16x16 cell, not four words.</text></svg>

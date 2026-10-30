@@ -1,0 +1,87 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 500" width="600" height="500" role="img" aria-labelledby="t d"><title id="t">The sixteen bits of an SNES tilemap word</title><desc id="d">A toy tilemap word, $6C25, split into its fields from bit 15 down: v (vertical flip) 0, h (horizontal flip) 1, o (priority) 1, ppp (palette) 3, and ten bits of tile number, $025. The project's text form writes it as 025/3ph.</desc><defs><linearGradient id="win" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#4157c9"/><stop offset=".48" stop-color="#23318f"/><stop offset="1" stop-color="#121a58"/></linearGradient></defs><rect x="1.5" y="1.5" width="597" height="497" rx="9" fill="url(#win)" stroke="#070b2e" stroke-width="3"/><rect x="4.5" y="4.5" width="591" height="491" rx="7" fill="none" stroke="#eef1ff" stroke-width="3"/><rect x="8" y="8" width="584" height="484" rx="5" fill="none" stroke="#8e9ce6" stroke-width="1" opacity=".7"/><rect x="28" y="23" width="10" height="10" fill="#ffd76e"/>
+<text x="48" y="33" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="17" font-weight="700" fill="#ffd76e" text-anchor="start" dominant-baseline="central" letter-spacing="1">ONE TILEMAP WORD, BIT 15 DOWN TO BIT 0</text>
+<text x="40" y="86" font-size="17" text-anchor="start"><tspan font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" fill="#ffffff" font-weight="400">toy word </tspan><tspan font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" fill="#ffd76e" font-weight="700">$6C25</tspan><tspan font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" fill="#cdd5ff" font-weight="400"> = 0110 1100 0010 0101</tspan></text>
+<rect x="44" y="120" width="28" height="40" rx="2" fill="#6b1d1a" stroke="#ff8a80" stroke-width="1.5" />
+<text x="58.0" y="140" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="18" font-weight="700" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >0</text>
+<text x="58.0" y="110" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="11" font-weight="400" fill="#cdd5ff" text-anchor="middle" >15</text>
+<line x1="44" y1="170" x2="72" y2="170" stroke="#ff8a80" stroke-width="2"/>
+<text x="58.0" y="188" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="14" font-weight="700" fill="#ff8a80" text-anchor="middle" >v</text>
+<rect x="76" y="120" width="28" height="40" rx="2" fill="#6a3a12" stroke="#ffb784" stroke-width="1.5" />
+<text x="90.0" y="140" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="18" font-weight="700" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >1</text>
+<text x="90.0" y="110" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="11" font-weight="400" fill="#cdd5ff" text-anchor="middle" >14</text>
+<line x1="76" y1="170" x2="104" y2="170" stroke="#ffb784" stroke-width="2"/>
+<text x="90.0" y="188" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="14" font-weight="700" fill="#ffb784" text-anchor="middle" >h</text>
+<rect x="108" y="120" width="28" height="40" rx="2" fill="#3d2477" stroke="#c7a6ff" stroke-width="1.5" />
+<text x="122.0" y="140" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="18" font-weight="700" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >1</text>
+<text x="122.0" y="110" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="11" font-weight="400" fill="#cdd5ff" text-anchor="middle" >13</text>
+<line x1="108" y1="170" x2="136" y2="170" stroke="#c7a6ff" stroke-width="2"/>
+<text x="122.0" y="188" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="14" font-weight="700" fill="#c7a6ff" text-anchor="middle" >o</text>
+<rect x="140" y="120" width="28" height="40" rx="2" fill="#1d4a26" stroke="#8fe07a" stroke-width="1.5" />
+<text x="154.0" y="140" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="18" font-weight="700" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >0</text>
+<text x="154.0" y="110" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="11" font-weight="400" fill="#cdd5ff" text-anchor="middle" >12</text>
+<rect x="172" y="120" width="28" height="40" rx="2" fill="#1d4a26" stroke="#8fe07a" stroke-width="1.5" />
+<text x="186.0" y="140" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="18" font-weight="700" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >1</text>
+<text x="186.0" y="110" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="11" font-weight="400" fill="#cdd5ff" text-anchor="middle" >11</text>
+<rect x="204" y="120" width="28" height="40" rx="2" fill="#1d4a26" stroke="#8fe07a" stroke-width="1.5" />
+<text x="218.0" y="140" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="18" font-weight="700" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >1</text>
+<text x="218.0" y="110" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="11" font-weight="400" fill="#cdd5ff" text-anchor="middle" >10</text>
+<line x1="140" y1="170" x2="232" y2="170" stroke="#8fe07a" stroke-width="2"/>
+<text x="186.0" y="188" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="14" font-weight="700" fill="#8fe07a" text-anchor="middle" >ppp</text>
+<rect x="236" y="120" width="28" height="40" rx="2" fill="#173f78" stroke="#93b6ff" stroke-width="1.5" />
+<text x="250.0" y="140" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="18" font-weight="700" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >0</text>
+<text x="250.0" y="110" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="11" font-weight="400" fill="#cdd5ff" text-anchor="middle" >9</text>
+<rect x="268" y="120" width="28" height="40" rx="2" fill="#173f78" stroke="#93b6ff" stroke-width="1.5" />
+<text x="282.0" y="140" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="18" font-weight="700" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >0</text>
+<text x="282.0" y="110" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="11" font-weight="400" fill="#cdd5ff" text-anchor="middle" >8</text>
+<rect x="300" y="120" width="28" height="40" rx="2" fill="#173f78" stroke="#93b6ff" stroke-width="1.5" />
+<text x="314.0" y="140" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="18" font-weight="700" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >0</text>
+<text x="314.0" y="110" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="11" font-weight="400" fill="#cdd5ff" text-anchor="middle" >7</text>
+<rect x="332" y="120" width="28" height="40" rx="2" fill="#173f78" stroke="#93b6ff" stroke-width="1.5" />
+<text x="346.0" y="140" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="18" font-weight="700" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >0</text>
+<text x="346.0" y="110" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="11" font-weight="400" fill="#cdd5ff" text-anchor="middle" >6</text>
+<rect x="364" y="120" width="28" height="40" rx="2" fill="#173f78" stroke="#93b6ff" stroke-width="1.5" />
+<text x="378.0" y="140" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="18" font-weight="700" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >1</text>
+<text x="378.0" y="110" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="11" font-weight="400" fill="#cdd5ff" text-anchor="middle" >5</text>
+<rect x="396" y="120" width="28" height="40" rx="2" fill="#173f78" stroke="#93b6ff" stroke-width="1.5" />
+<text x="410.0" y="140" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="18" font-weight="700" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >0</text>
+<text x="410.0" y="110" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="11" font-weight="400" fill="#cdd5ff" text-anchor="middle" >4</text>
+<rect x="428" y="120" width="28" height="40" rx="2" fill="#173f78" stroke="#93b6ff" stroke-width="1.5" />
+<text x="442.0" y="140" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="18" font-weight="700" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >0</text>
+<text x="442.0" y="110" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="11" font-weight="400" fill="#cdd5ff" text-anchor="middle" >3</text>
+<rect x="460" y="120" width="28" height="40" rx="2" fill="#173f78" stroke="#93b6ff" stroke-width="1.5" />
+<text x="474.0" y="140" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="18" font-weight="700" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >1</text>
+<text x="474.0" y="110" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="11" font-weight="400" fill="#cdd5ff" text-anchor="middle" >2</text>
+<rect x="492" y="120" width="28" height="40" rx="2" fill="#173f78" stroke="#93b6ff" stroke-width="1.5" />
+<text x="506.0" y="140" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="18" font-weight="700" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >0</text>
+<text x="506.0" y="110" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="11" font-weight="400" fill="#cdd5ff" text-anchor="middle" >1</text>
+<rect x="524" y="120" width="28" height="40" rx="2" fill="#173f78" stroke="#93b6ff" stroke-width="1.5" />
+<text x="538.0" y="140" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="18" font-weight="700" fill="#ffffff" text-anchor="middle" dominant-baseline="central" >1</text>
+<text x="538.0" y="110" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="11" font-weight="400" fill="#cdd5ff" text-anchor="middle" >0</text>
+<line x1="236" y1="170" x2="552" y2="170" stroke="#93b6ff" stroke-width="2"/>
+<text x="394.0" y="188" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="14" font-weight="700" fill="#93b6ff" text-anchor="middle" >c x 10</text>
+<text x="40" y="236" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="15" font-weight="700" fill="#ffd76e" text-anchor="start" >field</text>
+<text x="100" y="236" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="15" font-weight="700" fill="#ffd76e" text-anchor="start" >bits</text>
+<text x="150" y="236" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="15" font-weight="700" fill="#ffd76e" text-anchor="start" >what it does</text>
+<text x="560" y="236" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="15" font-weight="700" fill="#ffd76e" text-anchor="end" >here</text>
+<text x="40" y="266" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="16" font-weight="700" fill="#ff8a80" text-anchor="start" >v</text>
+<text x="100" y="266" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="15" font-weight="400" fill="#ffffff" text-anchor="start" >1</text>
+<text x="150" y="266" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="15" font-weight="400" fill="#ffffff" text-anchor="start" >flip the tile upside down</text>
+<text x="560" y="266" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="15" font-weight="400" fill="#ffffff" text-anchor="end" >0</text>
+<text x="40" y="296" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="16" font-weight="700" fill="#ffb784" text-anchor="start" >h</text>
+<text x="100" y="296" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="15" font-weight="400" fill="#ffffff" text-anchor="start" >1</text>
+<text x="150" y="296" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="15" font-weight="400" fill="#ffffff" text-anchor="start" >flip the tile left to right</text>
+<text x="560" y="296" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="15" font-weight="400" fill="#ffffff" text-anchor="end" >1</text>
+<text x="40" y="326" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="16" font-weight="700" fill="#c7a6ff" text-anchor="start" >o</text>
+<text x="100" y="326" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="15" font-weight="400" fill="#ffffff" text-anchor="start" >1</text>
+<text x="150" y="326" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="15" font-weight="400" fill="#ffffff" text-anchor="start" >priority: lifts the tile in the layer order</text>
+<text x="560" y="326" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="15" font-weight="400" fill="#ffffff" text-anchor="end" >1</text>
+<text x="40" y="356" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="16" font-weight="700" fill="#8fe07a" text-anchor="start" >ppp</text>
+<text x="100" y="356" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="15" font-weight="400" fill="#ffffff" text-anchor="start" >3</text>
+<text x="150" y="356" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="15" font-weight="400" fill="#ffffff" text-anchor="start" >which of 8 palettes colours it</text>
+<text x="560" y="356" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="15" font-weight="400" fill="#ffffff" text-anchor="end" >3</text>
+<text x="40" y="386" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="16" font-weight="700" fill="#93b6ff" text-anchor="start" >c</text>
+<text x="100" y="386" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="15" font-weight="400" fill="#ffffff" text-anchor="start" >10</text>
+<text x="150" y="386" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="15" font-weight="400" fill="#ffffff" text-anchor="start" >the tile number, 0 to 1,023</text>
+<text x="560" y="386" font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" font-size="15" font-weight="400" fill="#ffffff" text-anchor="end" >$025</text>
+<text x="40" y="434" font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" font-size="16" font-weight="400" fill="#cdd5ff" text-anchor="start" >The metatile files write each word as</text>
+<text x="40" y="462" font-size="16" text-anchor="start"><tspan font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" fill="#ffd76e" font-weight="700">TTT/P</tspan><tspan font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" fill="#ffffff" font-weight="400"> plus </tspan><tspan font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" fill="#ffd76e" font-weight="700">p h v</tspan><tspan font-family="system-ui,-apple-system,'Segoe UI','DejaVu Sans',Roboto,sans-serif" fill="#ffffff" font-weight="400"> when set:  $6C25 is </tspan><tspan font-family="'DejaVu Sans Mono','Cascadia Code',Consolas,Menlo,monospace" fill="#ffd76e" font-weight="700">025/3ph</tspan></text></svg>

@@ -29,7 +29,7 @@ $C0:08A0,$C0:0904,101,FieldBtl_RestorePc,$C0,Engine,code,verified,7ca2a29422d8,"
 $C0:0905,$C0:0917,19,Field_RestoreSaveBlock,$C0,Engine,code,verified,f0651e1f103d,"(was Sub_0905.) Copies SceneSave_Buffer ($7F:2000) back over Field_SaveBlock ($7E:0920, $14E0 bytes)."
 $C0:0918,$C0:092A,19,Field_StashSaveBlock,$C0,Engine,code,verified,bbfa98e12413,"(was Sub_0918.) Copies Field_SaveBlock ($7E:0920, $14E0 bytes) to SceneSave_Buffer ($7F:2000)."
 $C0:092B,$C0:095F,53,LocLoad_Unk092B,$C0,Engine,code,verified,7c0f97e9b238,"First location-load step: Loc_RecOfs = (Loc_Id & $FF) x LocRom_RecSize, plus LocRom_HalfOfs when Loc_Id bit 8 is set, i.e."
-$C0:0960,$C0:09DC,125,LocLoad_Unk0960,$C0,Engine,code,verified,a1bc98b1cdb1,Loads the graphics of layers 1 and 2.
+$C0:0960,$C0:09DC,125,LocLoad_Unk0960,$C0,Engine,code,readable,6052693f3923,Loads the graphics of layers 1 and 2.
 $C0:09DD,$C0:0A13,55,LocLoad_Unk09DD,$C0,Engine,code,verified,d51d95e26f5a,"Unpacks the layer 1/2 metatile table: unless LocRom.Tileset12 is LocRom_SetNone, its LocGfx_Meta12Ptrs entry is unpacked with Decomp_ToWramVec to Map_Meta12TL ($7E:B000), over the MapProps that..."
 $C0:0A14,$C0:0A4F,60,LocLoad_Unk0A14,$C0,Engine,code,verified,3fc738fa79a2,"Unpacks the layer-3 metatile table: unless Field_UnkBB is set (no layer 3, LocLoad_Unk6DCF) or LocRom.Tileset3 is LocRom_SetNone, its LocGfx_Meta3Ptrs entry is unpacked with Decomp_ToWramVec to..."
 $C0:0A50,$C0:0AFE,175,LocLoad_DrawMap,$C0,Engine,code,verified,0a9105dddb89,"Draws the freshly loaded map: - Map_LoadTreasureTiles (DP=$1D00), Ppu_SetBgLayout and Ppu_ApplyMapScreens; - with DP=$1D00: Map_InitOrigin, LocLoad_EmptyStep, the tilemap VRAM bases..."
@@ -3603,7 +3603,7 @@ $FD:BA4A,$FD:BA60,23,BattleFD_AiActLength,$FD,Battle engine,data,verified,e21a8d
 $FD:BA61,$FD:BB60,256,RandomTableFD,$FD,Engine,data,verified,482ed43f43b3,A byte-identical copy of RandomTable ($C0:FE00): the same shuffle of 0-255.
 $FD:BB61,$FD:BFFF,1183,BankFD_RandomTableTail,$FD,Engine,data,verified,b266234aa5fe,Nothing found reads it: no matched code refers to it and xref finds no call or jump into it.
 $FD:C000,$FD:C0D6,215,MainInit,$FD,Boot,code,verified,79b16b235ac4,"Called via: JML from Reset ($00:FF03), which also carries the soft resets, and JML $FDC000 at $C0:418D (Evt_OpFF96_Reset, after JSR InitHW and S=$06FF)."
-$FD:C0D7,$FD:C123,77,Ppu_SetBgLayout,$FD,Engine,code,verified,30473a455a95,"Sets a fixed background layout through DP=$2100, the way MainInit writes the PPU: mode 1 with BG3 on top, BG1/BG2 tiles at VRAM word $1000 and BG3 tiles at $5000, 64x32 maps at $6800 (BG1), $7000..."
+$FD:C0D7,$FD:C123,77,Ppu_SetBgLayout,$FD,Engine,code,readable,d80a03c806e0,"Sets a fixed background layout through DP=$2100, the way MainInit writes the PPU: mode 1 with BG3 on top, BG1/BG2 tiles at VRAM word $1000 and BG3 tiles at $5000, 64x32 maps at $6800 (BG1), $7000..."
 $FD:C124,$FD:C1ED,202,EngFD_UnkC124,$FD,Engine,code,verified,707b97cc9715,Fills the HDMA data block in bank $7F (DB = $7F while it runs).
 $FD:C1EE,$FD:C2C0,211,Hdma_InitChannelsFD,$FD,Engine,code,verified,5bcfd77624f3,"Sets up all 8 HDMA channels through DP=$4300 (saved and restored): channel 0: indirect, 4 registers from BG1SC (BG1SC-BG4SC); channels 1-3: indirect, 2 registers written twice, from BG1HOFS..."
 $FD:C2C1,$FD:C2DE,30,EngFD_UnkC2C1,$FD,Engine,code,verified,35a18be24b57,Once a frame: runs entry !Field_Unk26 (0-2) of one of two handler tables and flips !Field_Unk53 bit 0.
